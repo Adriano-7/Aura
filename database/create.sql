@@ -1,7 +1,6 @@
 -- SCHEMA: lbaw2384
 SET search_path TO lbaw2384;
 
-
 DROP TABLE IF EXISTS DenunciaComentario;
 DROP TABLE IF EXISTS DenunciaEvento;
 DROP TABLE IF EXISTS motivosDenuncia;
@@ -121,8 +120,9 @@ CREATE TABLE Ficheiro (
 
 
 CREATE TABLE NotificacaoUtilizador (
-    idNotificacao SERIAL PRIMARY KEY REFERENCES Notificacao (idNotificacao) ON UPDATE CASCADE ON DELETE CASCADE,
-    idEvento SERIAL NOT NULL REFERENCES Evento (idEvento) ON UPDATE CASCADE ON DELETE CASCADE
+    idNotificacao SERIAL REFERENCES Notificacao (idNotificacao) ON UPDATE CASCADE ON DELETE CASCADE,
+    idEvento SERIAL NOT NULL REFERENCES Evento (idEvento) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (idNotificacao, idEvento)
 );
 
 
