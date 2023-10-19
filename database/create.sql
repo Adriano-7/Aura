@@ -1,5 +1,10 @@
+-- SCHEMA: lbaw2384
+SET search_path TO lbaw2384;
+
+
 DROP TABLE IF EXISTS DenunciaComentario;
 DROP TABLE IF EXISTS DenunciaEvento;
+DROP TABLE IF EXISTS motivosDenuncia;
 DROP TABLE IF EXISTS Denuncia;
 DROP TABLE IF EXISTS TagEvento;
 DROP TABLE IF EXISTS Tag;
@@ -23,16 +28,24 @@ CREATE TABLE Utilizador (
     nome VARCHAR(256)  NOT NULL,
     email VARCHAR(256) UNIQUE NOT NULL,
     password text NOT NULL,
-    foto text,
+    foto text
+);
+
+CREATE TABLE Organizacao (
+    idOrganizacao SERIAL PRIMARY KEY,
+    nome VARCHAR(255),
+    descricao TEXT,
+    aprovada BOOLEAN
 );
 
 CREATE TABLE Administrador (
-    idUtilizador INTEGER PRIMARY KEY REFERENCES Utilizador (idUtilizador) ON UPDATE CASCADE ON DELETE CASCADE,
+    idUtilizador INTEGER PRIMARY KEY REFERENCES Utilizador (idUtilizador) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE Cliente (
-    idUtilizador INTEGER PRIMARY KEY REFERENCES Utilizador (idUtilizador) ON UPDATE CASCADE ON DELETE CASCADE,
+    idUtilizador INTEGER PRIMARY KEY REFERENCES Utilizador (idUtilizador) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
 
 CREATE TABLE Notificacao (
     idNotificacao SERIAL PRIMARY KEY,
@@ -40,19 +53,40 @@ CREATE TABLE Notificacao (
     data TIMESTAMP NOT NULL CHECK (data <= now()),
     url VARCHAR(255) NOT NULL,
     visto BOOLEAN NOT NULL DEFAULT FALSE,
-    utilizadorNotificado INTEGER NOT NULL REFERENCES Utilizador (idUtilizador) ON UPDATE CASCADE ON DELETE CASCADE,
+    utilizadorNotificado INTEGER NOT NULL REFERENCES Utilizador (idUtilizador) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE NotificacaoUtilizador (
-    idNotificacao SERIAL PRIMARY KEY REFERENCES Notificacao (idNotificacao) ON UPDATE CASCADE ON DELETE CASCADE,
-    idEvento SERIAL PRIMARY KEY NOT NULL REFERENCES Evento (idEvento) ON UPDATE CASCADE ON DELETE CASCADE,
-);
+
 
 CREATE TABLE NotificacaoEvento (
     idNotificacao INT,
     idUtilizador INT NOT NULL,
     FOREIGN KEY (idNotificacao) REFERENCES Notificacao (idNotificacao),
     FOREIGN KEY (idUtilizador) REFERENCES Utilizador (idUtilizador)
+);
+
+
+
+
+CREATE TABLE PedidoRegisto (
+    idPedidoRegisto SERIAL PRIMARY KEY,
+    data DATE,
+    idUtilizador INT NOT NULL,
+    idOrganizacao INT NOT NULL,
+    FOREIGN KEY (idUtilizador) REFERENCES Cliente (idUtilizador),
+    FOREIGN KEY (idOrganizacao) REFERENCES Organizacao (idOrganizacao)
+);
+
+CREATE TABLE Evento (
+    idEvento SERIAL PRIMARY KEY,
+    nome VARCHAR(255),
+    descricao TEXT,
+    localizacao VARCHAR(255),
+    dataInicio DATE,
+    dataFim DATE,
+    isPublic BOOLEAN,
+    idOrganizacao INT NOT NULL,
+    FOREIGN KEY (idOrganizacao) REFERENCES Organizacao (idOrganizacao)
 );
 
 CREATE TABLE Comentario (
@@ -85,21 +119,12 @@ CREATE TABLE Ficheiro (
     FOREIGN KEY (idComentario) REFERENCES Comentario (idComentario)
 );
 
-CREATE TABLE PedidoRegisto (
-    idPedidoRegisto SERIAL PRIMARY KEY,
-    data DATE,
-    idUtilizador INT NOT NULL,
-    idOrganizacao INT NOT NULL,
-    FOREIGN KEY (idUtilizador) REFERENCES Cliente (idUtilizador),
-    FOREIGN KEY (idOrganizacao) REFERENCES Organizacao (idOrganizacao)
+
+CREATE TABLE NotificacaoUtilizador (
+    idNotificacao SERIAL PRIMARY KEY REFERENCES Notificacao (idNotificacao) ON UPDATE CASCADE ON DELETE CASCADE,
+    idEvento SERIAL NOT NULL REFERENCES Evento (idEvento) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE Organizacao (
-    idOrganizacao SERIAL PRIMARY KEY,
-    nome VARCHAR(255),
-    descricao TEXT,
-    aprovada BOOLEAN
-);
 
 CREATE TABLE ClienteOrganizacao (
     idUtilizador INT,
@@ -117,18 +142,6 @@ CREATE TABLE ClienteEvento (
     FOREIGN KEY (idEvento) REFERENCES Evento (idEvento)
 );
 
-CREATE TABLE Evento (
-    idEvento SERIAL PRIMARY KEY,
-    nome VARCHAR(255),
-    descricao TEXT,
-    localizacao VARCHAR(255),
-    dataInicio DATE,
-    dataFim DATE,
-    isPublic BOOLEAN,
-    idOrganizacao INT NOT NULL,
-    FOREIGN KEY (idOrganizacao) REFERENCES Organizacao (idOrganizacao)
-);
-
 CREATE TABLE Tag (
     idTag SERIAL PRIMARY KEY,
     nome VARCHAR(255)
@@ -140,6 +153,10 @@ CREATE TABLE TagEvento (
     PRIMARY KEY (idEvento, idTag),
     FOREIGN KEY (idEvento) REFERENCES Evento (idEvento),
     FOREIGN KEY (idTag) REFERENCES Tag (idTag)
+);
+
+CREATE TABLE motivosDenuncia (
+    idMotivoDenuncia SERIAL PRIMARY KEY
 );
 
 CREATE TABLE Denuncia (
@@ -164,6 +181,4 @@ CREATE TABLE DenunciaComentario (
     FOREIGN KEY (idComentario) REFERENCES Comentario (idComentario)
 );
 
-CREATE TABLE motivosDenuncia (
-    idMotivoDenuncia SERIAL PRIMARY KEY,
-);
+
