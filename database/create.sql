@@ -1,5 +1,5 @@
 -- SCHEMA: lbaw2384
-SET search_path TO lbaw2324;
+SET search_path TO lbaw2384;
 
 DROP TABLE IF EXISTS Utilizador CASCADE;
 CREATE TABLE Utilizador (
@@ -151,11 +151,14 @@ CREATE TABLE NotfConvOrganizacao (
     idOrganizacao UUID NOT NULL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE
 );
 
+CREATE TYPE CampoEvento AS ENUM ('nome', 'descricao', 'localizacao', 'data_fim', 'data_inicio');
+
 DROP TABLE IF EXISTS NotfEdicaoEvento CASCADE;
 CREATE TABLE NotfEdicaoEvento (
     idNotificacao UUID PRIMARY KEY,
     data TIMESTAMP NOT NULL DEFAULT current_timestamp,
     visto BOOLEAN NOT NULL DEFAULT FALSE,
+    campoAlterado CampoEvento NOT NULL,
 
     idRecetor UUID NOT NULL,
     idEvento UUID NOT NULL,
