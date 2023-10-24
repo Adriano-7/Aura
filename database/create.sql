@@ -59,14 +59,6 @@ CREATE TABLE Organizador (
     PRIMARY KEY (idUtilizador, idOrganizacao)
 );
 
-DROP TABLE IF EXISTS PedidoRegisto CASCADE;
-CREATE TABLE PedidoRegisto (
-    idPedidoRegisto UUID PRIMARY KEY,
-    idUtilizador UUID NOT NULL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
-    idOrganizacao UUID NOT NULL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp 
-);
-
 DROP TABLE IF EXISTS Tag CASCADE;
 CREATE TABLE Tag (
     idTag UUID PRIMARY KEY,
@@ -83,7 +75,7 @@ CREATE TABLE TagEvento (
 DROP TABLE IF EXISTS Comentario CASCADE;
 CREATE TABLE Comentario (
     idComentario UUID PRIMARY KEY,
-    idUtilizador UUID NOT NULL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
+    idAutor UUID NOT NULL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
     texto TEXT NOT NULL,
     data TIMESTAMP NOT NULL DEFAULT current_timestamp,
     balancoVotos INT NOT NULL DEFAULT 0,
@@ -92,10 +84,10 @@ CREATE TABLE Comentario (
 
 DROP TABLE IF EXISTS VotoComentario CASCADE;
 CREATE TABLE VotoComentario (
-    idUtilizador UUID REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
     idComentario UUID REFERENCES Comentario (idComentario) ON DELETE CASCADE,
+    idUtilizador UUID REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
     isUp BOOLEAN NOT NULL,
-    PRIMARY KEY (idUtilizador, idComentario)
+    PRIMARY KEY (idComentario, idUtilizador)
 );
 
 DROP TABLE IF EXISTS Ficheiro CASCADE;
@@ -137,33 +129,57 @@ CREATE TABLE DenunciaComentario (
     idMotivoDenunciaComentario UUID NOT NULL REFERENCES MotivoDenunciaComentario (idMotivoDenunciaComentario) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS NotificacaoUtilizador CASCADE;
-CREATE TABLE NotificacaoUtilizador (
+DROP TABLE IF EXISTS NotfConvEvento CASCADE;
+CREATE TABLE NotfConvEvento (
     idNotificacao UUID PRIMARY KEY,
-    emissor UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
-    recetor UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
-    texto TEXT NOT NULL,
     data TIMESTAMP NOT NULL DEFAULT current_timestamp,
     visto BOOLEAN NOT NULL DEFAULT FALSE,
+    idRecetor UUID NOT NULL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
+
+    idEmissor UUID NOT NULL,
+    idEvento UUID NOT NULL,
+    FOREIGN KEY (idEmissor, idEvento) REFERENCES Participante (idUtilizador, idEvento) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS NotificacaoEvento CASCADE;
-CREATE TABLE NotificacaoEvento (
+DROP TABLE IF EXISTS NotfConvOrganizacao CASCADE;
+CREATE TABLE NotfConvOrganizacao (
     idNotificacao UUID PRIMARY KEY,
-    emissor UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
-    recetor UUID NOT NULL REFERENCES Evento (idEvento) ON DELETE CASCADE
-    texto TEXT NOT NULL,
     data TIMESTAMP NOT NULL DEFAULT current_timestamp,
     visto BOOLEAN NOT NULL DEFAULT FALSE,
+
+    idRecetor UUID NOT NULL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
+    idOrganizacao UUID NOT NULL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS NotificacaoOrganizacao CASCADE;
-CREATE TABLE NotificaçãoOrganizacao (
+DROP TABLE IF EXISTS NotfEdicaoEvento CASCADE;
+CREATE TABLE NotfEdicaoEvento (
     idNotificacao UUID PRIMARY KEY,
-    emissor UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
-    recetor UUID NOT NULL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE
-    texto TEXT NOT NULL,
     data TIMESTAMP NOT NULL DEFAULT current_timestamp,
     visto BOOLEAN NOT NULL DEFAULT FALSE,
+
+    idRecetor UUID NOT NULL,
+    idEvento UUID NOT NULL,
+    FOREIGN KEY (idRecetor, idEvento) REFERENCES Participante (idUtilizador, idEvento) ON DELETE CASCADE
 );
 
+
+DROP TABLE IF EXISTS NotfPedidoRegOrg CASCADE;
+CREATE TABLE NotfPedidoRegOrg (
+    idNotificacao UUID PRIMARY KEY,
+    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    visto BOOLEAN NOT NULL DEFAULT FALSE,
+
+    idRecetor UUID NOT NULL REFERENCES Administrador(idUtilizador) ON DELETE CASCADE,
+    idOrganizacao UUID NOT NULL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS NotfRespostaRegOrg CASCADE;
+CREATE TABLE NotfRespostaRegOrg (
+    idNotificacao UUID PRIMARY KEY,
+    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    visto BOOLEAN NOT NULL DEFAULT FALSE,
+
+    idRecetor UUID NOT NULL,
+    idOrganizacao UUID NOT NULL,
+    FOREIGN KEY (idRecetor, idOrganizacao) REFERENCES Organizador (idUtilizador, idOrganizacao) ON DELETE CASCADE
+);
