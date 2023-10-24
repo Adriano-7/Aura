@@ -56,20 +56,3 @@ THEN
 END IF;
 
 COMMIT;
-
-
--- TRAN04: Remover todos os eventos que já aconteceram
-
-BEGIN TRANSACTION;
-SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-
-DELETE FROM Participante
-WHERE idEvento IN (
-    SELECT idEventoFROM Evento
-    WHERE (dataFim IS NULL AND dataInicio < current_timestamp) OR dataFim < current_timestamp
-);
-
-DELETE FROM Evento
-WHERE (dataFim IS NULL AND dataInicio < current_timestamp) OR dataFim < current_timestamp;
-
-COMMIT;
