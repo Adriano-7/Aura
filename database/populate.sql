@@ -1,3 +1,5 @@
+-- SCHEMA: lbaw2384
+SET search_path TO lbaw2384;
 
 INSERT INTO Utilizador (idUtilizador, nome, email, password) VALUES
     ('123e4567-e89b-12d3-a456-426655440001', 'João Silva', 'joao@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),

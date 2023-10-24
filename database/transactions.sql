@@ -1,3 +1,6 @@
+-- SCHEMA: lbaw2384
+SET search_path TO lbaw2384;
+
 -- TRAN01: Utilizador ($idUtilizador) dá upvote a um comentário ($idComentario).
 
 BEGIN TRANSACTION;
