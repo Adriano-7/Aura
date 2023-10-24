@@ -1,5 +1,5 @@
 -- SCHEMA: lbaw2384
-SET search_path TO lbaw2324;
+SET search_path TO lbaw2384;
 
 DROP TABLE IF EXISTS Utilizador CASCADE;
 CREATE TABLE Utilizador (
@@ -101,7 +101,7 @@ CREATE TABLE Ficheiro (
 
 DROP TABLE IF EXISTS MotivoDenunciaEvento CASCADE;
 CREATE TABLE MotivoDenunciaEvento (
-    idMotivoDenunciaEvento UUID PRIMARY KEY,
+    idMotivo UUID PRIMARY KEY,
     texto TEXT NOT NULL UNIQUE
 );
 
@@ -111,22 +111,22 @@ CREATE TABLE DenunciaEvento (
     idEvento UUID NOT NULL REFERENCES Evento (idEvento) ON DELETE CASCADE,
     resolvido BOOLEAN NOT NULL DEFAULT FALSE,
     data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    idMotivoDenunciaEvento UUID NOT NULL REFERENCES MotivoDenunciaEvento (idMotivoDenunciaEvento) ON DELETE CASCADE
+    idMotivo UUID NOT NULL REFERENCES MotivoDenunciaEvento (idMotivo) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS MotivoDenunciaComentario CASCADE;
 CREATE TABLE MotivoDenunciaComentario (
-    idMotivoDenunciaComentario UUID PRIMARY KEY,
+    idMotivo UUID PRIMARY KEY,
     texto TEXT NOT NULL UNIQUE
 );
 
 DROP TABLE IF EXISTS DenunciaComentario CASCADE;
 CREATE TABLE DenunciaComentario (
-    idDenunciaCOmentario UUID,
+    idDenunciaComentario UUID,
     idComentario UUID NOT NULL REFERENCES Comentario (idComentario) ON DELETE CASCADE,
     resolvido BOOLEAN NOT NULL DEFAULT FALSE,
     data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    idMotivoDenunciaComentario UUID NOT NULL REFERENCES MotivoDenunciaComentario (idMotivoDenunciaComentario) ON DELETE CASCADE
+    idMotivo UUID NOT NULL REFERENCES MotivoDenunciaComentario (idMotivo) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS NotfConvEvento CASCADE;
@@ -183,3 +183,4 @@ CREATE TABLE NotfRespostaRegOrg (
     idOrganizacao UUID NOT NULL,
     FOREIGN KEY (idRecetor, idOrganizacao) REFERENCES Organizador (idUtilizador, idOrganizacao) ON DELETE CASCADE
 );
+
