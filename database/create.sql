@@ -137,24 +137,33 @@ CREATE TABLE DenunciaComentario (
     idMotivoDenunciaComentario UUID NOT NULL REFERENCES MotivoDenunciaComentario (idMotivoDenunciaComentario) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS Notificacao CASCADE;
-CREATE TABLE Notificacao (
-    idNotificacao UUID PRIMARY KEY,
-    texto TEXT NOT NULL,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    url TEXT NOT NULL,
-    visto BOOLEAN NOT NULL DEFAULT FALSE,
-    utilizadorNotificado UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
-);
-
 DROP TABLE IF EXISTS NotificacaoUtilizador CASCADE;
 CREATE TABLE NotificacaoUtilizador (
-    idNotificacao UUID PRIMARY KEY REFERENCES Notificacao (idNotificacao) ON DELETE CASCADE,
-    idUtilizador UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
+    idNotificacao UUID PRIMARY KEY,
+    emissor UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
+    recetor UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
+    texto TEXT NOT NULL,
+    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    visto BOOLEAN NOT NULL DEFAULT FALSE,
 );
 
 DROP TABLE IF EXISTS NotificacaoEvento CASCADE;
 CREATE TABLE NotificacaoEvento (
-    idNotificacao UUID  PRIMARY KEY REFERENCES Notificacao (idNotificacao) ON DELETE CASCADE,
-    idEvento UUID NOT NULL REFERENCES Evento (idEvento) ON DELETE CASCADE
+    idNotificacao UUID PRIMARY KEY,
+    emissor UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
+    recetor UUID NOT NULL REFERENCES Evento (idEvento) ON DELETE CASCADE
+    texto TEXT NOT NULL,
+    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    visto BOOLEAN NOT NULL DEFAULT FALSE,
 );
+
+DROP TABLE IF EXISTS NotificacaoOrganizacao CASCADE;
+CREATE TABLE NotificaçãoOrganizacao (
+    idNotificacao UUID PRIMARY KEY,
+    emissor UUID NOT NULL REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
+    recetor UUID NOT NULL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE
+    texto TEXT NOT NULL,
+    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    visto BOOLEAN NOT NULL DEFAULT FALSE,
+);
+
