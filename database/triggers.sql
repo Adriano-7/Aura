@@ -78,8 +78,24 @@ FOR EACH ROW
 WHEN (OLD.aprovada = FALSE AND NEW.aprovada = TRUE)
 EXECUTE FUNCTION notificar_aprovacao_organizacao();
 
-
 --TRIGGER03
+-- Quando um comentário é apagado todos os votos desse comentário também são apagados
+CREATE OR REPLACE FUNCTION apagar_votos_comentario()
+RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM VotoComentario
+    WHERE VotoComentario.idComentario = OLD.idComentario;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS apagar_votos_comentario_trigger ON Comentario CASCADE;
+CREATE TRIGGER apagar_votos_comentario_trigger
+AFTER DELETE ON Comentario
+FOR EACH ROW
+EXECUTE FUNCTION apagar_votos_comentario();
+
+--TRIGGER04
 -- Um cliente pode apenas acrescentar comentários nos eventos em que participa. (BR06)
 CREATE OR REPLACE FUNCTION check_participante_comentario()
 RETURNS TRIGGER AS $$
@@ -97,8 +113,14 @@ END;
 
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS check_participante_comentario_trigger ON Comentario CASCADE;
+CREATE TRIGGER check_participante_comentario_trigger
+BEFORE INSERT ON Comentario
+FOR EACH ROW
+EXECUTE FUNCTION check_participante_comentario();
 
---TRIGGER04
+
+--TRIGGER05
 -- Um cliente só pode ter um voto em cada comentário. (BR07)
 DROP TRIGGER IF EXISTS check_participante_comentario_trigger ON Comentario CASCADE;
 CREATE TRIGGER check_participante_comentario_trigger
@@ -130,7 +152,7 @@ FOR EACH ROW
 EXECUTE FUNCTION check_voto_comentario();
 
 
---TRIGGER05
+--TRIGGER06
 -- Um cliente não pode pedir para participar num evento no qual já participa. (BR08)
 
 CREATE OR REPLACE FUNCTION check_participante_evento()
@@ -155,7 +177,7 @@ BEFORE INSERT ON Participante
 FOR EACH ROW
 EXECUTE FUNCTION check_participante_evento();
 
---TRIGGER06
+--TRIGGER07
 -- Um organizador não pode denunciar o seu próprio evento. (BR09)
 
 CREATE OR REPLACE FUNCTION check_organizador_evento()
@@ -185,7 +207,7 @@ FOR EACH ROW
 EXECUTE FUNCTION check_organizador_evento();
 
 
---TRIGGER07
+--TRIGGER08
 -- Um cliente não pode denunciar o seu próprio comentário. (BR10)
 
 CREATE OR REPLACE FUNCTION check_cliente_comentario()
