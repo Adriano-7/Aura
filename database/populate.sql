@@ -2,157 +2,157 @@
 SET search_path TO lbaw2384;
 
 INSERT INTO Utilizador (idUtilizador, nome, email, password) VALUES
-    ('123e4567-e89b-12d3-a456-426655440001', 'João Silva', 'joao@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440002', 'Maria Santos', 'maria@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440003', 'António Pereira', 'antonio@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440004', 'Isabel Alves', 'isabel@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440005', 'Francisco Rodrigues', 'francisco@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440006', 'Ana Carvalho', 'ana@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440007', 'Manuel Gomes', 'manuel@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440008', 'Sofia Fernandes', 'sofia@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440009', 'Luís Sousa', 'luis@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440010', 'Margarida Martins', 'margarida@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440011', 'Carlos Costa', 'carlos@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440012', 'Helena Oliveira', 'helena@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440013', 'Rui Torres', 'rui@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440014', 'Beatriz Pereira', 'beatriz@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440015', 'José Ferreira', 'jose@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440016', 'Lúcia Santos', 'lucia@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440017', 'Pedro Lopes', 'pedro@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440018', 'Teresa Rodrigues', 'teresa@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440019', 'Paulo Silva', 'paulo@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
-    ('123e4567-e89b-12d3-a456-426655440020', 'Catarina Santos', 'catarina@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2');
+    ('1', 'João Silva', 'joao@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('2', 'Maria Santos', 'maria@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('3', 'António Pereira', 'antonio@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('4', 'Isabel Alves', 'isabel@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('5', 'Francisco Rodrigues', 'francisco@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('6', 'Ana Carvalho', 'ana@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('7', 'Manuel Gomes', 'manuel@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('8', 'Sofia Fernandes', 'sofia@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('9', 'Luís Sousa', 'luis@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('10', 'Margarida Martins', 'margarida@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('11', 'Carlos Costa', 'carlos@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('12', 'Helena Oliveira', 'helena@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('13', 'Rui Torres', 'rui@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('14', 'Beatriz Pereira', 'beatriz@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('15', 'José Ferreira', 'jose@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('16', 'Lúcia Santos', 'lucia@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('17', 'Pedro Lopes', 'pedro@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('18', 'Teresa Rodrigues', 'teresa@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('19', 'Paulo Silva', 'paulo@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
+    ('20', 'Catarina Santos', 'catarina@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2');
 
 INSERT INTO Administrador (idUtilizador) VALUES
-    ('123e4567-e89b-12d3-a456-426655440001'),
-    ('123e4567-e89b-12d3-a456-426655440002');
+    ('1'),
+    ('2');
 
 INSERT INTO Cliente (idUtilizador) VALUES
-    ('123e4567-e89b-12d3-a456-426655440003'),
-    ('123e4567-e89b-12d3-a456-426655440004'),
-    ('123e4567-e89b-12d3-a456-426655440005'),
-    ('123e4567-e89b-12d3-a456-426655440006'),
-    ('123e4567-e89b-12d3-a456-426655440007'),
-    ('123e4567-e89b-12d3-a456-426655440008'),
-    ('123e4567-e89b-12d3-a456-426655440009'),
-    ('123e4567-e89b-12d3-a456-426655440010'),
-    ('123e4567-e89b-12d3-a456-426655440011'),
-    ('123e4567-e89b-12d3-a456-426655440012'),
-    ('123e4567-e89b-12d3-a456-426655440013'),
-    ('123e4567-e89b-12d3-a456-426655440014'),
-    ('123e4567-e89b-12d3-a456-426655440015'),
-    ('123e4567-e89b-12d3-a456-426655440016'),
-    ('123e4567-e89b-12d3-a456-426655440017'),
-    ('123e4567-e89b-12d3-a456-426655440018'),
-    ('123e4567-e89b-12d3-a456-426655440019'),
-    ('123e4567-e89b-12d3-a456-426655440020');
+    ('3'),
+    ('4'),
+    ('5'),
+    ('6'),
+    ('7'),
+    ('8'),
+    ('9'),
+    ('10'),
+    ('11'),
+    ('12'),
+    ('13'),
+    ('14'),
+    ('15'),
+    ('16'),
+    ('17'),
+    ('18'),
+    ('19'),
+    ('20');
 
 INSERT INTO Organizacao (idOrganizacao, nome, descricao) VALUES
-    ('123e4567-e89b-12d3-a456-426655440021', 'Xutos & Pontapés', 'Os Xutos & Pontapés são uma das bandas de rock mais icónicas de Portugal, conhecidos pelos seus hits e energia nos palcos.'),
-    ('123e4567-e89b-12d3-a456-426655440022', 'Amor Electro', 'Amor Electro é uma banda portuguesa de música pop e eletrónica, com uma sonoridade única e envolvente.'),
-    ('123e4567-e89b-12d3-a456-426655440023', 'Mão Morta', 'Mão Morta é uma banda de rock alternativo e experimental, famosa pela sua abordagem artística ousada.'),
-    ('123e4567-e89b-12d3-a456-426655440024', 'Os Azeitonas', 'Os Azeitonas são conhecidos pelas suas letras inteligentes e músicas contagiantes, abrangendo vários géneros musicais.'),
-    ('123e4567-e89b-12d3-a456-426655440025', 'Ornatos Violeta', 'Ornatos Violeta foi uma das bandas mais influentes da cena alternativa portuguesa, conhecida pela sua poesia e estilo único.'),
-    ('123e4567-e89b-12d3-a456-426655440026', 'Moonspell', 'Moonspell é uma banda de metal gótico que ganhou reconhecimento internacional pelo seu som sombrio e lírico.'),
-    ('123e4567-e89b-12d3-a456-426655440027', 'Os Quatro e Meia', 'Os Quatro e Meia são conhecidos pelo seu folk e pop rock com letras cativantes e emotivas.'),
-    ('123e4567-e89b-12d3-a456-426655440028', 'Capitão Fausto', 'Capitão Fausto é uma banda de rock alternativo e psicadélico com uma abordagem inovadora à música.');
+    ('1', 'Xutos & Pontapés', 'Os Xutos & Pontapés são uma das bandas de rock mais icónicas de Portugal, conhecidos pelos seus hits e energia nos palcos.'),
+    ('2', 'Amor Electro', 'Amor Electro é uma banda portuguesa de música pop e eletrónica, com uma sonoridade única e envolvente.'),
+    ('3', 'Mão Morta', 'Mão Morta é uma banda de rock alternativo e experimental, famosa pela sua abordagem artística ousada.'),
+    ('4', 'Os Azeitonas', 'Os Azeitonas são conhecidos pelas suas letras inteligentes e músicas contagiantes, abrangendo vários géneros musicais.'),
+    ('5', 'Ornatos Violeta', 'Ornatos Violeta foi uma das bandas mais influentes da cena alternativa portuguesa, conhecida pela sua poesia e estilo único.'),
+    ('6', 'Moonspell', 'Moonspell é uma banda de metal gótico que ganhou reconhecimento internacional pelo seu som sombrio e lírico.'),
+    ('7', 'Os Quatro e Meia', 'Os Quatro e Meia são conhecidos pelo seu folk e pop rock com letras cativantes e emotivas.'),
+    ('8', 'Capitão Fausto', 'Capitão Fausto é uma banda de rock alternativo e psicadélico com uma abordagem inovadora à música.');
 
 INSERT INTO Evento (idEvento, nome, descricao, localizacao, dataInicio, dataFim, idOrganizacao) VALUES
-    ('123e4567-e89b-12d3-a456-426655440029', 'Concerto dos Xutos & Pontapés', 'Concerto de celebração dos 40 anos dos Xutos & Pontapés.', 'Coliseu do Porto', '2019-12-07 21:00:00', '2019-12-07 23:00:00', '123e4567-e89b-12d3-a456-426655440021'),
-    ('123e4567-e89b-12d3-a456-426655440030', 'Aniversário dos Amor Electro', 'Concerto de celebração dos 10 anos dos Amor Electro.', 'Pavilhão Atlântico, Lisboa', '2019-12-14 21:00:00', '2019-12-14 23:00:00', '123e4567-e89b-12d3-a456-426655440022'),
-    ('123e4567-e89b-12d3-a456-426655440031', '30 Anos de Mão Morta', 'Concerto de celebração dos 30 anos dos Mão Morta.', 'Teatro Tivoli, Lisboa', '2019-12-21 21:00:00', '2019-12-21 23:00:00', '123e4567-e89b-12d3-a456-426655440023'),
-    ('123e4567-e89b-12d3-a456-426655440032', '20 Anos dos Os Azeitonas', 'Concerto de celebração dos 20 anos dos Os Azeitonas.', 'Altice Arena, Lisboa', '2019-12-28 21:00:00', '2019-12-28 23:00:00', '123e4567-e89b-12d3-a456-426655440024'),
-    ('123e4567-e89b-12d3-a456-426655440033', '20 Anos de Ornatos Violeta', 'Concerto de celebração dos 20 anos dos Ornatos Violeta.', 'Teatro São Luiz, Lisboa', '2020-01-04 21:00:00', '2020-01-04 23:00:00', '123e4567-e89b-12d3-a456-426655440025'),
-    ('123e4567-e89b-12d3-a456-426655440034', '25 Anos dos Moonspell', 'Concerto de celebração dos 25 anos dos Moonspell.', 'Hard Club, Porto', '2020-01-11 21:00:00', '2020-01-11 23:00:00', '123e4567-e89b-12d3-a456-426655440026'),
-    ('123e4567-e89b-12d3-a456-426655440035', '5 Anos dos Os Quatro e Meia', 'Concerto de celebração dos 5 anos dos Os Quatro e Meia.', 'Teatro Aveirense, Aveiro', '2020-01-18 21:00:00', '2020-01-18 23:00:00', '123e4567-e89b-12d3-a456-426655440027'),
-    ('123e4567-e89b-12d3-a456-426655440036', '10 Anos dos Capitão Fausto', 'Concerto de celebração dos 10 anos dos Capitão Fausto.', 'Centro Cultural de Belém, Lisboa', '2020-01-25 21:00:00', '2020-01-25 23:00:00', '123e4567-e89b-12d3-a456-426655440028');
+    ('1', 'Concerto dos Xutos & Pontapés', 'Concerto de celebração dos 40 anos dos Xutos & Pontapés.', 'Coliseu do Porto', '2024-12-14 21:00:00', '2024-12-14 23:00:00', '1'),
+    ('2', 'Aniversário dos Amor Electro', 'Concerto de celebração dos 10 anos dos Amor Electro.', 'Pavilhão Atlântico, Lisboa', '2024-12-14 21:00:00', '2024-12-14 23:00:00', '2'),
+    ('3', '30 Anos de Mão Morta', 'Concerto de celebração dos 30 anos dos Mão Morta.', 'Teatro Tivoli, Lisboa', '2024-12-21 21:00:00', '2024-12-21 23:00:00', '3'),
+    ('4', '20 Anos dos Os Azeitonas', 'Concerto de celebração dos 20 anos dos Os Azeitonas.', 'Altice Arena, Lisboa', '2024-12-28 21:00:00', '2024-12-28 23:00:00', '4'),
+    ('5', '20 Anos de Ornatos Violeta', 'Concerto de celebração dos 20 anos dos Ornatos Violeta.', 'Teatro São Luiz, Lisboa', '2024-01-04 21:00:00', '2024-01-04 23:00:00', '5'),
+    ('6', '25 Anos dos Moonspell', 'Concerto de celebração dos 25 anos dos Moonspell.', 'Hard Club, Porto', '2024-01-11 21:00:00', '2024-01-11 23:00:00', '6'),
+    ('7', '5 Anos dos Os Quatro e Meia', 'Concerto de celebração dos 5 anos dos Os Quatro e Meia.', 'Teatro Aveirense, Aveiro', '2024-01-18 21:00:00', '2024-01-18 23:00:00', '7'),
+    ('8', '10 Anos dos Capitão Fausto', 'Concerto de celebração dos 10 anos dos Capitão Fausto.', 'Centro Cultural de Belém, Lisboa', '2024-01-25 21:00:00', '2024-01-25 23:00:00', '8');
 
 INSERT INTO Organizador (idUtilizador, idOrganizacao) VALUES
-    ('123e4567-e89b-12d3-a456-426655440003', '123e4567-e89b-12d3-a456-426655440021'),
-    ('123e4567-e89b-12d3-a456-426655440004', '123e4567-e89b-12d3-a456-426655440022'),
-    ('123e4567-e89b-12d3-a456-426655440005', '123e4567-e89b-12d3-a456-426655440023'),
-    ('123e4567-e89b-12d3-a456-426655440006', '123e4567-e89b-12d3-a456-426655440024'),
-    ('123e4567-e89b-12d3-a456-426655440007', '123e4567-e89b-12d3-a456-426655440025'),
-    ('123e4567-e89b-12d3-a456-426655440008', '123e4567-e89b-12d3-a456-426655440026'),
-    ('123e4567-e89b-12d3-a456-426655440009', '123e4567-e89b-12d3-a456-426655440027'),
-    ('123e4567-e89b-12d3-a456-426655440010', '123e4567-e89b-12d3-a456-426655440028');
+    ('3', '1'),
+    ('4', '2'),
+    ('5', '3'),
+    ('6', '4'),
+    ('7', '5'),
+    ('8', '6'),
+    ('9', '7'),
+    ('10', '8');
 
 INSERT INTO Participante (idUtilizador, idEvento) VALUES
-    ('123e4567-e89b-12d3-a456-426655440004', '123e4567-e89b-12d3-a456-426655440029'),
-    ('123e4567-e89b-12d3-a456-426655440005', '123e4567-e89b-12d3-a456-426655440030'),
-    ('123e4567-e89b-12d3-a456-426655440006', '123e4567-e89b-12d3-a456-426655440031'),
-    ('123e4567-e89b-12d3-a456-426655440007', '123e4567-e89b-12d3-a456-426655440032'),
-    ('123e4567-e89b-12d3-a456-426655440008', '123e4567-e89b-12d3-a456-426655440033'),
-    ('123e4567-e89b-12d3-a456-426655440009', '123e4567-e89b-12d3-a456-426655440034'),
-    ('123e4567-e89b-12d3-a456-426655440010', '123e4567-e89b-12d3-a456-426655440035'),
-    ('123e4567-e89b-12d3-a456-426655440011', '123e4567-e89b-12d3-a456-426655440036'),
-    ('123e4567-e89b-12d3-a456-426655440012', '123e4567-e89b-12d3-a456-426655440029'),
-    ('123e4567-e89b-12d3-a456-426655440013', '123e4567-e89b-12d3-a456-426655440030'),
-    ('123e4567-e89b-12d3-a456-426655440014', '123e4567-e89b-12d3-a456-426655440031'),
-    ('123e4567-e89b-12d3-a456-426655440015', '123e4567-e89b-12d3-a456-426655440032'),
-    ('123e4567-e89b-12d3-a456-426655440016', '123e4567-e89b-12d3-a456-426655440033'),
-    ('123e4567-e89b-12d3-a456-426655440017', '123e4567-e89b-12d3-a456-426655440034'),
-    ('123e4567-e89b-12d3-a456-426655440018', '123e4567-e89b-12d3-a456-426655440035'),
-    ('123e4567-e89b-12d3-a456-426655440019', '123e4567-e89b-12d3-a456-426655440036'),
-    ('123e4567-e89b-12d3-a456-426655440020', '123e4567-e89b-12d3-a456-426655440029');
+    ('4', '1'),
+    ('5', '2'),
+    ('6', '3'),
+    ('7', '4'),
+    ('8', '5'),
+    ('9', '6'),
+    ('10', '7'),
+    ('11', '8'),
+    ('12', '1'),
+    ('13', '2'),
+    ('14', '3'),
+    ('15', '4'),
+    ('16', '5'),
+    ('17', '6'),
+    ('18', '7'),
+    ('19', '8'),
+    ('20', '1');
 
 
 INSERT INTO Tag (idTag, nome) VALUES
-    ('123e4567-e89b-12d3-a456-426655440037', 'Rock'),
-    ('123e4567-e89b-12d3-a456-426655440038', 'Pop'),
-    ('123e4567-e89b-12d3-a456-426655440039', 'Metal'),
-    ('123e4567-e89b-12d3-a456-426655440040', 'Alternativo'),
-    ('123e4567-e89b-12d3-a456-426655440041', 'Folk');
+    ('1', 'Rock'),
+    ('2', 'Pop'),
+    ('3', 'Metal'),
+    ('4', 'Alternativo'),
+    ('5', 'Folk');
 
 INSERT INTO TagEvento (idTag, idEvento) VALUES
-    ('123e4567-e89b-12d3-a456-426655440037', '123e4567-e89b-12d3-a456-426655440029'),
-    ('123e4567-e89b-12d3-a456-426655440038', '123e4567-e89b-12d3-a456-426655440030'),
-    ('123e4567-e89b-12d3-a456-426655440039', '123e4567-e89b-12d3-a456-426655440031'),
-    ('123e4567-e89b-12d3-a456-426655440040', '123e4567-e89b-12d3-a456-426655440032'),
-    ('123e4567-e89b-12d3-a456-426655440041', '123e4567-e89b-12d3-a456-426655440033'),
-    ('123e4567-e89b-12d3-a456-426655440037', '123e4567-e89b-12d3-a456-426655440034'),
-    ('123e4567-e89b-12d3-a456-426655440038', '123e4567-e89b-12d3-a456-426655440035'),
-    ('123e4567-e89b-12d3-a456-426655440039', '123e4567-e89b-12d3-a456-426655440036');
+    ('1', '1'),
+    ('2', '2'),
+    ('3', '3'),
+    ('4', '4'),
+    ('5', '5'),
+    ('1', '6'),
+    ('2', '7'),
+    ('3', '8');
 
 INSERT INTO Comentario (idComentario, idAutor, texto, idEvento) VALUES
-    ('123e4567-e89b-12d3-a456-426655440042', '123e4567-e89b-12d3-a456-426655440004', 'Vai ser um concerto incrível!', '123e4567-e89b-12d3-a456-426655440029'),
-    ('123e4567-e89b-12d3-a456-426655440043', '123e4567-e89b-12d3-a456-426655440005', 'Mal posso esperar!', '123e4567-e89b-12d3-a456-426655440030'),
-    ('123e4567-e89b-12d3-a456-426655440044', '123e4567-e89b-12d3-a456-426655440006', 'Certamente será um concerto fabuloso!', '123e4567-e89b-12d3-a456-426655440031'),
-    ('123e4567-e89b-12d3-a456-426655440045', '123e4567-e89b-12d3-a456-426655440007', 'Só quero que chegue este dia!', '123e4567-e89b-12d3-a456-426655440032'),
-    ('123e4567-e89b-12d3-a456-426655440046', '123e4567-e89b-12d3-a456-426655440008', 'Vai ser um concerto incrível!', '123e4567-e89b-12d3-a456-426655440033'),
-    ('123e4567-e89b-12d3-a456-426655440047', '123e4567-e89b-12d3-a456-426655440009', 'Mal posso esperar!', '123e4567-e89b-12d3-a456-426655440034'),
-    ('123e4567-e89b-12d3-a456-426655440048', '123e4567-e89b-12d3-a456-426655440010', 'Certamente será um concerto fabuloso!', '123e4567-e89b-12d3-a456-426655440035'),
-    ('123e4567-e89b-12d3-a456-426655440049', '123e4567-e89b-12d3-a456-426655440011', 'Só quero que chegue este dia!', '123e4567-e89b-12d3-a456-426655440036');
+    ('1', '4', 'Vai ser um concerto incrível!', '1'),
+    ('2', '5', 'Mal posso esperar!', '2'),
+    ('3', '6', 'Certamente será um concerto fabuloso!', '3'),
+    ('4', '7', 'Só quero que chegue este dia!', '4'),
+    ('5', '8', 'Vai ser um concerto incrível!', '5'),
+    ('6', '9', 'Mal posso esperar!', '6'),
+    ('7', '10', 'Certamente será um concerto fabuloso!', '7'),
+    ('8', '11', 'Só quero que chegue este dia!', '8');
 
 INSERT INTO VotoComentario (idComentario, idUtilizador, isUp) VALUES
-    ('123e4567-e89b-12d3-a456-426655440042', '123e4567-e89b-12d3-a456-426655440012', TRUE),
-    ('123e4567-e89b-12d3-a456-426655440043', '123e4567-e89b-12d3-a456-426655440013', TRUE),
-    ('123e4567-e89b-12d3-a456-426655440044', '123e4567-e89b-12d3-a456-426655440014', TRUE),
-    ('123e4567-e89b-12d3-a456-426655440045', '123e4567-e89b-12d3-a456-426655440015', TRUE),
-    ('123e4567-e89b-12d3-a456-426655440046', '123e4567-e89b-12d3-a456-426655440016', TRUE),
-    ('123e4567-e89b-12d3-a456-426655440047', '123e4567-e89b-12d3-a456-426655440017', TRUE),
-    ('123e4567-e89b-12d3-a456-426655440048', '123e4567-e89b-12d3-a456-426655440018', TRUE),
-    ('123e4567-e89b-12d3-a456-426655440049', '123e4567-e89b-12d3-a456-426655440019', TRUE),
-    ('123e4567-e89b-12d3-a456-426655440042', '123e4567-e89b-12d3-a456-426655440020', FALSE);
+    ('1', '12', TRUE),
+    ('2', '13', TRUE),
+    ('3', '14', TRUE),
+    ('4', '15', TRUE),
+    ('5', '16', TRUE),
+    ('6', '17', TRUE),
+    ('7', '18', TRUE),
+    ('8', '19', TRUE),
+    ('1', '20', FALSE);
 
 INSERT INTO MotivoDenunciaEvento (idMotivo, texto) VALUES
-    ('123e4567-e89b-12d3-a456-426655440050', 'Suspeita de fraude ou golpe'),
-    ('123e4567-e89b-12d3-a456-426655440051', 'Conteúdo inadequado ou ofensivo'),
-    ('123e4567-e89b-12d3-a456-426655440052', 'Informações incorretas sobre o evento');
+    ('1', 'Suspeita de fraude ou golpe'),
+    ('2', 'Conteúdo inadequado ou ofensivo'),
+    ('3', 'Informações incorretas sobre o evento');
 
 INSERT INTO MotivoDenunciaComentario (idMotivo, texto) VALUES
-    ('123e4567-e89b-12d3-a456-426655440053', 'Conteúdo inadequado ou não apropriado'),
-    ('123e4567-e89b-12d3-a456-426655440054', 'Ameaças ou incitação à violência'),
-    ('123e4567-e89b-12d3-a456-426655440055', 'Informações incorretas ou enganosas'),
-    ('123e4567-e89b-12d3-a456-426655440056', 'Assédio ou bullying'),
-    ('123e4567-e89b-12d3-a456-426655440057', 'Conteúdo comercial ou spam');
+    ('1', 'Conteúdo inadequado ou não apropriado'),
+    ('2', 'Ameaças ou incitação à violência'),
+    ('3', 'Informações incorretas ou enganosas'),
+    ('4', 'Assédio ou bullying'),
+    ('5', 'Conteúdo comercial ou spam');
 
-INSERT INTO DenunciaEvento (idEvento, idMotivoDenunciaEvento) VALUES
-    ('123e4567-e89b-12d3-a456-426655440029', '123e4567-e89b-12d3-a456-426655440050'),
-    ('123e4567-e89b-12d3-a456-426655440030', '123e4567-e89b-12d3-a456-426655440051'),
-    ('123e4567-e89b-12d3-a456-426655440031', '123e4567-e89b-12d3-a456-426655440052');
+INSERT INTO DenunciaEvento (idDenunciaEvento, idEvento, idMotivo) VALUES
+    ('1', '1', '1'),
+    ('2', '2', '2'),
+    ('3', '3', '3');
 
-INSERT INTO DenunciaComentario (idComentario, idMotivoDenunciaComentario) VALUES
-    ('123e4567-e89b-12d3-a456-426655440042', '123e4567-e89b-12d3-a456-426655440053'),
-    ('123e4567-e89b-12d3-a456-426655440043', '123e4567-e89b-12d3-a456-426655440054'),
-    ('123e4567-e89b-12d3-a456-426655440046', '123e4567-e89b-12d3-a456-426655440057');
+INSERT INTO DenunciaComentario (idDenunciaComentario, idComentario, idMotivo) VALUES
+    ('1', '1', '1'),
+    ('2', '2', '2'),
+    ('3', '5', '5');
