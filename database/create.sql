@@ -185,4 +185,49 @@ CREATE TABLE NotfRespostaRegOrg (
     idOrganizacao UUID NOT NULL,
     FOREIGN KEY (idRecetor, idOrganizacao) REFERENCES Organizador (idUtilizador, idOrganizacao) ON DELETE CASCADE
 );
+-- Performance Indexes
+-- IDX01 
+CREATE INDEX notf_conf_evento_utilizador ON NotfConvEvento USING hash (idUtilizador);
+
+--IDX02
+CREATE INDEX notf_conf_evento_data ON NotfConvEvento USING btree (data);
+
+--IDX03
+CREATE INDEX evento_data_inicio ON Evento USING btree (dataInicio);
+CLUSTER Evento USING evento_data_inicio;
+
+-- Full-text Search Indexes
+--IDX11
+ALTER TABLE Evento
+ADD COLUMN tsvectors TSVECTOR;
+
+CREATE FUNCTION evento_search_update() RETURN TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors = (
+            setweight(to_tsvector('portuguese', NEW.nome), 'A') ||
+            setweight(to_tsvector('portuguese', NEW.descricao), 'B')
+        );
+    END IF;
+    IF TG_OP = 'UPDATE' THEN
+        IF (NEW.nome <> OLD.nome OR NEW.descricao <> OLD.descricao) THEN
+            NEW.tsvectors = (
+                setweight(to_tsvector('portuguese', NEW.nome), 'A') ||
+                setweight(to_tsvector('portuguese', NEW.descricao), 'B')
+            );
+        END IF;
+    END IF;
+    RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER evento_search_update
+    BEFORE INSERT OR UPDATE ON Evento
+    FOR EACH ROW
+    EXECUTE PROCEDURE evento_search_update();
+
+CREATE INDEX search_idx ON Evento USING GIST (tsvectors);
+
+
+
 
