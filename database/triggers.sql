@@ -1,5 +1,5 @@
 -- SCHEMA: lbaw2384
-SET search_path TO lbaw2384;
+create schema if not exists lbaw2384;
 
 -- TRIGGERS
 
