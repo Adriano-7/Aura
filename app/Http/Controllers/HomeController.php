@@ -31,27 +31,18 @@ class HomeController extends Controller
      */
     public function list()
     {
-        // Check if the user is logged in.
-        if (!Auth::check()) {
-            // Not logged in, redirect to login.
-            return redirect('/login');
 
-        } else {
-            // The user is logged in.
+        // Get cards for user ordered by id.
+        
 
-            // Get cards for user ordered by id.
-            $cards = Auth::user()->cards()->orderBy('id')->get();
+        // Check if the current user can list the cards.
 
-            // Check if the current user can list the cards.
-            $this->authorize('list', Card::class);
 
-            // The current user is authorized to list cards.
+        // The current user is authorized to list cards.
 
-            // Use the pages.cards template to display all cards.
-            return view('pages.home', [
-                'cards' => $cards
-            ]);
-        }
+        // Use the pages.cards template to display all cards.
+        return view('pages.home');
+    
     }
 
     /**
