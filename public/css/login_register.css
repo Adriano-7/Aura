@@ -71,6 +71,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active  {
     -webkit-box-shadow: 0 0 0 30px #000000 inset !important;
+    -webkit-text-fill-color: #808080 !important;
 }
 
 form{
