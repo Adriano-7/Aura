@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\CardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 
 use App\Http\Controllers\Auth\LoginController;
@@ -20,26 +20,16 @@ use App\Http\Controllers\Auth\RegisterController;
 */
 
 // Home
-Route::redirect('/', '/login');
+Route::redirect('/', '/home');
 
 // Cards
-Route::controller(CardController::class)->group(function () {
-    Route::get('/cards', 'list')->name('cards');
-    Route::get('/cards/{id}', 'show');
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/home', 'list')->name('home');
+    Route::get('/home/{id}', 'show');
 });
 
 
 // API
-Route::controller(CardController::class)->group(function () {
-    Route::put('/api/cards', 'create');
-    Route::delete('/api/cards/{card_id}', 'delete');
-});
-
-Route::controller(ItemController::class)->group(function () {
-    Route::put('/api/cards/{card_id}', 'create');
-    Route::post('/api/item/{id}', 'update');
-    Route::delete('/api/item/{id}', 'delete');
-});
 
 
 // Authentication
