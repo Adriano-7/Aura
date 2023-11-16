@@ -1,223 +1,223 @@
-create schema if not exists lbaw2384;
+CREATE SCHEMA IF NOT EXISTS lbaw2384;
 SET search_path TO lbaw2384;
 
-DROP TABLE IF EXISTS Utilizador CASCADE;
-CREATE TABLE Utilizador (
-    idUtilizador SERIAL PRIMARY KEY,
-    nome TEXT  NOT NULL,
+DROP TABLE IF EXISTS users CASCADE;
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    foto TEXT
+    photo TEXT
 );
 
-DROP TABLE IF EXISTS Cliente CASCADE;
-CREATE TABLE Cliente (
-    idUtilizador SERIAL PRIMARY KEY REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
+DROP TABLE IF EXISTS clients CASCADE;
+CREATE TABLE clients (
+    id SERIAL PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS Administrador CASCADE;
-CREATE TABLE Administrador (
-    idUtilizador SERIAL PRIMARY KEY REFERENCES Utilizador (idUtilizador) ON DELETE CASCADE
+DROP TABLE IF EXISTS administrators CASCADE;
+CREATE TABLE administrators (
+    id SERIAL PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS Organizacao CASCADE;
-CREATE TABLE Organizacao (
-    idOrganizacao SERIAL PRIMARY KEY,
-    nome TEXT NOT NULL,
-    descricao TEXT,
-    foto TEXT,
-    aprovada BOOLEAN NOT NULL DEFAULT FALSE
+DROP TABLE IF EXISTS organizations CASCADE;
+CREATE TABLE organizations (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    photo TEXT,
+    approved BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-DROP TABLE IF EXISTS Evento CASCADE;
-CREATE TABLE Evento (
-    idEvento SERIAL PRIMARY KEY,
-    nome TEXT NOT NULL,
-    descricao TEXT,
-    foto TEXT,
-    localizacao TEXT,
-    dataInicio TIMESTAMP NOT NULL,
-    dataFim TIMESTAMP,
-    isPublic BOOLEAN NOT NULL DEFAULT FALSE,
-    idOrganizacao SERIAL NOT NULL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE,
+DROP TABLE IF EXISTS events CASCADE;
+CREATE TABLE events (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    photo TEXT,
+    location TEXT,
+    start_date TIMESTAMP NOT NULL,
+    end_date TIMESTAMP,
+    is_public BOOLEAN NOT NULL DEFAULT FALSE,
+    organization_id SERIAL NOT NULL REFERENCES organizations (id) ON DELETE CASCADE,
 
-    CONSTRAINT data_fim_check CHECK (dataFim IS NULL OR dataInicio < dataFim),
-    CONSTRAINT data_inicio_check CHECK (dataInicio > current_timestamp)
+    CONSTRAINT end_date_check CHECK (end_date IS NULL OR start_date < end_date),
+    CONSTRAINT start_date_check CHECK (start_date > current_timestamp)
 );
 
-DROP TABLE IF EXISTS Participante CASCADE;
-CREATE TABLE Participante (
-    idUtilizador SERIAL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
-    idEvento SERIAL REFERENCES Evento (idEvento) ON DELETE CASCADE,
-    PRIMARY KEY (idUtilizador, idEvento)
+DROP TABLE IF EXISTS participants CASCADE;
+CREATE TABLE participants (
+    user_id SERIAL REFERENCES clients (id) ON DELETE CASCADE,
+    event_id SERIAL REFERENCES events (id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, event_id)
 );
 
-DROP TABLE IF EXISTS Organizador CASCADE;
-CREATE TABLE Organizador (
-    idUtilizador SERIAL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
-    idOrganizacao SERIAL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE,
-    PRIMARY KEY (idUtilizador, idOrganizacao)
+DROP TABLE IF EXISTS organizers CASCADE;
+CREATE TABLE organizers (
+    user_id SERIAL REFERENCES clients (id) ON DELETE CASCADE,
+    organization_id SERIAL REFERENCES organizations (id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, organization_id)
 );
 
-DROP TABLE IF EXISTS Tag CASCADE;
-CREATE TABLE Tag (
-    idTag SERIAL PRIMARY KEY,
-    nome TEXT NOT NULL UNIQUE
+DROP TABLE IF EXISTS tags CASCADE;
+CREATE TABLE tags (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS TagEvento CASCADE;
-CREATE TABLE TagEvento (
-    idTag SERIAL REFERENCES Tag (idTag) ON DELETE CASCADE,
-    idEvento SERIAL REFERENCES Evento (idEvento) ON DELETE CASCADE,
-    PRIMARY KEY (idTag, idEvento)
+DROP TABLE IF EXISTS tag_event CASCADE;
+CREATE TABLE tag_event (
+    tag_id SERIAL REFERENCES tags (id) ON DELETE CASCADE,
+    event_id SERIAL REFERENCES events (id) ON DELETE CASCADE,
+    PRIMARY KEY (tag_id, event_id)
 );
 
-DROP TABLE IF EXISTS Comentario CASCADE;
-CREATE TABLE Comentario (
-    idComentario SERIAL PRIMARY KEY,
-    idAutor SERIAL NOT NULL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
-    texto TEXT NOT NULL,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    balancoVotos INT NOT NULL DEFAULT 0,
-    idEvento SERIAL NOT NULL REFERENCES Evento (idEvento)
+DROP TABLE IF EXISTS comments CASCADE;
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    author_id SERIAL NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
+    text TEXT NOT NULL,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    vote_balance INT NOT NULL DEFAULT 0,
+    event_id SERIAL NOT NULL REFERENCES events (id)
 );
 
-DROP TABLE IF EXISTS VotoComentario CASCADE;
-CREATE TABLE VotoComentario (
-    idComentario SERIAL REFERENCES Comentario (idComentario) ON DELETE CASCADE,
-    idUtilizador SERIAL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
-    isUp BOOLEAN NOT NULL,
-    PRIMARY KEY (idComentario, idUtilizador)
+DROP TABLE IF EXISTS vote_comments CASCADE;
+CREATE TABLE vote_comments (
+    comment_id SERIAL REFERENCES comments (id) ON DELETE CASCADE,
+    user_id SERIAL REFERENCES clients (id) ON DELETE CASCADE,
+    is_up BOOLEAN NOT NULL,
+    PRIMARY KEY (comment_id, user_id)
 );
 
-DROP TABLE IF EXISTS Ficheiro CASCADE;
-CREATE TABLE Ficheiro (
-    idFicheiro SERIAL PRIMARY KEY,
-    idComentario SERIAL NOT NULL REFERENCES Comentario (idComentario) ON DELETE CASCADE,
-    caminho TEXT NOT NULL,
-    nome TEXT NOT NULL,
-    tipo TEXT NOT NULL
+DROP TABLE IF EXISTS files CASCADE;
+CREATE TABLE files (
+    id SERIAL PRIMARY KEY,
+    comment_id SERIAL NOT NULL REFERENCES comments (id) ON DELETE CASCADE,
+    path TEXT NOT NULL,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL
 );
 
-DROP TABLE IF EXISTS MotivoDenunciaEvento CASCADE;
-CREATE TABLE MotivoDenunciaEvento (
-    idMotivo SERIAL PRIMARY KEY,
-    texto TEXT NOT NULL UNIQUE
+DROP TABLE IF EXISTS report_reasons_event CASCADE;
+CREATE TABLE report_reasons_event (
+    id SERIAL PRIMARY KEY,
+    text TEXT NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS DenunciaEvento CASCADE;
-CREATE TABLE DenunciaEvento (
-    idDenunciaEvento SERIAL PRIMARY KEY,
-    idEvento SERIAL NOT NULL REFERENCES Evento (idEvento) ON DELETE CASCADE,
-    resolvido BOOLEAN NOT NULL DEFAULT FALSE,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    idMotivo SERIAL NOT NULL REFERENCES MotivoDenunciaEvento (idMotivo) ON DELETE CASCADE
+DROP TABLE IF EXISTS reports_event CASCADE;
+CREATE TABLE reports_event (
+    id SERIAL PRIMARY KEY,
+    event_id SERIAL NOT NULL REFERENCES events (id) ON DELETE CASCADE,
+    resolved BOOLEAN NOT NULL DEFAULT FALSE,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    reason_id SERIAL NOT NULL REFERENCES report_reasons_event (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS MotivoDenunciaComentario CASCADE;
-CREATE TABLE MotivoDenunciaComentario (
-    idMotivo SERIAL PRIMARY KEY,
-    texto TEXT NOT NULL UNIQUE
+DROP TABLE IF EXISTS report_reasons_comment CASCADE;
+CREATE TABLE report_reasons_comment (
+    id SERIAL PRIMARY KEY,
+    text TEXT NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS DenunciaComentario CASCADE;
-CREATE TABLE DenunciaComentario (
-    idDenunciaComentario SERIAL,
-    idComentario SERIAL NOT NULL REFERENCES Comentario (idComentario) ON DELETE CASCADE,
-    resolvido BOOLEAN NOT NULL DEFAULT FALSE,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    idMotivo SERIAL NOT NULL REFERENCES MotivoDenunciaComentario (idMotivo) ON DELETE CASCADE
+DROP TABLE IF EXISTS reports_comment CASCADE;
+CREATE TABLE reports_comment (
+    id SERIAL PRIMARY KEY,
+    comment_id SERIAL NOT NULL REFERENCES comments (id) ON DELETE CASCADE,
+    resolved BOOLEAN NOT NULL DEFAULT FALSE,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    reason_id SERIAL NOT NULL REFERENCES report_reasons_comment (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS NotfConvEvento CASCADE;
-CREATE TABLE NotfConvEvento (
-    idNotificacao SERIAL PRIMARY KEY,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    visto BOOLEAN NOT NULL DEFAULT FALSE,
-    idRecetor SERIAL NOT NULL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
+DROP TABLE IF EXISTS notf_inv_event CASCADE;
+CREATE TABLE notf_inv_event (
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    seen BOOLEAN NOT NULL DEFAULT FALSE,
+    receiver_id SERIAL NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
 
-    idEmissor SERIAL NOT NULL,
-    idEvento SERIAL NOT NULL,
-    FOREIGN KEY (idEmissor, idEvento) REFERENCES Participante (idUtilizador, idEvento) ON DELETE CASCADE
+    emitter_id SERIAL NOT NULL,
+    event_id SERIAL NOT NULL,
+    FOREIGN KEY (emitter_id, event_id) REFERENCES participants (user_id, event_id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS NotfConvOrganizacao CASCADE;
-CREATE TABLE NotfConvOrganizacao (
-    idNotificacao SERIAL PRIMARY KEY,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    visto BOOLEAN NOT NULL DEFAULT FALSE,
+DROP TABLE IF EXISTS notf_inv_org CASCADE;
+CREATE TABLE notf_inv_org (
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    seen BOOLEAN NOT NULL DEFAULT FALSE,
 
-    idRecetor SERIAL NOT NULL REFERENCES Cliente (idUtilizador) ON DELETE CASCADE,
-    idOrganizacao SERIAL NOT NULL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE
+    receiver_id SERIAL NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
+    organization_id SERIAL NOT NULL REFERENCES organizations (id) ON DELETE CASCADE
 );
 
-DROP TYPE IF EXISTS CampoEvento CASCADE;
-CREATE TYPE CampoEvento AS ENUM ('nome', 'descricao', 'localizacao', 'data_fim', 'data_inicio');
+DROP TYPE IF EXISTS event_field CASCADE;
+CREATE TYPE event_field AS ENUM ('name', 'description', 'location', 'end_date', 'start_date');
 
-DROP TABLE IF EXISTS NotfEdicaoEvento CASCADE;
-CREATE TABLE NotfEdicaoEvento (
-    idNotificacao SERIAL PRIMARY KEY,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    visto BOOLEAN NOT NULL DEFAULT FALSE,
-    campoAlterado CampoEvento NOT NULL,
+DROP TABLE IF EXISTS notf_edit_event CASCADE;
+CREATE TABLE notf_edit_event (
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    seen BOOLEAN NOT NULL DEFAULT FALSE,
+    changed_field event_field NOT NULL,
 
-    idRecetor SERIAL NOT NULL,
-    idEvento SERIAL NOT NULL,
-    FOREIGN KEY (idRecetor, idEvento) REFERENCES Participante (idUtilizador, idEvento) ON DELETE CASCADE
+    receiver_id SERIAL NOT NULL,
+    event_id SERIAL NOT NULL,
+    FOREIGN KEY (receiver_id, event_id) REFERENCES participants (user_id, event_id) ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS notf_reg_req_org CASCADE;
+CREATE TABLE notf_reg_req_org (
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    seen BOOLEAN NOT NULL DEFAULT FALSE,
 
-DROP TABLE IF EXISTS NotfPedidoRegOrg CASCADE;
-CREATE TABLE NotfPedidoRegOrg (
-    idNotificacao SERIAL PRIMARY KEY,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    visto BOOLEAN NOT NULL DEFAULT FALSE,
-
-    idRecetor SERIAL NOT NULL REFERENCES Administrador(idUtilizador) ON DELETE CASCADE,
-    idOrganizacao SERIAL NOT NULL REFERENCES Organizacao (idOrganizacao) ON DELETE CASCADE
+    receiver_id SERIAL NOT NULL REFERENCES administrators(id) ON DELETE CASCADE,
+    organization_id SERIAL NOT NULL REFERENCES organizations (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS NotfRespostaRegOrg CASCADE;
-CREATE TABLE NotfRespostaRegOrg (
-    idNotificacao SERIAL PRIMARY KEY,
-    data TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    visto BOOLEAN NOT NULL DEFAULT FALSE,
+DROP TABLE IF EXISTS notf_res_reg_req_org CASCADE;
+CREATE TABLE notf_res_reg_req_org (
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    seen BOOLEAN NOT NULL DEFAULT FALSE,
 
-    idRecetor SERIAL NOT NULL,
-    idOrganizacao SERIAL NOT NULL,
-    FOREIGN KEY (idRecetor, idOrganizacao) REFERENCES Organizador (idUtilizador, idOrganizacao) ON DELETE CASCADE
+    receiver_id SERIAL NOT NULL,
+    organization_id SERIAL NOT NULL,
+    FOREIGN KEY (receiver_id, organization_id) REFERENCES organizers (user_id, organization_id) ON DELETE CASCADE
 );
 
 -- Performance Indexes
--- IDX01 
-CREATE INDEX notf_conf_evento_utilizador ON NotfConvEvento USING hash (idRecetor);
+-- Index 01
+CREATE INDEX notf_inv_event_user ON notf_inv_event USING hash (receiver_id);
 
---IDX02
-CREATE INDEX notf_conf_evento_data ON NotfConvEvento USING btree (data);
+-- Index 02
+CREATE INDEX notf_inv_event_date ON notf_inv_event USING btree (date);
 
---IDX03
-CREATE INDEX evento_data_inicio ON Evento USING btree (dataInicio);
-CLUSTER Evento USING evento_data_inicio;
+-- Index 03
+CREATE INDEX event_start_date ON events USING btree (start_date);
+CLUSTER events USING event_start_date;
 
 -- Full-text Search Indexes
---IDX11
-ALTER TABLE Evento
+-- Index 11
+
+ALTER TABLE events
 ADD COLUMN tsvectors TSVECTOR;
 
-DROP FUNCTION IF EXISTS evento_search_update();
-CREATE FUNCTION evento_search_update() RETURNS TRIGGER AS $$
+DROP FUNCTION IF EXISTS event_search_update();
+CREATE FUNCTION event_search_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
         NEW.tsvectors = (
-            setweight(to_tsvector('portuguese', NEW.nome), 'A') ||
-            setweight(to_tsvector('portuguese', NEW.descricao), 'B')
+            setweight(to_tsvector('portuguese', NEW.name), 'A') ||
+            setweight(to_tsvector('portuguese', NEW.description), 'B')
         );
     END IF;
     IF TG_OP = 'UPDATE' THEN
-        IF (NEW.nome <> OLD.nome OR NEW.descricao <> OLD.descricao) THEN
+        IF (NEW.name <> OLD.name OR NEW.description <> OLD.description) THEN
             NEW.tsvectors = (
-                setweight(to_tsvector('portuguese', NEW.nome), 'A') ||
-                setweight(to_tsvector('portuguese', NEW.descricao), 'B')
+                setweight(to_tsvector('portuguese', NEW.name), 'A') ||
+                setweight(to_tsvector('portuguese', NEW.description), 'B')
             );
         END IF;
     END IF;
@@ -225,9 +225,9 @@ BEGIN
 END $$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER evento_search_update
-    BEFORE INSERT OR UPDATE ON Evento
-    FOR EACH ROW
-    EXECUTE PROCEDURE evento_search_update();
+CREATE TRIGGER event_search_update 
+    BEFORE INSERT OR UPDATE ON events
+    FOR EACH ROW 
+    EXECUTE PROCEDURE event_search_update();
 
-CREATE INDEX search_idx ON Evento USING GIST (tsvectors);
+CREATE INDEX search_idx ON events USING GIST (tsvectors);

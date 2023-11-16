@@ -1,7 +1,8 @@
 -- SCHEMA: lbaw2384
+CREATE SCHEMA IF NOT EXISTS lbaw2384;
 SET search_path TO lbaw2384;
 
-INSERT INTO Utilizador (idUtilizador, nome, email, password) VALUES
+INSERT INTO users (id, name, email, password) VALUES
     ('1', 'João Silva', 'joao@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
     ('2', 'Maria Santos', 'maria@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
     ('3', 'António Pereira', 'antonio@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
@@ -23,11 +24,11 @@ INSERT INTO Utilizador (idUtilizador, nome, email, password) VALUES
     ('19', 'Paulo Silva', 'paulo@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2'),
     ('20', 'Catarina Santos', 'catarina@example.com', '$2y$10$D6D4HftdCKh64zpaP/AjVOC3iZ1tw7Nh1s5ifYSe5vWfmcQeR68m2');
 
-INSERT INTO Administrador (idUtilizador) VALUES
+INSERT INTO administrators (id) VALUES
     ('1'),
     ('2');
 
-INSERT INTO Cliente (idUtilizador) VALUES
+INSERT INTO clients (id) VALUES
     ('3'),
     ('4'),
     ('5'),
@@ -47,7 +48,7 @@ INSERT INTO Cliente (idUtilizador) VALUES
     ('19'),
     ('20');
 
-INSERT INTO Organizacao (idOrganizacao, nome, descricao) VALUES
+INSERT INTO organizations (id, name, description) VALUES
     ('1', 'Xutos & Pontapés', 'Os Xutos & Pontapés são uma das bandas de rock mais icónicas de Portugal, conhecidos pelos seus hits e energia nos palcos.'),
     ('2', 'Amor Electro', 'Amor Electro é uma banda portuguesa de música pop e eletrónica, com uma sonoridade única e envolvente.'),
     ('3', 'Mão Morta', 'Mão Morta é uma banda de rock alternativo e experimental, famosa pela sua abordagem artística ousada.'),
@@ -57,7 +58,7 @@ INSERT INTO Organizacao (idOrganizacao, nome, descricao) VALUES
     ('7', 'Os Quatro e Meia', 'Os Quatro e Meia são conhecidos pelo seu folk e pop rock com letras cativantes e emotivas.'),
     ('8', 'Capitão Fausto', 'Capitão Fausto é uma banda de rock alternativo e psicadélico com uma abordagem inovadora à música.');
 
-INSERT INTO Evento (idEvento, nome, descricao, localizacao, dataInicio, dataFim, idOrganizacao) VALUES
+INSERT INTO events (id, name, description, location, start_date, end_date, organization_id) VALUES
     ('1', 'Concerto dos Xutos & Pontapés', 'Concerto de celebração dos 40 anos dos Xutos & Pontapés.', 'Coliseu do Porto', '2024-12-14 21:00:00', '2024-12-14 23:00:00', '1'),
     ('2', 'Aniversário dos Amor Electro', 'Concerto de celebração dos 10 anos dos Amor Electro.', 'Pavilhão Atlântico, Lisboa', '2024-12-14 21:00:00', '2024-12-14 23:00:00', '2'),
     ('3', '30 Anos de Mão Morta', 'Concerto de celebração dos 30 anos dos Mão Morta.', 'Teatro Tivoli, Lisboa', '2024-12-21 21:00:00', '2024-12-21 23:00:00', '3'),
@@ -67,7 +68,7 @@ INSERT INTO Evento (idEvento, nome, descricao, localizacao, dataInicio, dataFim,
     ('7', '5 Anos dos Os Quatro e Meia', 'Concerto de celebração dos 5 anos dos Os Quatro e Meia.', 'Teatro Aveirense, Aveiro', '2024-01-18 21:00:00', '2024-01-18 23:00:00', '7'),
     ('8', '10 Anos dos Capitão Fausto', 'Concerto de celebração dos 10 anos dos Capitão Fausto.', 'Centro Cultural de Belém, Lisboa', '2024-01-25 21:00:00', '2024-01-25 23:00:00', '8');
 
-INSERT INTO Organizador (idUtilizador, idOrganizacao) VALUES
+INSERT INTO organizers (user_id, organization_id) VALUES
     ('3', '1'),
     ('4', '2'),
     ('5', '3'),
@@ -77,7 +78,7 @@ INSERT INTO Organizador (idUtilizador, idOrganizacao) VALUES
     ('9', '7'),
     ('10', '8');
 
-INSERT INTO Participante (idUtilizador, idEvento) VALUES
+INSERT INTO participants (user_id, event_id) VALUES
     ('4', '1'),
     ('5', '2'),
     ('6', '3'),
@@ -97,14 +98,14 @@ INSERT INTO Participante (idUtilizador, idEvento) VALUES
     ('20', '1');
 
 
-INSERT INTO Tag (idTag, nome) VALUES
+INSERT INTO tags (id, name) VALUES
     ('1', 'Rock'),
     ('2', 'Pop'),
     ('3', 'Metal'),
     ('4', 'Alternativo'),
     ('5', 'Folk');
 
-INSERT INTO TagEvento (idTag, idEvento) VALUES
+INSERT INTO tag_event (tag_id, event_id) VALUES
     ('1', '1'),
     ('2', '2'),
     ('3', '3'),
@@ -114,7 +115,7 @@ INSERT INTO TagEvento (idTag, idEvento) VALUES
     ('2', '7'),
     ('3', '8');
 
-INSERT INTO Comentario (idComentario, idAutor, texto, idEvento) VALUES
+INSERT INTO comments (id, author_id, text, event_id) VALUES
     ('1', '4', 'Vai ser um concerto incrível!', '1'),
     ('2', '5', 'Mal posso esperar!', '2'),
     ('3', '6', 'Certamente será um concerto fabuloso!', '3'),
@@ -124,7 +125,7 @@ INSERT INTO Comentario (idComentario, idAutor, texto, idEvento) VALUES
     ('7', '10', 'Certamente será um concerto fabuloso!', '7'),
     ('8', '11', 'Só quero que chegue este dia!', '8');
 
-INSERT INTO VotoComentario (idComentario, idUtilizador, isUp) VALUES
+INSERT INTO vote_comments (comment_id, user_id, is_up) VALUES
     ('1', '12', TRUE),
     ('2', '13', TRUE),
     ('3', '14', TRUE),
@@ -135,24 +136,24 @@ INSERT INTO VotoComentario (idComentario, idUtilizador, isUp) VALUES
     ('8', '19', TRUE),
     ('1', '20', FALSE);
 
-INSERT INTO MotivoDenunciaEvento (idMotivo, texto) VALUES
+INSERT INTO report_reasons_event (id, text) VALUES
     ('1', 'Suspeita de fraude ou golpe'),
     ('2', 'Conteúdo inadequado ou ofensivo'),
     ('3', 'Informações incorretas sobre o evento');
 
-INSERT INTO MotivoDenunciaComentario (idMotivo, texto) VALUES
+INSERT INTO report_reasons_comment (id, text) VALUES
     ('1', 'Conteúdo inadequado ou não apropriado'),
     ('2', 'Ameaças ou incitação à violência'),
     ('3', 'Informações incorretas ou enganosas'),
     ('4', 'Assédio ou bullying'),
     ('5', 'Conteúdo comercial ou spam');
 
-INSERT INTO DenunciaEvento (idDenunciaEvento, idEvento, idMotivo) VALUES
+INSERT INTO reports_event (id, event_id, reason_id) VALUES
     ('1', '1', '1'),
     ('2', '2', '2'),
     ('3', '3', '3');
 
-INSERT INTO DenunciaComentario (idDenunciaComentario, idComentario, idMotivo) VALUES
+INSERT INTO reports_comment (id, comment_id, reason_id) VALUES
     ('1', '1', '1'),
     ('2', '2', '2'),
     ('3', '5', '5');
