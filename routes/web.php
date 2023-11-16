@@ -30,16 +30,6 @@ Route::controller(HomeController::class)->group(function () {
 
 
 // API
-Route::controller(HomeController::class)->group(function () {
-    Route::put('/api/cards', 'create');
-    Route::delete('/api/cards/{card_id}', 'delete');
-});
-
-Route::controller(ItemController::class)->group(function () {
-    Route::put('/api/cards/{card_id}', 'create');
-    Route::post('/api/item/{id}', 'update');
-    Route::delete('/api/item/{id}', 'delete');
-});
 
 
 // Authentication
