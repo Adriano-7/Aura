@@ -1,39 +1,81 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="{{ asset('css/login_register.css') }}">
+@endsection
+
+@section('header')
+@endsection
+
+
+
 @section('content')
-<form method="POST" action="{{ route('register') }}">
-    {{ csrf_field() }}
+<section class="text-center text-lg-start">
+  <section class="vh-100">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 text-black">
+          <div class="px-5 ms-xl-4">
+            <img src="{{asset('images/AuraLogo.svg')}}" alt="Logo" style="width: 7rem;" class="pt-5 mt-xl-4">
+          </div>
 
-    <label for="name">Name</label>
-    <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
-    @if ($errors->has('name'))
-      <span class="error">
-          {{ $errors->first('name') }}
-      </span>
-    @endif
+          <div id = "sample-text">
+            <h1>
+              Vamos criar a tua conta!
+            </h1>
+            <h3>
+              Junta-te à nossa comunidade!
+            </h3>
+          </div>
 
-    <label for="email">E-Mail Address</label>
-    <input id="email" type="email" name="email" value="{{ old('email') }}" required>
-    @if ($errors->has('email'))
-      <span class="error">
-          {{ $errors->first('email') }}
-      </span>
-    @endif
+          <div class="d-flex align-items-center px-5 ms-xl-4 mt-xl-n5">
+            <form method="POST" action="{{ route('login') }}">
+                  {{ csrf_field() }}
 
-    <label for="password">Password</label>
-    <input id="password" type="password" name="password" required>
-    @if ($errors->has('password'))
-      <span class="error">
-          {{ $errors->first('password') }}
-      </span>
-    @endif
+                <input type = "text" name = "nome" placeholder = "Primeiro e último nome" required/>
+                @if ($errors->has('nome'))
+                  <span class="error">
+                  {{ $errors->first('nome') }}
+                  </span>
+                @endif
 
-    <label for="password-confirm">Confirm Password</label>
-    <input id="password-confirm" type="password" name="password_confirmation" required>
 
-    <button type="submit">
-      Register
-    </button>
-    <a class="button button-outline" href="{{ route('login') }}">Login</a>
-</form>
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="Email" required/>
+                @if ($errors->has('email'))
+                  <span class="error">
+                  {{ $errors->first('email') }}
+                  </span>
+                @endif
+
+                <input type="password" name="password"  placeholder="Palavra passe" required/>
+                @if ($errors->has('password'))
+                  <span class="error">
+                      {{ $errors->first('password') }}
+                  </span>
+                @endif
+
+                <input type="password" name="confPassword"  placeholder="Confirme a palavra passe" required/>
+                @if ($errors->has('password'))
+                  <span class="error">
+                      {{ $errors->first('password') }}
+                  </span>
+                @endif
+
+                <button id="submit-button" type="submit">Registar</button>
+
+              <p>Já tem conta? <a href="/login" id="registo-mensagem" >Inicie sessão!</a></p>
+          
+              </form>
+
+          </div>
+
+        </div>
+        <div class="col-sm-6 px-0 d-none d-sm-block">
+          <img src="{{asset('images/LoginBanner.svg')}}"
+            alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
 @endsection
