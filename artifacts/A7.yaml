@@ -1,0 +1,439 @@
+openapi: 3.0.0
+
+info:
+  version: '1.0'
+  title: LBAW AURA Web API
+  description: Especificação de Recursos Web (A7) para AURA
+
+servers:
+  - url: "http://lbaw2384.lbaw-prod.fe.up.pt"
+    description: "Servidor de produção"
+
+externalDocs:
+  description: ""
+  url: "https://git.fe.up.pt/lbaw/lbaw2324/lbaw2384/-/wikis/home"
+
+tags:
+  - name: 'M01: Autenticação e Perfil'
+  - name: 'M02: Eventos e Organizacoes'
+  - name: 'M03: Administracao e páginas estáticas'
+
+paths:
+
+  # VIEW PAGES
+  /login:
+    get:
+      operationId: R101
+      summary: 'R101: Página de Login'
+      description: 'Providenciar formulário de login. Acesso: PUB'
+      tags:
+        - 'M01: Autenticação e Perfil'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI de login'
+        '302':
+          description: 'Redireciona se o utilizador ja estiver autenticado'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Success:
+                  description: ''
+                  value: '/'
+                302Error:
+                  description: ''
+                  value: '/login'
+    post:
+      operationId: R102
+      summary: 'R102: Autenticar Utilizador'
+      description: 'Autenticar utilizador. Acesso: PUB'
+      tags:
+        - 'M01: Autenticação e Perfil'
+      requestBody:
+        description: 'Dados de autenticação'
+        required: true
+        content:
+          application/x-www-form-urllencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'johndoe@email.com'
+                password:
+                  type: string
+                  example: '123456'
+              required:
+                - email
+                - password
+      responses:
+        '302':
+          description: 'Redireciona para a página inicial'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Success:
+                  description: 'Login efetuado com sucesso'
+                  value: '/'
+                302Error:
+                  description: 'Login falhou'
+                  value: '/login'
+        
+  /registo:
+    get:
+      operationId: R103
+      summary: 'R103: Página de Registo'
+      description: 'Providenciar formulário de registo. Acesso: PUB'
+      tags:
+        - 'M01: Autenticação e Perfil'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI de registo'
+        '302':
+          description: 'Redireciona se o utilizador ja estiver autenticado'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Success:
+                  description: ''
+                  value: '/'
+                302Error:
+                  description: ''
+                  value: '/login'
+                    
+    post:
+      operationId: R104
+      summary: 'R104: Registar Utilizador'
+      description: 'Registar utilizador. Acesso: PUB'
+      tags:
+        - 'M01: Autenticação e Perfil'
+      requestBody:
+        description: 'Dados de registo'
+        required: true
+        content:
+          application/x-www-form-urllencoded:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  example: 'John Doe'
+                email:
+                  type: string
+                  example: 'johndoe@email.com'
+                password:
+                  type: string
+                  example: '123456'
+                password_confirmation:
+                  type: string
+                  example: '123456'
+                foto:
+                  type: string
+                  example: 'https://i.imgur.com/1.jpg'
+              required:
+                - nome
+                - email
+                - password
+                - password_confirmation
+                - foto
+      responses:
+        '302':
+          description: 'Redireciona para a página inicial'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Success:
+                  description: 'Registo efetuado com sucesso'
+                  value: '/'
+                302Error:
+                  description: 'Registo falhou'
+                  value: '/registo'
+
+  /perfil:
+    get:
+      operationId: R105
+      summary: 'R105: Página de Perfil'
+      description: 'Providenciar página de perfil. Acesso: USR'
+      tags:
+        - 'M01: Autenticação e Perfil'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI de perfil'
+        '302':
+          description: 'Redireciona se o utilizador não estiver autenticado'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Error:
+                  description: 'Necessário autenticar'
+                  value: '/login'
+            
+  /notificacoes:
+    get:
+      operationId: R106
+      summary: 'R106: Página de Notificações'
+      description: 'Providenciar lista de notificações do utilizador. Acesso: USR'
+      tags:
+        - 'M01: Autenticação e Perfil'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI de notificações'
+        
+    
+    delete: 
+      operationId: R107
+      summary: 'R107: Apagar Notificação'
+      description: 'Apagar notificação. Acesso: USR'
+      tags:
+        - 'M01: Autenticação e Perfil'
+      responses:
+        '200':
+          description: 'Ok. Notificação apagada'
+        '403':
+          description: 'Proibido. Notificação não pertence ao utilizador'
+        '404':
+          description: 'Notificação não existe'
+        
+    # ? patch - abrir notificacao marca-a como lida
+    # ? post - aceitar convite: adiciona user à lista de participantes do evento
+
+  /sobre:
+    get:
+      operationId: R108
+      summary: 'R108: Página Sobre'
+      description: 'Providenciar página sobre. Acesso: PUB'
+      tags:
+        - 'M03: Administracao e páginas estáticas'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI da página "sobre"'
+          
+  /:
+    get:
+      operationId: R109
+      summary: 'R109: Página Inicial'
+      description: 'Providenciar página inicial. Acesso: PUB'
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI da página inicial'
+
+  /pesquisa:
+    get:
+      operationId: R110
+      summary: 'R110: Página de Pesquisa'
+      description: 'Providenciar página de pesquisa. Acesso: PUB'
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      parameters:
+        - name: query
+          in: query
+          description: 'Termo de pesquisa'
+          required: false
+          schema:
+            type: string
+            example: 'evento'
+        - name: local
+          in: query
+          description: 'Localização do evento'
+          required: false
+          schema:
+            type: string
+            example: 'Porto'
+        - name: dataInicio
+          in: query
+          description: 'Data de início do intervalo de tempo'
+          required: false
+          schema:
+            type: string
+            example: '2024-05-01'
+        - name: dataFim
+          in: query
+          description: 'Data de fim do intervalo de tempo'
+          required: false
+          schema:
+            type: string
+            example: '2024-05-31'
+        - name: sort
+          in: query
+          description: 'Ordenação dos resultados'
+          required: false
+          schema:
+            type: string
+            enum: ['dataInicio', 'nome', 'numParticipantes', 'numDenuncias']
+            example: 'dataInicio'
+        - name: tags
+          in: query
+          description: 'Tags do evento'
+          required: false
+          schema:
+            type: string
+            example: 'desporto'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI da página de pesquisa'
+
+  /evento/{id}:
+    get:
+      operationId: R111
+      summary: 'R111: Página de Evento'
+      description: 'Providenciar página de evento. Acesso: PUB'
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      parameters:
+        - name: id
+          in: path
+          description: 'ID do evento'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI da página de evento'
+        '404':
+          description: 'Evento não existe'
+        '403':
+          description: 'Proibido. Evento privado'
+
+  /meus-eventos:
+    get:
+      operationId: R112
+      summary: 'R112: Página de Meus Eventos'
+      description: 'Providenciar página de meus eventos. Acesso: USR'
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI da página de meus eventos'
+        '302':
+          description: 'Redireciona se o utilizador não estiver autenticado'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Error:
+                  description: 'Necessário autenticar'
+                  value: '/login'
+  
+  /criar-evento:
+    get:
+      operationId: R113
+      summary: 'R113: Página de Criar Evento'
+      description: 'Formulário de criação de um evento. Acesso: ORG'
+      parameters:
+        - name: id
+          in: query
+          description: 'ID do evento'
+          required: False
+          schema:
+            type: integer
+            example: 1
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI da página de criar evento'
+        '302':
+          description: 'Redireciona se o utilizador não estiver autenticado'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Error:
+                  description: 'Necessário autenticar'
+                  value: '/login'
+        '403':
+          description: 'Proibido. Utilizador não é organizador'
+    
+  /criar-organizacao:
+    get:
+      operationId: R114
+      summary: 'R114: Página de Criar Organização'
+      description: 'Formulário de criação de uma organização. Acesso: USR'
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI da página de criar evento'
+        '302':
+          description: 'Redireciona se o utilizador não estiver autenticado'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Error:
+                  description: 'Necessário autenticar'
+                  value: '/login'
+        '403':
+          description: 'Proibido. Apenas utilizadores podem criar organizações'
+
+  /organizacao:
+    get:
+      operationId: R115
+      summary: 'R115: Página de Organização'
+      description: 'Providenciar página de organização. Acesso: PUB'
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      parameters:
+        - name: id
+          in: query
+          description: 'ID da organização'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI da página de organização'
+        '404':
+          description: 'Organização não existe'
+  
+  /admin/{tab}: # tab can have 3 values: 'denuncias', 'membros', 'organizacoes'
+    get:
+      operationId: R116
+      summary: 'R116: Página de Administração'
+      description: 'Providenciar página de administração. Acesso: ADM'
+      tags:
+        - 'M03: Administracao e páginas estáticas'
+      parameters:
+        - name: tab
+          in: path
+          description: 'Tab a mostrar'
+          required: true
+          schema:
+            type: string
+            enum: ['denuncias', 'membros', 'organizacoes']
+            example: 'denuncias'
+      responses:
+        '200':
+          description: 'Ok. Mostrar UI da página de administração'
+        '302':
+          description: 'Redireciona se o utilizador não estiver autenticado'
+          headers:
+            Location:
+              schema:
+                type: string
+              example:
+                302Error:
+                  description: 'Necessário autenticar'
+                  value: '/login'
+        '403':
+          description: 'Proibido. Apenas administradores podem aceder à página de administração'
+        '404':
+          description: 'Tab não disponível'
+
+  # API

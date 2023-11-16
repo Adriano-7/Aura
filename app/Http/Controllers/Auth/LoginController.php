@@ -18,11 +18,11 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        if (Auth::check()) {
-            return redirect('/cards');
-        } else {
-            return view('auth.login');
+        if(Auth::check()) {
+            return redirect('/home');
         }
+        return view('auth.login');
+
     }
 
     /**
@@ -35,10 +35,9 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
  
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
- 
-            return redirect()->intended('/cards');
+            return redirect()->intended('/home');
         }
  
         return back()->withErrors([

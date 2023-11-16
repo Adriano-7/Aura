@@ -15,7 +15,7 @@
       <div class="row">
         <div class="col-sm-6 text-black">
           <div class="px-5 ms-xl-4">
-            <img src="{{asset('images/AuraLogo.svg')}}" alt="Logo" style="width: 7rem;" class="pt-5 mt-xl-4">
+            <a href="/home"><img src="{{asset('images/AuraLogo.svg')}}" alt="Logo" style="width: 7rem;" class="pt-5 mt-xl-4"></a>
           </div>
 
           <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-xl-n5">
@@ -26,14 +26,14 @@
                   <span class="error">
                   {{ $errors->first('email') }}
                   </span>
-                  @endif
+                @endif
 
                 <input type="password" name="password"  placeholder="Palavra passe" required/>
                 @if ($errors->has('password'))
                   <span class="error">
                       {{ $errors->first('password') }}
                   </span>
-                  @endif
+                @endif
 
                 <button id="submit-button" type="submit">Iniciar sessão</button>
 

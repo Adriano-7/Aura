@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-sm-6 text-black">
           <div class="px-5 ms-xl-4">
-            <img src="{{asset('images/AuraLogo.svg')}}" alt="Logo" style="width: 7rem;" class="pt-5 mt-xl-4">
+            <a href="/home"><img src="{{asset('images/AuraLogo.svg')}}" alt="Logo" style="width: 7rem;" class="pt-5 mt-xl-4"></a>
           </div>
 
           <div id = "sample-text">
