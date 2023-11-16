@@ -26,14 +26,14 @@
                   <span class="error">
                   {{ $errors->first('email') }}
                   </span>
-                  @endif
+                @endif
 
                 <input type="password" name="password"  placeholder="Palavra passe" required/>
                 @if ($errors->has('password'))
                   <span class="error">
                       {{ $errors->first('password') }}
                   </span>
-                  @endif
+                @endif
 
                 <button id="submit-button" type="submit">Iniciar sessão</button>
 

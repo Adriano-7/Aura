@@ -23,9 +23,7 @@ class CardController extends Controller
         $this->authorize('show', $card);  
 
         // Use the pages.card template to display the card.
-        return view('pages.card', [
-            'card' => $card
-        ]);
+        return view('pages.home');
     }
 
     /**
@@ -50,7 +48,7 @@ class CardController extends Controller
             // The current user is authorized to list cards.
 
             // Use the pages.cards template to display all cards.
-            return view('pages.cards', [
+            return view('pages.home', [
                 'cards' => $cards
             ]);
         }

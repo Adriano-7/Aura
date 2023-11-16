@@ -20,12 +20,12 @@ use App\Http\Controllers\Auth\RegisterController;
 */
 
 // Home
-Route::redirect('/', '/login');
+Route::redirect('/', '/home');
 
 // Cards
 Route::controller(CardController::class)->group(function () {
-    Route::get('/cards', 'list')->name('cards');
-    Route::get('/cards/{id}', 'show');
+    Route::get('/home', 'list')->name('home');
+    Route::get('/home/{id}', 'show');
 });
 
 
