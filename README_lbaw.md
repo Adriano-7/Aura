@@ -25,7 +25,6 @@ These instructions address the development with a local environment (with PhP in
   - [Publishing your image](#publishing-your-image)
   - [Testing your image](#testing-your-image)
 
-
 ## Installing the software dependencies
 
 To prepare you computer for development you need to install PHP >=v8.1 and Composer >=v2.2.
@@ -38,12 +37,12 @@ sudo apt install git composer php8.1 php8.1-mbstring php8.1-xml php8.1-pgsql php
 ```
 
 On MacOS, you can install them using [Homebrew](https://brew.sh/) and:
+
 ```bash
 brew install php@8.1 composer
 ```
 
 If you use [Windows WSL](https://learn.microsoft.com/en-us/windows/wsl/install), please ensure you are also using Ubuntu 22.04 inside. Previous versions do not provide the requirements needed for this template, and then follow the Ubuntu instructions above.
-
 
 ## Setting up the development repository
 
@@ -102,7 +101,6 @@ composer update
 
 If this fails, ensure you're using version 2 or above of Composer. If there are errors regarding missing extensions, make sure you uncomment them in your [php.ini file](https://www.php.net/manual/en/configuration.file.php).
 
-
 ## Working with PostgreSQL
 
 We've created a _docker compose_ file that sets up __PostgreSQL__ and __pgAdmin4__ to run as local Docker containers.
@@ -119,7 +117,7 @@ This will start your containers in detached mode. To stop them use:
 docker compose down
 ```
 
-Navigate on your browser to http://localhost:4321 to access pgAdmin4 and manage your database. Depending on your installation setup, you might need to use the IP address from the virtual machine providing docker instead of `localhost`. Please refer to your installation documentation.
+Navigate on your browser to <http://localhost:4321> to access pgAdmin4 and manage your database. Depending on your installation setup, you might need to use the IP address from the virtual machine providing docker instead of `localhost`. Please refer to your installation documentation.
 Use the following credentials to login:
 
 ```
@@ -136,7 +134,6 @@ password: pg!password
 ```
 
 Hostname is _postgres_ instead of _localhost_ since _Docker Compose_ creates an internal DNS entry to facilitate the connection between linked containers.
-
 
 ## Developing the project
 
@@ -158,25 +155,22 @@ Access `http://localhost:8000` to access the app. Username is `admin@example.com
 
 To stop the server just hit Ctrl-C.
 
-
 ## Laravel code structure
 
 Before you start, you should make yourself familiar with [Laravel's documentation](https://laravel.com/docs/10.x).
 
 In Laravel, a typical web request will touch the following concepts and files.
 
-
 ### 1) Routes
 
-The web page is processed by *Laravel*'s [routing](https://laravel.com/docs/10.x/routing) mechanism.
-By default, routes are defined inside `routes/web.php`. A typical *route* looks like this:
+The web page is processed by _Laravel_'s [routing](https://laravel.com/docs/10.x/routing) mechanism.
+By default, routes are defined inside `routes/web.php`. A typical _route_ looks like this:
 
 ```php
-Route::get('cards/{id}', [CardController::class, 'show']);
+Route::get('cards/{id}', [HomeController::class, 'show']);
 ```
 
-This route receives a parameter *id* that is passed on to the *show* method of a controller called *CardController*.
-
+This route receives a parameter _id_ that is passed on to the _show_ method of a controller called _HomeControlle_.
 
 ### 2) Controllers
 
@@ -184,7 +178,7 @@ This route receives a parameter *id* that is passed on to the *show* method of a
 Controllers are normally defined in the `app/Http/Controllers` folder.
 
 ```php
-class CardController extends Controller
+class HomeController extends Controller
 {
     /**
      * Show the card for a given id.
@@ -205,9 +199,8 @@ class CardController extends Controller
 }
 ```
 
-This particular controller contains a *show* method that receives an *id* from a route.
+This particular controller contains a _show_ method that receives an _id_ from a route.
 The method searches for a card in the database, checks if the user as permission to view the card, and then returns a view.
-
 
 ### 3) Database and Models
 
@@ -221,9 +214,9 @@ Here is an example of Eloquent's query building syntax.
 $card = Card::findOrFail($id);
 ```
 
-This line tells *Eloquent* to fetch a card from the database with a certain *id* (the primary key of the table).
-The result will be an object of the class *Card* defined in `app/Models/Card.php`.
-This class extends the *Model* class and contains information about the relation between the *card* tables and other tables:
+This line tells _Eloquent_ to fetch a card from the database with a certain _id_ (the primary key of the table).
+The result will be an object of the class _Card_ defined in `app/Models/Card.php`.
+This class extends the _Model_ class and contains information about the relation between the _card_ tables and other tables:
 
 ```php
 /**
@@ -247,7 +240,7 @@ public function items(): HasMany
 
 [Policies](https://laravel.com/docs/10.x/authorization#writing-policies) define which actions a user can take.
 You can find policies inside the `app/Policies` folder.
-For example, in the `CardPolicy.php` file we defined a *show* method that only allows a certain user to view a card if that user is the card owner:
+For example, in the `CardPolicy.php` file we defined a _show_ method that only allows a certain user to view a card if that user is the card owner:
 
 ```php
 /**
@@ -260,28 +253,27 @@ public function show(User $user, Card $card): bool
 }
 ```
 
-In this example, *$user* and *$card* are models that represent their respective tables, *$id* and *$user_id* are columns from those tables that are automatically mapped into those models.
+In this example, _$user* and *$card_ are models that represent their respective tables, _$id* and *$user_id_ are columns from those tables that are automatically mapped into those models.
 
-To use this policy, we just have to use the following code inside the *CardController*:
+To use this policy, we just have to use the following code inside the _HomeControlle_:
 
 ```php
 $this->authorize('show', $card);
 ```
 
-As you can see, there is no need to pass the current *user*.
+As you can see, there is no need to pass the current _user_.
 
 If you name the controllers following the expected pattern (e.g., CardPolicy for the Card model), Laravel will [auto-discover the policies](https://laravel.com/docs/10.x/authorization#policy-auto-discovery). If you do not use the expected naming pattern, you will need to manually register the policies ([see the documentation](https://laravel.com/docs/10.x/authorization#registering-policies)).
 
-
 ### 5) Views
 
-A *controller* only needs to return HTML code for it to be sent to the *browser*. However we will be using [Blade](https://laravel.com/docs/10.x/blade) templates to make this task easier:
+A _controller_ only needs to return HTML code for it to be sent to the _browser_. However we will be using [Blade](https://laravel.com/docs/10.x/blade) templates to make this task easier:
 
 ```php
 return view('pages.card', ['card' => $card]);
 ```
 
-In this example, *pages.card* refers to a blade template that can be found at `resources/views/pages/card.blade.php`.
+In this example, _pages.card_ refers to a blade template that can be found at `resources/views/pages/card.blade.php`.
 The second parameter contains the data we are injecting into the template.
 
 The first line of the template states that it extends another template:
@@ -298,16 +290,13 @@ This second template can be found at `resources/views/layouts/app.blade.php` and
 
 Besides the `pages` and `layouts` template folders, we also have a `partials` folder where small snippets of HTML code can be saved to be reused in other pages.
 
-
 ### 6) CSS
 
 The easiest way to use CSS is just to edit the CSS file found at `public/css/app.css`. You can have multiple CSS files to better organize your style definitions.
 
-
 ### 7) JavaScript
 
 To add JavaScript into your project, just edit the file found at `public/js/app.js``.
-
 
 ### 8) Configuration
 
@@ -333,7 +322,7 @@ You need to have Docker installed to publish your project image for deployment.
 
 Please note that if you are using an ARM CPU, you need to explicitly build an AMD64 Docker image. Docker supports multi-platform building. Create a multi-platform builder and adjust your `upload_image.sh` file to use it, as described in [this guide](https://docs.docker.com/build/building/multi-platform/).
 
-You should keep your git main branch functional, and frequently build and deploy your code as a Docker image. LBAW's production machine will regularly pull all these images and make them available at http://lbawYYXX.lbaw.fe.up.pt/.
+You should keep your git main branch functional, and frequently build and deploy your code as a Docker image. LBAW's production machine will regularly pull all these images and make them available at <http://lbawYYXX.lbaw.fe.up.pt/>.
 
 **Always ensure your `.env_production` file is configured with your group's `db.fe.up.pt` credentials before building your docker image, by updating the DB section:**
 
@@ -347,7 +336,7 @@ DB_USERNAME=lbawYYXX
 DB_PASSWORD=password
 ```
 
-This demo repository is available at http://template-laravel.lbaw.fe.up.pt/. To view it make sure you are inside FEUP's network or are using the VPN.
+This demo repository is available at <http://template-laravel.lbaw.fe.up.pt/>. To view it make sure you are inside FEUP's network or are using the VPN.
 
 Images must be published to Gitlab's Container Registry, available from the side menu option `Packages & Registries > Container Registry`.
 
@@ -380,7 +369,7 @@ After building it, you can test locally the image by running:
 docker run -it -p 8000:80 --name=lbawYYXX -e DB_DATABASE="lbawYYXX" -e DB_SCHEMA="lbawYYXX" -e DB_USERNAME="lbawYYXX" -e DB_PASSWORD="PASSWORD" git.fe.up.pt:5050/lbaw/lbawYYYY/lbawYYXX # Replace with your group's image name
 ```
 
-The above command exposes your application on http://localhost:8000.
+The above command exposes your application on <http://localhost:8000>.
 
 The `-e` argument creates environment variables inside the container, used to provide Laravel with the required database configurations.
 

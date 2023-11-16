@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Card;
 
-class CardController extends Controller
+class HomeController extends Controller
 {
     /**
      * Show the card for a given id.
