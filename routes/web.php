@@ -22,7 +22,7 @@ use App\Http\Controllers\Auth\RegisterController;
 // Home
 Route::controller(HomeController::class)->group(function () {
     Route::redirect('/', '/home');
-    Route::get('/home',  'list')->name('home');
+    Route::get('/home',  'list', [EventController::class, 'list'])->name('home');
 });
 
 
