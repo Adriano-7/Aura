@@ -8,15 +8,22 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <title>Aura - @yield('title')</title>
+        <link rel="icon" href="{{asset('images/AuraLogo.svg')}}">
+
         <!-- Styles -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"  crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"  crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"  crossorigin="anonymous"></script>    
+
         @yield('styles')
     </head>
     <body>
         <main>
-            <header>
-                @yield('header')
-            </header>
+            @yield('header')
+    
             <section id="content">
                 @yield('content')
             </section>

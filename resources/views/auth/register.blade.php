@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
+@section('title', 'Register')
+
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/login_register.css') }}">
 @endsection
-
-@section('header')
-@endsection
-
 
 
 @section('content')
