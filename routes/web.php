@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ItemController;
+use App\Http\Controllers\EventController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -20,17 +20,13 @@ use App\Http\Controllers\Auth\RegisterController;
 */
 
 // Home
-Route::redirect('/', '/home');
-
-// Cards
 Route::controller(HomeController::class)->group(function () {
-    Route::get('/home', 'list')->name('home');
-    Route::get('/home/{id}', 'show');
+    Route::redirect('/', '/home');
+    Route::get('/home',  'list')->name('home');
 });
 
 
 // API
-
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {

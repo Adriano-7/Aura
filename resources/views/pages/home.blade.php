@@ -7,7 +7,6 @@
 @endsection
 
 @section('header')
-
     <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html"> <img src="{{ asset('images/AuraLogo.svg') }}"> </a>
@@ -15,7 +14,6 @@
                 aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarsExample05">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
