@@ -4,79 +4,25 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+
 body{
     background-color: #000000;
 }
 
-.navbar{
-    
-    background: #000000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    height: 5rem;
-    }
-
-.navbar-logo img{
-    height: 3rem;
-}
-
-.navbar-pages{
-    display: flex;
-    flex-direction: row;
-    list-style: none;
-}
-
-.nav-item{
-    margin: 0 1rem;
-    color: #808080;
-    font-size: 0.8em;
-}
-
-/*selected nav-item*/
-.nav-link.selected {
+.nav-link.active {
     color: #FFFFFF;
-    /*i want to put  a #A08AFA bottom border*/
     border-bottom: 2px solid #A08AFA;
     padding-bottom: 0.5rem;
 }
-
-.dropdown-toggle {
-    background-color: transparent;
-    border: none;
+.nav-link{
+    font-size: small;
 }
 
-.dropdown-toggle:hover {
-    background-color: #101010;
-    border: none;
+.nav-link img{
+    margin-right: 0.5rem;
+    width: 3.2em;
 }
 
-.profile-image{
-    height: 3rem;
-    border-radius: 50%;
-    padding-left: 4em;
-}
-
-.dropdown-menu {
-    background-color: #101010;
-}
-.dropdown-item:hover {
-    background-color: #191919;
-    color: #808080;
-}
-
-.dropdown-item {
-    color: #FFFFFF;
-}
-
-.navbar-text {
-    color: #FFFFFF;
-    margin: auto 0;
-    padding-left: 1em;
-}
-
-#profile-photo{
-    height: 3.5em;
-    border-radius: 50%;
+.dropdown-item{
+    font-size: small;
 }

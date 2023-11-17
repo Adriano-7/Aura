@@ -3,48 +3,60 @@
 @section('title', 'Home')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 @endsection
 
 @section('header')
 
-<nav class="navbar">
-    <a class="navbar-logo" href="#"><img src="{{asset('images/AuraLogo.svg')}}" alt="Logo"></a>
+    <nav class="navbar navbar-expand-md navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"> <img src="{{ asset('images/AuraLogo.svg') }}"> </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05"
+                aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <ul class="navbar-pages">
-        <li class="nav-item">
-            <a class="nav-link selected" href="#">DASHBOARD</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">NOTIFICAÇÕES</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">MEUS EVENTOS</a>
-        </li>
-    </ul>
+            <div class="collapse navbar-collapse" id="navbarsExample05">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">DASHBOARD</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">NOTIFICAÇÕES</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">MEUS EVENTOS</a>
+                    </li>
+                </ul>
 
-    <nav class="navbar navbar-dark  navbar-expand-sm">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-list-4" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar-list-4">
-          <ul class="navbar-nav">
-              <li class="nav-item dropdown">
-              <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="{{asset('images/profile.png')}}" class="rounded-circle" id="profile-photo">
-                <span class="navbar-text">{{ Auth::user()->name }}</span>
-              </a>
-              <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Definições</a>
-                <a class="dropdown-item" href="#">Perfil</a>
-                <a class="dropdown-item" href="{{ url('/logout') }}">Log Out</a>
-              </div>
-            </li>   
-          </ul>
+                @if (Auth::check())
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <img src="{{ asset('images/profile.png') }}"  class="rounded-circle">
+                                <span class="navbar-text">António Mendes</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" href="#">Definições</a></li>
+                                <li><a class="dropdown-item" href="#">Perfil</a></li>
+                                <li><a class="dropdown-item" href="#">Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                @else
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/login') }}">LOGIN</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/register') }}">REGISTAR</a>
+                        </li>
+                    </ul>
+                @endif
+            </div>
         </div>
-      </nav>
-</nav>
-
+    </nav>
 
 @endsection
 
