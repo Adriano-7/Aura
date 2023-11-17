@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $path = base_path('database/script.sql');
+        $path = base_path('database/aura-db.sql');
         $sql = file_get_contents($path);
         DB::unprepared($sql);
         $this->command->info('Database seeded!');

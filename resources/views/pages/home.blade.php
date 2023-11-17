@@ -30,21 +30,22 @@
                 </ul>
 
                 @if (Auth::check())
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                <img src="{{ asset('images/profile.png') }}"  class="rounded-circle">
-                                <span class="navbar-text">António Mendes</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Definições</a></li>
-                                <li><a class="dropdown-item" href="#">Perfil</a></li>
-                                <li><a class="dropdown-item" href="#">Log Out</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                @else
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <img src="{{ asset('images/profile/' . $user->photo)  }}"  class="rounded-circle">
+                            <span class="navbar-text dropdown-toggle">{{ $user->name }}</span>
+                        </a>
+            
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Definições</a></li>
+                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ url('/logout') }}">Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            @else
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/login') }}">LOGIN</a>
