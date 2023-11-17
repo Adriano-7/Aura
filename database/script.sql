@@ -405,27 +405,28 @@ BEFORE INSERT ON participants
 FOR EACH ROW
 EXECUTE FUNCTION check_participant_event();
 
-INSERT INTO users (id, name, email, password) VALUES
-    ('1', 'João Silva', 'admin@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('2', 'Maria Santos', 'maria@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('3', 'António Pereira', 'antonio@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('4', 'Isabel Alves', 'isabel@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('5', 'Francisco Rodrigues', 'francisco@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('6', 'Ana Carvalho', 'ana@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('7', 'Manuel Gomes', 'manuel@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('8', 'Sofia Fernandes', 'sofia@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('9', 'Luís Sousa', 'luis@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('10', 'Margarida Martins', 'margarida@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('11', 'Carlos Costa', 'carlos@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('12', 'Helena Oliveira', 'helena@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('13', 'Rui Torres', 'rui@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('14', 'Beatriz Pereira', 'beatriz@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('15', 'José Ferreira', 'jose@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('16', 'Lúcia Santos', 'lucia@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('17', 'Pedro Lopes', 'pedro@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('18', 'Teresa Rodrigues', 'teresa@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('19', 'Paulo Silva', 'paulo@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'),
-    ('20', 'Catarina Santos', 'catarina@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W');
+INSERT INTO users (id, name, email, password, photo) VALUES
+    ('1', 'João Silva', 'admin@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'joao_silva.jpg'),
+    ('2', 'Maria Santos', 'maria@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'maria_santos.jpg'),
+    ('3', 'António Pereira', 'antonio@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'antonio_pereira.jpg'),
+    ('4', 'Isabel Alves', 'isabel@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'isabel_alves.jpg'),
+    ('5', 'Francisco Rodrigues', 'francisco@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'francisco_rodrigues.jpg'),
+    ('6', 'Ana Carvalho', 'ana@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'ana_carvalho.jpg'),
+    ('7', 'Manuel Gomes', 'manuel@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'manuel_gomes.jpg'),
+    ('8', 'Sofia Fernandes', 'sofia@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'sofia_fernandes.jpg'),
+    ('9', 'Luís Sousa', 'luis@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'luis_sousa.jpg'),
+    ('10', 'Margarida Martins', 'margarida@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'margarida_martins.jpg'),
+    ('11', 'Carlos Costa', 'carlos@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'carlos_costa.jpg'),
+    ('12', 'Helena Oliveira', 'helena@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'helena_oliveira.jpg'),
+    ('13', 'Rui Torres', 'rui@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'rui_torres.jpg'),
+    ('14', 'Beatriz Pereira', 'beatriz@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'beatriz_pereira.jpg'),
+    ('15', 'José Ferreira', 'jose@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'jose_ferreira.jpg'),
+    ('16', 'Lúcia Santos', 'lucia@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'lucia_santos.jpg'),
+    ('17', 'Pedro Lopes', 'pedro@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'pedro_lopes.jpg'),
+    ('18', 'Teresa Rodrigues', 'teresa@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'teresa_rodrigues.jpg'),
+    ('19', 'Paulo Silva', 'paulo@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'paulo_silva.jpg'),
+    ('20', 'Catarina Santos', 'catarina@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'catarina_santos.jpg');
+
 
 INSERT INTO administrators (id) VALUES
     ('1'),
