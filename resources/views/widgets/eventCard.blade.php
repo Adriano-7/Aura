@@ -1,7 +1,8 @@
-<div class="card">
-    <img class="card-img-top" src="{{ asset('images/eventos/nos-alive.jpg') }}" alt="Card image cap">
+
+<a class="card" href="route('event.show', $event->id)">
+    <img class="card-img-top img-fluid card-img-aura" src="{{ asset('images/eventos/' . $event->photo) }}" alt="Card image cap" style="object-fit: cover;">
     <div class="card-body">
         <h5 class="card-title">{{ $event->name }}</h5>
-        <p class="card-text">{{ $event->start_date->format('d M Y') }} <br> {{ $event->location }}</p>
+        <p class="card-text">{{ $event->start_date->format('d M Y') }} <br> {{ $event->city }}</p>
     </div>
-</div>
+</a>

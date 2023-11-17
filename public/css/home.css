@@ -38,19 +38,29 @@ body{
     background-color: #11141A;
     color: #FFFFFF;
     padding-top: 1rem;
-    width: 7.5rem;
+    width: 8.5rem;
     text-align: center;
     margin-right: 1rem;
+    text-decoration: none;
 }
 
 .card-title{
     font-size: 12px;
     font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .card-text{
     font-size: 7px;
     font-weight: 300;
+}
+
+.card-img-aura{
+    width: 120px; 
+    height: 120px; 
+    overflow: hidden;
 }
 
 .row.flex-row.flex-nowrap.overflow-auto::-webkit-scrollbar {

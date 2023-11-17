@@ -35,7 +35,9 @@ CREATE TABLE events (
     name TEXT NOT NULL,
     description TEXT,
     photo TEXT,
-    location TEXT,
+    adress TEXT,
+    venue TEXT,
+    city TEXT,
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP,
     is_public BOOLEAN NOT NULL DEFAULT FALSE,
@@ -452,25 +454,59 @@ INSERT INTO clients (id) VALUES
     ('19'),
     ('20');
 
-INSERT INTO organizations (id, name, description) VALUES
-    ('1', 'Xutos & Pontapés', 'Os Xutos & Pontapés são uma das bandas de rock mais icónicas de Portugal, conhecidos pelos seus hits e energia nos palcos.'),
-    ('2', 'Amor Electro', 'Amor Electro é uma banda portuguesa de música pop e eletrónica, com uma sonoridade única e envolvente.'),
-    ('3', 'Mão Morta', 'Mão Morta é uma banda de rock alternativo e experimental, famosa pela sua abordagem artística ousada.'),
-    ('4', 'Os Azeitonas', 'Os Azeitonas são conhecidos pelas suas letras inteligentes e músicas contagiantes, abrangendo vários géneros musicais.'),
-    ('5', 'Ornatos Violeta', 'Ornatos Violeta foi uma das bandas mais influentes da cena alternativa portuguesa, conhecida pela sua poesia e estilo único.'),
-    ('6', 'Moonspell', 'Moonspell é uma banda de metal gótico que ganhou reconhecimento internacional pelo seu som sombrio e lírico.'),
-    ('7', 'Os Quatro e Meia', 'Os Quatro e Meia são conhecidos pelo seu folk e pop rock com letras cativantes e emotivas.'),
-    ('8', 'Capitão Fausto', 'Capitão Fausto é uma banda de rock alternativo e psicadélico com uma abordagem inovadora à música.');
 
-INSERT INTO events (id, name, description, location, start_date, end_date, organization_id) VALUES
-    ('1', 'Concerto dos Xutos & Pontapés', 'Concerto de celebração dos 40 anos dos Xutos & Pontapés.', 'Coliseu do Porto', '2024-12-14 21:00:00', '2024-12-14 23:00:00', '1'),
-    ('2', 'Aniversário dos Amor Electro', 'Concerto de celebração dos 10 anos dos Amor Electro.', 'Pavilhão Atlântico, Lisboa', '2024-12-14 21:00:00', '2024-12-14 23:00:00', '2'),
-    ('3', '30 Anos de Mão Morta', 'Concerto de celebração dos 30 anos dos Mão Morta.', 'Teatro Tivoli, Lisboa', '2024-12-21 21:00:00', '2024-12-21 23:00:00', '3'),
-    ('4', '20 Anos dos Os Azeitonas', 'Concerto de celebração dos 20 anos dos Os Azeitonas.', 'Altice Arena, Lisboa', '2024-12-28 21:00:00', '2024-12-28 23:00:00', '4'),
-    ('5', '20 Anos de Ornatos Violeta', 'Concerto de celebração dos 20 anos dos Ornatos Violeta.', 'Teatro São Luiz, Lisboa', '2024-01-04 21:00:00', '2024-01-04 23:00:00', '5'),
-    ('6', '25 Anos dos Moonspell', 'Concerto de celebração dos 25 anos dos Moonspell.', 'Hard Club, Porto', '2024-01-11 21:00:00', '2024-01-11 23:00:00', '6'),
-    ('7', '5 Anos dos Os Quatro e Meia', 'Concerto de celebração dos 5 anos dos Os Quatro e Meia.', 'Teatro Aveirense, Aveiro', '2024-01-18 21:00:00', '2024-01-18 23:00:00', '7'),
-    ('8', '10 Anos dos Capitão Fausto', 'Concerto de celebração dos 10 anos dos Capitão Fausto.', 'Centro Cultural de Belém, Lisboa', '2024-01-25 21:00:00', '2024-01-25 23:00:00', '8');
+INSERT INTO organizations (id, name, description) VALUES
+    (1, 'Everything is new', 'A Everything is New é uma promotora de eventos portuguesa, fundada em 2005 por Álvaro Covões, Luís Montez e Vasco Sacramento. A promotora é responsável pela organização de eventos como o NOS Alive, o NOS Primavera Sound, o EDP Cool Jazz, o Super Bock Super Rock, o Sumol Summer Fest, o Vodafone Mexefest, o ID No Limits, o Brunch Electronik, o Jameson Urban Routes, o Super Bock em Stock, o Festival F, o Festival Iminente, o Festival Fado, o Festival Fuso, o Festival Silêncio, o Festival Músicas do Mundo, o Festival de Jazz de Cascais'),
+    (2, 'Guns N Roses', 'Os Guns N Roses são uma banda de hard rock formada em 1985 em Los Angeles. A banda é composta por Axl Rose, Slash, Duff McKagan, Dizzy Reed, Richard Fortus, Frank Ferrer e Melissa Reese'),
+    (3, 'Metallica', 'Os Metallica são uma banda de heavy metal formada em 1981 em Los Angeles. A banda é composta por James Hetfield, Lars Ulrich, Kirk Hammett e Robert Trujillo.'),
+    (4,  'Foo Fighters', 'Os Foo Fighters são uma banda de rock alternativo formada em 1994 por Dave Grohl, ex-baterista dos Nirvana. A banda é composta por Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett, Pat Smear e Rami Jaffee.'),
+    (5,  'The Strokes', 'Os The Strokes são uma banda de rock alternativo formada em 1998 em Nova Iorque. A banda é composta por Julian Casablancas, Nick Valensi, Albert Hammond Jr., Nikolai Fraiture e Fabrizio Moretti.'),
+    (6, 'Primavera Sound', 'O Primavera Sound Porto (anteriormente NOS Primavera Sound até 2022) é o homólogo português do festival Primavera Sound que se celebra em Barcelona desde 2001. [1] O cartaz do Primavera Sound Porto conta com uma ampla seleção de artistas internacionais, com uma significativa representação do panorama musical português. A linha artística segue as mesmas diretrizes do evento musical barcelonês, que se distingue pela variedade de estilos e pela aposta em novas bandas, destacando tanto o panorama local como artistas internacionais, com longas e respeitadas carreiras. Depois do sucesso da quarta edição, o Primavera Sound Porto é já uma parada obrigatória no panorama de festivais europeus. A excelente localização geográfica, as boas vias de comunicação da cidade com o resto da Europa e do Mundo e a distinção do festival no panorama musical português contribui para o crescimento da cidade, na sua projeção enquanto capital cultural e para a sua dinamização internacional como destino turístico.'),
+    (7,  'TEUP - Tuna de Engenharia da Universidade do Porto',  'A Tuna de Engenharia da Universidade do Porto (TEUP) é uma tuna académica da Universidade do Porto, fundada em 1993. A TEUP é composta por estudantes e antigos estudantes da Faculdade de Engenharia da Universidade do Porto (FEUP).'),
+    (8, 'Thirty Seconds to Mars', 'Os Thirty Seconds to Mars são uma banda de rock alternativo formada em 1998 em Los Angeles. A banda é composta por Jared Leto, Shannon Leto e Tomo Miličević.'),
+    (9, 'Ornatos Violeta', 'Os Ornatos Violeta são uma banda de rock alternativo formada em 1991 em Coimbra. A banda é composta por Manel Cruz, Nuno Prata, Peixe, Kinörm e Elísio Donas.'),
+    (10, 'Musica no Coração', 'A Música no Coração é uma promotora de eventos portuguesa, fundada em 1999 por Luís Montez. A promotora é responsável pela organização de eventos como o NOS Alive, o NOS Primavera Sound, o EDP Cool Jazz, o Super Bock Super Rock, o Sumol Summer Fest, o Vodafone Mexefest, o ID No Limits, o Brunch Electronik, o Jameson Urban Routes, o Super Bock em Stock, o Festival F, o Festival Iminente, o Festival Fado, o Festival Fuso, o Festival Silêncio, o Festival Músicas do Mundo, o Festival de Jazz de Cascais');
+
+INSERT INTO events (id, name, description, photo, city, venue, adress, organization_id, start_date, end_date) VALUES
+    ('1', 'NOS Alive', 
+    'NOS Alive é um festival de música anual que acontece em Algés, Portugal. É organizado pela Everything is New e patrocinado pela NOS. O festival é conhecido por ter um cartaz eclético, com uma variedade de géneros musicais, incluindo rock, indie, metal, hip hop, pop e eletrónica.', 
+    'nos-alive.jpg', 'Oeiras', 'Passeio Marítimo de Algés', 'Passeio Marítimo de Algés - 1495-165 Algés', 1, '2024-07-06 21:00:00', '2024-07-10 06:00:00'),
+
+    ('2', 'Guns N Roses', 
+    'A tour Not In This Lifetime dos Guns N Roses, que começou em 2016, é a terceira maior tour de sempre, tendo já passado por 3 continentes e 14 países, com mais de 5 milhões de bilhetes vendidos. A banda é composta por Axl Rose, Slash e Duff McKagan, membros originais da banda, e ainda por Dizzy Reed, Richard Fortus, Frank Ferrer e Melissa Reese.',
+     'guns-n-roses.jpg', 'Lisboa', 'Altice Arena', 'Rossio dos Olivais, 1990-231 Lisboa', 2, '2024-12-14 21:00:00', '2024-12-14 23:00:00'),
+
+    ('3', 'Metallica', 
+    'Os Metallica são uma das bandas mais influentes e bem sucedidas de sempre, com mais de 110 milhões de álbuns vendidos em todo o mundo e inúmeros prémios e distinções. A banda foi formada em 1981 e é composta por James Hetfield, Lars Ulrich, Kirk Hammett e Robert Trujillo.',
+     'metallica.jpg', 'Lisboa', 'Estádio do Restelo', 'Estádio do Restelo - Av. do Restelo 1449-016 Lisboa', 3, '2024-12-14 21:00:00', '2024-12-14 23:00:00'),
+
+    ('4', 'Foo Fighters', 
+    'Os Foo Fighters são uma banda de rock alternativo formada em 1994 por Dave Grohl, ex-baterista dos Nirvana. A banda é composta por Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett, Pat Smear e Rami Jaffee.',
+    'foo-fighters.jpeg', 'Lisboa', 'Estádio Nacional', 'Estádio Nacional - Av. Pierre de Coubertin, 1495-751 Cruz Quebrada-Dafundo', 4, '2024-12-14 21:00:00', '2024-12-14 23:00:00'),
+
+    ('5', 'The Strokes', 
+    'Os The Strokes são uma banda de rock alternativo formada em 1998 em Nova Iorque. A banda é composta por Julian Casablancas, Nick Valensi, Albert Hammond Jr., Nikolai Fraiture e Fabrizio Moretti.',
+     'the-strokes.jpg', 'Lisboa', 'Altice Arena', 'Altice Arena - Rossio dos Olivais, 1990-231 Lisboa', 5, '2024-12-14 21:00:00', '2024-12-14 23:00:00'),
+
+    ('6', 'NOS Primavera Sound', 
+    'O NOS Primavera Sound é um festival de música anual que acontece no Parque da Cidade, no Porto. É organizado pela Everything is New e patrocinado pela NOS. O festival é conhecido por ter um cartaz eclético, com uma variedade de géneros musicais, incluindo rock, indie, metal, hip hop, pop e eletrónica.', 
+    'nos-primavera-sound.jpg', 'Porto', 'Parque da Cidade', 'Parque da Cidade - 4100-099 Porto',  6, '2024-06-06 21:00:00', '2024-06-09 07:00:00'),
+
+    ('7', 'Ornatos Violeta',
+    'Os Ornatos Violeta são uma banda de rock alternativo formada em 1991 em Coimbra. A banda é composta por Manel Cruz, Nuno Prata, Peixe, Kinörm e Elísio Donas.',  
+    'ornatos-violeta.jpg', 'Porto', 'Estádio do Dragão', 'Estádio do Dragão - Via Futebol Clube do Porto, 4350-415 Porto', 9, '2024-12-14 21:00:00', '2024-12-14 23:00:00'),
+
+    ('8', 'Super Bock Super Rock', 
+    'O Super Bock Super Rock é um festival de música anual que acontece no Parque das Nações, em Lisboa. É organizado pela Música no Coração e patrocinado pela Super Bock. O festival é conhecido por ter um cartaz eclético, com uma variedade de géneros musicais, incluindo rock, indie, metal, hip hop, pop e eletrónica.', 
+    'super-rock-super-bock.png', 'Lisboa', 'Parque das Nações',  'Parque das Nações - 1990-231 Lisboa',10, '2024-08-14 21:00:00', '2024-08-18 21:00:00'),
+
+    ('9', 'PortusCalle 23', 
+    'O festival de tunas da FEUP já está na sua 11ª edição e o público estimado para preencher o Coliseu do Porto no tão aguardado espectáculo musical é de cerca de 3 mil pessoas. "É a 2ª vez que organizamos o festival, embora este ano seja a 1ª vez que temos disponível a lotação total do Coliseu", afirmou a equipa TEUP que está a frente do evento, acrescentando que "haverá uma surpresa, mas obviamente não poderá ser revelada". O PortusCalle vai decorrer nos dias 6, 7 e 8 de Novembro e pretende marcar o XXI aniversário da Tuna de Engenharia da Universidade do Porto, que será a anfitriã da noite. A comemoração vai envolver mais seis tunas do Porto, Lisboa, Aveiro e Viana do Castelo e uma programação especial, com direito a muita música, convívio e diversão. Nestes 21 anos, já passaram pela TEUP mais de 200 "tunos", que representaram a Faculdade de Engenharia, divulgando a sua música um pouco por todo mundo. "Uma vez tuno, tuno toda a vida!" - é assim que Luís Justiniano, ex-aluno FEUP, caracteriza o "espírito TEUP", certificando que este é o requisito mais importante para fazer parte da Tuna de Engenharia. "Nem é preciso cantar ou tocar", revela. O ex-aluno do curso de Engenharia Civil esteve ligado a TEUP entre 1993 e 2001, mas ainda hoje assiste a alguns ensaios e participa de encontros semestrais. Para o ex-integrante, as expectativas para a TEUP traduzem-se num futuro "cada vez mais sorridente".', 
+    'PortusCalle-23-Coliseu-do-Porto.png', 'Porto', 'Coliseu do Porto', 'Coliseu do Porto - R. de Passos Manuel 137, 4000-385 Porto', 7, '2024-12-14 21:00:00', '2024-12-14 23:00:00'),
+    
+    ('10', 'Thirty Seconds to Mars', 
+    'A tour The Monolith dos Thirty Seconds to Mars, que começou em 2018, é a quarta maior tour de sempre, tendo já passado por 3 continentes e 14 países, com mais de 5 milhões de bilhetes vendidos. A banda é composta por Jared Leto, Shannon Leto e Tomo Miličević.',
+     'thirthy-seconds-to-mars.webp', 'Lisboa', 'Altice Arena', 'Rossio dos Olivais, 1990-231 Lisboa', 8,'2024-12-14 21:00:00', '2024-12-14 23:00:00');
 
 INSERT INTO organizers (user_id, organization_id) VALUES
     ('3', '1'),
