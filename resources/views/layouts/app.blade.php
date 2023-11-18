@@ -9,7 +9,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Aura - @yield('title')</title>
-        <link rel="icon" href="{{asset('images/AuraLogo.svg')}}">
+        <link rel="icon" href="{{asset('storage/AuraLogo.svg')}}">
 
         <!-- Styles -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
