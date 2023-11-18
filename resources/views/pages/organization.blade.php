@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-@section('title', $event->name . ' • ' . $event->venue)
+@section('title', $organization->name)
+
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/events.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/organization.css') }}">
 @endsection
 
 @section('header')

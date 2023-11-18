@@ -6,7 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MyEventsController;
-
+use App\Http\Controllers\OrganizationController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -40,6 +40,11 @@ Route::controller(EventController::class)->group(function () {
 //My Events
 Route::controller(MyEventsController::class)->group(function () {
     Route::get('/meus-eventos', 'show')->name('my-events');
+});
+
+//Organization
+Route::controller(OrganizationController::class)->group(function () {
+    Route::get('/organizacao/{id}', 'show')->name('organization');
 });
 
 // API
