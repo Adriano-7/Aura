@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Aura - @yield('title')</title>
+        <title>Aura • @yield('title')</title>
         <link rel="icon" href="{{asset('storage/AuraLogo.svg')}}">
 
         <!-- Styles -->
