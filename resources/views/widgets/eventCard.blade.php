@@ -1,5 +1,5 @@
 
-<a class="card" href="{{ url('/eventos/' . $event->id) }}">
+<a class="card" href="{{ route('events', ['id' => $event->id]) }}">
     <img class="card-img-top img-fluid card-img-aura" src="{{ asset('storage/eventos/' . $event->photo) }}" alt="Card image cap" style="object-fit: cover;">
     <div class="card-body">
         <h5 class="card-title">{{ $event->name }}</h5>

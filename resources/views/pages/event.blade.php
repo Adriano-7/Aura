@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Notifications')
+@section('title','Evento • ' . $event->name)
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/notifications.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/events.css') }}">
 @endsection
 
 @section('header')
@@ -18,10 +18,10 @@
             <div class="collapse navbar-collapse" id="navbarsExample05">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">DASHBOARD</a>
+                        <a class="nav-link active" href="#">DASHBOARD</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">NOTIFICAÇÕES</a>
+                        <a class="nav-link" href="{{ route('notifications') }}">NOTIFICAÇÕES</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">MEUS EVENTOS</a>

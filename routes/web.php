@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\EventsController;
+
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -26,7 +28,12 @@ Route::controller(HomeController::class)->group(function () {
 
 //Notifications
 Route::controller(NotificationsController::class)->group(function () {
-    Route::get('/notifications', 'show')->name('notifications');
+    Route::get('/notificacoes', 'show')->name('notifications');
+});
+
+//Events
+Route::controller(EventsController::class)->group(function () {
+    Route::get('/eventos/{id}', 'show')->name('events');
 });
 
 // API
