@@ -14,6 +14,8 @@
 @section('content')
     @if (!Auth::check())
         @include('widgets.welcomeBanner')
+    @else
+        @include('widgets.greetingsBanner')
     @endif
 
     @include('widgets.eventRow', ['events' => $events])
