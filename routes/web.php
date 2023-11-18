@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificationsController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -24,6 +25,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/home',  'show')->name('home');
 });
 
+//Notifications
+Route::controller(NotificationsController::class)->group(function () {
+    Route::get('/notifications', 'show')->name('notifications');
+});
 
 // API
 
