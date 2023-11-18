@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
  use App\Models\Event; 
 
 
-class EventsController extends Controller{
+class EventController extends Controller{
     public function show($id): View{
         return view('pages.event', [
             'user' => Auth::user(),
