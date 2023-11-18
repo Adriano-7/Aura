@@ -10,16 +10,19 @@
             @if (Auth::check())
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                            href="{{ route('home') }}">DESCOBRIR</a>
+                        <a class="nav-link" href="{{ route('home') }}">
+                           <span  class="{{ request()->routeIs('home') ? 'active' : '' }}"> DESCOBRIR </span>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('notifications') ? 'active' : '' }}"
-                            href="{{ route('notifications') }}">NOTIFICAÇÕES</a>
+                        <a class="nav-link" href="{{ route('notifications') }}">
+                            <span class="{{request()->routeIs('notifications') ? 'active' : ''}}"> NOTIFICAÇÕES </span>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('my-events') ? 'active' : '' }}"
-                            href="{{ route('my-events') }}">MEUS EVENTOS</a>
+                        <a class="nav-link" href="{{ route('my-events') }}">
+                            <span class="{{ request()->routeIs('my-events') ? 'active' : '' }}"> MEUS EVENTOS </span>
+                        </a>
                     </li>
                 </ul>
 
