@@ -9,10 +9,12 @@
 
 @section('header')
     @include('widgets.navBar')
-    @yield('navBar')
 @endsection
 
 @section('content')
+    @if (!Auth::check())
+        @include('widgets.welcomeBanner')
+    @endif
+
     @include('widgets.eventRow', ['events' => $events])
-    @yield('eventRow')
 @endsection

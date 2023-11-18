@@ -55,3 +55,64 @@
 .home-row{
     margin-bottom: 2rem;
 }
+
+
+/***************** Banner *****************/
+
+#home-banner {
+    display: flex;
+    flex-direction: row;
+}
+
+#home-banner-img {
+    height: 20rem;
+    width: 100%;
+    object-fit: cover;
+}
+
+#home-banner-text {
+    margin: auto;
+}
+
+#Banner-title {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: normal;
+
+    margin-bottom: 1.2rem;
+}
+
+#Banner-subtitle {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.underlined-text {
+    border-bottom: 2px solid #A08AFA;
+}
+
+@media (max-width: 770px) {
+    #home-banner {
+        flex-direction: column;
+    }
+
+    #home-banner-img {
+        height: 11rem;
+    }
+
+    #home-banner-text {
+        margin-top: 1rem;
+    }
+
+    #Banner-title {
+        font-size: 1.2rem;
+    }
+
+    #Banner-subtitle {
+        font-size: 0.8rem;
+    }
+}

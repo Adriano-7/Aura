@@ -9,7 +9,6 @@
 
 @section('header')
     @include('widgets.navBar')
-    @yield('navBar')
 @endsection
 
 @section('content')
