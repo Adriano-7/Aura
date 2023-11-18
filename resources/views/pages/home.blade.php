@@ -4,7 +4,6 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-    
 @endsection
 
 @section('header')
@@ -57,12 +56,9 @@
             </div>
         </div>
     </nav>
-
 @endsection
 
 @section('content')
-
-@include('widgets.eventRow', ['events' => $events])
-@yield('eventRow')
-
+    @include('widgets.eventRow', ['events' => $events])
+    @yield('eventRow')
 @endsection

@@ -27,8 +27,4 @@ class Event extends Model{
         'end_date' => 'datetime',
         'is_public' => 'boolean'
     ];
-
-    public function isPublic(){
-        return $this->is_public;
-    }
 }

@@ -15,17 +15,6 @@ class HomeController extends Controller
 {
     public function show(): View{
         return view('pages.home', [
-            'user' => Auth::user()
-        ]);
-    }
-    
-
-    /**
-     * Shows all cards.
-     */
-    public function list()
-    {
-        return view('pages.home', [
             'user' => Auth::user(),
             'events' => Event::all()
         ]);
