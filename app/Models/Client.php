@@ -15,18 +15,6 @@ class Client extends Model{
         return $this->belongsTo(User::class, 'id');
     }
 
-    public function participants(){
-        return $this->hasMany(Participant::class, 'user_id');
-    }
-
-    public function organizers(){
-        return $this->hasMany(Organizer::class, 'user_id');
-    }
-
-    public function comments(){
-        return $this->hasMany(Comment::class, 'author_id');
-    }
-
     public function notificationInvEvents(){
         return $this->hasMany(NotificationInvEvent::class, 'receiver_id');
     }
