@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+body{
+    background-color: #000000;
+}
+
+.nav-link.active {
+    color: #FFFFFF;
+    border-bottom: 2px solid #A08AFA;
+    padding-bottom: 0.5rem;
+}
+.nav-link{
+    font-size: small;
+}
+
+.nav-link img{
+    margin-right: 0.5rem;
+    width: 3.2em;
+}
+
+.dropdown-item{
+    font-size: small;
+}
+
+.row_title{
+    font-size: 1rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+}
+
+.card{
+    background-color: #11141A;
+    color: #FFFFFF;
+    padding-top: 1rem;
+    width: 8.5rem;
+    text-align: center;
+    margin-right: 1rem;
+    text-decoration: none;
+}
+
+.card-title{
+    font-size: 12px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-text{
+    font-size: 7px;
+    font-weight: 300;
+}
+
+.card-img-aura{
+    width: 120px; 
+    height: 120px; 
+    overflow: hidden;
+}
+
+.row.flex-row.flex-nowrap.overflow-auto::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .row.flex-row.flex-nowrap.overflow-auto {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  #content{
+      margin-top: 2.5rem;
+  }
+
+.home-row{
+    margin-bottom: 2rem;
+}

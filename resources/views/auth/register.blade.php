@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
+@section('title', 'Register')
+
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/login_register.css') }}">
 @endsection
-
-@section('header')
-@endsection
-
 
 
 @section('content')
@@ -16,7 +14,7 @@
       <div class="row">
         <div class="col-sm-6 text-black">
           <div class="px-5 ms-xl-4">
-            <a href="/home"><img src="{{asset('images/AuraLogo.svg')}}" alt="Logo" style="width: 7rem;" class="pt-5 mt-xl-4"></a>
+            <a href="/home"><img src="{{asset('storage/AuraLogo.svg')}}" alt="Logo" style="width: 7rem;" class="pt-5 mt-xl-4"></a>
           </div>
 
           <div id = "sample-text">
@@ -71,7 +69,7 @@
 
         </div>
         <div class="col-sm-6 px-0 d-none d-sm-block">
-          <img src="{{asset('images/LoginBanner.svg')}}"
+          <img src="{{asset('storage/LoginBanner.svg')}}"
             alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
         </div>
       </div>

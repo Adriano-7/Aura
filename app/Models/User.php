@@ -11,12 +11,13 @@ use Laravel\Sanctum\HasApiTokens;
 // Added to define Eloquent relationships.
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable{
     use HasApiTokens, HasFactory, Notifiable;
 
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
+
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -24,9 +25,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'email',
         'password',
+        'photo'
     ];
 
     /**
@@ -45,7 +48,10 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function isAdmin() {
+        return count($this->hasOne('App\Models\Administrator', 'id')->get());
+    }
 }
