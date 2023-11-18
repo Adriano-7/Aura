@@ -20,7 +20,7 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         if(Auth::check()) {
-            return redirect('/home');
+            return redirect('/');
         }
         return view('auth.register');
     }

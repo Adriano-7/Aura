@@ -21,8 +21,7 @@ use App\Http\Controllers\Auth\RegisterController;
 
 // Home
 Route::controller(HomeController::class)->group(function () {
-    Route::redirect('/', '/home');
-    Route::get('/home',  'show')->name('home');
+    Route::get('/',  'show')->name('home');
 });
 
 //Notifications
