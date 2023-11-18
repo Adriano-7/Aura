@@ -506,7 +506,7 @@ INSERT INTO events (id, name, description, photo, city, venue, adress, organizat
     
     ('10', 'Thirty Seconds to Mars', 
     'A tour The Monolith dos Thirty Seconds to Mars, que começou em 2018, é a quarta maior tour de sempre, tendo já passado por 3 continentes e 14 países, com mais de 5 milhões de bilhetes vendidos. A banda é composta por Jared Leto, Shannon Leto e Tomo Miličević.',
-     'thirthy-seconds-to-mars.webp', 'Lisboa', 'Altice Arena', 'Rossio dos Olivais, 1990-231 Lisboa', 8,'2024-12-14 21:00:00', '2024-12-14 23:00:00');
+     'thirthy-seconds-to-mars.jpg', 'Lisboa', 'Altice Arena', 'Rossio dos Olivais, 1990-231 Lisboa', 8,'2024-12-14 21:00:00', '2024-12-14 23:00:00');
 
 INSERT INTO organizers (user_id, organization_id) VALUES
     ('3', '1'),
