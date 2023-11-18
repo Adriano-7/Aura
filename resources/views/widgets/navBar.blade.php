@@ -5,20 +5,24 @@
             aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarsExample05">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">DESCOBRIR</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('notifications') ? 'active' : '' }}" href="{{ route('notifications') }}">NOTIFICAÇÕES</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('my-events') ? 'active' : '' }}" href="{{ route('my-events') }}">MEUS EVENTOS</a>
-                </li>
-            </ul>
 
+        <div class="collapse navbar-collapse" id="navbarsExample05">
             @if (Auth::check())
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
+                            href="{{ route('home') }}">DESCOBRIR</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('notifications') ? 'active' : '' }}"
+                            href="{{ route('notifications') }}">NOTIFICAÇÕES</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('my-events') ? 'active' : '' }}"
+                            href="{{ route('my-events') }}">MEUS EVENTOS</a>
+                    </li>
+                </ul>
+
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown ">
                         <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
@@ -35,12 +39,15 @@
                     </li>
                 </ul>
             @else
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav" style="margin-left: auto;">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">LOGIN</a>
+                        <a class="nav-link" href="{{ route('login') }}">Iniciar Sessão</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-link">|</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">REGISTAR</a>
+                        <a class="nav-link" href="{{ route('register') }}">Registar</a>
                     </li>
                 </ul>
             @endif
