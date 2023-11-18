@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 use Illuminate\View\View;
@@ -16,7 +17,9 @@ class HomeController extends Controller
     public function show(): View{
         return view('pages.home', [
             'user' => Auth::user(),
-            'events' => Event::all()
+            'events' => Event::all(),
+            // TODO: remove this
+            'comments' => Comment::event_comments(2),
         ]);
     }
 }
