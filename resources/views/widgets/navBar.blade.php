@@ -8,13 +8,13 @@
         <div class="collapse navbar-collapse" id="navbarsExample05">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('home') }}">DESCOBRIR</a>
+                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">DESCOBRIR</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('notifications') }}">NOTIFICAÇÕES</a>
+                    <a class="nav-link {{ request()->routeIs('notifications') ? 'active' : '' }}" href="{{ route('notifications') }}">NOTIFICAÇÕES</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('my-events') }}">MEUS EVENTOS</a>
+                    <a class="nav-link {{ request()->routeIs('my-events') ? 'active' : '' }}" href="{{ route('my-events') }}">MEUS EVENTOS</a>
                 </li>
             </ul>
 

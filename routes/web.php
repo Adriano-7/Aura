@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\MyEventController;
+use App\Http\Controllers\MyEventsController;
 
 
 use App\Http\Controllers\Auth\LoginController;
@@ -38,7 +38,7 @@ Route::controller(EventController::class)->group(function () {
 });
 
 //My Events
-Route::controller(MyEventController::class)->group(function () {
+Route::controller(MyEventsController::class)->group(function () {
     Route::get('/meus-eventos', 'show')->name('my-events');
 });
 

@@ -16,6 +16,10 @@
     text-decoration: none;
 }
 
+.card:hover{
+    background-color: rgb(25, 28, 37);
+}
+
 .card-title{
     font-size: 12px;
     font-weight: 600;

@@ -9,7 +9,7 @@ body{
     background-color: #000000;
 }
 
-.nav-link.active {
+.active {
     color: #FFFFFF;
     border-bottom: 2px solid #A08AFA;
     padding-bottom: 0.5rem;
