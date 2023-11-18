@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\EventController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -22,7 +21,7 @@ use App\Http\Controllers\Auth\RegisterController;
 // Home
 Route::controller(HomeController::class)->group(function () {
     Route::redirect('/', '/home');
-    Route::get('/home',  'list', [EventController::class, 'list'])->name('home');
+    Route::get('/home',  'list')->name('home');
 });
 
 
