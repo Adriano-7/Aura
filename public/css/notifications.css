@@ -1,15 +1,21 @@
+#notifications-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .notification {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+
     margin-top: 2rem;
     color: white;
     background-color: #11141A;
     border-radius: 3rem;
     padding: 0.5rem 0rem;
     width: 70%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-
     text-decoration: none;
 }
 
@@ -25,12 +31,11 @@
     object-fit: cover;
 }
 
-.notification-profile-info{
+.notification-profile-info {
     margin-left: 0.7rem;
     position: relative;
     top: 50%;
     transform: translateY(-35%);
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -46,7 +51,6 @@
 .notification-name {
     font-size: 0.8rem;
     font-weight: 600;
-
     margin-bottom: 0;
 }
 
@@ -58,19 +62,25 @@
 .notification-content {
     font-size: 0.8rem;
     font-weight: 300;
-
     position: relative;
     top: 50%;
     transform: translateY(-60%);
-
     word-wrap: break-word;
+
+    cursor: pointer;
 }
 
-.notification-buttons{
-    display: flex;
-    flex-direction: row;
-    margin-top: 0.5rem;   
+.notification-buttons {
+    margin-left: auto; 
 
-    position: absolute;
-    right: 0.5rem;
+    position: relative;
+    top: 50%;
+    transform: translateY(20%);
+}
+
+@media (max-width: 765px) {
+    .notification-buttons {
+        margin-left: 80%;
+        margin-bottom: 0.8rem;
+    }
 }

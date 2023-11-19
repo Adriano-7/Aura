@@ -53,7 +53,6 @@ Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization');
 });
 
-
 // API
 // Authentication
 Route::controller(LoginController::class)->group(function () {

@@ -1,7 +1,7 @@
-<div class="container">
+<div class="container" id="notifications-container">
     @foreach ($notifications as $notification)
         <div class="row notification">
-            <div class="col-md-2 notification-profile">
+            <div class="col-md-3 notification-profile">
                 <img class="rounded-circle notification-profile-img" src="{{ asset($notification->getImage()) }}"
                     alt="Profile Image">
                 <div class="notification-profile-info">
@@ -9,7 +9,7 @@
                     <p class="notification-date">{{ $notification->getNiceDate() }}</p>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8" onclick="window.location.href='{{ $notification->getLink() }}'">
                 <p class="notification-content">
                     {{ $notification->getContent() }}
                 </p>
