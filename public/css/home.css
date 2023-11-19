@@ -62,7 +62,7 @@
 #home-banner {
     display: flex;
     flex-direction: row;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 #home-banner-img {
