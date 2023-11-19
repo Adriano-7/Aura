@@ -12,5 +12,5 @@
 @endsection
 
 @section('content')
-    @include('widgets.notifications')
+    @include('widgets.notifications', ['notifications' => $notifications])
 @endsection

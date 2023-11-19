@@ -11,8 +11,7 @@ use App\Models\Event;
 use App\Models\User;
 use App\Models\Organization;
 
-class HomeController extends Controller
-{
+class HomeController extends Controller{
     public function show(): View{
         return view('pages.home', [
             'user' => Auth::user(),
