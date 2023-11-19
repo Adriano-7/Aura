@@ -7,6 +7,7 @@ use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MyEventsController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\DashboardController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -48,8 +49,8 @@ Route::controller(OrganizationController::class)->group(function () {
 });
 
 //Dashboard
-Route::controller(DashboardController::class)->group(function () {
-    Route::get('/dashboard', 'show')->name('dashboard');
+Route::middleware(['admin'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 });
 
 // API

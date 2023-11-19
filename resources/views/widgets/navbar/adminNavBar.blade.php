@@ -25,10 +25,12 @@
                 </li>
             </ul>
 
+            <!--
             <form id="search-form" class="form-inline my-2 my-lg-0 {{ request()->routeIs('home') ? 'd-none' : '' }}">
                 <input class="mr-sm-2" type="text" placeholder="Pesquisa por evento" id="search_bar"
                     style="background-image: url({{ asset('storage/search-Icon.svg') }});">
             </form>
+            -->
 
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown ">
