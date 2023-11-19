@@ -34,8 +34,8 @@ Route::middleware(['admin'])->group(function () {
 });
 
 //Notifications
-Route::controller(NotificationsController::class)->group(function () {
-    Route::get('/notificacoes', 'show')->name('notifications');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notificacoes', [NotificationsController::class, 'show'])->name('notifications');
 });
 
 //Events
@@ -44,8 +44,8 @@ Route::controller(EventController::class)->group(function () {
 });
 
 //My Events
-Route::controller(MyEventsController::class)->group(function () {
-    Route::get('/meus-eventos', 'show')->name('my-events');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/meus-eventos', [MyEventsController::class, 'show'])->name('my-events');
 });
 
 //Organization
@@ -55,7 +55,6 @@ Route::controller(OrganizationController::class)->group(function () {
 
 
 // API
-
 // Authentication
 Route::controller(LoginController::class)->group(function () {
     Route::get('/iniciar-sessao', 'showLoginForm')->name('login');
