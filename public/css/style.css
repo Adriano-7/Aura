@@ -34,6 +34,19 @@ body {
     font-size: small;
 }
 
+.badge{
+    background-color: #A08AFA;
+    font-weight: 500;
+    color: #000000 !important;
+    margin-left: 0.5rem;
+
+    /*center vertically*/
+    position: relative;
+    top: 50%;
+    transform: translateY(-10%);
+}
+
+/***************** Search Bar *****************/
 
 #search_bar{
     border-radius: 0.8em;
@@ -41,11 +54,41 @@ body {
     border: none;
     color: #FFFFFF;
     font-size: small;
+    font-weight: 300;
+
     padding: 0.5rem;
+    padding-left: 2.5rem;
+
+    background-repeat: no-repeat;
+    background-position: 7% 50%;
+    background-size: 1.5em;
 
     width: 19em;
 }
 
+#search_bar:focus {
+    outline: none;
+}
+
+#search_bar::placeholder{
+    color: #888282;
+    font-weight: 300;
+}
+
+
+#search_bar.looged_out {
+    width: 18rem;
+}
+
+@media (min-width: 765px) {
+    #search_bar.looged_out {
+        position:absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/*
 @media (min-width: 1092px) {
     #search-form{
         position: absolute;
@@ -68,26 +111,8 @@ body {
         width: 50%;
     }
 }
+*/
 
-#search_bar{
-    color: #FFFFFF;
-    font-weight: 300;
-
-    padding-left: 2.5rem;
-    
-    background-repeat: no-repeat;
-    background-position: 7% 50%;
-    background-size: 1.5em;
-}
-
-#search_bar:focus {
-    outline: none;
-}
-
-#search_bar::placeholder{
-    color: #888282;
-    font-weight: 300;
-}
 
 
 /***************** ScrollBar *****************/

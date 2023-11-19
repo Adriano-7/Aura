@@ -47,6 +47,11 @@ Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization');
 });
 
+//Dashboard
+Route::controller(DashboardController::class)->group(function () {
+    Route::get('/dashboard', 'show')->name('dashboard');
+});
+
 // API
 
 // Authentication
