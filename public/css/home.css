@@ -1,47 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-*{
-    font-family: 'Montserrat', sans-serif;
-}
-
-
-body{
-    background-color: #000000;
-}
-
-.nav-link.active {
-    color: #FFFFFF;
-    border-bottom: 2px solid #A08AFA;
-    padding-bottom: 0.5rem;
-}
-.nav-link{
-    font-size: small;
-}
-
-.nav-link img{
-    margin-right: 0.5rem;
-    width: 3.2em;
-}
-
-.dropdown-item{
-    font-size: small;
-}
 
 .row_title{
     font-size: 1rem;
     font-weight: 600;
     color: #FFFFFF;
-    margin-bottom: 1rem;
+    margin-bottom: 1.7rem;
 }
 
 .card{
     background-color: #11141A;
     color: #FFFFFF;
-    padding-top: 1rem;
+    padding: 0;
     width: 8.5rem;
     text-align: center;
     margin-right: 1rem;
     text-decoration: none;
+}
+
+.card:hover{
+    background-color: rgb(25, 28, 37);
 }
 
 .card-title{
@@ -53,14 +29,19 @@ body{
 }
 
 .card-text{
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 300;
 }
 
 .card-img-aura{
-    width: 120px; 
-    height: 120px; 
+    width: 95%;
+    height: 120px;
     overflow: hidden;
+    padding-left: 0.4em;
+    padding-top: 0.5em;
+
+    border-top-left-radius: 0.9em ;
+    border-top-right-radius: 0.9em;
 }
 
 .row.flex-row.flex-nowrap.overflow-auto::-webkit-scrollbar {
@@ -78,4 +59,75 @@ body{
 
 .home-row{
     margin-bottom: 2rem;
+}
+
+
+/***************** Banner *****************/
+
+#home-banner {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 3rem;
+}
+
+#home-banner-img {
+    height: 20rem;
+    width: 100%;
+    object-fit: cover;
+}
+
+#home-banner-text {
+    margin: auto;
+}
+
+#Banner-title {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: normal;
+
+    margin-bottom: 1.2rem;
+
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#Banner-subtitle {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 400;
+
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.underlined-text {
+    border-bottom: 2px solid #A08AFA;
+}
+
+@media (max-width: 770px) {
+    #home-banner {
+        flex-direction: column;
+    }
+
+    #home-banner-img {
+        height: 11rem;
+    }
+
+    #home-banner-text {
+        margin-top: 1rem;
+        display: none;
+    }
+
+    #Banner-title {
+        font-size: 1.2rem;
+    }
+
+    #Banner-subtitle {
+        font-size: 0.8rem;
+    }
 }

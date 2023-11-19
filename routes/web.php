@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\MyEventsController;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\DashboardController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -20,21 +25,44 @@ use App\Http\Controllers\Auth\RegisterController;
 
 // Home
 Route::controller(HomeController::class)->group(function () {
-    Route::redirect('/', '/home');
-    Route::get('/home',  'show')->name('home');
+    Route::get('/',  'show')->name('home');
+});
+
+//Dashboard
+Route::middleware(['admin'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+});
+
+//Notifications
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notificacoes', [NotificationsController::class, 'show'])->name('notifications');
+});
+
+//Events
+Route::controller(EventController::class)->group(function () {
+    Route::get('/eventos/{id}', 'show')->name('events');
+});
+
+//My Events
+Route::middleware(['auth'])->group(function () {
+    Route::get('/meus-eventos', [MyEventsController::class, 'show'])->name('my-events');
+});
+
+//Organization
+Route::controller(OrganizationController::class)->group(function () {
+    Route::get('/organizacao/{id}', 'show')->name('organization');
 });
 
 
 // API
-
 // Authentication
 Route::controller(LoginController::class)->group(function () {
-    Route::get('/login', 'showLoginForm')->name('login');
-    Route::post('/login', 'authenticate');
-    Route::get('/logout', 'logout')->name('logout');
+    Route::get('/iniciar-sessao', 'showLoginForm')->name('login');
+    Route::post('/iniciar-sessao', 'authenticate');
+    Route::get('/terminar-sessao', 'logout')->name('logout');
 });
 
 Route::controller(RegisterController::class)->group(function () {
-    Route::get('/register', 'showRegistrationForm')->name('register');
-    Route::post('/register', 'register');
+    Route::get('/registar', 'showRegistrationForm')->name('register');
+    Route::post('/registar', 'register');
 });

@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+body {
+    background-color: #000000;
+}
+
+.active {
+    color: #FFFFFF;
+    border-bottom: 2px solid #A08AFA;
+    padding-bottom: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .active {
+        border-bottom: none;
+    }
+}
+
+.nav-link {
+    font-size: small;
+}
+
+.nav-link img {
+    margin-right: 0.5rem;
+    width: 3.2em;
+}
+
+.dropdown-item {
+    font-size: small;
+}
+
+.badge{
+    background-color: #A08AFA;
+    font-weight: 500;
+    color: #000000 !important;
+    margin-left: 0.5rem;
+
+    /*center vertically*/
+    position: relative;
+    top: 50%;
+    transform: translateY(-10%);
+}
+
+/***************** Search Bar *****************/
+
+#search-form.looged_in{
+    margin-left: 2rem
+}
+
+#search_bar{
+    border-radius: 0.8em;
+    background-color: #11141A;
+    border: none;
+    color: #FFFFFF;
+    font-size: small;
+    font-weight: 300;
+
+    padding: 0.5rem;
+    padding-left: 2.5rem;
+
+    background-repeat: no-repeat;
+    background-position: 7% 50%;
+    background-size: 1.5em;
+}
+
+#search_bar:focus {
+    outline: none;
+}
+
+#search_bar::placeholder{
+    color: #888282;
+    font-weight: 300;
+}
+
+#search_bar.looged_in {
+    width: 100%;
+}
+
+#search_bar.looged_out {
+    width: 18rem;
+}
+
+@media (min-width: 765px) {
+    #search_bar.looged_out {
+        position:absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@media (max-width: 765px) {
+    #search-form{
+        margin-left: 0 !important;
+    }
+
+    #search_bar{
+        background-position: 2% 50%;
+    }
+}
+
+.navbar-nav {
+    white-space: nowrap;
+}
+
+/***************** ScrollBar *****************/
+/*Chrome, Safari, Edge, Opera */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #35353e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1c202a;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #414149;
+}
+
+/*Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #1c202a #35353e;
+}
