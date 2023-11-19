@@ -23,12 +23,13 @@
                         <span class="{{ request()->routeIs('my-events') ? 'active' : '' }}"> MEUS EVENTOS </span>
                     </a>
                 </li>
-            </ul>
 
-            <form id="search-form" class="form-inline my-2 my-lg-0 {{ request()->routeIs('home') ? 'd-none' : '' }}">
-                <input class="mr-sm-2" type="text" placeholder="Pesquisa por evento" id="search_bar"
-                    style="background-image: url({{ asset('storage/search-Icon.svg') }});">
-            </form>
+                <form id="search-form" class="form-inline my-2 my-lg-0 looged_in">
+                    <input id="search_bar" class="mr-sm-2 looged_in" type="text" placeholder="Pesquisa por evento"
+                        style="background-image: url(http://127.0.0.1:8000/storage/search-Icon.svg);">
+                </form>
+
+            </ul>
 
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown ">
@@ -37,6 +38,7 @@
                         <img src="{{ asset('storage/profile/' . $user->photo) }}" class="rounded-circle">
                         <span class="navbar-text dropdown-toggle">{{ $user->name }}</span>
                     </a>
+
 
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         <li><a class="dropdown-item" href="#">Definições</a></li>

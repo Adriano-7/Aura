@@ -9,8 +9,8 @@
         <div class="collapse navbar-collapse" id="navbarsExample05">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}">
-                        <span class="{{ request()->routeIs('home') ? 'active' : '' }}"> EVENTOS </span>
+                    <a class="nav-link" href="{{ route('dashboard') }}">
+                        <span class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"> DASHBOARD </span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -19,28 +19,26 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('dashboard') }}">
-                        <span class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"> DASHBOARD </span>
+                    <a class="nav-link" href="{{ route('home') }}">
+                        <span class="{{ request()->routeIs('home') ? 'active' : '' }}"> EVENTOS </span>
                     </a>
                 </li>
-            </ul>
 
-            <!--
-            <form id="search-form" class="form-inline my-2 my-lg-0 {{ request()->routeIs('home') ? 'd-none' : '' }}">
-                <input class="mr-sm-2" type="text" placeholder="Pesquisa por evento" id="search_bar"
-                    style="background-image: url({{ asset('storage/search-Icon.svg') }});">
+            <form id="search-form" class="form-inline my-2 my-lg-0 looged_in">
+                <input id="search_bar" class="mr-sm-2 looged_in" type="text" placeholder="Pesquisa por evento"  style="background-image: url(http://127.0.0.1:8000/storage/search-Icon.svg);">
             </form>
-            -->
+
+            </ul>
 
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown ">
                     <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                         <img src="{{ asset('storage/profile/' . $user->photo) }}" class="rounded-circle">
-                        <span class="navbar-text dropdown-toggle">{{ $user->name }}</span> 
+                        <span class="navbar-text dropdown-toggle">{{ $user->name }}</span>
                         <span class="badge">Admin</span>
                     </a>
-                        
+
 
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         <li><a class="dropdown-item" href="#">Definições</a></li>

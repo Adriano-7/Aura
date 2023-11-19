@@ -48,6 +48,10 @@ body {
 
 /***************** Search Bar *****************/
 
+#search-form.looged_in{
+    margin-left: 2rem
+}
+
 #search_bar{
     border-radius: 0.8em;
     background-color: #11141A;
@@ -62,8 +66,6 @@ body {
     background-repeat: no-repeat;
     background-position: 7% 50%;
     background-size: 1.5em;
-
-    width: 19em;
 }
 
 #search_bar:focus {
@@ -75,6 +77,9 @@ body {
     font-weight: 300;
 }
 
+#search_bar.looged_in {
+    width: 100%;
+}
 
 #search_bar.looged_out {
     width: 18rem;
@@ -88,32 +93,19 @@ body {
     }
 }
 
-/*
-@media (min-width: 1092px) {
-    #search-form{
-        position: absolute;
-        right: 21%; 
-        top: 50%;
-        transform: translateY(-50%);
-    
-        width: 15%;
-    }
-}
-
-@media (min-width: 765px) and (max-width: 1092px ) {
-    #search-form{
-        display: none;
-    }
-}
-
 @media (max-width: 765px) {
     #search-form{
-        width: 50%;
+        margin-left: 0 !important;
+    }
+
+    #search_bar{
+        background-position: 2% 50%;
     }
 }
-*/
 
-
+.navbar-nav {
+    white-space: nowrap;
+}
 
 /***************** ScrollBar *****************/
 /*Chrome, Safari, Edge, Opera */

@@ -28,6 +28,11 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/',  'show')->name('home');
 });
 
+//Dashboard
+Route::middleware(['admin'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+});
+
 //Notifications
 Route::controller(NotificationsController::class)->group(function () {
     Route::get('/notificacoes', 'show')->name('notifications');
@@ -48,10 +53,6 @@ Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization');
 });
 
-//Dashboard
-Route::middleware(['admin'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
-});
 
 // API
 
