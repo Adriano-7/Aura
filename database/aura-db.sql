@@ -565,6 +565,10 @@ INSERT INTO comments (id, author_id, text, event_id) VALUES
     ('7', '10', 'Certamente será um concerto fabuloso!', '7'),
     ('8', '11', 'Só quero que chegue este dia!', '8');
 
+-- Just to test comments (add more variety to comments later)
+INSERT INTO comments (id, author_id, text, event_id, date) VALUES
+    ('9', '5', 'Só quero que chegue este dia!', '2', '2023-12-08');
+
 INSERT INTO vote_comments (comment_id, user_id, is_up) VALUES
     ('1', '12', TRUE),
     ('2', '13', TRUE),

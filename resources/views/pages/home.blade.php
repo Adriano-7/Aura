@@ -66,8 +66,9 @@
 <!-- TODO: remove this -->
 <div>
     <h1 style="color: white">Comentários</h1>
+    <p style="color: white"> Comentários do evento 2 </p>
     @foreach ($comments as $comment)
-        <p style="color: white"> Comentários do evento {{ $comment->event_id }} </p>
+        <p style="color: white"> {{ $comment->date }} </p>
         <p style="color: white"> {{ $comment->text }} </p>
     @endforeach
 </div>
