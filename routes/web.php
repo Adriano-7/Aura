@@ -36,6 +36,8 @@ Route::middleware(['admin'])->group(function () {
 //Notifications
 Route::middleware(['auth'])->group(function () {
     Route::get('/notificacoes', [NotificationsController::class, 'show'])->name('notifications');
+
+    Route::delete('/notificacoes', [NotificationsController::class, 'delete'])->name('notification.delete');
 });
 
 //Events

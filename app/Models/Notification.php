@@ -129,7 +129,7 @@ class Notification extends Model
         switch($this->type){
             case 'event_invitation':
             case 'event_edit':
-                    return route('event', ['id' => $this->event->id]);
+                    return route('events', ['id' => $this->event->id]);
             case 'organization_invitation':
             case 'organization_registration_request':
             case 'organization_registration_response':
@@ -138,4 +138,5 @@ class Notification extends Model
                 throw new \Exception("Invalid notification type: {$this->type}");
         }
     }
+    
 }

@@ -16,4 +16,13 @@ class NotificationsController extends Controller{
             'notifications' => Notification::where('receiver_id', Auth::user()->id)->orderBy('date', 'desc')->get()
         ]);
     }
+
+    public function delete(Request $request){
+        $notification = Notification::find($request->id);
+        $this->authorize('delete', $notification);
+
+        $notification->delete();
+
+        return redirect()->route('notifications');
+    }
 }

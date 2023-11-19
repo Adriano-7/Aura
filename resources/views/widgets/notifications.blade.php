@@ -5,7 +5,12 @@
                 <img class="rounded-circle notification-profile-img" src="{{ asset($notification->getImage()) }}"
                     alt="Profile Image">
                 <div class="notification-profile-info">
-                    <p class="notification-name">{{ $notification->getSenderName() }}</p>
+                    <p class="notification-name">
+                        {{ $notification->getSenderName() }}
+                        @if (!$notification->seen)
+                            <span class="seen">•</span>
+                        @endif
+                    </p>
                     <p class="notification-date">{{ $notification->getNiceDate() }}</p>
                 </div>
             </div>
@@ -15,7 +20,13 @@
                 </p>
             </div>
             <div class="col-md-1 notification-buttons">
-                <a href="#"><img src="{{ asset('storage/Close_round.svg') }}" class="notification-close"></a>
+                <form method="POST" action="{{ route('notification.delete', ['id' => $notification->id]) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" style="background-color: transparent; border: none;">
+                        <img src="{{ asset('storage/Close_round.svg') }}" class="notification-close">
+                    </button>
+                </form>
             </div>
         </div>
     @endforeach
