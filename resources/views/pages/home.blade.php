@@ -70,5 +70,9 @@
     @foreach ($comments as $comment)
         <p style="color: white"> {{ $comment->date }} </p>
         <p style="color: white"> {{ $comment->text }} </p>
+        <form action="{{ url('/api/comments/' . $comment->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit">Delete</button>
     @endforeach
 </div>

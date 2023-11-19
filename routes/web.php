@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -24,8 +25,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/home',  'show')->name('home');
 });
 
-
 // API
+Route::controller(CommentController::class)->group(function () {
+    Route::delete('api/comments/{id}', 'destroy');
+});
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
