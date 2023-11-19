@@ -9,7 +9,7 @@
 .card{
     background-color: #11141A;
     color: #FFFFFF;
-    padding-top: 1rem;
+    padding: 0;
     width: 8.5rem;
     text-align: center;
     margin-right: 1rem;
@@ -29,14 +29,19 @@
 }
 
 .card-text{
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 300;
 }
 
 .card-img-aura{
-    width: 120px; 
-    height: 120px; 
+    width: 95%;
+    height: 120px;
     overflow: hidden;
+    padding-left: 0.4em;
+    padding-top: 0.5em;
+
+    border-top-left-radius: 0.9em ;
+    border-top-right-radius: 0.9em;
 }
 
 .row.flex-row.flex-nowrap.overflow-auto::-webkit-scrollbar {

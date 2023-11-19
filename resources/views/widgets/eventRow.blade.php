@@ -7,7 +7,10 @@
                     alt="Card image cap" style="object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">{{ $event->name }}</h5>
-                    <p class="card-text">{{ $event->start_date->format('d M Y') }} <br> {{ $event->city }}</p>
+                    <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        {{ $event->start_date->format('d M Y') }} <br> 
+                        {{ $event->city }} ・ {{ $event->venue }}
+                    </p>
                 </div>
             </a>
         @endforeach
