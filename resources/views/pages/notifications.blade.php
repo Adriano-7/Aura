@@ -12,4 +12,5 @@
 @endsection
 
 @section('content')
+    @include('widgets.notifications')
 @endsection

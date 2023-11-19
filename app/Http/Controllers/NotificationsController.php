@@ -10,6 +10,9 @@ class NotificationsController extends Controller{
     public function show(): View{
         return view('pages.notifications', [
             'user' => Auth::user(),
+
+            
+
             /*'notifications' => Auth::user()->notifications*/
         ]);
     }
