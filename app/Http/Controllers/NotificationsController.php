@@ -25,4 +25,14 @@ class NotificationsController extends Controller{
 
         return redirect()->route('notifications');
     }
+
+    public function markAsSeen(Request $request){
+        $notification = Notification::find($request->id);
+        $this->authorize('view', $notification);
+
+        $notification->seen = true;
+        $notification->save();
+
+        return redirect($notification->getLink());
+    }
 }

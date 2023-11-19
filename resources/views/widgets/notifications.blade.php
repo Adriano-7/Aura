@@ -14,7 +14,7 @@
                     <p class="notification-date">{{ $notification->getNiceDate() }}</p>
                 </div>
             </div>
-            <div class="col-md-8" onclick="window.location.href='{{ $notification->getLink() }}'">
+            <div class="col-md-8" onclick="window.location.href='{{ route('notification.markAsSeen', ['id' => $notification->id]) }}'">
                 <p class="notification-content">
                     {{ $notification->getContent() }}
                 </p>
