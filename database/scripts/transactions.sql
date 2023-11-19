@@ -1,6 +1,7 @@
 -- SCHEMA: lbaw2384
 CREATE SCHEMA IF NOT EXISTS lbaw2384;
 SET search_path TO lbaw2384;
+SET client_encoding TO 'UTF8';
 
 -- TRAN01: Utilizador ($idUtilizador) dá upvote a um comentário ($idComentario).
 
