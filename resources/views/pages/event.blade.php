@@ -11,15 +11,15 @@
 @endsection
 
 @section('content')
+    @php
+        $start_date = \Carbon\Carbon::parse($event->start_date);
+        $moreThan24Hours = false;
+        if ($event->end_date) {
+            $end_date = \Carbon\Carbon::parse($event->end_date);
+            $moreThan24Hours = $start_date->diffInHours($end_date) > 24;
+        }
+    @endphp
 
-@php
-    $start_date = \Carbon\Carbon::parse($event->start_date);
-    $moreThan24Hours = false;
-    if ($event->end_date) {
-        $end_date = \Carbon\Carbon::parse($event->end_date);
-        $moreThan24Hours = $start_date->diffInHours($end_date) > 24;
-    }
-@endphp
     <section id="event-header">
         <img src="{{ asset('storage/eventos/' . $event->photo) }}">
         <h1>{{$event->name}}</h1>
@@ -55,7 +55,11 @@
                     <div id="third-column">
                         <span id="numParticipants"> {{$event->getParticipants()->count()}} participantes</span>
                         @if(Auth::check() && !Auth::user()->isAdmin())
-                            <button id="join-event">Aderir ao evento</button>
+                            @if($user->participatesInEvent($event))
+                                <button id="leave-event">Sair do evento</button>
+                            @else
+                                <button id="join-event">Aderir ao evento</button>
+                            @endif
                             <div id="span-container">
                                 <span id="show-participants">Ver participantes</span>
                                 <span id="invite">Convidar</span>

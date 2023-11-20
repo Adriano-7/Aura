@@ -1,8 +1,8 @@
-#content{
+#content {
     padding: 0 15%;
 }
 
-#event-header{
+#event-header {
     position: relative;
     width: 100%;
     height: 400px;
@@ -14,7 +14,7 @@
     object-fit: cover;
 }
 
-#event-header h1{
+#event-header h1 {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -26,11 +26,11 @@
     background-color: rgba(17, 20, 26, 0.7);
 }
 
-.event-field{
+.event-field {
     margin: 2em 0;
 }
 
-.card{
+.card {
     background-color: #11141A;
     width: 100%;
     text-align: center;
@@ -38,7 +38,7 @@
     padding: 1em;
 }
 
-.event-field h2{
+.event-field h2 {
     color: #ffffff;
     font-size: 1.3em;
     font-weight: 500;
@@ -57,14 +57,18 @@
     flex: 1;
 }
 
-#date, #venue, #city {
+#date,
+#venue,
+#city {
     color: #ffffff;
     text-align: center;
     font-size: small;
     font-weight: 500;
 }
 
-#weekday, #time, #numParticipants {
+#weekday,
+#time,
+#numParticipants {
     color: #ffffff;
     text-align: center;
     font-size: small;
@@ -93,7 +97,7 @@
     justify-content: center;
 }
 
-#third-column #join-event {
+#join-event, #leave-event {
     width: 80%;
     border: #A08AFA 1px solid;
     border-radius: 50em;
@@ -104,7 +108,7 @@
 }
 
 
-#third-column #join-event:hover {
+#join-event:hover, #leave-event:hover {
     background-color: #A08AFA;
     color: #11141A;
 }
@@ -123,10 +127,10 @@
 
 #third-column #span-container span:hover {
     cursor: pointer;
-    color:#808080;
+    color: #808080;
 }
 
-#about-text{
+#about-text {
     color: #ffffff;
     font-size: small;
     font-weight: 300;
@@ -134,7 +138,7 @@
     margin: 1em 0;
 }
 
-.profile-pic{
+.profile-pic {
     margin-right: 0.5rem;
     width: 3.2em;
     border-radius: 50%;
