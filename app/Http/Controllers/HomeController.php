@@ -18,8 +18,6 @@ class HomeController extends Controller
         return view('pages.home', [
             'user' => Auth::user(),
             'events' => Event::all(),
-            // TODO: remove this
-            'comments' => Comment::event_comments(2),
             'organizations' => Organization::where('approved', true)->get(),
         ]);
     }
