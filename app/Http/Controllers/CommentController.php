@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -19,6 +20,12 @@ class CommentController extends Controller
             return response()->json([
                 'message' => 'Event id must be an integer'
             ], 400);
+        }
+
+        if (!Event::find($event_id)) {
+            return response()->json([
+                'message' => 'Event not found'
+            ], 404);
         }
 
         $comments = Comment::event_comments($event_id);
