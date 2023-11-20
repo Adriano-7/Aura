@@ -437,3 +437,20 @@ paths:
           description: 'Tab não disponível'
 
   # API
+  /api/event/{eventId}/comments:
+    get:
+      operationId: R117
+      summary: 'R117: Comentários de um evento'
+      description: 'API para receber todos os comentários de um evento, Acesso: PUB'
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      parameters:
+        - name: eventId
+          in: path
+          description: 'Id do evento'
+          required: true
+      responses:
+        '200':
+          description: 'Ok, receber todos os comentários de um evento'
+        '404':
+          description: 'Evento não existe'

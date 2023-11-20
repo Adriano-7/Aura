@@ -67,7 +67,6 @@ Route::controller(CommentController::class)->group(function () {
     Route::delete('api/comments/{id}', 'destroy');
 });
 
-// API
 // Authentication
 Route::controller(LoginController::class)->group(function () {
     Route::get('/iniciar-sessao', 'showLoginForm')->name('login');
