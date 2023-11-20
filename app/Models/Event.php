@@ -29,4 +29,8 @@ class Event extends Model{
         'end_date' => 'datetime',
         'is_public' => 'boolean'
     ];
+    
+    public function participants(){
+        return $this->belongsToMany(User::class, 'participants', 'event_id', 'user_id');
+    }
 }

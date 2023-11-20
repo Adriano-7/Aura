@@ -1,5 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS lbaw2384;
 SET search_path TO lbaw2384;
+SET client_encoding TO 'UTF8';
 
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (
@@ -7,17 +8,17 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    photo TEXT
+    photo TEXT default 'default.jpeg'
 );
 
 DROP TABLE IF EXISTS clients CASCADE;
 CREATE TABLE clients (
-    id SERIAL PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE
+    id INTEGER PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS administrators CASCADE;
 CREATE TABLE administrators (
-    id SERIAL PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE
+    id INTEGER PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS organizations CASCADE;
@@ -25,7 +26,7 @@ CREATE TABLE organizations (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     description TEXT,
-    photo TEXT,
+    photo TEXT default 'default.png',
     approved BOOLEAN NOT NULL DEFAULT FALSE
 );
 
@@ -34,14 +35,14 @@ CREATE TABLE events (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     description TEXT,
-    photo TEXT,
+    photo TEXT default 'default.png',
     adress TEXT,
     venue TEXT,
     city TEXT,
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP,
     is_public BOOLEAN NOT NULL DEFAULT FALSE,
-    organization_id SERIAL NOT NULL REFERENCES organizations (id) ON DELETE CASCADE,
+    organization_id INTEGER NOT NULL REFERENCES organizations (id) ON DELETE CASCADE,
 
     CONSTRAINT end_date_check CHECK (end_date IS NULL OR start_date < end_date),
     CONSTRAINT start_date_check CHECK (start_date > current_timestamp)
@@ -49,15 +50,15 @@ CREATE TABLE events (
 
 DROP TABLE IF EXISTS participants CASCADE;
 CREATE TABLE participants (
-    user_id SERIAL REFERENCES clients (id) ON DELETE CASCADE,
-    event_id SERIAL REFERENCES events (id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES clients (id) ON DELETE CASCADE,
+    event_id INTEGER REFERENCES events (id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, event_id)
 );
 
 DROP TABLE IF EXISTS organizers CASCADE;
 CREATE TABLE organizers (
-    user_id SERIAL REFERENCES clients (id) ON DELETE CASCADE,
-    organization_id SERIAL REFERENCES organizations (id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES clients (id) ON DELETE CASCADE,
+    organization_id INTEGER REFERENCES organizations (id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, organization_id)
 );
 
@@ -69,25 +70,25 @@ CREATE TABLE tags (
 
 DROP TABLE IF EXISTS tag_event CASCADE;
 CREATE TABLE tag_event (
-    tag_id SERIAL REFERENCES tags (id) ON DELETE CASCADE,
-    event_id SERIAL REFERENCES events (id) ON DELETE CASCADE,
+    tag_id INTEGER REFERENCES tags (id) ON DELETE CASCADE,
+    event_id INTEGER REFERENCES events (id) ON DELETE CASCADE,
     PRIMARY KEY (tag_id, event_id)
 );
 
 DROP TABLE IF EXISTS comments CASCADE;
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
-    author_id SERIAL NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
+    author_id INTEGER NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
     text TEXT NOT NULL,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
     vote_balance INT NOT NULL DEFAULT 0,
-    event_id SERIAL NOT NULL REFERENCES events (id)
+    event_id INTEGER NOT NULL REFERENCES events (id)
 );
 
 DROP TABLE IF EXISTS vote_comments CASCADE;
 CREATE TABLE vote_comments (
-    comment_id SERIAL REFERENCES comments (id) ON DELETE CASCADE,
-    user_id SERIAL REFERENCES clients (id) ON DELETE CASCADE,
+    comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES clients (id) ON DELETE CASCADE,
     is_up BOOLEAN NOT NULL,
     PRIMARY KEY (comment_id, user_id)
 );
@@ -95,7 +96,7 @@ CREATE TABLE vote_comments (
 DROP TABLE IF EXISTS files CASCADE;
 CREATE TABLE files (
     id SERIAL PRIMARY KEY,
-    comment_id SERIAL NOT NULL REFERENCES comments (id) ON DELETE CASCADE,
+    comment_id INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE,
     path TEXT NOT NULL,
     name TEXT NOT NULL,
     type TEXT NOT NULL
@@ -110,10 +111,10 @@ CREATE TABLE report_reasons_event (
 DROP TABLE IF EXISTS reports_event CASCADE;
 CREATE TABLE reports_event (
     id SERIAL PRIMARY KEY,
-    event_id SERIAL NOT NULL REFERENCES events (id) ON DELETE CASCADE,
+    event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
     resolved BOOLEAN NOT NULL DEFAULT FALSE,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    reason_id SERIAL NOT NULL REFERENCES report_reasons_event (id) ON DELETE CASCADE
+    reason_id INTEGER NOT NULL REFERENCES report_reasons_event (id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS report_reasons_comment CASCADE;
@@ -125,76 +126,62 @@ CREATE TABLE report_reasons_comment (
 DROP TABLE IF EXISTS reports_comment CASCADE;
 CREATE TABLE reports_comment (
     id SERIAL PRIMARY KEY,
-    comment_id SERIAL NOT NULL REFERENCES comments (id) ON DELETE CASCADE,
+    comment_id INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE,
     resolved BOOLEAN NOT NULL DEFAULT FALSE,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    reason_id SERIAL NOT NULL REFERENCES report_reasons_comment (id) ON DELETE CASCADE
+    reason_id INTEGER NOT NULL REFERENCES report_reasons_comment (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS notf_inv_event CASCADE;
-CREATE TABLE notf_inv_event (
-    id SERIAL PRIMARY KEY,
-    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    seen BOOLEAN NOT NULL DEFAULT FALSE,
-    receiver_id SERIAL NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
-
-    emitter_id SERIAL NOT NULL,
-    event_id SERIAL NOT NULL,
-    FOREIGN KEY (emitter_id, event_id) REFERENCES participants (user_id, event_id) ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS notf_inv_org CASCADE;
-CREATE TABLE notf_inv_org (
-    id SERIAL PRIMARY KEY,
-    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    seen BOOLEAN NOT NULL DEFAULT FALSE,
-
-    receiver_id SERIAL NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
-    organization_id SERIAL NOT NULL REFERENCES organizations (id) ON DELETE CASCADE
-);
+DROP TYPE IF EXISTS notification_type CASCADE;
+CREATE TYPE notification_type AS ENUM ('event_invitation', 'event_edit', 'organization_invitation', 'organization_registration_request', 'organization_registration_response');
 
 DROP TYPE IF EXISTS event_field CASCADE;
-CREATE TYPE event_field AS ENUM ('name', 'description', 'location', 'end_date', 'start_date');
+CREATE TYPE event_field AS ENUM ('name', 'description', 'photo', 'adress', 'venue', 'city', 'start_date', 'end_date', 'is_public');
 
-DROP TABLE IF EXISTS notf_edit_event CASCADE;
-CREATE TABLE notf_edit_event (
+/*
+    event_invitation -> user_emitter_id, event_id
+    event_edit -> user_emitter_id, event_id, changed_field
+
+    organization_invitation -> user_emitter_id, organization_id
+    organization_registration_request -> user_emitter_id, organization_id
+
+    organization_registration_response -> organization_id
+*/
+
+DROP TABLE IF EXISTS notifications CASCADE;
+CREATE TABLE notifications (
     id SERIAL PRIMARY KEY,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
     seen BOOLEAN NOT NULL DEFAULT FALSE,
-    changed_field event_field NOT NULL,
+    receiver_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+    type notification_type NOT NULL,
 
-    receiver_id SERIAL NOT NULL,
-    event_id SERIAL NOT NULL,
-    FOREIGN KEY (receiver_id, event_id) REFERENCES participants (user_id, event_id) ON DELETE CASCADE
-);
+    /*'organization_invitation', 'organization_registration_request', 'organization_registration_response'*/
+    organization_id INTEGER default null,
 
-DROP TABLE IF EXISTS notf_reg_req_org CASCADE;
-CREATE TABLE notf_reg_req_org (
-    id SERIAL PRIMARY KEY,
-    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    seen BOOLEAN NOT NULL DEFAULT FALSE,
+    /*'event_edit'*/
+    changed_field event_field default null,
 
-    receiver_id SERIAL NOT NULL REFERENCES administrators(id) ON DELETE CASCADE,
-    organization_id SERIAL NOT NULL REFERENCES organizations (id) ON DELETE CASCADE
-);
+    /*'organization_registration_request', 'event_invitation'*/
+    user_emitter_id INTEGER default null,
 
-DROP TABLE IF EXISTS notf_res_reg_req_org CASCADE;
-CREATE TABLE notf_res_reg_req_org (
-    id SERIAL PRIMARY KEY,
-    date TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    seen BOOLEAN NOT NULL DEFAULT FALSE,
+    /*'event_edit', 'event_invitation'*/
+    event_id INTEGER default null,
 
-    receiver_id SERIAL NOT NULL,
-    organization_id SERIAL NOT NULL,
-    FOREIGN KEY (receiver_id, organization_id) REFERENCES organizers (user_id, organization_id) ON DELETE CASCADE
+
+    FOREIGN KEY (organization_id) REFERENCES organizations (id) ON DELETE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_emitter_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 -- Performance Indexes
+/*
 -- Index 01
 CREATE INDEX notf_inv_event_user ON notf_inv_event USING hash (receiver_id);
 
 -- Index 02
 CREATE INDEX notf_inv_event_date ON notf_inv_event USING btree (date);
+*/
 
 -- Index 03
 CREATE INDEX event_start_date ON events USING btree (start_date);
@@ -233,45 +220,61 @@ CREATE TRIGGER event_search_update
     FOR EACH ROW 
     EXECUTE PROCEDURE event_search_update();
 
+
 -- TRIGGERS
 
 -- TRIGGER01
--- Notificação de edição de evento
+-- Event edit notification
+
 CREATE OR REPLACE FUNCTION notify_event_edit()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF  OLD.name IS DISTINCT FROM NEW.name 
+    IF OLD.name IS DISTINCT FROM NEW.name 
     THEN
-        INSERT INTO notf_edit_event (changed_field, receiver_id, event_id)
-        SELECT 'name', p.user_id, NEW.id
+        INSERT INTO notifications (type, changed_field, receiver_id, event_id)
+        SELECT 'event_edit', 'name', p.user_id, NEW.id
         FROM participants p
         WHERE p.event_id = NEW.id;
     END IF;
     IF OLD.description IS DISTINCT FROM NEW.description 
     THEN
-        INSERT INTO notf_edit_event (changed_field, receiver_id, event_id)
-        SELECT 'description', p.user_id, NEW.id
+        INSERT INTO notifications (type, changed_field, receiver_id, event_id)
+        SELECT 'event_edit', 'description', p.user_id, NEW.id
         FROM participants p
         WHERE p.event_id = NEW.id;
     END IF;
-    IF OLD.location IS DISTINCT FROM NEW.location 
+    IF OLD.adress IS DISTINCT FROM NEW.adress 
     THEN
-        INSERT INTO notf_edit_event (changed_field, receiver_id, event_id)
-        SELECT 'location', p.user_id, NEW.id
+        INSERT INTO notifications (type, changed_field, receiver_id, event_id)
+        SELECT 'event_edit', 'adress', p.user_id, NEW.id
+        FROM participants p
+        WHERE p.event_id = NEW.id;
+    END IF;
+    IF OLD.venue IS DISTINCT FROM NEW.venue 
+    THEN
+        INSERT INTO notifications (type, changed_field, receiver_id, event_id)
+        SELECT 'event_edit', 'venue', p.user_id, NEW.id
+        FROM participants p
+        WHERE p.event_id = NEW.id;
+    END IF;
+    IF OLD.city IS DISTINCT FROM NEW.city 
+    THEN
+        INSERT INTO notifications (type, changed_field, receiver_id, event_id)
+        SELECT 'event_edit', 'city', p.user_id, NEW.id
         FROM participants p
         WHERE p.event_id = NEW.id;
     END IF;
     IF OLD.start_date IS DISTINCT FROM NEW.start_date 
     THEN
-        INSERT INTO notf_edit_event (changed_field, receiver_id, event_id)
-        SELECT 'start_date', p.user_id, NEW.id
+        INSERT INTO notifications (type, changed_field, receiver_id, event_id)
+        SELECT 'event_edit', 'start_date', p.user_id, NEW.id
         FROM participants p
         WHERE p.event_id = NEW.id;
     END IF;
     IF OLD.end_date IS DISTINCT FROM NEW.end_date 
     THEN
-        INSERT INTO notf_edit_event (changed_field, receiver_id, event_id)
-        SELECT 'end_date', p.user_id, NEW.id
+        INSERT INTO notifications (type, changed_field, receiver_id, event_id)
+        SELECT 'event_edit', 'end_date', p.user_id, NEW.id
         FROM participants p
         WHERE p.event_id = NEW.id;
     END IF;
@@ -287,16 +290,16 @@ EXECUTE FUNCTION notify_event_edit();
 
 
 -- TRIGGER02
--- Notificação de aprovação de organização
+-- Notificação a todos os organizadores de uma organização da aprovação de um pedido de registo de organização
 CREATE OR REPLACE FUNCTION notify_organization_approval()
 RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.approved = TRUE
     THEN
-        INSERT INTO notf_res_reg_req_org (receiver_id, organization_id)
-        SELECT organization.id, organization.id
-        FROM organizations AS organization 
-        WHERE organization.id = NEW.id;
+        INSERT INTO notifications (type, receiver_id, organization_id)
+        SELECT 'organization_registration_response', o.user_id, NEW.id
+        FROM organizers o
+        WHERE o.organization_id = NEW.id;
     END IF;
     RETURN NEW;
 END;
@@ -310,7 +313,7 @@ WHEN (OLD.approved = FALSE AND NEW.approved = TRUE)
 EXECUTE FUNCTION notify_organization_approval();
 
 -- TRIGGER03
--- Quando um comentário é apagado todos os votos desse comentário também são apagados
+-- When a comment is deleted, all its votes are deleted as well
 CREATE OR REPLACE FUNCTION delete_comment_votes()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -326,8 +329,9 @@ AFTER DELETE ON comments
 FOR EACH ROW
 EXECUTE FUNCTION delete_comment_votes();
 
+
 -- TRIGGER04
--- Um cliente pode apenas acrescentar comentários nos eventos em que participa. (BR06)
+-- A client can only comment on an event in which he participates. (BR06)
 CREATE OR REPLACE FUNCTION check_participant_comment()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -352,7 +356,7 @@ EXECUTE FUNCTION check_participant_comment();
 
 
 -- TRIGGER05
--- Um cliente só pode ter um voto em cada comentário. (BR07)
+-- A client can only vote on a comment once. (BR07)
 DROP TRIGGER IF EXISTS check_participant_comment_trigger ON comments CASCADE;
 CREATE TRIGGER check_participant_comment_trigger
 BEFORE INSERT ON comments
@@ -383,7 +387,7 @@ EXECUTE FUNCTION check_vote_comment();
 
 
 -- TRIGGER06
--- Um cliente não pode pedir para participar num evento no qual já participa. (BR08)
+-- A client cant request to join an event in which he already participates. (BR08)
 
 CREATE OR REPLACE FUNCTION check_participant_event()
 RETURNS TRIGGER AS $$
@@ -406,6 +410,78 @@ CREATE TRIGGER check_participant_event_trigger
 BEFORE INSERT ON participants
 FOR EACH ROW
 EXECUTE FUNCTION check_participant_event();
+
+/*Before insert on notification, check integrity of notification*/
+CREATE OR REPLACE FUNCTION check_notification_insert() RETURNS TRIGGER AS $$
+DECLARE
+BEGIN
+    IF NEW.type = 'event_invitation' THEN
+        IF 
+            NEW.user_emitter_id IS NULL 
+            OR NEW.event_id IS NULL 
+        THEN
+            RAISE EXCEPTION 'Event invitation notification missing fields';
+        ELSIF
+            NEW.organization_id IS NOT NULL 
+            OR NEW.changed_field IS NOT NULL 
+        THEN
+            RAISE EXCEPTION 'Event invitation notification has extra fields';
+        ELSEIF
+            EXISTS (SELECT * FROM administrators a WHERE a.id = NEW.user_emitter_id)
+        THEN
+            RAISE EXCEPTION 'Event invitation notification cannot be sent by an admin';
+        END IF;
+    ELSIF NEW.type = 'event_edit' THEN
+        IF  
+            NEW.event_id IS NULL 
+            OR NEW.changed_field IS NULL 
+        THEN
+            RAISE EXCEPTION 'Event edit notification missing fields';
+        ELSIF
+            NEW.user_emitter_id IS NULL 
+            OR NEW.organization_id IS NOT NULL 
+        THEN
+            RAISE EXCEPTION 'Event edit notification has extra fields';
+        END IF;
+
+    ELSIF NEW.type = 'organization_invitation' OR NEW.type = 'organization_registration_request' THEN
+        IF 
+            NEW.user_emitter_id IS NULL 
+            OR NEW.organization_id IS NULL 
+        THEN
+            RAISE EXCEPTION 'Organization invitation or registration request notification missing fields';
+        ELSIF
+            NEW.event_id IS NOT NULL 
+            OR NEW.changed_field IS NOT NULL 
+        THEN
+            RAISE EXCEPTION 'Organization invitation or registration request notification has extra fields';
+        END IF;
+
+    ELSIF NEW.type = 'organization_registration_response' THEN
+        IF 
+            NEW.organization_id IS NULL 
+            OR NEW.event_id IS NOT NULL 
+        THEN
+            RAISE EXCEPTION 'Organization registration response notification missing fields';
+        ELSIF
+            NEW.user_emitter_id IS NOT NULL 
+            OR NEW.changed_field IS NOT NULL 
+        THEN
+            RAISE EXCEPTION 'Organization registration response notification has extra fields';
+        END IF;
+    ELSE
+        RAISE EXCEPTION 'Invalid notification';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS check_notification_insert_trigger ON notifications CASCADE;
+CREATE TRIGGER check_notification_insert_trigger
+BEFORE INSERT ON notifications
+FOR EACH ROW
+EXECUTE FUNCTION check_notification_insert();
+
 
 INSERT INTO users (id, name, email, password, photo) VALUES
     ('1', 'João Silva', 'admin@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'joao_silva.jpeg'),
@@ -469,7 +545,11 @@ INSERT INTO organizations (id, name, photo, approved, description) VALUES
     (6, 'Primavera Sound', 'primavera-sound.jpg',TRUE,'O Primavera Sound Porto (anteriormente NOS Primavera Sound até 2022) é o homólogo português do festival Primavera Sound que se celebra em Barcelona desde 2001. [1] O cartaz do Primavera Sound Porto conta com uma ampla seleção de artistas internacionais, com uma significativa representação do panorama musical português. A linha artística segue as mesmas diretrizes do evento musical barcelonês, que se distingue pela variedade de estilos e pela aposta em novas bandas, destacando tanto o panorama local como artistas internacionais, com longas e respeitadas carreiras. Depois do sucesso da quarta edição, o Primavera Sound Porto é já uma parada obrigatória no panorama de festivais europeus. A excelente localização geográfica, as boas vias de comunicação da cidade com o resto da Europa e do Mundo e a distinção do festival no panorama musical português contribui para o crescimento da cidade, na sua projeção enquanto capital cultural e para a sua dinamização internacional como destino turístico.'),
     (7,  'TEUP - Tuna de Engenharia da Universidade do Porto', 'teup.png',TRUE,'A Tuna de Engenharia da Universidade do Porto (TEUP) é uma tuna académica da Universidade do Porto, fundada em 1993. A TEUP é composta por estudantes e antigos estudantes da Faculdade de Engenharia da Universidade do Porto (FEUP).'),
     (1, 'Everything is new', 'everything-is-new.png', TRUE, 'A Everything is New é uma promotora de eventos portuguesa, fundada em 2005 por Álvaro Covões, Luís Montez e Vasco Sacramento. A promotora é responsável pela organização de eventos como o NOS Alive, o NOS Primavera Sound, o EDP Cool Jazz, o Super Bock Super Rock, o Sumol Summer Fest, o Vodafone Mexefest, o ID No Limits, o Brunch Electronik, o Jameson Urban Routes, o Super Bock em Stock, o Festival F, o Festival Iminente, o Festival Fado, o Festival Fuso, o Festival Silêncio, o Festival Músicas do Mundo, o Festival de Jazz de Cascais'),
-    (9, 'Musica no Coração', 'musica-no-coracao.png',TRUE,'A Música no Coração é uma promotora de eventos portuguesa, fundada em 1999 por Luís Montez. A promotora é responsável pela organização de eventos como o NOS Alive, o NOS Primavera Sound, o EDP Cool Jazz, o Super Bock Super Rock, o Sumol Summer Fest, o Vodafone Mexefest, o ID No Limits, o Brunch Electronik, o Jameson Urban Routes, o Super Bock em Stock, o Festival F, o Festival Iminente, o Festival Fado, o Festival Fuso, o Festival Silêncio, o Festival Músicas do Mundo, o Festival de Jazz de Cascais');
+    (9, 'Musica no Coração', 'musica-no-coracao.png',TRUE,'A Música no Coração é uma promotora de eventos portuguesa, fundada em 1999 por Luís Montez. A promotora é responsável pela organização de eventos como o NOS Alive, o NOS Primavera Sound, o EDP Cool Jazz, o Super Bock Super Rock, o Sumol Summer Fest, o Vodafone Mexefest, o ID No Limits, o Brunch Electronik, o Jameson Urban Routes, o Super Bock em Stock, o Festival F, o Festival Iminente, o Festival Fado, o Festival Fuso, o Festival Silêncio, o Festival Músicas do Mundo, o Festival de Jazz de Cascais'),
+    (16, 'Klepht', 'klepht.jpeg', FALSE, 'Os Klepht são uma banda de pop rock formada em 2005 em Lisboa. A banda é composta por Diogo Dias, Filipe Ferreira, Filipe Silva, João Silva e Marco Nunes.'),
+    (17, 'The Gift', 'the-gift.jpg', FALSE, 'Os The Gift são uma banda de pop rock formada em 1994 em Alcobaça. A banda é composta por Sónia Tavares, Nuno Gonçalves, John Gonçalves e Miguel Ribeiro.'),
+    (18, 'Xutos e Pontapés', 'xutos-e-pontapes.jpg', FALSE, 'Os Xutos e Pontapés são uma banda de rock formada em 1978 em Lisboa. A banda é composta por Tim, Kalú, João Cabeleira e Gui.'),
+    (19, 'Capitão Fausto', 'capitao-fausto.jpg', FALSE, 'Os Capitão Fausto são uma banda de rock formada em 2009 em Lisboa. A banda é composta por Tomás Wallenstein, Domingos Coimbra, Francisco Ferreira, Manuel Palha e Salvador Seabra.');
 
 INSERT INTO events (id, name, photo, city, venue, adress, organization_id, start_date, end_date, description) VALUES
     ('1', 'NOS Alive', 'nos-alive.jpg', 'Oeiras', 'Passeio Marítimo de Algés', 'Passeio Marítimo de Algés - 1495-165 Algés', 1, '2024-07-06 21:00:00', '2024-07-10 06:00:00',    'NOS Alive é um festival de música anual que acontece em Algés, Portugal. É organizado pela Everything is New e patrocinado pela NOS. O festival é conhecido por ter um cartaz eclético, com uma variedade de géneros musicais, incluindo rock, indie, metal, hip hop, pop e eletrónica.'),
@@ -494,7 +574,18 @@ INSERT INTO organizers (user_id, organization_id) VALUES
     ('7', '5'),
     ('8', '6'),
     ('9', '7'),
-    ('10', '8');
+    ('10', '8'),
+    ('11', '9'),
+    ('12', '10'),
+    ('13', '11'),
+    ('14', '12'),
+    ('15', '13'),
+    ('16', '14'),
+    ('17', '15'),
+    ('16', '16'),
+    ('17', '17'),
+    ('18', '18'),
+    ('19', '19');
 
 INSERT INTO participants (user_id, event_id) VALUES
     ('4', '1'),
@@ -579,3 +670,82 @@ INSERT INTO reports_comment (id, comment_id, reason_id) VALUES
     ('1', '1', '1'),
     ('2', '2', '2'),
     ('3', '5', '5');
+
+--Insert notifications for event invite
+INSERT INTO notifications(id, receiver_id, type, user_emitter_id, event_id) VALUES
+    ('1', '3', 'event_invitation', '4', '1'),
+    ('2', '3', 'event_invitation', '5', '2'),
+    ('3', '5', 'event_invitation', '6', '3'),
+    ('4', '4', 'event_invitation', '7', '4'),
+    ('5', '7', 'event_invitation', '8', '5'),
+    ('6', '9', 'event_invitation', '9', '6'),
+    ('7', '10', 'event_invitation', '10', '7'),
+    ('8', '12', 'event_invitation', '11', '8'),
+    ('9', '11', 'event_invitation', '12', '1'),
+    ('10', '15', 'event_invitation', '13', '2'),
+    ('11', '18', 'event_invitation', '14', '3'),
+    ('12', '20', 'event_invitation', '15', '4'),
+    ('13', '19', 'event_invitation', '16', '5'),
+    ('14', '14', 'event_invitation', '17', '6'),
+    ('15', '13', 'event_invitation', '18', '7'),
+    ('16', '12', 'event_invitation', '19', '8'),
+    ('17', '11', 'event_invitation', '20', '1'),
+    ('18', '10', 'event_invitation', '4', '2'),
+    ('19', '9', 'event_invitation', '5', '3'),
+    ('20', '8', 'event_invitation', '6', '4'),
+    ('21', '7', 'event_invitation', '7', '5'),
+    ('22', '6', 'event_invitation', '8', '6'),
+    ('23', '5', 'event_invitation', '9', '7'),
+    ('24', '4', 'event_invitation', '10', '8'),
+    ('25', '3', 'event_invitation', '11', '1'),
+    ('26', '4', 'event_invitation', '12', '2'),
+    ('27', '5', 'event_invitation', '13', '3'),
+    ('28', '6', 'event_invitation', '14', '4'),
+    ('29', '7', 'event_invitation', '15', '5'),
+    ('30', '8', 'event_invitation', '16', '6'),
+    ('31', '9', 'event_invitation', '17', '7'),
+    ('32', '10', 'event_invitation', '18', '8');
+
+--Insert notifications for organization invite (the user_emitter becomes the organization)
+INSERT INTO notifications(id, receiver_id, type, organization_id, user_emitter_id) VALUES
+    ('33', '3', 'organization_invitation', '1', '3'),
+    ('34', '4', 'organization_invitation', '2', '4'),
+    ('35', '5', 'organization_invitation', '3', '5'),
+    ('36', '6', 'organization_invitation', '4', '6'),
+    ('37', '7', 'organization_invitation', '5', '7'),
+    ('38', '8', 'organization_invitation', '6', '8'),
+    ('39', '9', 'organization_invitation', '7', '9'),
+    ('40', '10', 'organization_invitation', '8', '10'),
+    ('41', '11', 'organization_invitation', '2', '4'),
+    ('42', '12', 'organization_invitation', '3', '5'),
+    ('43', '13', 'organization_invitation', '4', '6'),
+    ('44', '14', 'organization_invitation', '5', '7'),
+    ('45', '15', 'organization_invitation', '6', '8'),
+    ('46', '16', 'organization_invitation', '7', '9'),
+    ('47', '17', 'organization_invitation', '8', '10'),
+    ('48', '18', 'organization_invitation', '1', '3'),
+    ('49', '19', 'organization_invitation', '2', '4'),
+    ('50', '20', 'organization_invitation', '3', '5'),
+    ('51', '6', 'organization_invitation', '4', '6'),
+    ('52', '7', 'organization_invitation', '5', '7'),
+    ('53', '8', 'organization_invitation', '6', '8'),
+    ('54', '9', 'organization_invitation', '7', '9'),
+    ('55', '10', 'organization_invitation', '8', '10'),
+    ('56', '11', 'organization_invitation', '1', '3'),
+    ('57', '12', 'organization_invitation', '2', '4'),
+    ('58', '13', 'organization_invitation', '3', '5'),
+    ('59', '14', 'organization_invitation', '4', '6'),
+    ('60', '15', 'organization_invitation', '5', '7'),
+    ('61', '16', 'organization_invitation', '6', '8'),
+    ('62', '17', 'organization_invitation', '7', '9');
+
+--Insert notifications for organization register
+INSERT INTO notifications(id, receiver_id, type, organization_id, user_emitter_id) VALUES
+    ('63', '1',  'organization_registration_request', '16', '16'),
+    ('64', '2',  'organization_registration_request', '16', '16'),
+    ('65', '1',  'organization_registration_request', '17', '17'),
+    ('66', '2',  'organization_registration_request', '17', '17'),
+    ('67', '1',  'organization_registration_request', '18', '18'),
+    ('68', '2',  'organization_registration_request', '18', '18'),
+    ('69', '1',  'organization_registration_request', '19', '19'),
+    ('70', '2',  'organization_registration_request', '19', '19');

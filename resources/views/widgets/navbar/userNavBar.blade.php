@@ -39,7 +39,6 @@
                         <span class="navbar-text dropdown-toggle">{{ $user->name }}</span>
                     </a>
 
-
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         <li><a class="dropdown-item" href="#">Definições</a></li>
                         <li><a class="dropdown-item" href="#">Perfil</a></li>
