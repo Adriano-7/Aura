@@ -52,6 +52,6 @@ class User extends Authenticatable{
     ];
 
     public function isAdmin() {
-        return count($this->hasOne('App\Models\Administrator', 'id')->get());
+        return $this->hasOne('App\Models\Administrator', 'id')->exists();
     }
 }

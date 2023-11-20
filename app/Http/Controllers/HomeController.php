@@ -9,8 +9,8 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Event;
-
 use App\Models\User;
+use App\Models\Organization;
 
 class HomeController extends Controller
 {
@@ -20,6 +20,7 @@ class HomeController extends Controller
             'events' => Event::all(),
             // TODO: remove this
             'comments' => Comment::event_comments(2),
+            'organizations' => Organization::where('approved', true)->get(),
         ]);
     }
 }
