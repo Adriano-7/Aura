@@ -24,6 +24,6 @@ class EventController extends Controller{
         $event->save();
 
         return redirect()->route('notifications')->
-            with('status', "You have sucessfully joined the event {$event->name}, {$event->venue} on {$event->start_date->format('F j, Y')}.");    
+            with('status', "Entrou com sucesso no evento {$event->name}, {$event->venue} em {$event->start_date->format('j F, Y')}.");    
     }
 }

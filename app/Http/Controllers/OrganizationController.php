@@ -21,6 +21,6 @@ class OrganizationController extends Controller{
         $organization = Organization::find($id);
         $this->authorize('wasInvited', $organization);
         $organization->organizers()->attach(Auth::user()->id);
-        return redirect()->route('notifications')->with('status', "You have sucessfully joined the organization {$organization->name}");
+        return redirect()->route('notifications')->with('status', "Entraste com sucesso na organização {$organization->name}");
     }
 }
