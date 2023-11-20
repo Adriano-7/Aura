@@ -494,7 +494,10 @@ INSERT INTO organizers (user_id, organization_id) VALUES
     ('7', '5'),
     ('8', '6'),
     ('9', '7'),
-    ('10', '8');
+    ('10', '8'),
+    ('18', '1'),
+    ('18', '3');
+
 
 INSERT INTO participants (user_id, event_id) VALUES
     ('4', '1'),

@@ -1,0 +1,87 @@
+.custom-container {
+    max-width: 400px;
+    margin: auto;
+    margin-top: 50px;
+    color: #808080;
+    border: 2px solid #11141A;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #11141A; /* Set the background color to white */
+}
+
+.custom-container h2 {
+    margin-bottom: 1em;
+}
+
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+
+.form-group input{
+    border: none;
+    border-bottom: 1px solid #808080;
+    background-color: #11141A;
+    color: #808080;
+    width: 100%;
+    margin-bottom: 8%;
+}
+
+.form-group input:focus{
+    outline: none;
+    border-bottom: 1px solid #50457D;
+    color: #808080;
+}
+
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover, 
+.form-group input:-webkit-autofill:focus, 
+.form-group input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px #000000 inset !important;
+    -webkit-text-fill-color: #808080 !important;
+}
+
+.form-group textarea{
+    border: none;
+    border: 1px solid #808080;
+    border-radius: 0.5em;
+    background-color: #11141A;
+    color: #808080;
+    width: 100%;
+    margin-bottom: 8%;
+}
+
+.fas fa-calendar-alt {
+    
+}
+
+
+
+
+.form-group select {
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid #808080;
+    border-radius: 4px;
+    background-color: #11141A;
+    margin-top: 1em;
+    color: #808080;
+}
+
+.form-group select:focus {
+    border-color: #A08AFA;
+}
+
+
+.btn-primary {
+    background-color: #11141A;
+    color: #A08AFA;
+    border-color: #A08AFA;
+}
+
+.btn-secondary {
+    background-color: #11141A;
+    color: #808080
+
+}

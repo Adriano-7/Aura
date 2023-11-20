@@ -12,4 +12,7 @@
 @endsection
 
 @section('content')
+@section('content')
+    <a href="{{ route('criar-evento') }}" class="btn btn-primary">Create Event</a>
+@endsection
 @endsection
