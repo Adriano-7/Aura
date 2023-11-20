@@ -20,6 +20,17 @@ class EventController extends Controller
         ]);
     }
 
+    
+    public function joinEvent($id){
+        $event = Event::find($id);
+        $this->authorize('join', $event);
+        $event->participants()->attach(Auth::user()->id);
+        $event->save();
+
+        return redirect()->route('notifications')->
+            with('status', "Entrou com sucesso no evento {$event->name}, {$event->venue} em {$event->start_date->format('j F, Y')}.");    
+    }
+
     public function search(Request $request){
         $request->validate([
             'query' => 'nullable|string',
@@ -55,5 +66,3 @@ class EventController extends Controller
         return response()->json($results);
     }
 }
-
-

@@ -21,4 +21,12 @@ class Organization extends Model{
     protected $casts = [
         'approved' => 'boolean'
     ];
+
+    public function organizers(){
+        return $this->belongsToMany(User::class, 'organizers', 'organization_id', 'user_id');
+    }
+
+    public function invitedUsers(){
+        return $this->belongsToMany(User::class, 'notifications', 'organization_id', 'receiver_id')->where('type', 'organization_invitation');
+    }
 }
