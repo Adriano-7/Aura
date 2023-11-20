@@ -16,4 +16,13 @@ class EventController extends Controller{
             'event' => Event::find($id)
         ]);
     }
+
+    public function joinEvent($id){
+        $event = Event::find($id);
+        $this->authorize('join', $event);
+        $event->participants()->attach(Auth::user()->id);
+        $event->save();
+
+        return redirect()->route('events', ['id' => $id]);
+    }
 }

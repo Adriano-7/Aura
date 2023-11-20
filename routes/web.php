@@ -36,15 +36,18 @@ Route::middleware(['admin'])->group(function () {
 //Notifications
 Route::middleware(['auth'])->group(function () {
     Route::get('/notificacoes', [NotificationsController::class, 'show'])->name('notifications');
-    Route::delete('/notificacoes', [NotificationsController::class, 'delete'])->name('notification.delete');
 
+    Route::delete('/notificacoes/{id}/apagar', [NotificationsController::class, 'delete'])->name('notification.delete');
     Route::get('/notificacoes/{id}/marcar-como-vista', [NotificationsController::class, 'markAsSeen'])->name('notification.markAsSeen');
+    Route::patch('/notificacoes/{id}/aceitar-convite', [NotificationsController::class, 'acceptInvitation'])->name('notification.acceptInvitation');
 });
 
 //Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/eventos/{id}', 'show')->name('events');
+    Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
 });
+
 
 //My Events
 Route::middleware(['auth'])->group(function () {
@@ -54,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization');
+    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
 });
 
 // API

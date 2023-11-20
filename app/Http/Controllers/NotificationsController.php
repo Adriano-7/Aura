@@ -18,12 +18,12 @@ class NotificationsController extends Controller{
     }
 
     public function delete(Request $request){
-        $notification = Notification::find($request->id);
+        $notification = Notification::findOrFail($request->id);
         $this->authorize('delete', $notification);
 
         $notification->delete();
-
-        return redirect()->route('notifications');
+        
+        return redirect()->route('notifications')->with('status', 'Notification deleted successfully!');
     }
 
     public function markAsSeen(Request $request){
@@ -34,5 +34,29 @@ class NotificationsController extends Controller{
         $notification->save();
 
         return redirect($notification->getLink());
+    }
+
+    public function acceptInvitation(Request $request){
+        $notification = Notification::find($request->id);
+
+        if($notification->type == 'event_invitation'){
+            $this->authorize('join', $notification->event);
+
+            $eventId = $notification->event->id;
+            $notification->delete();
+
+            return redirect()->route('event.join', ['id' => $eventId])->with('status', 'You have joined the event');
+        }
+        
+        else if($notification->type == 'organization_invitation'){
+            $this->authorize('join', $notification->organization);
+
+            $organizationId = $notification->organization->id;
+            $notification->delete();
+
+            return redirect()->route('organization.join', ['id' => $organizationId])->with('status', 'You have joined the organization');
+        }
+
+        abort(403, 'This notification is not an invitation');
     }
 }

@@ -20,13 +20,25 @@
                 </p>
             </div>
             <div class="col-md-1 notification-buttons">
-                <form method="POST" action="{{ route('notification.delete', ['id' => $notification->id]) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" style="background-color: transparent; border: none;">
-                        <img src="{{ asset('storage/Close_round.svg') }}" class="notification-close">
-                    </button>
-                </form>
+                <div class="row">
+                    @if ($notification->type == 'event_invitation' || $notification->type == 'organization_invitation')
+                        <div class="col-md-1">
+                            <form action="{{ route('notification.acceptInvitation', ['id' => $notification->id]) }}" method="POST" id="acceptForm{{ $notification->id }}">
+                                @csrf
+                                @method('PATCH')
+                                <img src="{{ asset('storage/check-icon.svg') }}" onclick="document.getElementById('acceptForm{{ $notification->id }}').submit()" style="cursor: pointer;">
+                            </form>
+                        </div>
+                    @endif
+
+                    <div class="col-md-1">
+                        <form action="{{ route('notification.delete', ['id' => $notification->id]) }}" method="POST" id="deleteForm{{ $notification->id }}">
+                            @csrf
+                            @method('DELETE')
+                            <img src="{{ asset('storage/close-icon.svg') }}" onclick="document.getElementById('deleteForm{{ $notification->id }}').submit()" style="cursor: pointer;">
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     @endforeach
