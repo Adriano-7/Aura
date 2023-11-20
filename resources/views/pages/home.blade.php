@@ -3,6 +3,9 @@
 @section('title', 'Home')
 
 @section('styles')
+    <!-- Remove after -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 @endsection
 
@@ -68,11 +71,10 @@
     <h1 style="color: white">Comentários</h1>
     <p style="color: white"> Comentários do evento 2 </p>
     @foreach ($comments as $comment)
-        <p style="color: white"> {{ $comment->date }} </p>
-        <p style="color: white"> {{ $comment->text }} </p>
-        <form action="{{ url('/api/comments/' . $comment->id) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button type="submit">Delete</button>
+        <div class="to-delete">
+            <p style="color: white"> {{ $comment->date }} </p>
+            <p style="color: white"> {{ $comment->text }} </p>
+            <button type="button" class="delete-button btn btn-danger" data-id="{{ $comment->id }}" }}">Apagar</button>
+        </div>
     @endforeach
 </div>
