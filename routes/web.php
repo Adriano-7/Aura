@@ -8,6 +8,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MyEventsController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -53,6 +55,17 @@ Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization');
 });
 
+//Search
+Route::controller(SearchController::class)->group(function () {
+    Route::get('/pesquisa', 'show')->name('search');
+}); 
+
+// API
+Route::controller(CommentController::class)->group(function () {
+    Route::get('api/comments', 'index');
+    Route::get('api/comments/{id}', 'show');
+    Route::delete('api/comments/{id}', 'destroy');
+});
 
 // API
 // Authentication
