@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
 //Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/eventos/{id}', 'show')->name('events');
+    Route::get('/api/events/search', [EventController::class, 'search'])->name('events.search');
 });
 
 //My Events
@@ -59,6 +60,7 @@ Route::controller(OrganizationController::class)->group(function () {
 Route::controller(SearchController::class)->group(function () {
     Route::get('/pesquisa', 'show')->name('search');
 }); 
+
 
 // API
 Route::controller(CommentController::class)->group(function () {

@@ -29,4 +29,8 @@ class Event extends Model{
         'end_date' => 'datetime',
         'is_public' => 'boolean'
     ];
+
+    public function tags(){
+        return $this->belongsToMany('App\Models\Tag', 'tag_event', 'event_id', 'tag_id');
+    }
 }
