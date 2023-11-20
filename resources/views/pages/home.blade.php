@@ -20,5 +20,4 @@
 
     @include('widgets.eventRow', ['events' => $events])
     @include('widgets.organizationRow', ['organizations' => $organizations])
-
 @endsection

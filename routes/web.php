@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -53,8 +54,13 @@ Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization');
 });
 
-
 // API
+Route::controller(CommentController::class)->group(function () {
+    Route::get('api/comments', 'index');
+    Route::get('api/comments/{id}', 'show');
+    Route::delete('api/comments/{id}', 'destroy');
+});
+
 // Authentication
 Route::controller(LoginController::class)->group(function () {
     Route::get('/iniciar-sessao', 'showLoginForm')->name('login');
