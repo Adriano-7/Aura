@@ -7,7 +7,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarsExample05">
-            <form id="search-form" class="form-inline my-2 my-lg-0">
+            <form id="search-form" class="form-inline my-2 my-lg-0" action="{{ route('search') }}"method="get">
                 <input class="mr-sm-2 looged_out" id="search_bar" type="text" placeholder="Pesquisa por evento"  style="background-image: url({{ asset('storage/search-Icon.svg') }});">
             </form>
 
