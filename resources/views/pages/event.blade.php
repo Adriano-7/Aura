@@ -56,9 +56,43 @@
                         <span id="numParticipants"> {{$event->getParticipants()->count()}} participantes</span>
                         @if(Auth::check() && !Auth::user()->isAdmin())
                             @if($user->participatesInEvent($event))
-                                <button id="leave-event">Sair do evento</button>
+                                <button id="leave-event" onclick="leaveEvent()">Sair do evento</button>
+
+                                <script>
+                                    function leaveEvent() {
+                                        $.ajax({
+                                            url: "{{ route('event.leave', $event->id) }}",
+                                            type: 'POST',
+                                            data: {
+                                                _token: '{{ csrf_token() }}'
+                                            },
+                                            success: function(response) {
+                                                if (response.status == 'success') {
+                                                    location.reload();
+                                                }
+                                            }
+                                        });
+                                    }
+                                </script>                           
                             @else
-                                <button id="join-event">Aderir ao evento</button>
+                                <button id="join-event" onclick="joinEvent()">Aderir ao evento</button>
+
+                                <script>
+                                    function joinEvent() {
+                                        $.ajax({
+                                            url: "{{ route('event.join', $event->id) }}",
+                                            type: 'POST',
+                                            data: {
+                                                _token: '{{ csrf_token() }}'
+                                            },
+                                            success: function(response) {
+                                                if (response.status == 'success') {
+                                                    location.reload();
+                                                }
+                                            }
+                                        });
+                                    }
+                                </script>                            
                             @endif
                             <div id="span-container">
                                 <span id="show-participants">Ver participantes</span>

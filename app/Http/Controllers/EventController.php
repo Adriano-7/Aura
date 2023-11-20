@@ -16,4 +16,16 @@ class EventController extends Controller{
             'event' => Event::find($id)
         ]);
     }
+
+    public function leaveEvent(Request $request, Event $event) {
+        $user = Auth::user();
+        $event->getParticipants()->detach($user->id);
+        return response()->json(['status' => 'success']);
+    }
+
+    public function joinEvent(Request $request, Event $event) {
+        $user = Auth::user();
+        $event->getParticipants()->attach($user->id);
+        return response()->json(['status' => 'success']);
+    }
 }
