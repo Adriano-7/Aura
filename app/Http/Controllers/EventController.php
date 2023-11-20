@@ -23,6 +23,7 @@ class EventController extends Controller{
         $event->participants()->attach(Auth::user()->id);
         $event->save();
 
-        return redirect()->route('events', ['id' => $id]);
+        return redirect()->route('notifications')->
+            with('status', "You have sucessfully joined the event {$event->name}, {$event->venue} on {$event->start_date->format('F j, Y')}.");    
     }
 }

@@ -45,7 +45,7 @@ class NotificationsController extends Controller{
             $eventId = $notification->event->id;
             $notification->delete();
 
-            return redirect()->route('event.join', ['id' => $eventId])->with('status', 'You have joined the event');
+            return redirect()->route('event.join', ['id' => $eventId]);
         }
         
         else if($notification->type == 'organization_invitation'){
@@ -54,7 +54,7 @@ class NotificationsController extends Controller{
             $organizationId = $notification->organization->id;
             $notification->delete();
 
-            return redirect()->route('organization.join', ['id' => $organizationId])->with('status', 'You have joined the organization');
+            return redirect()->route('organization.join', ['id' => $organizationId]);
         }
 
         abort(403, 'This notification is not an invitation');

@@ -13,4 +13,8 @@
 
 @section('content')
     @include('widgets.notifications', ['notifications' => $notifications])
+
+    @if (session('status'))
+        @include('widgets.popUpNotification', ['message' => session('status')])
+    @endif
 @endsection
