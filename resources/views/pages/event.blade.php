@@ -53,6 +53,7 @@
                         <span id="city">{{$event->city}}</span>
                     </div>
                     <div id="third-column">
+                        <span id="numParticipants"> {{$event->getParticipants()->count()}} participantes</span>
                         @if(Auth::check() && !Auth::user()->isAdmin())
                             <button id="join-event">Aderir ao evento</button>
                             <div id="span-container">

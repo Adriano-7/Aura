@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Event extends Model{
     use HasFactory;
@@ -29,4 +30,9 @@ class Event extends Model{
         'end_date' => 'datetime',
         'is_public' => 'boolean'
     ];
+
+    public function getParticipants(){
+        return $this->belongsToMany(User::class, 'participants', 'event_id', 'user_id');
+    }
 }
+
