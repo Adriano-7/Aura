@@ -35,6 +35,20 @@ class CommentController extends Controller
         ]);
     }
 
+    public function show(int $id) {
+        $comment = Comment::find($id);
+
+        if (!$comment) {
+            return response()->json([
+                'message' => 'Comment not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'comment' => $comment
+        ]);
+    }
+
     public function destroy(int $id) {
         $comment = Comment::findOrFail($id);
         $this->authorize('delete', $comment);
