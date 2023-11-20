@@ -27,6 +27,7 @@ Route::controller(HomeController::class)->group(function () {
 
 // API
 Route::controller(CommentController::class)->group(function () {
+    Route::get('api/comments', 'index');
     Route::delete('api/comments/{id}', 'destroy');
 });
 
