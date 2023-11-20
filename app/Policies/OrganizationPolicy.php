@@ -6,11 +6,7 @@ use App\Models\User;
 use App\Models\Organization;
 
 class OrganizationPolicy{
-
-public function join(User $user, Organization $organization){
-    $invitedUsers = $organization->invitedUsers()->get();
-
-
-    return true;
-}
+    public function wasInvited(User $user, Organization $organization){
+        return $organization->invitedUsers->contains($user);
+    }
 }

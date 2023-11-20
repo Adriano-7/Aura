@@ -49,7 +49,7 @@ class NotificationsController extends Controller{
         }
         
         else if($notification->type == 'organization_invitation'){
-            $this->authorize('join', $notification->organization);
+            $this->authorize('wasInvited', $notification->organization);
 
             $organizationId = $notification->organization->id;
             $notification->delete();
