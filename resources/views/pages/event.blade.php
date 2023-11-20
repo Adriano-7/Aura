@@ -120,6 +120,24 @@
                         <img class="icon" src="{{asset('storage/send-icon.svg')}}">
                     </div>
                 @endif
+                <div class="comment-row">
+                    <img class="profile-pic" src="http://127.0.0.1:8000/storage/profile/teresa_rodrigues.jpeg">
+                    <div class="comment-content">
+                        <div class="username-and-date">
+                            <span class="comment-author">Teresa Rodrigues</span>
+                            <span class="comment-date">06 Jul 2024</span>
+                            <img class="icon" src="{{asset('storage/edit-icon.svg')}}">
+                            <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
+                        </div>
+                        <p class="comment-text">
+                            AIAIAI MINHA MACHADINHA QUEM TE POS A MAO SABENDO QUE ÉS MINHA
+                        </p>
+                        <div class="votes-row">
+                            <img class="icon" src="{{asset('storage/votes-icon.svg')}}" id="votes-icon">
+                            <span class="comment-votes">2</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </div>        

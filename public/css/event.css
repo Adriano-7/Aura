@@ -144,22 +144,24 @@
     border-radius: 50%;
 }
 
-#add-comment-row {
+.comment-row {
     display: flex;
     align-items: center;
+    margin-bottom: 1em;
 }
 
 .profile-pic {
-    margin-right: 0.5rem;
+    margin-right: 1rem;
 }
 
 input[type="text"] {
     flex: 1;
-    margin: 0 0.5rem;
+    margin-right: 0.5em;
     border: none;
     border-bottom: 1px solid #A08AFA;
     background-color: #11141A;
     color: #ffffff;
+    font-size: small;
 }
 
 input[type="text"]:focus {
@@ -168,10 +170,54 @@ input[type="text"]:focus {
 
 .icon {
     margin-left: 0.5rem;
-    width: 1.5em;
+    width: 1.2em;
     color: #808080;
 }
 
 .icon:hover {
     cursor: pointer;
+}
+
+.username-and-date{
+    display: flex;
+}
+
+.comment-content{
+    margin-top: 1em;
+}
+
+.comment-author{
+    font-size: small;
+    font-weight: 600;
+    color: #ffffff;
+    margin-right: 0.5em;
+}
+
+.comment-date{
+    font-size: small;
+    font-weight: 100;
+    color: #ffffff;
+}
+
+.comment-text{
+    font-size: small;
+    font-weight: 300;
+    color: #ffffff;
+    margin-top: 0.5em;
+}
+
+.votes-row{
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+}
+
+.comment-votes{
+    font-size: small;
+    font-weight: 300;
+    color: #ffffff;
+}
+
+#votes-icon{
+    margin: 0;
 }
