@@ -12,10 +12,13 @@
     background-color: #11141A;
     padding: 1.2rem;
     border-radius: 1rem;
-    
-    max-height: 25rem;
-    overflow-y: auto;
+
     margin: 0 auto; 
+}
+
+.limit-table{
+    max-height: 30rem;
+    overflow-y: auto;
 }
 
 .report{
@@ -100,4 +103,8 @@
 }
 .nav-link{
     color: #808080;
+}
+
+body{
+    padding-bottom: 3rem;
 }

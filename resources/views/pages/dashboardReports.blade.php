@@ -34,7 +34,7 @@
 
     <div class="container dashboard-container">
         <h1 class="subtitle"> Comentários reportados</h1>
-        <div class="dashboard-table">
+        <div class="dashboard-table limit-table">
             <div class="row dashboard-header">
                 <div class="col-2">
                     <h1>Utilizador Reportado</h1>
@@ -85,7 +85,7 @@
 
     <div class="container dashboard-container">
         <h1 class="subtitle"> Eventos reportados</h1>
-        <div class="dashboard-table">
+        <div class="dashboard-table limit-table">
             <div class="row dashboard-header">
                 <div class="col-2">
                     <h1>Evento Reportado</h1>

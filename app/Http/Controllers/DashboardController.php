@@ -25,11 +25,17 @@ class DashboardController extends Controller{
         ]);
     }
 
-    public function showOrganizations(): View{
+    public function showOrganizations(): View {
+        $userId = Auth::id();
+    
         return view('pages.dashboardOrganizations', [
             'user' => Auth::user(),
             'organizations' => Models\Organization::all(),
-            'organizationRequests' => Models\Notification::where('type', 'organization_registration_request')->get(),
+            'organizationRequests' => Models\Notification::where([
+                ['type', 'organization_registration_request'],
+                ['receiver_id', $userId],
+            ])->get(),
         ]);
     }
+    
 }

@@ -36,7 +36,7 @@
 
     <div class="container dashboard-container">
         <h1 class="subtitle"> Pedidos de Registo</h1>
-        <div class="dashboard-table">
+        <div class="dashboard-table limit-table">
             @foreach ($organizationRequests as $request)
                 <div class="row report">
                     <div class="col-3 dashboard-profile d-flex align-items-center">
@@ -73,7 +73,7 @@
 
     <div class="container dashboard-container">
         <h1 class="subtitle"> Organizações</h1>
-        <div class="dashboard-table">
+        <div class="dashboard-table limit-table">
             <div class="row dashboard-header">
                 <div class="col-3">
                     <h1>Organização</h1>
