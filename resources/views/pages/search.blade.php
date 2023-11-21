@@ -27,7 +27,7 @@
                     <input type="date" class="form-control" id="dateFilter">
 
                     <select class="form-control" id="tagFilter">
-                        <option value="" selected disabled> Tag</option>
+                        <option value="" selected> Tag</option>
                         @foreach($tags as $tag)
                             <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                         @endforeach

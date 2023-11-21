@@ -6,32 +6,6 @@ search(true);
 async function search(firstTime = false) {
     const url = new URL('api/eventos/pesquisa', window.location.origin);
 
-    /*
-    <div id="bottom-search-bar">
-        <div class="container">
-            <form id="search-form">
-                <div class="input-group">
-                    <input type="date" class="form-control" id="dateFilter">
-
-                    <select class="form-control" id="tagFilter">
-                        <option value="" selected disabled> Tag</option>
-                        <option value="tag1">Tag 1</option>
-                        <option value="tag2">Tag 2</option>
-                    </select>
-
-                    <input type="text" class="form-control" id="text-input"
-                        placeholder="Pesquisa por artistas ou eventos">
-
-                    <div class="input-group-append">
-                        <button class="btn" type="button">Search</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-});
-*/
-
     if (firstTime && query != null) {
         url.searchParams.append('query', query);
     }

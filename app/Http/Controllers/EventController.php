@@ -34,7 +34,7 @@ class EventController extends Controller
     public function search(Request $request){
         $request->validate([
             'query' => 'nullable|string',
-            'tags' => 'nullable|array',
+            'tags' => 'nullable|integer',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
         ]);
@@ -50,7 +50,7 @@ class EventController extends Controller
             })
             ->when($tags, function (Builder $queryBuilder) use ($tags) {
                 $queryBuilder->whereHas('tags', function (Builder $tagQuery) use ($tags) {
-                    $tagQuery->whereIn('name', $tags);
+                    $tagQuery->where('id', $tags);
                 });
             })
             ->when($startDate, function (Builder $queryBuilder) use ($startDate) {
