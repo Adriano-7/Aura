@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportEventController;
 use Illuminate\Support\Facades\Route;
 
@@ -73,6 +74,13 @@ Route::controller(ReportEventController::class)->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('api/reports/event', 'index');
         Route::patch('api/reports/event/{id}/resolved', 'markAsResolved');
+    });
+});
+
+Route::controller(ReportCommentController::class)->group(function () {
+    Route::middleware(['admin'])->group(function () {
+        Route::get('api/reports/comment', 'index');
+        Route::patch('api/reports/comment/{id}/resolved', 'markAsResolved');
     });
 });
 
