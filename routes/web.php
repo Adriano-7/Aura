@@ -43,6 +43,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/notificacoes/{id}/apagar', [NotificationsController::class, 'delete'])->name('notification.delete');
     Route::get('/notificacoes/{id}/marcar-como-vista', [NotificationsController::class, 'markAsSeen'])->name('notification.markAsSeen');
     Route::patch('/notificacoes/{id}/aceitar-convite', [NotificationsController::class, 'acceptInvitation'])->name('notification.acceptInvitation');
+
+    Route::middleware(['admin'])->group(function () {
+        Route::patch('/notificacoes/{id}/aprovar-organizacao', [NotificationsController::class, 'approveOrganization'])->name('notification.approveOrganization');
+    });
 });
 
 //Events
