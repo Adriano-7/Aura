@@ -115,9 +115,15 @@
                                     <button class="icon-button">
                                         <img class="icon" src="{{asset('storage/edit-icon.svg')}}">
                                     </button>
-                                    <button class="icon-button">
-                                        <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
-                                    </button>
+                                @endif
+                                @if(Auth::user()->id == $comment->author->id || Auth::user()->isAdmin())
+                                    <form action="{{ route('comment.delete', $comment->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="icon-button">
+                                            <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
+                                        </button>
+                                    </form>
                                 @endif
                             </div>
                             <p class="comment-text">{{$comment->text}}</p>

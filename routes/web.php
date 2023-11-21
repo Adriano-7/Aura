@@ -66,7 +66,7 @@ Route::controller(OrganizationController::class)->group(function () {
 Route::controller(CommentController::class)->group(function () {
     Route::get('api/comments', 'index');
     Route::get('api/comments/{id}', 'show');
-    Route::delete('api/comments/{id}', 'destroy');
+    Route::delete('api/comments/{id}', 'destroy')->name('comment.delete');
     Route::post('comments/add', 'store')->name('comment.add');
 });
 
