@@ -10,9 +10,27 @@ use Illuminate\Support\Facades\Auth;
 
 
 class DashboardController extends Controller{
-    public function show(): View{
-        return view('pages.dashboard', [
+
+    public function showReports(): View{
+        return view('pages.dashboardReports', [
             'user' => Auth::user(),
+            'reportEvents' => Models\ReportEvent::all(),
+            'reportComments' => Models\ReportComment::all(),
+        ]);
+    }
+
+    public function showMembers(): View{
+        return view('pages.dashboardMembers', [
+            'user' => Auth::user(),
+            'members' => Models\User::all(),
+        ]);
+    }
+
+    public function showOrganizations(): View{
+        return view('pages.dashboard.dashboardOrganizations', [
+            'user' => Auth::user(),
+            'organizations' => Models\Organization::all(),
+            'organizationRequests' => Models\Notification::where('type', 'organizationRequest')->get(),
         ]);
     }
 }

@@ -32,8 +32,10 @@ Route::controller(HomeController::class)->group(function () {
 });
 
 //Dashboard
-Route::middleware(['admin'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+Route::middleware(['admin'])->group(function () {    
+    Route::get('/dashboard/denuncias', [DashboardController::class, 'showReports'])->name('dashboard.reports');
+    Route::get('/dashboard/membros', [DashboardController::class, 'showMembers'])->name('dashboard.members');
+    Route::get('/dashboard/organizacoes', [DashboardController::class, 'showOrganizations'])->name('dashboard.organizations');
 });
 
 //Notifications

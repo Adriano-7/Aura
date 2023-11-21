@@ -32,4 +32,8 @@ class Comment extends Model
             ->orderBy('date', 'desc')
             ->get();
     }
+
+    public function author() {
+        return $this->belongsTo(User::class, 'author_id');
+    }
 }

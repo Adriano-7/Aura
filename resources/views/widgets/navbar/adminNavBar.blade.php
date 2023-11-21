@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarsExample05">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('dashboard') }}">
+                    <a class="nav-link" href="{{ route('dashboard.reports') }}">
                         <span class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"> DASHBOARD </span>
                     </a>
                 </li>
