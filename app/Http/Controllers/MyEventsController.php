@@ -12,7 +12,9 @@ use App\Models\Event;
 class MyEventsController extends Controller{
     public function show(): View{
         $user = Auth::user();
-        $events = Event::all();
+        $events = Event::whereHas('participants', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->get();
 
         return view('pages.myEvents', [
             'user' => $user,

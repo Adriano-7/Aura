@@ -603,6 +603,7 @@ INSERT INTO participants (user_id, event_id) VALUES
     ('16', '5'),
     ('17', '6'),
     ('18', '7'),
+    ('18','1'),
     ('19', '8'),
     ('20', '1');
 
