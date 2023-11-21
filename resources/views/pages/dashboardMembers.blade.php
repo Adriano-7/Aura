@@ -10,7 +10,7 @@
 
 
 @section('content')
-    <div class="containder reported-comments">
+    <div class="container dashboard-container">
         <img src="{{ asset('storage/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
 
         <div class="navbar-collapse" id="dash-nav">
@@ -34,10 +34,10 @@
         </div>
     </div>
 
-    <div class="container reported-comments">
+    <div class="container dashboard-container">
         <h1 class="subtitle"> Membros</h1>
-        <div class="report-table">
-            <div class="row report-header">
+        <div class="dashboard-table">
+            <div class="row dashboard-header">
                 <div class="col-3">
                     <h1>Utilizador</h1>
                 </div>
@@ -54,7 +54,7 @@
 
             @foreach ($members as $member)
                 <div class="row report">
-                    <div class="col-3 report-profile d-flex align-items-center">
+                    <div class="col-3 dashboard-profile d-flex align-items-center">
                         <div class="pr-2">
                             <img src="{{ asset('storage/profile/' . $member->photo) }}">
                         </div>
@@ -62,17 +62,17 @@
                             <h1>{{ $member->name }}</h1>
                         </div>
                     </div>
-                    <div class="col-3 report-comment">
+                    <div class="col-3 dashboard-text-content">
                         @if ($member->isAdmin())
                             <p>Administrador</p>
                         @else
                             <p>Membro</p>
                         @endif
                     </div>
-                    <div class="col-4 report-comment">
+                    <div class="col-4 dashboard-text-content">
                         <p>{{ $member->email }}</p>
                     </div>
-                    <div class="col-2 report-actions">
+                    <div class="col-2 dashboard-actions">
                         <div class="dropdown">
                             <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                                 aria-expanded="false">
@@ -80,8 +80,9 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                                 <li><a class="dropdown-item" href="#">Apagar</a></li>
-                                <li><a class="dropdown-item" href="#">Bloquear</a></li>
-                                <li><a class="dropdown-item" href="#">Ignorar</a></li>
+                                @if (!$member->isAdmin())
+                                    <li><a class="dropdown-item" href="#">Tornar Admin</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>

@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
  use App\Models; 
 
-
 class DashboardController extends Controller{
 
     public function showReports(): View{

@@ -8,7 +8,7 @@
     @include('widgets.navBar')
 @endsection
 @section('content')
-    <div class="containder reported-comments">
+    <div class="container dashboard-container">
         <img src="{{ asset('storage/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
 
         <div class="navbar-collapse" id="dash-nav">
@@ -32,10 +32,10 @@
         </div>
     </div>
 
-    <div class="container reported-comments">
+    <div class="container dashboard-container">
         <h1 class="subtitle"> Comentários reportados</h1>
-        <div class="report-table">
-            <div class="row report-header">
+        <div class="dashboard-table">
+            <div class="row dashboard-header">
                 <div class="col-2">
                     <h1>Utilizador Reportado</h1>
                 </div>
@@ -52,7 +52,7 @@
 
             @foreach ($reportComments as $report)
             <div class="row report">
-                <div class="col-2 report-profile d-flex align-items-center">
+                <div class="col-2 dashboard-profile d-flex align-items-center">
                     <div class="pr-2">
                         <img src="{{asset('storage/profile/' . $report->comment->author->photo)}}">
                     </div>
@@ -60,21 +60,20 @@
                         <h1>{{$report->comment->author->name}}</h1>
                     </div>
                 </div>
-                <div class="col-4 report-comment">
+                <div class="col-4 dashboard-text-content">
                     <p>{{$report->reason->text}}</p>
                 </div>
-                <div class="col-4 report-comment">
+                <div class="col-4 dashboard-text-content">
                     <p>{{$report->comment->text}}</p>
                 </div>
-                <div class="col-2 report-actions">
+                <div class="col-2 dashboard-actions">
                     <div class="dropdown">
                         <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                             aria-expanded="false">
                             <img src="{{asset('storage/Three-Dots-Icon.svg')}}" alt="more">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Apagar</a></li>
-                            <li><a class="dropdown-item" href="#">Bloquear</a></li>
+                            <li><a class="dropdown-item" href="#">Apagar comentário</a></li>
                             <li><a class="dropdown-item" href="#">Ignorar</a></li>
                         </ul>
                     </div>
@@ -84,10 +83,10 @@
         </div>
     </div>
 
-    <div class="container reported-comments">
+    <div class="container dashboard-container">
         <h1 class="subtitle"> Eventos reportados</h1>
-        <div class="report-table">
-            <div class="row report-header">
+        <div class="dashboard-table">
+            <div class="row dashboard-header">
                 <div class="col-2">
                     <h1>Evento Reportado</h1>
                 </div>
@@ -101,7 +100,7 @@
 
             @foreach ($reportEvents as $report)
             <div class="row report">
-                <div class="col-2 report-profile d-flex align-items-center">
+                <div class="col-2 dashboard-profile d-flex align-items-center">
                     <div class="pr-2">
                         <img src="{{asset('storage/eventos/' . $report->event->photo)}}">
                     </div>
@@ -109,18 +108,17 @@
                         <h1>{{$report->event->name}}</h1>
                     </div>
                 </div>
-                <div class="col-8 report-comment">
+                <div class="col-8 dashboard-text-content">
                     <p>{{$report->reason->text}}</p>
                 </div>
-                <div class="col-2 report-actions">
+                <div class="col-2 dashboard-actions">
                     <div class="dropdown">
                         <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                             aria-expanded="false">
                             <img src="{{asset('storage/Three-Dots-Icon.svg')}}" alt="more">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Apagar</a></li>
-                            <li><a class="dropdown-item" href="#">Bloquear</a></li>
+                            <li><a class="dropdown-item" href="#">Eliminar Evento</a></li>
                             <li><a class="dropdown-item" href="#">Ignorar</a></li>
                         </ul>
                     </div>
