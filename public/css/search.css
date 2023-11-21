@@ -1,5 +1,6 @@
 /*Search Results*/
 
+
 #results-title {
     color: #FFF;
     font-size: 1.2rem;
@@ -23,7 +24,7 @@
     left: 50%;
     transform: translateX(-50%);
 
-    border-bottom: 1px solid #A08AFA;
+    border-bottom: 1px solid #808080;
     padding: 1rem;
 }
 
@@ -170,4 +171,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         width: 82%;
     }
 
+}
+
+#search-container .card {
+    max-height: 26rem; 
+    overflow-y: auto;
+    margin: 0 auto;
 }
