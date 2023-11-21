@@ -54,4 +54,6 @@ class User extends Authenticatable{
     public function isAdmin() {
         return $this->hasOne('App\Models\Administrator', 'id')->exists();
     }
+
+    
 }

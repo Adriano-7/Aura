@@ -27,10 +27,10 @@ class DashboardController extends Controller{
     }
 
     public function showOrganizations(): View{
-        return view('pages.dashboard.dashboardOrganizations', [
+        return view('pages.dashboardOrganizations', [
             'user' => Auth::user(),
             'organizations' => Models\Organization::all(),
-            'organizationRequests' => Models\Notification::where('type', 'organizationRequest')->get(),
+            'organizationRequests' => Models\Notification::where('type', 'organization_registration_request')->get(),
         ]);
     }
 }

@@ -61,9 +61,18 @@
 }
 
 .report h1{
-    color: rgba(255, 255, 255, 0.50);
+    color: #FFF;
     font-family: Montserrat;
     font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.report h2{
+    color: rgba(255, 255, 255, 0.50);
+    font-family: Montserrat;
+    font-size: 10px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
