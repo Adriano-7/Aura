@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ReportCommentController;
-use App\Http\Controllers\ReportEventController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -12,6 +9,10 @@ use App\Http\Controllers\CreateEventController;
 use App\Http\Controllers\MyEventsController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReportCommentController;
+use App\Http\Controllers\ReportEventController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -52,9 +53,12 @@ Route::middleware(['auth'])->group(function () {
 
 //Events
 Route::controller(EventController::class)->group(function () {
-    Route::get('/eventos/{id}', 'show')->name('events');
+    Route::get('/evento/{id}', 'show')->name('events');
     Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
+
+    //Api
+    Route::get('/api/eventos/pesquisa', 'search')->name('events.search');
 });
 
 
@@ -76,6 +80,12 @@ Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization');
     Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
 });
+
+//Search
+Route::controller(SearchController::class)->group(function () {
+    Route::get('/pesquisa', 'show')->name('search');
+}); 
+
 
 // API
 Route::controller(CommentController::class)->group(function () {
