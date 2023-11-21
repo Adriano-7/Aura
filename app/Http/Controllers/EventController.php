@@ -17,15 +17,23 @@ class EventController extends Controller{
         ]);
     }
 
-    public function leaveEvent(Request $request, Event $event) {
-        $user = Auth::user();
-        $event->getParticipants()->detach($user->id);
-        return response()->json(['status' => 'success']);
+    public function joinEvent($id){
+        $event = Event::find($id);
+        $this->authorize('join', $event);
+        $event->participants()->attach(Auth::user()->id);
+        $event->save();
+
+        return redirect()->route('notifications')->
+            with('status', "Entrou com sucesso no evento {$event->name}, {$event->venue} em {$event->start_date->format('j F, Y')}.");
     }
 
-    public function joinEvent(Request $request, Event $event) {
-        $user = Auth::user();
-        $event->getParticipants()->attach($user->id);
-        return response()->json(['status' => 'success']);
+    public function leaveEvent($id){
+        $event = Event::find($id);
+        $this->authorize('leave', $event);
+        $event->participants()->detach(Auth::user()->id);
+        $event->save();
+
+        return redirect()->route('notifications')->
+            with('status', "Saiu com sucesso do evento {$event->name}, {$event->venue} em {$event->start_date->format('j F, Y')}.");
     }
 }

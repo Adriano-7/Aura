@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -36,14 +37,19 @@ Route::middleware(['admin'])->group(function () {
 //Notifications
 Route::middleware(['auth'])->group(function () {
     Route::get('/notificacoes', [NotificationsController::class, 'show'])->name('notifications');
+
+    Route::delete('/notificacoes/{id}/apagar', [NotificationsController::class, 'delete'])->name('notification.delete');
+    Route::get('/notificacoes/{id}/marcar-como-vista', [NotificationsController::class, 'markAsSeen'])->name('notification.markAsSeen');
+    Route::patch('/notificacoes/{id}/aceitar-convite', [NotificationsController::class, 'acceptInvitation'])->name('notification.acceptInvitation');
 });
 
 //Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/eventos/{id}', 'show')->name('events');
-    Route::post('/event/{event}/leave', 'leaveEvent')->name('event.leave');
-    Route::post('/event/{event}/join', 'joinEvent')->name('event.join');
+    Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
+    Route::get('/evento/{id}/sair', 'leaveEvent')->name('event.leave');
 });
+
 
 //My Events
 Route::middleware(['auth'])->group(function () {
@@ -53,10 +59,16 @@ Route::middleware(['auth'])->group(function () {
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization');
+    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
 });
 
-
 // API
+Route::controller(CommentController::class)->group(function () {
+    Route::get('api/comments', 'index');
+    Route::get('api/comments/{id}', 'show');
+    Route::delete('api/comments/{id}', 'destroy');
+});
+
 // Authentication
 Route::controller(LoginController::class)->group(function () {
     Route::get('/iniciar-sessao', 'showLoginForm')->name('login');

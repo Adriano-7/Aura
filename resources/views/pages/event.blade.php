@@ -53,46 +53,24 @@
                         <span id="city">{{$event->city}}</span>
                     </div>
                     <div id="third-column">
-                        <span id="numParticipants"> {{$event->getParticipants()->count()}} participantes</span>
+                        <span id="numParticipants"> {{$event->participants()->count()}} participantes</span>
                         @if(Auth::check() && !Auth::user()->isAdmin())
                             @if($user->participatesInEvent($event))
                                 <button id="leave-event" onclick="leaveEvent()">Sair do evento</button>
 
                                 <script>
                                     function leaveEvent() {
-                                        $.ajax({
-                                            url: "{{ route('event.leave', $event->id) }}",
-                                            type: 'POST',
-                                            data: {
-                                                _token: '{{ csrf_token() }}'
-                                            },
-                                            success: function(response) {
-                                                if (response.status == 'success') {
-                                                    location.reload();
-                                                }
-                                            }
-                                        });
+                                        window.location.href = "{{ route('event.leave', $event->id) }}";
                                     }
-                                </script>                           
+                                </script>
                             @else
                                 <button id="join-event" onclick="joinEvent()">Aderir ao evento</button>
-
+                                
                                 <script>
                                     function joinEvent() {
-                                        $.ajax({
-                                            url: "{{ route('event.join', $event->id) }}",
-                                            type: 'POST',
-                                            data: {
-                                                _token: '{{ csrf_token() }}'
-                                            },
-                                            success: function(response) {
-                                                if (response.status == 'success') {
-                                                    location.reload();
-                                                }
-                                            }
-                                        });
+                                        window.location.href = "{{ route('event.join', $event->id) }}";
                                     }
-                                </script>                            
+                                </script>
                             @endif
                             <div id="span-container">
                                 <span id="show-participants">Ver participantes</span>

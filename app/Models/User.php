@@ -56,6 +56,6 @@ class User extends Authenticatable{
     }
 
     public function participatesInEvent(Event $event) {
-        return $event->getParticipants()->get()->contains($this);
+        return $event->participants()->get()->contains($this);
     }
 }

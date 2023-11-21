@@ -31,7 +31,7 @@ class Event extends Model{
         'is_public' => 'boolean'
     ];
 
-    public function getParticipants(){
+    public function participants(){
         return $this->belongsToMany(User::class, 'participants', 'event_id', 'user_id');
     }
 }

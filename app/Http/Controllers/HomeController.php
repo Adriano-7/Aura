@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 use Illuminate\View\View;
@@ -11,8 +12,7 @@ use App\Models\Event;
 use App\Models\User;
 use App\Models\Organization;
 
-class HomeController extends Controller
-{
+class HomeController extends Controller{
     public function show(): View{
         return view('pages.home', [
             'user' => Auth::user(),
