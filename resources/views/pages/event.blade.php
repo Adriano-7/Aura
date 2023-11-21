@@ -89,9 +89,16 @@
                 @if(Auth::check() && !Auth::user()->isAdmin())
                     <div id="add-comment-row" class="comment-row">
                         <img class="profile-pic" src="{{asset('storage/profile/' . $user->photo)}}">
-                        <input type="text" placeholder="Adicione um comentário">
-                        <img class="icon" src="{{asset('storage/clip-icon.svg')}}">
-                        <img class="icon" src="{{asset('storage/send-icon.svg')}}">
+                        <form id="add-comment" method="POST" enctype="multipart/form-data">
+                            <input type="text" placeholder="Adicione um comentário">
+                            <label for="file-upload" class="icon-button">
+                                <img class="icon" src="{{asset('storage/clip-icon.svg')}}">
+                                <input id="file-upload" type="file" style="display:none;">
+                            </label>
+                            <button type="submit" class="icon-button">
+                                <img class="icon" src="{{asset('storage/send-icon.svg')}}">
+                            </button>
+                        </form>
                     </div>
                 @endif
 
@@ -102,8 +109,14 @@
                             <div class="username-and-date">
                                 <span class="comment-author">{{$comment->author->name}}</span>
                                 <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
-                                <img class="icon" src="{{asset('storage/edit-icon.svg')}}">
-                                <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
+                                @if(Auth::user()->id == $comment->author->id)
+                                    <button class="icon-button">
+                                        <img class="icon" src="{{asset('storage/edit-icon.svg')}}">
+                                    </button>
+                                    <button class="icon-button">
+                                        <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
+                                    </button>
+                                @endif
                             </div>
                             <p class="comment-text">{{$comment->text}}</p>
                             <div class="votes-row">

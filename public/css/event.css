@@ -150,15 +150,20 @@
     margin-bottom: 1em;
 }
 
+.comment-row form {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
 
 input[type="text"] {
-    flex: 1;
     margin-right: 0.5em;
     border: none;
     border-bottom: 1px solid #A08AFA;
     background-color: #11141A;
     color: #ffffff;
     font-size: small;
+    width: 100%;
 }
 
 input[type="text"]:focus {
@@ -224,4 +229,9 @@ input[type="text"]:focus {
 
 #votes-icon{
     margin: 0;
+}
+
+.icon-button{
+    background-color: transparent;
+    border: none;
 }
