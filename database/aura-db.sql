@@ -82,7 +82,7 @@ CREATE TABLE comments (
     text TEXT NOT NULL,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
     vote_balance INT NOT NULL DEFAULT 0,
-    event_id INTEGER NOT NULL REFERENCES events (id)
+    event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS vote_comments CASCADE;

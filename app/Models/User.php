@@ -54,4 +54,9 @@ class User extends Authenticatable{
     public function isAdmin() {
         return $this->hasOne('App\Models\Administrator', 'id')->exists();
     }
+
+    public function userOrganizations()
+    {
+        return $this->belongsToMany('App\Models\Organization', 'organizers', 'user_id', 'organization_id');
+    }
 }
