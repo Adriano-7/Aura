@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\CreateEventController;
 use App\Http\Controllers\MyEventsController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\DashboardController;
@@ -63,6 +64,14 @@ Route::controller(EventController::class)->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/meus-eventos', [MyEventsController::class, 'show'])->name('my-events');
 });
+
+//Create Events
+Route::middleware(['auth'])->group(function () {
+    Route::get('/criar-evento', [CreateEventController::class, 'show'])->name('criar-evento');
+    Route::post('/submit-event', [CreateEventController::class, 'store']) ->name('submit-event');
+});
+
+
 
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
