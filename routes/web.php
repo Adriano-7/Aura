@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ReportCommentController;
+use App\Http\Controllers\ReportEventController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -41,12 +43,17 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/notificacoes/{id}/apagar', [NotificationsController::class, 'delete'])->name('notification.delete');
     Route::get('/notificacoes/{id}/marcar-como-vista', [NotificationsController::class, 'markAsSeen'])->name('notification.markAsSeen');
     Route::patch('/notificacoes/{id}/aceitar-convite', [NotificationsController::class, 'acceptInvitation'])->name('notification.acceptInvitation');
+
+    Route::middleware(['admin'])->group(function () {
+        Route::patch('/notificacoes/{id}/aprovar-organizacao', [NotificationsController::class, 'approveOrganization'])->name('notification.approveOrganization');
+    });
 });
 
 //Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/eventos/{id}', 'show')->name('events');
     Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
+    Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
 });
 
 
@@ -66,6 +73,20 @@ Route::controller(CommentController::class)->group(function () {
     Route::get('api/comments', 'index');
     Route::get('api/comments/{id}', 'show');
     Route::delete('api/comments/{id}', 'destroy');
+});
+
+Route::controller(ReportEventController::class)->group(function () {
+    Route::middleware(['admin'])->group(function () {
+        Route::get('api/reports/event', 'index');
+        Route::patch('api/reports/event/{id}/resolved', 'markAsResolved');
+    });
+});
+
+Route::controller(ReportCommentController::class)->group(function () {
+    Route::middleware(['admin'])->group(function () {
+        Route::get('api/reports/comment', 'index');
+        Route::patch('api/reports/comment/{id}/resolved', 'markAsResolved');
+    });
 });
 
 // Authentication
