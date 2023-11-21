@@ -89,8 +89,10 @@
                 @if(Auth::check() && !Auth::user()->isAdmin())
                     <div id="add-comment-row" class="comment-row">
                         <img class="profile-pic" src="{{asset('storage/profile/' . $user->photo)}}">
-                        <form id="add-comment" method="POST" enctype="multipart/form-data">
-                            <input type="text" placeholder="Adicione um comentário">
+                        <form id="add-comment" method="POST" action="{{route('comment.add')}}" enctype="multipart/form-data">
+                            @csrf
+                            <input type="text" name="text" placeholder="Adicione um comentário">
+                            <input type="hidden" name="event_id" value="{{$event->id}}">
                             <label for="file-upload" class="icon-button">
                                 <img class="icon" src="{{asset('storage/clip-icon.svg')}}">
                                 <input id="file-upload" type="file" style="display:none;">

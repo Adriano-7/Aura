@@ -67,6 +67,7 @@ Route::controller(CommentController::class)->group(function () {
     Route::get('api/comments', 'index');
     Route::get('api/comments/{id}', 'show');
     Route::delete('api/comments/{id}', 'destroy');
+    Route::post('comments/add', 'store')->name('comment.add');
 });
 
 // Authentication

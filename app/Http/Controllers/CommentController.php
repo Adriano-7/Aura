@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class CommentController extends Controller
 {
@@ -58,4 +60,29 @@ class CommentController extends Controller
             'message' => 'Comment deleted successfully'
         ]);
     }
+
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'text' => 'required',
+            'file' => 'file|mimes:jpg,jpeg,png,bmp,gif,svg,pdf|max:2048'
+        ]);
+
+        $comment = new Comment;
+        $comment->author_id = Auth::user()->id;
+        $comment->text = $request->text;
+        $comment->event_id = $request->event_id;
+
+        /*
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $comment->file = $filename;
+        }
+        */
+        
+        $comment->save();
+        return redirect(URL::previous() . '#comments')->with('success', 'Comment added successfully');    }
 }
