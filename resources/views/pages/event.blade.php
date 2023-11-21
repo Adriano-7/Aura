@@ -61,16 +61,24 @@
                                 <button id="leave-event" onclick="leaveEvent()">Sair do evento</button>
 
                                 <script>
-                                    function leaveEvent() {
-                                        window.location.href = "{{ route('event.leave', $event->id) }}";
+                                    async function leaveEvent() {
+                                        let url = new URL("{{ route('event.leave', $event->id) }}");
+                                        const response = await fetch(url);
+                                        if (response.status === 200) {
+                                            window.location.reload();
+                                        }
                                     }
-                                </script>
+                                </script>  
                             @else
                                 <button id="join-event" onclick="joinEvent()">Aderir ao evento</button>
                                 
                                 <script>
-                                    function joinEvent() {
-                                        window.location.href = "{{ route('event.join', $event->id) }}";
+                                    async function joinEvent() {
+                                        let url = new URL("{{ route('event.join', $event->id) }}");
+                                        const response = await fetch(url);
+                                        if (response.status === 200) {
+                                            window.location.reload();
+                                        }                                    
                                     }
                                 </script>
                             @endif
