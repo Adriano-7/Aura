@@ -1,9 +1,14 @@
 @extends('layouts.app')
 
 @section('title', $event->name . ' • ' . $event->venue)
+
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/event.js') }}" defer></script>
 @endsection
 
 @section('header')
@@ -58,29 +63,9 @@
                         <span id="numParticipants"> {{$event->participants()->count()}} participantes</span>
                         @if(Auth::check() && !Auth::user()->isAdmin())
                             @if($user->participatesInEvent($event))
-                                <button id="leave-event" onclick="leaveEvent()">Sair do evento</button>
-
-                                <script>
-                                    async function leaveEvent() {
-                                        let url = new URL("{{ route('event.leave', $event->id) }}");
-                                        const response = await fetch(url);
-                                        if (response.status === 200) {
-                                            window.location.reload();
-                                        }
-                                    }
-                                </script>  
+                                <button id="leave-event" onclick="leaveEvent(<?php echo json_encode($event->id); ?>)">Sair do evento</button>
                             @else
-                                <button id="join-event" onclick="joinEvent()">Aderir ao evento</button>
-                                
-                                <script>
-                                    async function joinEvent() {
-                                        let url = new URL("{{ route('event.join', $event->id) }}");
-                                        const response = await fetch(url);
-                                        if (response.status === 200) {
-                                            window.location.reload();
-                                        }                                    
-                                    }
-                                </script>
+                                <button id="join-event" onclick="joinEvent(<?php echo json_encode($event->id); ?>)">Aderir ao evento</button>
                             @endif
                             <div id="span-container">
                                 <span id="show-participants">Ver participantes</span>
