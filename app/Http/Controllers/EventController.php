@@ -46,7 +46,7 @@ class EventController extends Controller
 
         $eventsQuery = Event::with('tags')
             ->when($query, function (Builder $queryBuilder) use ($query) {
-                $queryBuilder->where('name', 'like', "%$query%");
+                $queryBuilder->where('name', 'ILIKE', "%$query%");
             })
             ->when($tags, function (Builder $queryBuilder) use ($tags) {
                 $queryBuilder->whereHas('tags', function (Builder $tagQuery) use ($tags) {
