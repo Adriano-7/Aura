@@ -42,7 +42,7 @@ async function search(firstTime = false) {
                     <h2>${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'long' })}</h2>
                     <h2>${startDate.getFullYear()}</h2>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8" onclick="window.location.href = '/evento/${result.id}'" style="cursor: pointer;">
                     <h3>${startDate.toLocaleString('default', { weekday: 'short' })} • ${startDate.getHours()}:${startDate.getMinutes()}</h3>
                     <h2>${result.name}</h2>
                     <h3>${result.city} • ${result.venue}</h3>
