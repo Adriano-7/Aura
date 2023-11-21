@@ -551,7 +551,7 @@ INSERT INTO organizations (id, name, photo, approved, description) VALUES
     (18, 'Xutos e Pontapés', 'xutos-e-pontapes.jpg', FALSE, 'Os Xutos e Pontapés são uma banda de rock formada em 1978 em Lisboa. A banda é composta por Tim, Kalú, João Cabeleira e Gui.'),
     (19, 'Capitão Fausto', 'capitao-fausto.jpg', FALSE, 'Os Capitão Fausto são uma banda de rock formada em 2009 em Lisboa. A banda é composta por Tomás Wallenstein, Domingos Coimbra, Francisco Ferreira, Manuel Palha e Salvador Seabra.');
 
-INSERT INTO events (id, name, photo, city, venue, adress, organization_id, start_date, end_date, description) VALUES
+INSERT INTO events (id, name, photo, city, venue, address, organization_id, start_date, end_date, description) VALUES
     ('1', 'NOS Alive', 'nos-alive.jpg', 'Oeiras', 'Passeio Marítimo de Algés', 'Passeio Marítimo de Algés - 1495-165 Algés', 1, '2024-07-06 21:00:00', '2024-07-10 06:00:00',    'NOS Alive é um festival de música anual que acontece em Algés, Portugal. É organizado pela Everything is New e patrocinado pela NOS. O festival é conhecido por ter um cartaz eclético, com uma variedade de géneros musicais, incluindo rock, indie, metal, hip hop, pop e eletrónica.'),
     ('2', 'Guns N Roses', 'guns-n-roses.jpg', 'Lisboa', 'Altice Arena', 'Rossio dos Olivais, 1990-231 Lisboa', 2, '2024-12-14 21:00:00', '2024-12-14 23:00:00',    'A tour Not In This Lifetime dos Guns N Roses, que começou em 2016, é a terceira maior tour de sempre, tendo já passado por 3 continentes e 14 países, com mais de 5 milhões de bilhetes vendidos. A banda é composta por Axl Rose, Slash e Duff McKagan, membros originais da banda, e ainda por Dizzy Reed, Richard Fortus, Frank Ferrer e Melissa Reese.'),
     ('3', 'Metallica', 'metallica.jpg', 'Lisboa', 'Estádio do Restelo', 'Estádio do Restelo - Av. do Restelo 1449-016 Lisboa', 3, '2024-12-14 21:00:00', '2024-12-14 23:00:00',    'Os Metallica são uma das bandas mais influentes e bem sucedidas de sempre, com mais de 110 milhões de álbuns vendidos em todo o mundo e inúmeros prémios e distinções. A banda foi formada em 1981 e é composta por James Hetfield, Lars Ulrich, Kirk Hammett e Robert Trujillo.'),
@@ -574,18 +574,7 @@ INSERT INTO organizers (user_id, organization_id) VALUES
     ('7', '5'),
     ('8', '6'),
     ('9', '7'),
-    ('10', '8'),
-    ('11', '9'),
-    ('12', '10'),
-    ('13', '11'),
-    ('14', '12'),
-    ('15', '13'),
-    ('16', '14'),
-    ('17', '15'),
-    ('16', '16'),
-    ('17', '17'),
-    ('18', '18'),
-    ('19', '19');
+    ('10', '8');
 
 INSERT INTO participants (user_id, event_id) VALUES
     ('4', '1'),
