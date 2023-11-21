@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
 Route::controller(EventController::class)->group(function () {
     Route::get('/eventos/{id}', 'show')->name('events');
     Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
+    Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
 });
 
 

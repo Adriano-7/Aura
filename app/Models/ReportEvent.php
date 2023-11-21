@@ -21,10 +21,10 @@ class ReportEvent extends Model
     ];
 
     public function event() {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class, 'reason_id');
     }
 
     public function reason() {
-        return $this->belongsTo(ReasonReportEvent::class);
+        return $this->belongsTo(ReasonReportEvent::class, 'reason_id');
     }
 }
