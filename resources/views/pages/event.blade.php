@@ -18,6 +18,8 @@
             $end_date = \Carbon\Carbon::parse($event->end_date);
             $moreThan24Hours = $start_date->diffInHours($end_date) > 24;
         }
+
+        $comments = \App\Models\Comment::event_comments($event->id);
     @endphp
 
     <section id="event-header">
@@ -34,7 +36,7 @@
                         <span id="date">{{ $event->start_date->format('d M Y') }}</span>
                         @if($moreThan24Hours)
                             <br>
-                            <span id="date">{{ $event->end_date->format('d M Y') }}</span>´
+                            <span id="date">{{ $event->end_date->format('d M Y') }}</span>
                         @endif
                     </div>
                     <div id="second-column">
@@ -88,7 +90,8 @@
             </div>
         </section>
         <section id="comments" class="event-field">
-            <h2>Comentários</h2>
+                <h2>Comentários ({{$comments->count()}})</h2>
+            </div>
             <div class="card">
                 @if(Auth::check() && !Auth::user()->isAdmin())
                     <div id="add-comment-row" class="comment-row">
@@ -98,24 +101,26 @@
                         <img class="icon" src="{{asset('storage/send-icon.svg')}}">
                     </div>
                 @endif
-                <div class="comment-row">
-                    <img class="profile-pic" src="http://127.0.0.1:8000/storage/profile/teresa_rodrigues.jpeg">
-                    <div class="comment-content">
-                        <div class="username-and-date">
-                            <span class="comment-author">Teresa Rodrigues</span>
-                            <span class="comment-date">06 Jul 2024</span>
-                            <img class="icon" src="{{asset('storage/edit-icon.svg')}}">
-                            <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
+
+                @foreach($comments as $comment)
+                    <div class="comment-row">
+                        <img class="profile-pic" src="{{asset('storage/profile/' . $comment->author->photo)}}">
+                        <div class="comment-content">
+                            <div class="username-and-date">
+                                <span class="comment-author">{{$comment->author->name}}</span>
+                                <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
+                                <img class="icon" src="{{asset('storage/edit-icon.svg')}}">
+                                <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
+                            </div>
+                            <p class="comment-text">{{$comment->text}}</p>
+                            <div class="votes-row">
+                                <img class="icon" src="{{asset('storage/votes-icon.svg')}}" id="votes-icon">
+                                <span class="comment-votes">{{$comment->vote_balance}}</span>
+                            </div>
                         </div>
-                        <p class="comment-text">
-                            AIAIAI MINHA MACHADINHA QUEM TE POS A MAO SABENDO QUE ÉS MINHA
-                        </p>
-                        <div class="votes-row">
-                            <img class="icon" src="{{asset('storage/votes-icon.svg')}}" id="votes-icon">
-                            <span class="comment-votes">2</span>
-                        </div>
-                    </div>
-                </div>
+                    </div>               
+                @endforeach
+                
             </div>
         </section>
     </div>        
