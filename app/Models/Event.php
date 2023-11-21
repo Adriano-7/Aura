@@ -9,6 +9,7 @@ class Event extends Model{
     use HasFactory;
 
     protected $table = 'events';
+    public $timestamps = false; 
 
     protected $fillable = [
         'id',
@@ -29,4 +30,5 @@ class Event extends Model{
         'end_date' => 'datetime',
         'is_public' => 'boolean'
     ];
+
 }

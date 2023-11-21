@@ -35,7 +35,7 @@ CREATE TABLE events (
     name TEXT NOT NULL,
     description TEXT,
     photo TEXT,
-    adress TEXT,
+    address TEXT,
     venue TEXT,
     city TEXT,
     start_date TIMESTAMP NOT NULL,
@@ -471,7 +471,7 @@ INSERT INTO organizations (id, name, photo, approved, description) VALUES
     (1, 'Everything is new', 'everything-is-new.png', TRUE, 'A Everything is New é uma promotora de eventos portuguesa, fundada em 2005 por Álvaro Covões, Luís Montez e Vasco Sacramento. A promotora é responsável pela organização de eventos como o NOS Alive, o NOS Primavera Sound, o EDP Cool Jazz, o Super Bock Super Rock, o Sumol Summer Fest, o Vodafone Mexefest, o ID No Limits, o Brunch Electronik, o Jameson Urban Routes, o Super Bock em Stock, o Festival F, o Festival Iminente, o Festival Fado, o Festival Fuso, o Festival Silêncio, o Festival Músicas do Mundo, o Festival de Jazz de Cascais'),
     (9, 'Musica no Coração', 'musica-no-coracao.png',TRUE,'A Música no Coração é uma promotora de eventos portuguesa, fundada em 1999 por Luís Montez. A promotora é responsável pela organização de eventos como o NOS Alive, o NOS Primavera Sound, o EDP Cool Jazz, o Super Bock Super Rock, o Sumol Summer Fest, o Vodafone Mexefest, o ID No Limits, o Brunch Electronik, o Jameson Urban Routes, o Super Bock em Stock, o Festival F, o Festival Iminente, o Festival Fado, o Festival Fuso, o Festival Silêncio, o Festival Músicas do Mundo, o Festival de Jazz de Cascais');
 
-INSERT INTO events (id, name, photo, city, venue, adress, organization_id, start_date, end_date, description) VALUES
+INSERT INTO events (id, name, photo, city, venue, address, organization_id, start_date, end_date, description) VALUES
     ('1', 'NOS Alive', 'nos-alive.jpg', 'Oeiras', 'Passeio Marítimo de Algés', 'Passeio Marítimo de Algés - 1495-165 Algés', 1, '2024-07-06 21:00:00', '2024-07-10 06:00:00',    'NOS Alive é um festival de música anual que acontece em Algés, Portugal. É organizado pela Everything is New e patrocinado pela NOS. O festival é conhecido por ter um cartaz eclético, com uma variedade de géneros musicais, incluindo rock, indie, metal, hip hop, pop e eletrónica.'),
     ('2', 'Guns N Roses', 'guns-n-roses.jpg', 'Lisboa', 'Altice Arena', 'Rossio dos Olivais, 1990-231 Lisboa', 2, '2024-12-14 21:00:00', '2024-12-14 23:00:00',    'A tour Not In This Lifetime dos Guns N Roses, que começou em 2016, é a terceira maior tour de sempre, tendo já passado por 3 continentes e 14 países, com mais de 5 milhões de bilhetes vendidos. A banda é composta por Axl Rose, Slash e Duff McKagan, membros originais da banda, e ainda por Dizzy Reed, Richard Fortus, Frank Ferrer e Melissa Reese.'),
     ('3', 'Metallica', 'metallica.jpg', 'Lisboa', 'Estádio do Restelo', 'Estádio do Restelo - Av. do Restelo 1449-016 Lisboa', 3, '2024-12-14 21:00:00', '2024-12-14 23:00:00',    'Os Metallica são uma das bandas mais influentes e bem sucedidas de sempre, com mais de 110 milhões de álbuns vendidos em todo o mundo e inúmeros prémios e distinções. A banda foi formada em 1981 e é composta por James Hetfield, Lars Ulrich, Kirk Hammett e Robert Trujillo.'),

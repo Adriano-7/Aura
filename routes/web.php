@@ -53,7 +53,10 @@ Route::middleware(['auth'])->group(function () {
 //Create Events
 Route::middleware(['auth'])->group(function () {
     Route::get('/criar-evento', [CreateEventController::class, 'show'])->name('criar-evento');
+    Route::post('/submit-event', [CreateEventController::class, 'store']) ->name('submit-event');
 });
+
+
 
 //Organization
 Route::controller(OrganizationController::class)->group(function () {

@@ -55,8 +55,8 @@ class User extends Authenticatable{
         return $this->hasOne('App\Models\Administrator', 'id')->exists();
     }
 
-        public function userOrganizations()
-        {
-            return $this->belongsToMany('App\Models\Organization', 'organizers', 'user_id', 'organization_id');
-        }
+    public function userOrganizations()
+    {
+        return $this->belongsToMany('App\Models\Organization', 'organizers', 'user_id', 'organization_id');
+    }
 }
