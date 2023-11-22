@@ -86,7 +86,7 @@
                 <h2>Comentários ({{$comments->count()}})</h2>
             </div>
             <div class="card">
-                @if(Auth::check() && !Auth::user()->isAdmin())
+                @if(Auth::check() && !Auth::user()->isAdmin() && Auth::user()->participatesInEvent($event))
                     <div id="add-comment-row" class="comment-row">
                         <img class="profile-pic" src="{{asset('storage/profile/' . $user->photo)}}">
                         <form id="add-comment" method="POST" action="{{route('comment.add')}}" enctype="multipart/form-data">
@@ -111,19 +111,22 @@
                             <div class="username-and-date">
                                 <span class="comment-author">{{$comment->author->name}}</span>
                                 <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
-                                @if(Auth::user()->id == $comment->author->id)
-                                    <button class="icon-button">
-                                        <img class="icon" src="{{asset('storage/edit-icon.svg')}}">
-                                    </button>
-                                @endif
-                                @if(Auth::user()->id == $comment->author->id || Auth::user()->isAdmin())
-                                    <form action="{{ route('comment.delete', $comment->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
+                                @if(Auth::check())
+                                    @if(Auth::user()->id == $comment->author_id)
                                         <button class="icon-button">
-                                            <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
+                                            <img class="icon" src="{{asset('storage/edit-icon.svg')}}">
                                         </button>
-                                    </form>
+                                    @endif
+                                    
+                                    @if(Auth::user()->id == $comment->author->id || Auth::user()->isAdmin())
+                                        <form action="{{ route('comment.delete', $comment->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="icon-button">
+                                                <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
+                                            </button>
+                                        </form>
+                                    @endif
                                 @endif
                             </div>
                             <p class="comment-text">{{$comment->text}}</p>

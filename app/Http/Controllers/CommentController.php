@@ -67,6 +67,9 @@ class CommentController extends Controller
             'file' => 'file|mimes:jpg,jpeg,png,bmp,gif,svg,pdf|max:2048'
         ]);
 
+        $event = Event::findOrFail($request->event_id);
+        $this->authorize('store', [Comment::class, $event, $request->user()]);
+
         $comment = new Comment;
         $comment->author_id = Auth::user()->id;
         $comment->text = $request->text;

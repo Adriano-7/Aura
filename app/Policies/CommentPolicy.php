@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Event;
 
 class CommentPolicy
 {
@@ -56,5 +57,9 @@ class CommentPolicy
      */
     public function forceDelete(User $user, Comment $comment): bool {
         //
+    }
+
+    public function store(User $user, Event $event): bool {
+        return $user->participatesInEvent($event);
     }
 }
