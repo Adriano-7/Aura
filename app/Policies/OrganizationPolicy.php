@@ -14,4 +14,12 @@ class OrganizationPolicy{
         return $organization->invitedUsers->contains($user);
         */
     }
+
+    public function invite_user(User $user, Organization $organization): bool{
+        return $user->isAdmin() || $user->isOrganizer($organization);
+    }
+
+    public function eliminate_member(User $user, Organization $organization): bool{
+        return $user->isAdmin() || $user->isOrganizer($organization);
+    }
 }

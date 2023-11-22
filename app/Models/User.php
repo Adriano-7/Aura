@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class User extends Authenticatable{
     use HasApiTokens, HasFactory, Notifiable;
 
-    // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
     protected $table = 'users';
@@ -58,8 +57,12 @@ class User extends Authenticatable{
     public function participatesInEvent(Event $event) {
         return $event->participants()->get()->contains($this);
     }
-    public function userOrganizations()
-    {
+
+    public function userOrganizations(){
         return $this->belongsToMany('App\Models\Organization', 'organizers', 'user_id', 'organization_id');
+    }
+
+    public function isOrganizer(Organization $organization){
+        return $this->userOrganizations->contains($organization);
     }
 }
