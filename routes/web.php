@@ -64,7 +64,10 @@ Route::controller(EventController::class)->group(function () {
 
 //My Events
 Route::middleware(['auth'])->group(function () {
-    Route::get('/meus-eventos', [MyEventsController::class, 'show'])->name('my-events');
+    Route::get('/meus-eventos', [MyEventsController::class, 'participating'])->name('my-events');
+    Route::get('/filter-events/participating', [MyEventsController::class, 'participating'])->name('participating');
+    Route::get('/filter-events/organizing', [MyEventsController::class, 'organizing'])->name('organizing');
+
 });
 
 //Create Events
