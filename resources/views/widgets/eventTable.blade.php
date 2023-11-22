@@ -18,7 +18,7 @@
         @if($events)
             @foreach($events as $event)
                 <div class="card mb-4 shadow-sm" style="border-radius: 15px;">
-                    <a href="{{ route('events', ['id' => $event->id]) }}" class="text-decoration-none text-light">
+                    <a href="{{ route('event', ['id' => $event->id]) }}" class="text-decoration-none text-light">
                     <div class="row ">
                         <div class="col-3 col-md-2 p-2 text-center d-sm-block">             
                             <img src="{{ asset('storage/eventos/' . $event->photo) }}" class="card-img " alt="Event Photo"></div>
@@ -26,7 +26,7 @@
                             <div class="card-body">
                                 <h5 class="card-title d-flex align-items-center">{{ $event->name }}&nbsp
                                 @if($header == 'Organizo')
-                                        <div class = 'edit p-1' href="{{ route('events', ['id' => $event->id]) }}">@include('widgets.icons.editIcon')</div>
+                                        <div class = 'edit p-1' href="{{ route('event', ['id' => $event->id]) }}">@include('widgets.icons.editIcon')</div>
                                     @endif
                                 </h5>
                                 <p class="card-text ">

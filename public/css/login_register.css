@@ -91,3 +91,9 @@ a{
 * {
     font-family: "Montserrat", sans-serif;
 }
+
+.error{
+    color: #fff;
+    font-size: small;
+    white-space: nowrap;
+}
