@@ -88,8 +88,8 @@ class CommentController extends Controller
             // update comment in table
             $comment->save();
 
-            /* store the file in app/uploads */
-            $fileRequest->storeAs('uploads', $file->file_name, 'local');
+            /* store the file in app/public/uploads */
+            $fileRequest->storeAs('public/uploads', $file->file_name);
         }
 
         return redirect(URL::previous() . '#comments')->with('success', 'Comment added successfully');
