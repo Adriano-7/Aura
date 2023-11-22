@@ -100,7 +100,8 @@
 
             @foreach ($reportEvents as $report)
             <div class="row report">
-                <div class="col-2 dashboard-profile d-flex align-items-center">
+                <div class="col-2 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
+                    onclick="window.location.href='{{ route('event', ['id' => $report->event->id]) }}'">
                     <div class="pr-2">
                         <img src="{{asset('storage/eventos/' . $report->event->photo)}}">
                     </div>
@@ -108,7 +109,8 @@
                         <h1>{{$report->event->name}}</h1>
                     </div>
                 </div>
-                <div class="col-8 dashboard-text-content">
+                <div class="col-8 dashboard-text-content" style="cursor: pointer;"
+                    onclick="window.location.href='{{ route('event', ['id' => $report->event->id]) }}'">
                     <p>{{$report->reason->text}}</p>
                 </div>
                 <div class="col-2 dashboard-actions">

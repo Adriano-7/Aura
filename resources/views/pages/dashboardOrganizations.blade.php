@@ -39,7 +39,8 @@
         <div class="dashboard-table limit-table">
             @foreach ($organizationRequests as $request)
                 <div class="row report">
-                    <div class="col-3 dashboard-profile d-flex align-items-center">
+                    <div class="col-3 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
+                    onclick="window.location.href='{{ route('organization', ['id' => $request->organization->id]) }}'">
                         <div class="pr-2">
                             <img src="{{ asset('storage/profile/' . $request->userEmitter->photo) }}">
                         </div>
@@ -48,8 +49,9 @@
                             <h2>{{ $request->getNiceDate() }}</h2>
                         </div>
                     </div>
-                    <div class="col-7 dashboard-text-content">
-                        <p> Solicitou o registo da organização “{{$request->organization->name}}”.</p>
+                    <div class="col-7 dashboard-text-content" style="cursor: pointer;"
+                    onclick="window.location.href='{{ route('organization', ['id' => $request->organization->id]) }}'">
+                        <p> Solicitou o registo da organização “{{ $request->organization->name }}”.</p>
                     </div>
                     <div class="col-2 dashboard-actions">
                         <div class="dropdown">
@@ -78,23 +80,21 @@
                 <div class="col-3">
                     <h1>Organização</h1>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <h1>Estado</h1>
                 </div>
                 <div class="col-3">
-                    <h1>Descrição</h1>
-                </div>
-                <div class="col-2">
                     <h1>Membros</h1>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     <h1>Ações</h1>
                 </div>
             </div>
 
             @foreach ($organizations as $organization)
                 <div class="row report">
-                    <div class="col-3 dashboard-profile d-flex align-items-center">
+                    <div class="col-3 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
+                        onclick="window.location.href='{{ route('organization', ['id' => $organization->id]) }}'">
                         <div class="pr-2">
                             <img src="{{ asset('storage/organizations/' . $organization->photo) }}">
                         </div>
@@ -103,7 +103,7 @@
                         </div>
                     </div>
 
-                    <div class="col-2 dashboard-text-content">
+                    <div class="col-3 dashboard-text-content">
                         @if ($organization->approved)
                             <p>Aprovada</p>
                         @else
@@ -111,24 +111,7 @@
                         @endif
                     </div>
 
-                    <div class="col-3 dashboard-text-content overflow-hidden">
-                        <button type="button" class="btn text-white" data-toggle="modal"
-                            data-target="#descriptionModal{{ $organization->id }}">
-                            Ver descrição
-                        </button>
-                        <div class="modal fade" id="descriptionModal{{ $organization->id }}" tabindex="-1" role="dialog"
-                            aria-labelledby="descriptionModalLabel{{ $organization->id }}" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        {{ $organization->description }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-2 dashboard-actions">
+                    <div class="col-3 dashboard-actions">
                         <button type="button" class="btn text-white" data-toggle="modal"
                             data-target="#membersModal{{ $organization->id }}">
                             Ver membros

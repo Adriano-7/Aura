@@ -32,6 +32,8 @@
 
     margin-left: auto;
     margin-right: auto;
+
+
 }
 
 .dashboard-header {
@@ -54,6 +56,9 @@
     
     object-fit: cover;
     object-position: 0 0;
+
+    overflow: hidden;
+    
 }
 
 .dashboard-text-content, .dashboard-actions{
@@ -61,6 +66,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
 }
 
 .report h1{
