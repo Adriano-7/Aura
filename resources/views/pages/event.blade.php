@@ -131,7 +131,11 @@
                             </div>
                             <p class="comment-text">{{$comment->text}}</p>
                             @if($comment->file_id)
-                                    <span class=comment-votes>FILE {{$comment->file_id}}</span>
+                                <div class="comment-file">
+                                    <a href="{{ asset('storage/uploads/' . $comment->file->file_name) }}">
+                                        <img src="{{ asset('storage/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
+                                    </a>   
+                                </div>
                             @endif
                             <div class="votes-row">
                                 <img class="icon" src="{{asset('storage/votes-icon.svg')}}" id="votes-icon">
