@@ -12,6 +12,7 @@ use App\Http\Controllers\CreateEventController;
 use App\Http\Controllers\MyEventsController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EditEventController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -55,7 +56,13 @@ Route::controller(EventController::class)->group(function () {
     Route::get('/eventos/{id}', 'show')->name('events');
     Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
+});
 
+//Edit Events
+Route::middleware(['auth'])->group(function () {
+    Route::get('/edit-event/{id}', [EditEventController::class, 'show'])->name('edit-event');
+    Route::put('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
+    Route::get('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
 });
 
 

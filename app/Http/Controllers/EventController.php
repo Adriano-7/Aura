@@ -34,4 +34,5 @@ class EventController extends Controller{
         return redirect()->route('notifications')->
             with('status', "Entrou com sucesso no evento {$event->name}, {$event->venue} em {$event->start_date->format('j F, Y')}.");    
     }
+
 }
