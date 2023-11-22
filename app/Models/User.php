@@ -58,4 +58,8 @@ class User extends Authenticatable{
     public function participatesInEvent(Event $event) {
         return $event->participants()->get()->contains($this);
     }
+    public function userOrganizations()
+    {
+        return $this->belongsToMany('App\Models\Organization', 'organizers', 'user_id', 'organization_id');
+    }
 }

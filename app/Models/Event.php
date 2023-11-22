@@ -10,6 +10,7 @@ class Event extends Model{
     use HasFactory;
 
     protected $table = 'events';
+    public $timestamps = false; 
 
     protected $fillable = [
         'id',
@@ -31,6 +32,10 @@ class Event extends Model{
         'is_public' => 'boolean'
     ];
 
+    public function tags(){
+        return $this->belongsToMany('App\Models\Tag', 'tag_event', 'event_id', 'tag_id');
+    }
+    
     public function participants(){
         return $this->belongsToMany(User::class, 'participants', 'event_id', 'user_id');
     }
