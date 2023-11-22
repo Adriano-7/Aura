@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
 use App\Models\Notification;
+use App\Models\Organization;
 
 class NotificationsController extends Controller{
     public function show(): View{
@@ -59,17 +60,20 @@ class NotificationsController extends Controller{
 
         abort(403, 'This notification is not an invitation');
     }
+    
+    public function approveOrganization(int $organizationId) {
+        $organization = Organization::findOrFail($organizationId);
+        $notifications = $organization->organizationInvitations;
 
-    public function approveOrganization(int $id) {
-        $notification = Notification::findOrFail($id);
-        $this->authorize('approve_org', $notification);
-
-        $org = $notification->organization();
-        $org->approved = true;
-        $org->save();
-
-        $notification->delete();
-
-        return redirect()->route('organization.show', ['id' => $notification->organization->id]);
+        foreach ($notifications as $notification) {
+            $this->authorize('approve_org', $notification);
+            $notification->delete();
+        }
+    
+        $organization->approved = true;
+        $organization->save();
+    
+        return redirect()->route('organization.show', ['id' => $organization->id]);
     }
+
 }

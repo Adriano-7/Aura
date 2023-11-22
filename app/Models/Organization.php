@@ -9,6 +9,7 @@ class Organization extends Model{
     use HasFactory;
 
     protected $table = 'organizations';
+    public $timestamps = false;
 
     protected $fillable = [
         'id',
@@ -28,5 +29,14 @@ class Organization extends Model{
 
     public function invitedUsers(){
         return $this->belongsToMany(User::class, 'notifications', 'organization_id', 'receiver_id')->where('type', 'organization_invitation');
+    }
+    
+    public function events(){
+        return $this->hasMany(Event::class);
+    }
+
+    public function organizationInvitations(){
+        return $this->hasMany(Notification::class, 'organization_id')
+                    ->where('type', 'organization_invitation');
     }
 }

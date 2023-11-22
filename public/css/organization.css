@@ -1,0 +1,280 @@
+
+#bandBanner {
+    max-height: 15rem;
+    height: 20rem;
+    object-fit: cover;
+    width: 100%;
+}
+
+#bandName {
+    color: #FFF;
+    font-size: 35px;
+    font-weight: 700;
+    padding-left: 1.5rem;
+
+    background-color: rgba(0, 0, 0, 0.4);
+
+}
+
+.navbar-nav {
+    flex-direction: row !important;
+}
+
+#orgNav {
+    background-color: #000000;
+}
+
+#orgNav a {
+    color: #FFF;
+    padding: 0rem;
+    margin-right: 1.2rem;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#results-title {
+    color: #FFF;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+#section1{
+    margin-top: 2rem;
+}
+
+
+.card{
+    padding-bottom: 1rem;
+    background-color: #11141A;
+    border-radius: 1rem;
+
+    margin-top:1rem;
+    margin-bottom: 7rem;
+}
+
+.event{
+    width:95%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+
+    border-bottom: 1px solid #808080;
+    padding: 1rem;
+}
+
+#about{
+    padding: 1rem;
+}
+
+p{
+    color: #808080;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.card h2{
+    color: #FFF;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.card h3{
+    color: #808080;
+    font-size: 0.7rem;
+    font-weight: 400;
+}
+
+#join-event,
+#leave-event {
+    /*no wrap*/
+    white-space: nowrap;
+
+    font-size: 0.85rem;
+
+    border: #A08AFA 1px solid;
+    border-radius: 50em;
+    padding: 0.7em 1em;
+    background-color: #11141A;
+    color: white;
+}
+
+#join-event:hover,
+#leave-event:hover {
+    background-color: #A08AFA;
+    color: #11141A;
+}
+
+@media (min-width: 765px){
+    .event {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .event .col-md-2,
+    .event .col-md-2.ml-auto {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 765px){
+    .event .col-md-2,
+    .event .col-md-2.ml-auto {
+        display: flex;
+        justify-content: flex-end;
+
+        margin-top: 0rem;
+    }
+
+}
+
+.alert{
+    background-color: #11141A;
+    border: none;
+    color: #808080;
+}
+
+.alert a{
+    color: rgb(195, 191, 191);
+    text-decoration: none;
+}
+
+#org-img{
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.members-container{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.members-table{
+    background-color: #11141A;
+    padding: 1.2rem;
+    border-radius: 1rem;
+
+    margin: 0 auto; 
+}
+
+.members-header {
+    border-bottom: 1px solid #808080;
+}
+
+.members-header h1 {
+    color: #FFFFFFCC;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.members-profile img{
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    margin-right: 1rem;
+    
+    object-fit: cover;
+    object-position: 0 0;
+
+    overflow: hidden;
+}
+
+.members-text-content, .members-actions{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.report{
+    margin-top: 1rem;
+}
+
+.report h1{
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.report h2{
+    color: rgba(255, 255, 255, 0.50);
+    font-family: Montserrat;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.report p{
+    color: #FFF;
+
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+
+.form-control{
+    background-color: transparent;
+    border: 1px solid #808080;
+    color: #808080;
+
+    font-size: 12px;
+    margin-bottom: 1rem;
+}
+
+#addMemberForm .btn{
+    color: #808080;
+    background-color: transparent;
+    border: #808080 1px solid;
+    border-radius: 50em;
+    width: 7rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+#addMemberForm .btn:hover{
+    background-color: #11141A;
+    color: #A08AFA;
+    border: #A08AFA 1px solid;
+}
+
+#text-input{
+    width: 40%;
+    color: #FFF;
+    margin-right: 1rem;
+}
+
+#text-input::placeholder{
+    color: #fdfdfd;
+}
+
+#text-input:focus {
+    background-color: #11141A;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-radius: 10px;
+}
+
+#approveForm .btn{
+    color: #cdc9c9;
+    background-color: transparent;
+
+}
