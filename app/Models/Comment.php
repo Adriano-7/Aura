@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\VoteComment;
 
 class Comment extends Model
 {
@@ -25,6 +26,7 @@ class Comment extends Model
         'file_id'
     ];
 
+
     /**
      * Get all comments for a given event, sorted by date (newest first)
      */
@@ -41,4 +43,9 @@ class Comment extends Model
     public function file() {
         return $this->hasOne(File::class, 'id', 'file_id');
     }
+
+    public function vote($user_id) {
+        return VoteComment::voteValue($this->id, $user_id);
+    }
+
 }
