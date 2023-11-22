@@ -60,7 +60,6 @@ Route::controller(EventController::class)->group(function () {
     Route::get('/evento/{id}', 'show')->name('event');
     Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave');
-    Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
     Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser');
 
@@ -71,7 +70,6 @@ Route::controller(EventController::class)->group(function () {
 //Edit Events
 Route::middleware(['auth'])->group(function () {
     Route::get('/edit-event/{id}', [EditEventController::class, 'show'])->name('edit-event');
-    Route::put('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
     Route::get('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
 });
 
