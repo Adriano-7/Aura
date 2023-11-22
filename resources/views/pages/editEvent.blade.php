@@ -94,8 +94,8 @@
         <div class="form-group">
             <label for="event_visibility">Visibilidade *</label>
             <select id="event_visibility" name="event_visibility" required>
-                <option value="public" {{ $event->visibility == 'public' ? 'selected' : '' }}>Público</option>
-                <option value="private" {{ $event->visibility == 'private' ? 'selected' : '' }}>Privado</option>
+                <option value="public" {{ $event->is_public ? 'selected' : '' }}>Público</option>
+                <option value="private" {{ !$event->is_public == 'private' ? 'selected' : '' }}>Privado</option>
             </select>
         </div>
 
@@ -108,7 +108,7 @@
 
         <!-- Submit Button -->
         <div class="form-group text-center">
-            <button type="submit" class="btn btn-primary me-4">Criar Evento</button>
+            <button type="submit" class="btn btn-primary me-4">Editar Evento</button>
             <button type="button" class="btn btn-secondary" onclick="window.location='{{ route('organizing') }}'">Cancelar</button>        </div>
     </form>
 </div>
