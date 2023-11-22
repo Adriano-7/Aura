@@ -63,7 +63,7 @@ class NotificationsController extends Controller{
     
     public function approveOrganization(int $organizationId) {
         $organization = Organization::findOrFail($organizationId);
-        $notifications = $organization->organizationInvitations;
+        $notifications = $organization->organizationRegistrationRequests;
 
         foreach ($notifications as $notification) {
             $this->authorize('approve_org', $notification);
@@ -73,7 +73,7 @@ class NotificationsController extends Controller{
         $organization->approved = true;
         $organization->save();
     
-        return redirect()->route('organization.show', ['id' => $organization->id]);
+        return redirect()->back()->with('status', 'Organização aprovada com sucesso!');
     }
 
 }

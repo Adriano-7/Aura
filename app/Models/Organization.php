@@ -39,4 +39,9 @@ class Organization extends Model{
         return $this->hasMany(Notification::class, 'organization_id')
                     ->where('type', 'organization_invitation');
     }
+
+    public function organizationRegistrationRequests(){
+        return $this->hasMany(Notification::class, 'organization_id')
+                    ->where('type', 'organization_registration_request');
+    }
 }
