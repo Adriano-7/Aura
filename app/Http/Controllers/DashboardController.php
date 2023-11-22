@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Notification;
+use App\Models\Organization;
+use App\Models\ReportComment;
+use App\Models\ReportEvent;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,8 +16,8 @@ class DashboardController extends Controller{
     public function showReports(): View{
         return view('pages.dashboardReports', [
             'user' => Auth::user(),
-            'reportEvents' => Models\ReportEvent::all(),
-            'reportComments' => Models\ReportComment::all(),
+            'reportEvents' => ReportEvent::where('resolved', false)->get(),
+            'reportComments' => ReportComment::where('resolved', false)->get(),
         ]);
     }
 
@@ -30,8 +33,8 @@ class DashboardController extends Controller{
     
         return view('pages.dashboardOrganizations', [
             'user' => Auth::user(),
-            'organizations' => Models\Organization::all(),
-            'organizationRequests' => Models\Notification::where([
+            'organizations' => Organization::all(),
+            'organizationRequests' => Notification::where([
                 ['type', 'organization_registration_request'],
                 ['receiver_id', $userId],
             ])->get(),

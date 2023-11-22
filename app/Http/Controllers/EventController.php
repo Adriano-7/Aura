@@ -70,4 +70,21 @@ class EventController extends Controller{
 
         return response()->json($results);
     }
+
+    public function ApiDelete(int $id) {
+        $event = Event::find($id);
+
+        if (!$event) {
+            return response()->json([
+                'message' => 'Event not found.'
+            ], 404);
+        }
+
+        $this->authorize('delete', $event);
+        $event->delete();
+
+        return response()->json([
+            'message' => 'Event deleted.'
+        ], 200);
+    }
 }

@@ -1,12 +1,20 @@
 @extends('layouts.app')
+
 @section('title', 'Dashboard')
+
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 @endsection
+
+@section('scripts')
+    <script src="{{ asset('js/dashboard.js') }}" defer></script>
+@endsection
+
 @section('header')
     @include('widgets.navBar')
 @endsection
+
 @section('content')
     <div class="container dashboard-container">
         <img src="{{ asset('storage/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
@@ -15,8 +23,7 @@
             <ul class="navbar-nav flex-row">
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('dashboard.reports')}}">
-                        <span class="active"> DENUNCIAS </span>
-                    </a>
+                        <span class="active"> DENUNCIAS </span> </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('dashboard.members')}}">
@@ -73,8 +80,8 @@
                             <img src="{{asset('storage/Three-Dots-Icon.svg')}}" alt="more">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Apagar comentário</a></li>
-                            <li><a class="dropdown-item" href="#">Ignorar</a></li>
+                            <li><button class="dropdown-item delete-comment" data-comment-id="{{ $report->comment->id }}">Apagar comentário</button></li>
+                            <li><button class="dropdown-item ignore-comment" data-report-id="{{ $report->id }}">Ignorar</button></li>
                         </ul>
                     </div>
                 </div>
@@ -120,8 +127,8 @@
                             <img src="{{asset('storage/Three-Dots-Icon.svg')}}" alt="more">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Eliminar Evento</a></li>
-                            <li><a class="dropdown-item" href="#">Ignorar</a></li>
+                            <li><button class="dropdown-item delete-event" data-event-id="{{ $report->event->id }}">Eliminar Evento</button></li>
+                            <li><button class="dropdown-item ignore-event" data-report-id="{{ $report->id }}">Ignorar</button></li>
                         </ul>
                     </div>
                 </div>
@@ -129,5 +136,4 @@
             @endforeach
         </div>
     </div>
-
 @endsection

@@ -61,6 +61,7 @@ Route::controller(EventController::class)->group(function () {
 
     //Api
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search');
+    Route::delete('api/event/{id}', 'ApiDelete');
 });
 
 
