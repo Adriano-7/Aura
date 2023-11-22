@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Event extends Model{
     use HasFactory;
@@ -42,4 +43,9 @@ class Event extends Model{
     public function comments(){
         return $this->hasMany(Comment::class);
     }
+
+    public function organization(){
+        return $this->belongsTo(Organization::class);
+    }
 }
+

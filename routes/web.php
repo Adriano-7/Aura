@@ -58,8 +58,11 @@ Route::middleware(['auth'])->group(function () {
 //Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/evento/{id}', 'show')->name('event');
+    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join');
+    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave');
     Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
+    Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser');
 
     //Api
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search');
@@ -108,7 +111,8 @@ Route::controller(SearchController::class)->group(function () {
 Route::controller(CommentController::class)->group(function () {
     Route::get('api/comments', 'index');
     Route::get('api/comments/{id}', 'show');
-    Route::delete('api/comments/{id}', 'destroy');
+    Route::delete('api/comments/{id}', 'destroy')->name('comment.delete');
+    Route::post('comments/add', 'store')->name('comment.add');
 });
 
 Route::controller(ReportEventController::class)->group(function () {

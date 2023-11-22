@@ -1,0 +1,395 @@
+openapi: 3.0.0
+info:
+  title: Your Application API
+  description: API documentation for Your Application
+  version: 1.0.0
+paths:
+  /:
+    get:
+      summary: Get the home page
+      operationId: getHomePage
+      responses:
+        '200':
+          description: Successful response
+
+  /dashboard/denuncias:
+    get:
+      summary: Get reports on the dashboard
+      operationId: getDashboardReports
+      security:
+        - admin: []
+      responses:
+        '200':
+          description: Successful response
+
+  /dashboard/membros:
+    get:
+      summary: Get members on the dashboard
+      operationId: getDashboardMembers
+      security:
+        - admin: []
+      responses:
+        '200':
+          description: Successful response
+
+  /dashboard/organizacoes:
+    get:
+      summary: Get organizations on the dashboard
+      operationId: getDashboardOrganizations
+      security:
+        - admin: []
+      responses:
+        '200':
+          description: Successful response
+
+  /notificacoes:
+    get:
+      summary: Get notifications
+      operationId: getNotifications
+      security:
+        - auth: []
+      responses:
+        '200':
+          description: Successful response
+
+  /notificacoes/{id}/apagar:
+    delete:
+      summary: Delete a notification
+      operationId: deleteNotification
+      security:
+        - auth: []
+      responses:
+        '204':
+          description: Notification deleted
+
+  /notificacoes/{id}/marcar-como-vista:
+    get:
+      summary: Mark a notification as seen
+      operationId: markNotificationAsSeen
+      security:
+        - auth: []
+      responses:
+        '200':
+          description: Successful response
+
+  /notificacoes/{id}/aceitar-convite:
+    patch:
+      summary: Accept an invitation from a notification
+      operationId: acceptInvitationFromNotification
+      security:
+        - auth: []
+      responses:
+        '200':
+          description: Successful response
+
+  /notificacoes/{id}/aprovar-organizacao:
+    patch:
+      summary: Approve an organization from a notification (Admin only)
+      operationId: approveOrganizationFromNotification
+      security:
+        - auth: []
+        - admin: []
+      responses:
+        '200':
+          description: Successful response
+
+  /evento/{id}:
+    get:
+      summary: Get details of an event
+      operationId: getEventDetails
+      responses:
+        '200':
+          description: Successful response
+
+  /api/evento/{id}/aderir:
+    get:
+      summary: Join an event
+      operationId: joinEvent
+      responses:
+        '200':
+          description: Successful response
+
+  /api/evento/{id}/sair:
+    get:
+      summary: Leave an event
+      operationId: leaveEvent
+      responses:
+        '200':
+          description: Successful response
+
+  /evento/{id}/aderir:
+    get:
+      summary: Join an event
+      operationId: joinEvent
+      responses:
+        '200':
+          description: Successful response
+
+  /evento/{id}/apagar:
+    delete:
+      summary: Delete an event
+      operationId: deleteEvent
+      responses:
+        '204':
+          description: Event deleted
+
+  /evento/convidar-utilizador:
+    post:
+      summary: Invite a user to an event
+      operationId: inviteUserToEvent
+      responses:
+        '201':
+          description: Invitation sent successfully
+
+  /api/eventos/pesquisa:
+    get:
+      summary: Search for events
+      operationId: searchEvents
+      responses:
+        '200':
+          description: Successful response
+
+  /api/event/{id}:
+    delete:
+      summary: Delete an event (refactor later)
+      operationId: deleteEvent
+      responses:
+        '204':
+          description: Event deleted
+
+  /meus-eventos:
+    get:
+      summary: Get the user's participating events
+      operationId: getMyParticipatingEvents
+      security:
+        - auth: []
+      responses:
+        '200':
+          description: Successful response
+
+  /filter-events/participating:
+    get:
+      summary: Filter events by participating
+      operationId: filterEventsByParticipating
+      security:
+        - auth: []
+      responses:
+        '200':
+          description: Successful response
+
+  /filter-events/organizing:
+    get:
+      summary: Filter events by organizing
+      operationId: filterEventsByOrganizing
+      security:
+        - auth: []
+      responses:
+        '200':
+          description: Successful response
+
+  /criar-evento:
+    get:
+      summary: Show create event form
+      operationId: showCreateEventForm
+      security:
+        - auth: []
+      responses:
+        '200':
+          description: Successful response
+
+  /submit-event:
+    post:
+      summary: Submit a new event
+      operationId: submitEvent
+      security:
+        - auth: []
+      responses:
+        '201':
+          description: Event created successfully
+
+  /organizacao/{id}:
+    get:
+      summary: Get details of an organization
+      operationId: getOrganizationDetails
+      responses:
+        '200':
+          description: Successful response
+
+  /organizacao/{id}/aderir:
+    get:
+      summary: Join an organization
+      operationId: joinOrganization
+      responses:
+        '200':
+          description: Successful response
+
+  /organizacao/convidar-utilizador:
+    post:
+      summary: Invite a user to an organization
+      operationId: inviteUserToOrganization
+      responses:
+        '201':
+          description: Invitation sent successfully
+
+  /organizacao/remover-utilizador:
+    post:
+      summary: Remove a user from an organization
+      operationId: removeUserFromOrganization
+      responses:
+        '204':
+          description: User removed successfully
+
+  /api/organization/{id}:
+    delete:
+      summary: Delete an organization (Admin only, refactor later)
+      operationId: deleteOrganization
+      security:
+        - admin: []
+      responses:
+        '204':
+          description: Organization deleted
+
+  /pesquisa:
+    get:
+      summary: Search for content
+      operationId: searchContent
+      responses:
+        '200':
+          description: Successful response
+
+  /api/comments:
+    get:
+      summary: Get comments
+      operationId: getComments
+      responses:
+        '200':
+          description: Successful response
+
+  /api/comments/{id}:
+    get:
+      summary: Get a specific comment
+      operationId: getComment
+      responses:
+        '200':
+          description: Successful response
+
+  /api/comments/{id}:
+    delete:
+      summary: Delete a comment
+      operationId: deleteComment
+      security:
+        - auth: []
+      responses:
+        '204':
+          description: Comment deleted
+
+  /comments/add:
+    post:
+      summary: Add a new comment
+      operationId: addComment
+      security:
+        - auth: []
+      responses:
+        '201':
+          description: Comment added successfully
+
+  /api/reports/event:
+    get:
+      summary: Get event reports (Admin only)
+      operationId: getEventReports
+      security:
+        - admin: []
+      responses:
+        '200':
+          description: Successful response
+
+  /api/reports/event/{id}/resolved:
+    patch:
+      summary: Mark an event report as resolved (Admin only)
+      operationId: markEventReportAsResolved
+      security:
+        - admin: []
+      responses:
+        '200':
+          description: Successful response
+
+  /api/reports/comment:
+    get:
+      summary: Get comment reports (Admin only)
+      operationId: getCommentReports
+      security:
+        - admin: []
+      responses:
+        '200':
+          description: Successful response
+
+  /api/reports/comment/{id}/resolved:
+    patch:
+      summary: Mark a comment report as resolved (Admin only)
+      operationId: markCommentReportAsResolved
+      security:
+        - admin: []
+      responses:
+        '200':
+          description: Successful response
+
+  /api/user/{id}:
+    delete:
+      summary: Delete a user (Admin only)
+      operationId: deleteUser
+      security:
+        - admin: []
+      responses:
+        '204':
+          description: User deleted
+
+  /iniciar-sessao:
+    get:
+      summary: Show login form
+      operationId: showLoginForm
+      responses:
+        '200':
+          description: Successful response
+
+  /iniciar-sessao:
+    post:
+      summary: Authenticate user
+      operationId: authenticateUser
+      responses:
+        '200':
+          description: Successful response
+
+  /terminar-sessao:
+    get:
+      summary: Log out user
+      operationId: logoutUser
+      responses:
+        '200':
+          description: Successful response
+
+  /registar:
+    get:
+      summary: Show registration form
+      operationId: showRegistrationForm
+      responses:
+        '200':
+          description: Successful response
+
+  /registar:
+    post:
+      summary: Register a new user
+      operationId: registerUser
+      responses:
+        '201':
+          description: User registered successfully
+
+components:
+  securitySchemes:
+    auth:
+      type: apiKey
+      in: header
+      name: Authorization
+    admin:
+      type: apiKey
+      in: header
+      name: X-Admin-Token

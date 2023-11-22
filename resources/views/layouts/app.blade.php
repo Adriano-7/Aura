@@ -24,7 +24,6 @@
     <body>
         <main>
             @yield('header')
-    
             <section id="content">
                 @yield('content')
             </section>

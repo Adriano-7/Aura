@@ -1,8 +1,8 @@
-#content{
+#content {
     padding: 0 15%;
 }
 
-#event-header{
+#event-header {
     position: relative;
     width: 100%;
     height: 400px;
@@ -15,7 +15,7 @@
     object-position: top;
 }
 
-#event-header h1{
+#event-header h1 {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -27,11 +27,11 @@
     background-color: rgba(17, 20, 26, 0.7);
 }
 
-.event-field{
+.event-field {
     margin: 2em 0;
 }
 
-.card{
+.card {
     background-color: #11141A;
     width: 100%;
     text-align: center;
@@ -39,7 +39,7 @@
     padding: 1em;
 }
 
-.event-field h2{
+.event-field h2 {
     color: #ffffff;
     font-size: 1.3em;
     font-weight: 500;
@@ -58,14 +58,18 @@
     flex: 1;
 }
 
-#date, #venue, #city {
+#date,
+#venue,
+#city {
     color: #ffffff;
     text-align: center;
     font-size: small;
     font-weight: 500;
 }
 
-#weekday, #time {
+#weekday,
+#time,
+#numParticipants {
     color: #ffffff;
     text-align: center;
     font-size: small;
@@ -94,18 +98,20 @@
     justify-content: center;
 }
 
-#third-column #join-event {
+#join-event,
+#leave-event {
     width: 80%;
     border: #A08AFA 1px solid;
     border-radius: 50em;
     padding: 0.5em 0;
     background-color: #11141A;
     color: white;
-    margin-bottom: 0.5rem;
+    margin: 0.5rem 0;
 }
 
 
-#third-column #join-event:hover {
+#join-event:hover,
+#leave-event:hover {
     background-color: #A08AFA;
     color: #11141A;
 }
@@ -113,9 +119,10 @@
 #third-column #span-container {
     display: flex;
     width: 100%;
+
 }
 
-#third-column #span-container span {
+#third-column #span-container button {
     font-size: small;
     color: #ffffff;
     font-weight: 100;
@@ -124,10 +131,10 @@
 
 #third-column #span-container span:hover {
     cursor: pointer;
-    color:#808080;
+    color: #808080;
 }
 
-#about-text{
+#about-text {
     color: #ffffff;
     font-size: small;
     font-weight: 300;
@@ -135,28 +142,32 @@
     margin: 1em 0;
 }
 
-.profile-pic{
+.profile-pic {
     margin-right: 0.5rem;
     width: 3.2em;
     border-radius: 50%;
 }
 
-#add-comment-row {
+.comment-row {
     display: flex;
     align-items: center;
+    margin-bottom: 1em;
 }
 
-.profile-pic {
-    margin-right: 0.5rem;
+.comment-row form {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
 }
 
 input[type="text"] {
-    flex: 1;
-    margin: 0 0.5rem;
+    margin-right: 0.5em;
     border: none;
     border-bottom: 1px solid #A08AFA;
     background-color: #11141A;
     color: #ffffff;
+    font-size: small;
+    width: 100%;
 }
 
 input[type="text"]:focus {
@@ -165,10 +176,93 @@ input[type="text"]:focus {
 
 .icon {
     margin-left: 0.5rem;
-    width: 1.5em;
+    width: 1.2em;
     color: #808080;
 }
 
 .icon:hover {
     cursor: pointer;
+}
+
+#comments-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.username-and-date {
+    display: flex;
+}
+
+.comment-content {
+    margin-top: 1.5em;
+}
+
+.comment-author {
+    font-size: small;
+    font-weight: 600;
+    color: #ffffff;
+    margin-right: 0.5em;
+}
+
+.comment-date {
+    font-size: small;
+    font-weight: 100;
+    color: #ffffff;
+}
+
+.comment-text {
+    font-size: small;
+    font-weight: 300;
+    color: #ffffff;
+    margin-top: 0.5em;
+    text-align: left;
+}
+
+.votes-row {
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+}
+
+.comment-votes {
+    font-size: small;
+    font-weight: 300;
+    color: #ffffff;
+}
+
+#votes-icon {
+    margin: 0;
+}
+
+.icon-button {
+    background-color: transparent;
+    border: none;
+}
+
+.modal-body img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.modal-body h1 {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+#inviteForm .btn{
+    color: #808080;
+    background-color: transparent;
+    border: #808080 1px solid;
+    border-radius: 50em;
+    width: 7rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+#inviteForm .btn:hover{
+    background-color: #11141A;
+    color: #A08AFA;
+    border: #A08AFA 1px solid;
 }

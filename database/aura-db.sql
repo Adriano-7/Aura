@@ -82,7 +82,8 @@ CREATE TABLE comments (
     text TEXT NOT NULL,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
     vote_balance INT NOT NULL DEFAULT 0,
-    event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE
+    event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
+    file_id INTEGER REFERENCES files (id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS vote_comments CASCADE;
@@ -97,9 +98,7 @@ DROP TABLE IF EXISTS files CASCADE;
 CREATE TABLE files (
     id SERIAL PRIMARY KEY,
     comment_id INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE,
-    path TEXT NOT NULL,
-    name TEXT NOT NULL,
-    type TEXT NOT NULL
+    file_name TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS report_reasons_event CASCADE;
