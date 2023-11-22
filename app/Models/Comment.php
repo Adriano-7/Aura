@@ -21,7 +21,8 @@ class Comment extends Model
         'text',
         'date',
         'vote_balance',
-        'event_id'
+        'event_id',
+        'file_id'
     ];
 
     /**
@@ -35,5 +36,10 @@ class Comment extends Model
 
     public function author() {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function file()
+    {
+        return $this->hasOne(File::class);
     }
 }

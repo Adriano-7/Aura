@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Event;
+use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
@@ -74,16 +75,23 @@ class CommentController extends Controller
         $comment->author_id = Auth::user()->id;
         $comment->text = $request->text;
         $comment->event_id = $request->event_id;
-
-        /*
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads'), $filename);
-            $comment->file = $filename;
-        }
-        */
-        
         $comment->save();
-        return redirect(URL::previous() . '#comments')->with('success', 'Comment added successfully');    }
+
+        if ($request->hasFile('file')) {
+            $fileRequest = $request->file('file');
+            $file = new File();
+            $file->file_name = time() . "-" . $fileRequest->getClientOriginalName();
+            $file->comment_id = $comment->id;
+            $file->save(); // Save the file to generate an ID
+
+            $comment->file_id = $file->id; // Set the file_id on the comment
+            // update comment in table
+            $comment->save();
+
+            /* store the file in app/uploads */
+            $fileRequest->storeAs('uploads', $file->file_name, 'local');
+        }
+
+        return redirect(URL::previous() . '#comments')->with('success', 'Comment added successfully');
+    }
 }

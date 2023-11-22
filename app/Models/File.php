@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class File extends Model
 {
     use HasFactory;
+
+    protected $table = 'files';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'id',
+        'comment_id',
+        'file_name'
+    ];
+
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class);
+    }
 }

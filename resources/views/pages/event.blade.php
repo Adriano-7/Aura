@@ -95,7 +95,7 @@
                             <input type="hidden" name="event_id" value="{{$event->id}}">
                             <label for="file-upload" class="icon-button">
                                 <img class="icon" src="{{asset('storage/clip-icon.svg')}}">
-                                <input id="file-upload" type="file" style="display:none;">
+                                <input id="file-upload" type="file" name="file" style="display:none;">
                             </label>
                             <button type="submit" class="icon-button">
                                 <img class="icon" src="{{asset('storage/send-icon.svg')}}">
@@ -130,6 +130,9 @@
                                 @endif
                             </div>
                             <p class="comment-text">{{$comment->text}}</p>
+                            @if($comment->file_id)
+                                    <span class=comment-votes>FILE {{$comment->file_id}}</span>
+                            @endif
                             <div class="votes-row">
                                 <img class="icon" src="{{asset('storage/votes-icon.svg')}}" id="votes-icon">
                                 <span class="comment-votes">{{$comment->vote_balance}}</span>
