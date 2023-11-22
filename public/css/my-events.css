@@ -54,3 +54,17 @@ p {
     background-color: #7e5efa;
     color: white;
 }
+
+.dropdown-item{
+    color: #FFFFFF;
+    background-color: #11141A;
+}
+.dropdown-menu {
+    color: #FFFFFF;
+    background-color: #11141A;
+}
+
+.dropdown-item:hover {
+    color: #FFFFFF;
+    background-color: rgb(25, 28, 37);
+}
