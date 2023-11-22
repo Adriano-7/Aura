@@ -14,7 +14,6 @@ class CreateEventController extends Controller{
     public function show(): View{
 
         $user = Auth::user();
-        // Assuming you have a 'organizations' many-to-many relationship in your User model
         $organizations = $user->userOrganizations()->get();
 
         return view('pages.createEvent', [
@@ -23,8 +22,7 @@ class CreateEventController extends Controller{
         ]);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $validatedData = $request->validate([
             'event_name' => 'required|max:255',
             'start_date' => 'required|date|after_or_equal:today',

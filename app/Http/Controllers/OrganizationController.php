@@ -26,6 +26,23 @@ class OrganizationController extends Controller{
         return redirect()->route('notifications')->with('status', "Entraste com sucesso na organização {$organization->name}");
     }
 
+    public function ApiDelete(int $id) {
+        $org = Organization::find($id);
+
+        if (!$org) {
+            return response()->json([
+                'message' => 'Organization not found'
+            ], 404);
+        }
+
+        $this->authorize('delete', $org);
+        $org->delete();
+
+        return response()->json([
+            'message' => 'Organization deleted'
+        ], 200);
+    }
+
     public function inviteUser(Request $request){
         $organization = Organization::findOrFail($request->organization_id);
         $this->authorize('invite_user', $organization);

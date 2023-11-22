@@ -15,6 +15,9 @@ class OrganizationPolicy{
         */
     }
 
+    public function delete(User $user, Organization $organization){
+        return $user->isAdmin();
+    }
     public function invite_user(User $user, Organization $organization): bool{
         return $user->isAdmin() || $user->isOrganizer($organization);
     }

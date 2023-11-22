@@ -759,3 +759,15 @@ INSERT INTO notifications(id, receiver_id, type, organization_id, user_emitter_i
     ('68', '2',  'organization_registration_request', '18', '18'),
     ('69', '1',  'organization_registration_request', '19', '19'),
     ('70', '2',  'organization_registration_request', '19', '19');
+
+
+SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
+SELECT setval('organizations_id_seq', (SELECT MAX(id) FROM organizations));
+SELECT setval('events_id_seq', (SELECT MAX(id) FROM events));
+SELECT setval('tags_id_seq', (SELECT MAX(id) FROM tags));
+SELECT setval('comments_id_seq', (SELECT MAX(id) FROM comments));
+SELECT setval('notifications_id_seq', (SELECT MAX(id) FROM notifications));
+SELECT setval('reports_event_id_seq', (SELECT MAX(id) FROM reports_event));
+SELECT setval('reports_comment_id_seq', (SELECT MAX(id) FROM reports_comment));
+SELECT setval('report_reasons_event_id_seq', (SELECT MAX(id) FROM report_reasons_event));
+SELECT setval('report_reasons_comment_id_seq', (SELECT MAX(id) FROM report_reasons_comment));

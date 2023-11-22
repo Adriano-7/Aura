@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -34,8 +35,10 @@ Route::controller(HomeController::class)->group(function () {
 });
 
 //Dashboard
-Route::middleware(['admin'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+Route::middleware(['admin'])->group(function () {    
+    Route::get('/dashboard/denuncias', [DashboardController::class, 'showReports'])->name('dashboard.reports');
+    Route::get('/dashboard/membros', [DashboardController::class, 'showMembers'])->name('dashboard.members');
+    Route::get('/dashboard/organizacoes', [DashboardController::class, 'showOrganizations'])->name('dashboard.organizations');
 });
 
 //Notifications
@@ -53,14 +56,14 @@ Route::middleware(['auth'])->group(function () {
 
 //Events
 Route::controller(EventController::class)->group(function () {
-    Route::get('/evento/{id}', 'show')->name('events');
+    Route::get('/evento/{id}', 'show')->name('event');
     Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
 
     //Api
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search');
+    Route::delete('api/event/{id}', 'ApiDelete'); // refactor later
 });
-
 
 //My Events
 Route::middleware(['auth'])->group(function () {
@@ -76,21 +79,23 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/submit-event', [CreateEventController::class, 'store']) ->name('submit-event');
 });
 
-
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization.show');
     Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
     Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser');
     Route::post('organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember');
-});
 
+    // refactor later
+    Route::middleware(['admin'])->group(function () {
+        Route::delete('api/organization/{id}', 'ApiDelete');
+    });
+});
 
 //Search
 Route::controller(SearchController::class)->group(function () {
     Route::get('/pesquisa', 'show')->name('search');
 }); 
-
 
 // API
 Route::controller(CommentController::class)->group(function () {
@@ -110,6 +115,12 @@ Route::controller(ReportCommentController::class)->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('api/reports/comment', 'index');
         Route::patch('api/reports/comment/{id}/resolved', 'markAsResolved');
+    });
+});
+
+Route::controller(UserController::class)->group(function() {
+    Route::middleware(['admin'])->group(function () {
+        Route::delete('api/user/{id}', 'destroy');
     });
 });
 

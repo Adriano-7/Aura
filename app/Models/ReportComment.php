@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ReportComment extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     protected $table = 'reports_comment';
-    public $timestamps = false;
 
 
     // check later (not all fields are fillable)
