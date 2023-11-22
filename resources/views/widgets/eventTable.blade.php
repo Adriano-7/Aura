@@ -17,7 +17,7 @@
         <div class="cards">
         @if($events)
             @foreach($events as $event)
-                <div class="card mb-4 shadow-sm clickable-card" data-href="{{ route('events', ['id' => $event->id]) }}" style="border-radius: 15px;">
+                <div class="card mb-4 shadow-sm clickable-card" data-href="{{ route('event', ['id' => $event->id]) }}" style="border-radius: 15px;">
                     <div class="row ">
                         <div class="col-4 col-md-3 col-lg-3 col-xl-2 p-2 text-center d-sm-block">             
                         <img class=" card-img-aura img-fluid" src="{{ asset('storage/eventos/' . $event->photo) }}"
