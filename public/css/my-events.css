@@ -9,10 +9,14 @@
     margin-bottom: 2em;
 }
 
-.card-img {
+.card-img-aura{
     width: 75%;
-    float: right; /* This positions the image on the right side of the card */
+    height: 120px;
+    overflow: hidden;
+    margin: 0.5em;
+     border-radius: 10px !important ;
 }
+
 
 .card{
     color: #FFFFFF;
