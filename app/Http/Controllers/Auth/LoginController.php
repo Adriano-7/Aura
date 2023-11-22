@@ -41,7 +41,7 @@ class LoginController extends Controller
         }
  
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Credenciais inválidas.',
         ])->onlyInput('email');
     }
 
@@ -54,6 +54,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('home')
-            ->withSuccess('You have logged out successfully!');
+            ->withSuccess('Terminou a sessão com sucesso.');
     } 
 }
