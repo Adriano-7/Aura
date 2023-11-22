@@ -42,6 +42,6 @@ class RegisterController extends Controller
         Auth::attempt($credentials);
         $request->session()->regenerate();
         return redirect()->route('home')
-            ->withSuccess('You have successfully registered & logged in!');
+            ->withSuccess('Foste registado com sucesso!');
     }
 }
