@@ -16,6 +16,10 @@
 @endsection
 
 @section('content')
+    @if (session('status'))
+        @include('widgets.popUpNotification', ['message' => session('status')])
+    @endif
+
     @php
         $start_date = \Carbon\Carbon::parse($event->start_date);
         $moreThan24Hours = false;
@@ -29,7 +33,7 @@
 
     <section id="event-header">
         <img src="{{ asset('storage/eventos/' . $event->photo) }}">
-        <h1>{{$event->name}}</h1>
+        <h1>{{ $event->name }}</h1>
     </section>
 
     <div id="event-fields">
@@ -39,38 +43,92 @@
                 <div id="details-card-content">
                     <div id="first-column">
                         <span id="date">{{ $event->start_date->format('d M Y') }}</span>
-                        @if($moreThan24Hours)
+                        @if ($moreThan24Hours)
                             <br>
                             <span id="date">{{ $event->end_date->format('d M Y') }}</span>
                         @endif
                     </div>
                     <div id="second-column">
                         <div id="weekday-and-time">
-                            <span id="weekday">{{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%a') }}</span>
+                            <span
+                                id="weekday">{{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%a') }}</span>
                             <span id="time">{{ \Carbon\Carbon::parse($event->start_date)->format('H:i') }}</span>
-                            @if($event->end_date)
+                            @if ($event->end_date)
                                 <span id="time"> - </span>
-                                @if($moreThan24Hours)
-                                    <span id="weekday">{{ \Carbon\Carbon::parse($event->end_date)->formatLocalized('%a') }}</span>
+                                @if ($moreThan24Hours)
+                                    <span
+                                        id="weekday">{{ \Carbon\Carbon::parse($event->end_date)->formatLocalized('%a') }}</span>
                                 @endif
                                 <span id="time">{{ \Carbon\Carbon::parse($event->end_date)->format('H:i') }}</span>
                             @endif
                         </div>
-                        <span id="venue">{{$event->venue}}</span>
-                        <span id="city">{{$event->city}}</span>
+                        <span id="venue">{{ $event->venue }}</span>
+                        <span id="city">{{ $event->city }}</span>
                     </div>
                     <div id="third-column">
-                        <span id="numParticipants"> {{$event->participants()->count()}} participantes</span>
-                        @if(Auth::check() && !Auth::user()->isAdmin())
-                            @if($user->participatesInEvent($event))
+                        <span id="numParticipants"> {{ $event->participants->count() }} participantes</span>
+                        @if (Auth::check() && !Auth::user()->isAdmin())
+                            @if ($user->participatesInEvent($event))
                                 <button id="leave-event" onclick="leaveEvent(<?php echo json_encode($event->id); ?>)">Sair do evento</button>
                             @else
                                 <button id="join-event" onclick="joinEvent(<?php echo json_encode($event->id); ?>)">Aderir ao evento</button>
                             @endif
                             <div id="span-container">
-                                <span id="show-participants">Ver participantes</span>
-                                <span id="invite">Convidar</span>
-                            </div>
+                                <button type="button" id="show-participants" class="btn" data-toggle="modal"
+                                    data-target="#participantsModal">Ver participantes</button>
+
+                                <div class="modal fade" id="participantsModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="participantsModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                @foreach ($event->participants as $participant)
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <img
+                                                                src="{{ asset('storage/profile/' . $participant->photo) }}">
+                                                        </div>
+                                                        <div class="col-10">
+                                                            <h1>{{ $participant->name }}</h1>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn" data-toggle="modal"
+                                    data-target="#inviteModal">Convidar</button>
+
+                                <div class="modal fade" id="inviteModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="inviteModal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <form id="inviteForm" action="{{ route('event.inviteUser') }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="event_id" value="{{ $event->id }}">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <input type="email" class="form-control" id="email"
+                                                                    name="email" placeholder="Email">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <div class="d-flex justify-content-center">
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Submit</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         @endif
                     </div>
                 </div>

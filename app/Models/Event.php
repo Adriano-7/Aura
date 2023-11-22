@@ -43,5 +43,9 @@ class Event extends Model{
     public function comments(){
         return $this->hasMany(Comment::class);
     }
+
+    public function organization(){
+        return $this->belongsTo(Organization::class);
+    }
 }
 

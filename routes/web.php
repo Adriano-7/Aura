@@ -61,6 +61,7 @@ Route::controller(EventController::class)->group(function () {
     Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave');
     Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
+    Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser');
 
     //Api
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search');

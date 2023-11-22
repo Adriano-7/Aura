@@ -27,6 +27,10 @@ class Comment extends Model
     ];
 
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
     /**
      * Get all comments for a given event, sorted by date (newest first)
      */
