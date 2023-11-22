@@ -11,10 +11,17 @@ use App\Models\Event;
 
 use DateTime;
 class EditEventController extends Controller{
-    public function show($id): View {
+    public function show($id) {
+    $event = Event::find($id);
+
+    // Check if the user is authorized
+    if (Auth::user()->cannot('viewEditForm', $event)) {
+        // Redirect to a different page or show an error message
+        return redirect()->route('my-events')->withErrors('You are not authorized to view this event.');
+    }
         return view('pages.editEvent', [
             'user' => Auth::user(),
-            'event' => Event::find($id),
+            'event' => $event,
             'organizations' => Auth::user()->userOrganizations()->get()
         ]);
     }
