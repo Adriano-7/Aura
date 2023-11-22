@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 
-class CommentController extends Controller
-{
+class CommentController extends Controller{
     public function index(Request $request) {
         if (!$request->has('eventId')) {
             return response()->json([

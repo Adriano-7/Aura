@@ -128,7 +128,7 @@ class Notification extends Model{
         switch($this->type){
             case 'event_invitation':
             case 'event_edit':
-                    return route('events', ['id' => $this->event->id]);
+                    return route('event', ['id' => $this->event->id]);
             case 'organization_invitation':
             case 'organization_registration_request':
             case 'organization_registration_response':

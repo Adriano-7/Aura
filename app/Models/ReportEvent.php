@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ReportEvent extends Model
 {
     use HasFactory;
+    public $timestamps = false;
 
     protected $table = 'reports_event';
-    public $timestamps = false;
 
 
     // check later (not all fields are fillable)
