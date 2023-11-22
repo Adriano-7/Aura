@@ -75,6 +75,12 @@ CREATE TABLE tag_event (
     PRIMARY KEY (tag_id, event_id)
 );
 
+DROP TABLE IF EXISTS files CASCADE;
+CREATE TABLE files (
+    id SERIAL PRIMARY KEY,
+    file_name TEXT NOT NULL
+);
+
 DROP TABLE IF EXISTS comments CASCADE;
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
@@ -92,13 +98,6 @@ CREATE TABLE vote_comments (
     user_id INTEGER REFERENCES clients (id) ON DELETE CASCADE,
     is_up BOOLEAN NOT NULL,
     PRIMARY KEY (comment_id, user_id)
-);
-
-DROP TABLE IF EXISTS files CASCADE;
-CREATE TABLE files (
-    id SERIAL PRIMARY KEY,
-    comment_id INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE,
-    file_name TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS report_reasons_event CASCADE;
@@ -146,7 +145,6 @@ CREATE TYPE event_field AS ENUM ('name', 'description', 'photo', 'address', 'ven
 
     organization_registration_response -> organization_id
 */
-
 DROP TABLE IF EXISTS notifications CASCADE;
 CREATE TABLE notifications (
     id SERIAL PRIMARY KEY,
@@ -167,11 +165,11 @@ CREATE TABLE notifications (
     /*'event_edit', 'event_invitation'*/
     event_id INTEGER default null,
 
-
     FOREIGN KEY (organization_id) REFERENCES organizations (id) ON DELETE CASCADE,
     FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE,
     FOREIGN KEY (user_emitter_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
 
 -- Performance Indexes
 /*

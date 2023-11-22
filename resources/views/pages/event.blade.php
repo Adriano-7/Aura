@@ -50,8 +50,7 @@
                     </div>
                     <div id="second-column">
                         <div id="weekday-and-time">
-                            <span
-                                id="weekday">{{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%a') }}</span>
+                            <span id="weekday">{{ \Carbon\Carbon::parse($event->start_date)->formatLocalized('%a') }}</span>
                             <span id="time">{{ \Carbon\Carbon::parse($event->start_date)->format('H:i') }}</span>
                             @if ($event->end_date)
                                 <span id="time"> - </span>

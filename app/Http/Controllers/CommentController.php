@@ -16,7 +16,7 @@ class CommentController extends Controller{
                 'message' => 'Event id is required'
             ], 400);
         }
-
+        
         $event_id = $request->query('eventId');
         if (!is_numeric($event_id)) {
             return response()->json([
