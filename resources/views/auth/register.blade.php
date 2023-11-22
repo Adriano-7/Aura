@@ -21,10 +21,10 @@
                             <h3>Junta-te à nossa comunidade!</h3>
                         </div>
                         <div class="d-flex align-items-center px-5 ms-xl-4 mt-xl-n5">
-                            <form method="POST" action="{{ route('login') }}">
+                            <form method="POST" action="/registar">
                                 {{ csrf_field() }}
 
-                                <input type = "text" name = "nome" placeholder = "Primeiro e último nome" required />
+                                <input type="text" name="name" placeholder="Primeiro e último nome" required />
                                 @if ($errors->has('nome'))
                                     <span class="error">
                                         {{ $errors->first('nome') }}
@@ -46,7 +46,7 @@
                                     </span>
                                 @endif
 
-                                <input type="password" name="confPassword" placeholder="Confirme a palavra passe"
+                                <input type="password" name="password_confirmation" placeholder="Confirme a palavra passe"
                                     required />
                                 @if ($errors->has('password'))
                                     <span class="error">
