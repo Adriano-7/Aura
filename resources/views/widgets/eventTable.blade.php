@@ -1,5 +1,5 @@
 
-<div class="container-fluid px-sm-0 px-lg-3 mt-5">
+<div class="container-fluid px-sm-0  mt-5">
     <div class="row justify-content-center">
         <div class="col-10 col-sm-10 col-md-8 col-lg-8 col-xl-7">
             <div class="row options">
@@ -17,19 +17,22 @@
         <div class="cards">
         @if($events)
             @foreach($events as $event)
-                <div class="card mb-4 shadow-sm" style="border-radius: 15px;">
-                    <a href="{{ route('events', ['id' => $event->id]) }}" class="text-decoration-none text-light">
+                <div class="card mb-4 shadow-sm clickable-card" data-href="{{ route('events', ['id' => $event->id]) }}" style="border-radius: 15px;">
                     <div class="row ">
-                        <div class="col-3 col-md-2 p-2 text-center d-sm-block">             
-                            <img src="{{ asset('storage/eventos/' . $event->photo) }}" class="card-img " alt="Event Photo"></div>
-                        <div class="col-5 col-md-7 p-1 card-container d-flex align-items-center">
+                        <div class="col-4 col-md-3 col-lg-3 col-xl-2 p-2 text-center d-sm-block">             
+                        <img class=" card-img-aura img-fluid" src="{{ asset('storage/eventos/' . $event->photo) }}"
+                                  alt="Card image cap" style="object-fit: cover;">
+                        </div>
+        
+                        
+                        <div class="col-4 col-md-6 p-1 card-container d-flex align-items-center">
                             <div class="card-body">
                                 <h5 class="card-title d-flex align-items-center">{{ $event->name }}&nbsp
                                 @if($header == 'Organizo')
-                                        <div class = 'edit p-1' href="{{ route('events', ['id' => $event->id]) }}">@include('widgets.icons.editIcon')</div>
+                                        <a  href='{{route("edit-event", ["id" => $event->id])}}' class = 'edit-icon p-1' >@include('widgets.icons.editIcon')</a>
                                     @endif
                                 </h5>
-                                <p class="card-text ">
+                                <p class="col-6 card-text ">
                                     <strong>{{ $event->start_date->locale('pt')->translatedFormat('D') }}</strong>&nbsp;&nbsp;{{ $event->start_date->locale('pt')->translatedFormat('d F Y')  }}
                                 </p>
                             </div>         
@@ -46,7 +49,7 @@
                         </div>
                            
                     </div>
-                </a>
+                
                 </div>
             @endforeach
             @else
@@ -56,6 +59,16 @@
             @endif
                 
         </div>
-        
-    
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var clickableCards = document.querySelectorAll(".clickable-card");
+
+        clickableCards.forEach(function(card) {
+            card.addEventListener("click", function() {
+                window.location.href = this.getAttribute("data-href");
+            });
+        });
+    });
+</script>

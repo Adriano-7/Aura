@@ -10,19 +10,20 @@ use App\Models\User;
 use App\Models\Event;
 
 use DateTime;
-class CreateEventController extends Controller{
-    public function show(): View{
-
-        $user = Auth::user();
-        $organizations = $user->userOrganizations()->get();
-
-        return view('pages.createEvent', [
+class EditEventController extends Controller{
+    public function show($id): View {
+        return view('pages.editEvent', [
             'user' => Auth::user(),
-            'organizations' => $organizations
+            'event' => Event::find($id),
+            'organizations' => Auth::user()->userOrganizations()->get()
         ]);
     }
 
-    public function store(Request $request){
+
+    public function update($id, Request $request) {
+        $event = Event::find($id);
+        $this->authorize('update', $event);
+
         $validatedData = $request->validate([
             'event_name' => 'required|max:255',
             'start_date' => 'required|date|after_or_equal:today',
@@ -38,7 +39,6 @@ class CreateEventController extends Controller{
         ]);
         
 
-        $event = new Event;
         $event->name = $validatedData['event_name'];
         $start_date = $validatedData['start_date'];
         $start_time = $validatedData['start_time'];
@@ -63,8 +63,8 @@ class CreateEventController extends Controller{
         
         $event->save();
 
-        return redirect()->route('my-events')->with('success', 'Event created successfully');
-        }
+        
+
+        return redirect()->route('organizing')->with('status', "Evento alterado com sucesso.");
     }
-
-
+}
