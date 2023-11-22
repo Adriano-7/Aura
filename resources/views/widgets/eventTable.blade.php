@@ -19,7 +19,7 @@
             @endif
             <div class="row options">
                 <div class="col-12 col-sm-6 text-center text-sm-start">
-                    <div class="title">Eventos que {{$header}} </div>
+                    <div class="title">Eventos que {{ $header }} </div>
                 </div>
                 <div class="col-12 col-sm-6 d-flex justify-content-center justify-content-sm-end">
                     @if(auth()->user()->userOrganizations->count() > 0)
