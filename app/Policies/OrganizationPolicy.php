@@ -14,4 +14,8 @@ class OrganizationPolicy{
         return $organization->invitedUsers->contains($user);
         */
     }
+
+    public function delete(User $user, Organization $organization){
+        return $user->isAdmin();
+    }
 }

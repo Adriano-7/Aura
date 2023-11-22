@@ -1,13 +1,19 @@
 @extends('layouts.app')
+
 @section('title', 'Dashboard')
+
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 @endsection
+
+@section('scripts')
+    <script src="{{ asset('js/dashboard.js') }}" defer></script>
+@endsection
+
 @section('header')
     @include('widgets.navBar')
 @endsection
-
 
 @section('content')
     <div class="container dashboard-container">
@@ -146,7 +152,7 @@
                                 <img src="{{ asset('storage/Three-Dots-Icon.svg') }}" alt="more">
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Apagar</a></li>
+                                <li><button class="dropdown-item delete-org" data-org-id="{{ $organization->id }}">Apagar</button></li>
                             </ul>
                         </div>
                     </div>
@@ -154,7 +160,4 @@
             @endforeach
         </div>
     </div>
-    </div>
-    </div>
-
 @endsection

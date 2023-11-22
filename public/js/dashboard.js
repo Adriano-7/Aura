@@ -138,3 +138,32 @@ deleteUserButtons.forEach(button => {
       .catch(err => console.log(err));
   });
 });
+
+/* Organization */
+
+const deleteOrgButtons = document.querySelectorAll('.delete-org');
+
+deleteOrgButtons.forEach(button => {
+  const orgId = button.dataset.orgId;
+
+  button.addEventListener('click', async e => {
+    fetch(`/api/organization/${orgId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        'X-CSRF-TOKEN': csrf
+      }
+    })
+      .then(res => {
+        if (res.ok) {
+          e.target
+            .parentElement
+            .parentElement
+            .parentElement
+            .parentElement
+            .parentElement.remove();
+        }
+      })
+      .catch(err => console.log(err));
+  });
+});
