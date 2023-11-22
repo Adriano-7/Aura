@@ -134,3 +134,20 @@ p{
     }
 
 }
+
+.alert{
+    background-color: #11141A;
+    border: none;
+    color: #808080;
+}
+
+.alert a{
+    color: rgb(195, 191, 191);
+    text-decoration: none;
+}
+
+#org-img{
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+}

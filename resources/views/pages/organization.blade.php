@@ -7,30 +7,28 @@
     <link rel="stylesheet" href="{{ asset('css/organization.css') }}">
 @endsection
 
+@section('scripts')
+    <script src="{{ asset('js/organization.js') }}" defer></script>
+@endsection
+
 @section('header')
     @include('widgets.navBar')
 @endsection
 
 @section('content')
+    @if (!$organization->approved)
+        <div class="alert alert-warning" role="alert">
+            Esta organização ainda não foi aprovada.
+            @if (Auth::check() && Auth::user()->isAdmin())
+                <a href="/admin/organizations/{{ $organization->id }}/approve">Aprovar.</a>
+            @endif
+        </div>
+    @endif
+
     <div class="container position-relative d-flex align-items-end w-100">
-        <img src="{{ asset('storage/organizations/' . $organization->photo) }}" id="bandBanner" class="d-block w-100">
+        <img src="{{ asset('storage/organizations/' . $organization->photo) }}" id="bandBanner" class="" id="org-img">
         <h1 id="bandName" class="position-absolute text-white">{{ $organization->name }}</h1>
     </div>
-    <script>
-        window.onscroll = function() {
-            scrollFunction()
-        };
-
-        function scrollFunction() {
-            var banner = document.getElementById('bandBanner');
-            var navbar = document.getElementById('orgNav');
-            if (window.pageYOffset > banner.offsetHeight) {
-                navbar.classList.add("fixed-top");
-            } else {
-                navbar.classList.remove("fixed-top");
-            }
-        }
-    </script>
 
     <nav id="orgNav" class="navbar">
         <div class="container">
@@ -55,13 +53,13 @@
         </div>
 
         @if ($organization->events->count() == 0)
-        <div class="card mx-auto">
-            <div class="row ">
-                <div class="col-md-12">
-                    <p>Não há eventos planeados no momento.</p>
+            <div class="card mx-auto">
+                <div class="row ">
+                    <div class="col-md-12">
+                        <p>Não há eventos planeados no momento.</p>
+                    </div>
                 </div>
             </div>
-        </div>
         @else
             <div class="card mx-auto">
                 @foreach ($organization->events as $event)
@@ -81,12 +79,14 @@
                         <div class="col-md-7" onclick="window.location.href = '/evento/{{ $event->id }}'"
                             style="cursor: pointer;">
                             <h3>{{ $start_date->formatLocalized('%a') }} • {{ $start_date->format('H:i') }}</h3>
-                            <h2>{{ $event->venue }}</h2>
-                            <h3>{{ $event->city }}</h3>
+                            <h2>{{ $event->name }}</h2>
+                            <h3>{{ $event->city }} • {{ $event->venue }}</h3>
                         </div>
-                        <div class="col-md-2 ml-auto">
-                            <button type="button" id="join-event">Aderir ao Evento</button>
-                        </div>
+                        @if (Auth::check() && !Auth::user()->isAdmin())
+                            <div class="col-md-2 ml-auto">
+                                <button type="button" id="join-event">Aderir ao Evento</button>
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
