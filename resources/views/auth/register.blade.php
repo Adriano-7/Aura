@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="d-flex align-items-center px-5 ms-xl-4 mt-xl-n5">
-                            <form method="POST" action="/registar">
+                            <form method="POST" action="{{ route('register') }}">
                                 {{ csrf_field() }}
 
                                 <input type="text" name="name" placeholder="Primeiro e último nome" required />
