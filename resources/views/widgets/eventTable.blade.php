@@ -82,13 +82,13 @@
             </div>
 
             <script>
-                            document.addEventListener("DOMContentLoade d", f                    () {
-                    var clickableCards = document.querySelector                    ickable-card");
+    document.addEventListener("DOMContentLoaded", function() {
+        var clickableCards = document.querySelectorAll(".clickable-card");
 
-                     cli                        forEach(function (card) {
-                                               entListener("click", function () {
-                                            ow.l                    href                his.ute("data-href");
-                        });
-                    });
-                });
-            </script>
+        clickableCards.forEach(function(card) {
+            card.addEventListener("click", function() {
+                window.location.href = this.getAttribute("data-href");
+            });
+        });
+    });
+</script>
