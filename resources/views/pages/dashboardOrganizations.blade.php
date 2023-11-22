@@ -16,6 +16,10 @@
 @endsection
 
 @section('content')
+    @if (session('status'))
+        @include('widgets.popUpNotification', ['message' => session('status')])
+    @endif
+
     <div class="container dashboard-container">
         <img src="{{ asset('storage/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
 
@@ -66,8 +70,14 @@
                                 <img src="{{ asset('storage/Three-Dots-Icon.svg') }}" alt="more">
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Aprovar</a></li>
-                                <li><a class="dropdown-item" href="#">Rejeitar</a></li>
+                                <li>
+                                    <form id="approveForm" action="{{ route('notification.approveOrganization', ['id' => $request->organization->id]) }}"
+                                        method="POST" class="ml-auto">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="dropdown-item">Aprovar</button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     </div>
