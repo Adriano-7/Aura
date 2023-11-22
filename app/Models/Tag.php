@@ -9,6 +9,8 @@ class Tag extends Model{
     use HasFactory;
 
     protected $table = 'tags';
+    public $timestamps = false;
+
 
     protected $fillable = [
         'id',
