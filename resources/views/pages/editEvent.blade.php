@@ -123,17 +123,29 @@
             </div>
         </form>
         <script>
-            function deleteEvent() {
-                if (confirm('Tens a certeza que queres apagar este evento?')) {
-                    var form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = '{{ route('event.delete', ['id' => $event->id]) }}';
-                    form.innerHTML = '@csrf @method('DELETE')';
-                    document.body.appendChild(form);
-                    form.submit();
+                function deleteEvent() {
+                    Swal.fire({
+                        title: 'Tens a certeza?',
+                        text: "Esta ação não poderá ser revertida!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sim, apagar!',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = '{{ route('event.delete', ['id' => $event->id]) }}';
+                            form.innerHTML = '@csrf @method('DELETE')';
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    })
                 }
-            }
         </script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </div>
 </body>
 
