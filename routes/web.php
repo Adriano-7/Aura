@@ -74,13 +74,14 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization.show');
     Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
     Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser');
+    Route::post('organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember');
 });
+
 
 //Search
 Route::controller(SearchController::class)->group(function () {

@@ -28,7 +28,7 @@ class OrganizationController extends Controller{
 
     public function inviteUser(Request $request){
         $organization = Organization::findOrFail($request->organization_id);
-        $this->authorize('invite_user_org', $organization);
+        $this->authorize('invite_user', $organization);
 
         $user = User::where('email', $request->email)->first();
 
@@ -45,6 +45,16 @@ class OrganizationController extends Controller{
         $notification->save();
 
         return redirect()->back()->with('status', 'Utilizador convidado com sucesso!');
+    }
+
+    public function eliminateMember(Request $request){
+        $organization = Organization::findOrFail($request->organization_id);
+        $this->authorize('eliminate_member', $organization);
+
+        $user = User::findOrFail($request->user_id);
+        $organization->organizers()->detach($user->id);
+
+        return redirect()->back()->with('status', 'Membro eliminado com sucesso!');
     }
 
 }

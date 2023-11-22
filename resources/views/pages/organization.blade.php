@@ -128,9 +128,14 @@
                         </div>
                         <div class="col-2 members-actions d-flex justify-content-center">
                             <div class="dropdown">
-                                <button class="btn" type="button">
-                                    <img src="{{ asset('storage/close-icon.svg') }}" alt="more">
-                                </button>
+                                <form action="{{ route('organization.eliminateMember') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="organization_id" value="{{ $organization->id }}">
+                                    <input type="hidden" name="user_id" value="{{ $member->id }}">
+                                    <button class="btn" type="submit">
+                                        <img src="{{ asset('storage/close-icon.svg') }}" alt="more">
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

@@ -15,7 +15,11 @@ class OrganizationPolicy{
         */
     }
 
-    public function invite_user_org(User $user, Organization $organization): bool{
+    public function invite_user(User $user, Organization $organization): bool{
+        return $user->isAdmin() || $user->isOrganizer($organization);
+    }
+
+    public function eliminate_member(User $user, Organization $organization): bool{
         return $user->isAdmin() || $user->isOrganizer($organization);
     }
 }
