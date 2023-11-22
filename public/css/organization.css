@@ -272,3 +272,9 @@ p{
     box-shadow: none;
     border-radius: 10px;
 }
+
+#approveForm .btn{
+    color: #cdc9c9;
+    background-color: transparent;
+
+}

@@ -17,16 +17,23 @@
 
 @section('content')
     @if (!$organization->approved)
-        <div class="alert alert-warning" role="alert">
-            Esta organização ainda não foi aprovada.
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <div>Esta organização ainda não foi aprovada.</div>
             @if (Auth::check() && Auth::user()->isAdmin())
-                <a href="/admin/organizations/{{ $organization->id }}/approve">Aprovar.</a>
+                <form id="approveForm"
+                    action="{{ route('notification.approveOrganization', ['id' => $organization->id]) }}"
+                    method="POST" class="ml-auto">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="btn">Aprovar.</button>
+                </form>
             @endif
         </div>
     @endif
 
     <div class="container position-relative d-flex align-items-end w-100">
-        <img src="{{ asset('storage/organizations/' . $organization->photo) }}" id="bandBanner" class="" id="org-img">
+        <img src="{{ asset('storage/organizations/' . $organization->photo) }}" id="bandBanner" class=""
+            id="org-img">
         <h1 id="bandName" class="position-absolute text-white">{{ $organization->name }}</h1>
     </div>
 
@@ -66,7 +73,7 @@
                             Adicionar Membro
                         </button>
                     </div>
-                    
+
                     <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog"
                         aria-labelledby="addMemberModal" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -74,7 +81,8 @@
                                 <div class="modal-body">
                                     <form id="addMemberForm">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                                            <input type="email" class="form-control" id="email" placeholder="Email"
+                                                name="email">
                                         </div>
                                         <div class="d-flex justify-content-center">
                                             <button type="submit" class="btn btn-primary">Submit</button>

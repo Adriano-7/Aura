@@ -10,6 +10,8 @@ class ReportEvent extends Model
     use HasFactory;
 
     protected $table = 'reports_event';
+    public $timestamps = false;
+
 
     // check later (not all fields are fillable)
     protected $fillable = [

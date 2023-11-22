@@ -460,12 +460,12 @@ BEGIN
     ELSIF NEW.type = 'organization_registration_response' THEN
         IF 
             NEW.organization_id IS NULL 
-            OR NEW.event_id IS NOT NULL 
         THEN
             RAISE EXCEPTION 'Organization registration response notification missing fields';
         ELSIF
-            NEW.user_emitter_id IS NOT NULL 
-            OR NEW.changed_field IS NOT NULL 
+            NEW.changed_field IS NOT NULL
+            OR NEW.user_emitter_id IS NOT NULL
+            OR NEW.event_id IS NOT NULL
         THEN
             RAISE EXCEPTION 'Organization registration response notification has extra fields';
         END IF;
