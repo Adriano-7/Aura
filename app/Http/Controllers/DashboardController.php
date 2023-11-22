@@ -6,6 +6,7 @@ use App\Models\Notification;
 use App\Models\Organization;
 use App\Models\ReportComment;
 use App\Models\ReportEvent;
+use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +25,7 @@ class DashboardController extends Controller{
     public function showMembers(): View{
         return view('pages.dashboardMembers', [
             'user' => Auth::user(),
-            'members' => Models\User::all(),
+            'members' => User::where('id', '!=', Auth::id())->get(),
         ]);
     }
 

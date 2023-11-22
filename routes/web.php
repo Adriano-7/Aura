@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -61,9 +62,8 @@ Route::controller(EventController::class)->group(function () {
 
     //Api
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search');
-    Route::delete('api/event/{id}', 'ApiDelete');
+    Route::delete('api/event/{id}', 'ApiDelete'); // refactor later
 });
-
 
 //My Events
 Route::middleware(['auth'])->group(function () {
@@ -76,8 +76,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/submit-event', [CreateEventController::class, 'store']) ->name('submit-event');
 });
 
-
-
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization');
@@ -88,7 +86,6 @@ Route::controller(OrganizationController::class)->group(function () {
 Route::controller(SearchController::class)->group(function () {
     Route::get('/pesquisa', 'show')->name('search');
 }); 
-
 
 // API
 Route::controller(CommentController::class)->group(function () {
@@ -108,6 +105,12 @@ Route::controller(ReportCommentController::class)->group(function () {
     Route::middleware(['admin'])->group(function () {
         Route::get('api/reports/comment', 'index');
         Route::patch('api/reports/comment/{id}/resolved', 'markAsResolved');
+    });
+});
+
+Route::controller(UserController::class)->group(function() {
+    Route::middleware(['admin'])->group(function () {
+        Route::delete('api/user/{id}', 'destroy');
     });
 });
 

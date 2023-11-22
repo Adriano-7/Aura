@@ -1,5 +1,7 @@
 const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
+/* Reports */
+
 const deleteCommentButtons = document.querySelectorAll('.delete-comment');
 const ignoreCommentButtons = document.querySelectorAll('.ignore-comment');
 
@@ -102,6 +104,35 @@ ignoreEventButtons.forEach(button => {
             .parentElement
             .parentElement
             .remove();
+        }
+      })
+      .catch(err => console.log(err));
+  });
+});
+
+/* Members */
+
+const deleteUserButtons = document.querySelectorAll('.delete-user');
+
+deleteUserButtons.forEach(button => {
+  const userId = button.dataset.userId;
+
+  button.addEventListener('click', async e => {
+    fetch(`/api/user/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        'X-CSRF-TOKEN': csrf
+      }
+    })
+      .then(res => {
+        if (res.ok) {
+          e.target
+            .parentElement
+            .parentElement
+            .parentElement
+            .parentElement
+            .parentElement.remove();
         }
       })
       .catch(err => console.log(err));
