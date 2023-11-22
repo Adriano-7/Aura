@@ -2,7 +2,7 @@
     <h1 class="row_title">Artistas Mais Populares</h1>
     <div class="row flex-row flex-nowrap overflow-auto">
         @foreach ($organizations as $organization)
-            <a class="card" href="{{ route('organization', ['id' => $organization->id]) }}">
+            <a class="card" href="{{ route('organization.show', ['id' => $organization->id]) }}">
                 <img class="card-img-top img-fluid card-img-aura" src="{{ asset('storage/organizations/' . $organization->photo) }}"
                     alt="Card image cap" style="object-fit: cover;">
                 <div class="card-body">

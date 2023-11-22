@@ -107,8 +107,8 @@
 
         <!-- Submit Button -->
         <div class="form-group text-center">
-            <button type="submit" class="btn btn-primary">Criar Evento</button>
-            <button type="button" class="btn btn-secondary ml-4" style="margin-left: 4em" onclick="window.location='{{ route('my-events') }}'">Cancelar</button>        </div>
+            <button type="submit" class="btn btn-primary me-4">Criar Evento</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location='{{ route('my-events') }}'">Cancelar</button>        </div>
     </form>
 </div>
 </body>

@@ -132,7 +132,7 @@ class Notification extends Model{
             case 'organization_invitation':
             case 'organization_registration_request':
             case 'organization_registration_response':
-                return route('organization', ['id' => $this->organization->id]);
+                return route('organization.show', ['id' => $this->organization->id]);
             default:
                 throw new \Exception("Invalid notification type: {$this->type}");
         }

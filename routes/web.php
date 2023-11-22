@@ -67,7 +67,10 @@ Route::controller(EventController::class)->group(function () {
 
 //My Events
 Route::middleware(['auth'])->group(function () {
-    Route::get('/meus-eventos', [MyEventsController::class, 'show'])->name('my-events');
+    Route::get('/meus-eventos', [MyEventsController::class, 'participating'])->name('my-events');
+    Route::get('/filter-events/participating', [MyEventsController::class, 'participating'])->name('participating');
+    Route::get('/filter-events/organizing', [MyEventsController::class, 'organizing'])->name('organizing');
+
 });
 
 //Create Events
@@ -78,8 +81,10 @@ Route::middleware(['auth'])->group(function () {
 
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
-    Route::get('/organizacao/{id}', 'show')->name('organization');
+    Route::get('/organizacao/{id}', 'show')->name('organization.show');
     Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
+    Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser');
+    Route::post('organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember');
 
     // refactor later
     Route::middleware(['admin'])->group(function () {
