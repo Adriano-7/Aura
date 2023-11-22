@@ -34,20 +34,104 @@
         <div class="container">
             <div id="navbarNav">
                 <ul class="navbar-nav">
+                    @if (Auth::check() && (Auth::user()->isAdmin() || $organization->organizers->contains(Auth::user()->id)))
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#membros">Membros</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link " href="#eventos">Eventos</a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#eventos">Eventos</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
-                        <a class="nav-link active" href="#section1">Eventos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#section2">Sobre</a>
+                        <a class="nav-link" href="#sobre">Sobre</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container" id="section1">
+    @if (Auth::check() && (Auth::user()->isAdmin() || $organization->organizers->contains(Auth::user()->id)))
+        <div class="container members-container" id="membros">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+                    <h1 id="results-title">Membros</h1>
+
+                    <div class="dashboard-actions">
+                        <button type="button" class="btn text-white" data-toggle="modal" data-target="#addMemberModal">
+                            Adicionar Membro
+                        </button>
+                    </div>
+                    
+                    <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog"
+                        aria-labelledby="addMemberModal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <form id="addMemberForm">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="members-table">
+                <div class="row members-header">
+                    <div class="col-3">
+                        <h1>Utilizador</h1>
+                    </div>
+                    <div class="col-6">
+                        <h1>Email</h1>
+                    </div>
+                    <div class="col-2">
+                        <h1>Remover da organização</h1>
+                    </div>
+                </div>
+
+                @foreach ($organization->organizers as $member)
+                    <div class="row report">
+                        <div class="col-3 members-profile d-flex align-items-center">
+                            <div class="pr-2">
+                                <img src="{{ asset('storage/profile/' . $member->photo) }}">
+                            </div>
+                            <div>
+                                <h1>{{ $member->name }}</h1>
+                            </div>
+                        </div>
+                        <div class="col-6 members-text-content">
+                            <p>{{ $member->email }}</p>
+                        </div>
+                        <div class="col-2 members-actions d-flex justify-content-center">
+                            <div class="dropdown">
+                                <button class="btn" type="button">
+                                    <img src="{{ asset('storage/close-icon.svg') }}" alt="more">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        </div>
+        </div>
+    @endif
+
+
+    <div class="container" id="eventos">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 ">
                 <h1 id="results-title">Eventos • {{ $organization->events->count() }} Resultados</h1>
             </div>
         </div>
@@ -91,9 +175,9 @@
                 @endforeach
             </div>
         @endif
-
     </div>
-    <div class="container" id="section2">
+
+    <div class="container" id="sobre">
         <div class="row">
             <div class="col-12">
                 <h1 id="results-title">Sobre</h1>
