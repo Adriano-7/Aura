@@ -71,6 +71,8 @@ Route::controller(EventController::class)->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/edit-event/{id}', [EditEventController::class, 'show'])->name('edit-event');
     Route::get('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
+    Route::put('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
+
 });
 
 //My Events
