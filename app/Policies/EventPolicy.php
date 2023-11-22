@@ -20,4 +20,8 @@ class EventPolicy{
 
         return ($user->isAdmin() || $org_users->contains($user));
     }
+
+    public function invite_user(User $user, Event $event){
+        return !$user->isAdmin();
+    }
 }
