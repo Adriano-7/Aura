@@ -14,6 +14,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportEventController;
+use App\Http\Controllers\EditEventController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -65,7 +66,13 @@ Route::controller(EventController::class)->group(function () {
 
     //Api
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search');
-    Route::delete('api/event/{id}', 'ApiDelete'); // refactor later
+});
+
+//Edit Events
+Route::middleware(['auth'])->group(function () {
+    Route::get('/edit-event/{id}', [EditEventController::class, 'show'])->name('edit-event');
+    Route::put('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
+    Route::get('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
 });
 
 //My Events
