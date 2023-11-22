@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/organization.css') }}">
 @endsection
 
-@section('scripts')
-    <script src="{{ asset('js/organization.js') }}" defer></script>
-@endsection
-
 @section('header')
     @include('widgets.navBar')
 @endsection

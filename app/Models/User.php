@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class User extends Authenticatable{
     use HasApiTokens, HasFactory, Notifiable;
 
-    // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
     protected $table = 'users';
@@ -53,6 +52,10 @@ class User extends Authenticatable{
 
     public function isAdmin() {
         return $this->hasOne('App\Models\Administrator', 'id')->exists();
+    }
+
+    public function participatesInEvent(Event $event) {
+        return $event->participants()->get()->contains($this);
     }
 
     public function userOrganizations(){

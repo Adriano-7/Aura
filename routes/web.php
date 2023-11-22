@@ -14,6 +14,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportEventController;
+use App\Http\Controllers\EditEventController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -57,12 +58,21 @@ Route::middleware(['auth'])->group(function () {
 //Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/evento/{id}', 'show')->name('event');
+    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join');
+    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave');
     Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
+    Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser');
 
     //Api
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search');
-    Route::delete('api/event/{id}', 'ApiDelete'); // refactor later
+});
+
+//Edit Events
+Route::middleware(['auth'])->group(function () {
+    Route::get('/edit-event/{id}', [EditEventController::class, 'show'])->name('edit-event');
+    Route::put('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
+    Route::get('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
 });
 
 //My Events
@@ -101,7 +111,8 @@ Route::controller(SearchController::class)->group(function () {
 Route::controller(CommentController::class)->group(function () {
     Route::get('api/comments', 'index');
     Route::get('api/comments/{id}', 'show');
-    Route::delete('api/comments/{id}', 'destroy');
+    Route::delete('api/comments/{id}', 'destroy')->name('comment.delete');
+    Route::post('comments/add', 'store')->name('comment.add');
 });
 
 Route::controller(ReportEventController::class)->group(function () {

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\VoteComment;
 
 class Comment extends Model
 {
@@ -21,7 +22,13 @@ class Comment extends Model
         'text',
         'date',
         'vote_balance',
-        'event_id'
+        'event_id',
+        'file_id'
+    ];
+
+
+    protected $casts = [
+        'date' => 'datetime',
     ];
 
     /**
@@ -36,4 +43,13 @@ class Comment extends Model
     public function author() {
         return $this->belongsTo(User::class, 'author_id');
     }
+
+    public function file() {
+        return $this->hasOne(File::class, 'id', 'file_id');
+    }
+
+    public function vote($user_id) {
+        return VoteComment::voteValue($this->id, $user_id);
+    }
+
 }

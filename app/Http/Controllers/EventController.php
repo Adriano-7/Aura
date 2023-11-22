@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\Event;
+use App\Models\Notification;
+use App\Models\User;
 
 
 class EventController extends Controller{
@@ -26,14 +28,20 @@ class EventController extends Controller{
         return redirect()->route('home')->with('status', "Evento {$event->name} removido com sucesso.");
     }
 
+    public function leaveEvent($id) {
+        $event = Event::find($id);
+        $this->authorize('leave', $event);
+        $user = Auth::user();
+        $event->participants()->detach($user->id);
+        return response()->json(['status' => 'success']);
+    }
+
     public function joinEvent($id) {
         $event = Event::find($id);
-        $this->authorize('join', $event);
-        $event->participants()->attach(Auth::user()->id);
-        $event->save();
-
-        return redirect()->route('notifications')->
-            with('status', "Entrou com sucesso no evento {$event->name}, {$event->venue} em {$event->start_date->format('j F, Y')}.");    
+        $this->authorize('leave', $event);
+        $user = Auth::user();
+        $event->participants()->attach($user->id);
+        return response()->json(['status' => 'success']);
     }
 
     public function search(Request $request){
@@ -86,5 +94,29 @@ class EventController extends Controller{
         return response()->json([
             'message' => 'Event deleted.'
         ], 200);
+    }
+
+    public function inviteUser(Request $request){
+        $event = Event::findOrFail($request->event_id);
+        $this->authorize('invite_user', $event);
+
+        $user = User::where('email', $request->email)->first();
+
+        if($user == null){
+            return redirect()->back()->with('status', 'Utilizador não encontrado!');
+        }
+        elseif($user->id == Auth::user()->id || $user->isOrganizer($event->organization) || $user->isAdmin()){
+            return redirect()->back()->with('status', 'Utilizador não pode ser convidado!');
+        }
+
+        $notification = new Notification();
+        $notification->receiver_id = $user->id;
+        $notification->type = 'event_invitation';
+        $notification->user_emitter_id = Auth::user()->id;
+        $notification->event_id = $event->id;
+        $notification->date = now();
+        $notification->save();
+
+        return redirect()->back()->with('status', 'Utilizador convidado com sucesso!');
     }
 }
