@@ -11,6 +11,9 @@
     @include('widgets.navBar')
 @endsection
 
+
+
 @section('content')
+
 @include('widgets.eventTable', ['events' => $events])
 @endsection

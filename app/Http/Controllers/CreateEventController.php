@@ -63,7 +63,7 @@ class CreateEventController extends Controller{
         
         $event->save();
 
-        return redirect()->route('my-events')->with('success', 'Event created successfully');
+        return redirect()->route('organizing')->with('success', 'Event created successfully');
         }
     }
 
