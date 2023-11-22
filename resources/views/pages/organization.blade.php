@@ -16,12 +16,15 @@
 @endsection
 
 @section('content')
+    @if (session('status'))
+        @include('widgets.popUpNotification', ['message' => session('status')])
+    @endif
+
     @if (!$organization->approved)
         <div class="alert alert-warning d-flex align-items-center" role="alert">
             <div>Esta organização ainda não foi aprovada.</div>
             @if (Auth::check() && Auth::user()->isAdmin())
-                <form id="approveForm"
-                    action="{{ route('notification.approveOrganization', ['id' => $organization->id]) }}"
+                <form id="approveForm" action="{{ route('notification.approveOrganization', ['id' => $organization->id]) }}"
                     method="POST" class="ml-auto">
                     @csrf
                     @method('PATCH')
@@ -79,10 +82,12 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    <form id="addMemberForm">
+                                    <form id="addMemberForm" action="{{ route('organization.inviteUser') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="organization_id" value="{{ $organization->id }}">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" id="email" placeholder="Email"
-                                                name="email">
+                                            <input type="email" class="form-control" id="email" name="email"
+                                                placeholder="Email" name="email">
                                         </div>
                                         <div class="d-flex justify-content-center">
                                             <button type="submit" class="btn btn-primary">Submit</button>

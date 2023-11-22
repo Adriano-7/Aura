@@ -75,4 +75,5 @@ class NotificationsController extends Controller{
     
         return redirect()->route('organization.show', ['id' => $organization->id]);
     }
+
 }
