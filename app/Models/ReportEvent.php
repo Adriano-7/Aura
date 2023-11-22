@@ -11,7 +11,6 @@ class ReportEvent extends Model
     public $timestamps = false;
 
     protected $table = 'reports_event';
-    public $timestamps = false;
 
 
     // check later (not all fields are fillable)

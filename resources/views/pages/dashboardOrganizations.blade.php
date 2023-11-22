@@ -46,7 +46,7 @@
             @foreach ($organizationRequests as $request)
                 <div class="row report">
                     <div class="col-3 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
-                    onclick="window.location.href='{{ route('organization', ['id' => $request->organization->id]) }}'">
+                    onclick="window.location.href='{{ route('organization.show', ['id' => $request->organization->id]) }}'">
                         <div class="pr-2">
                             <img src="{{ asset('storage/profile/' . $request->userEmitter->photo) }}">
                         </div>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="col-7 dashboard-text-content" style="cursor: pointer;"
-                    onclick="window.location.href='{{ route('organization', ['id' => $request->organization->id]) }}'">
+                    onclick="window.location.href='{{ route('organization.show', ['id' => $request->organization->id]) }}'">
                         <p> Solicitou o registo da organização “{{ $request->organization->name }}”.</p>
                     </div>
                     <div class="col-2 dashboard-actions">
@@ -100,7 +100,7 @@
             @foreach ($organizations as $organization)
                 <div class="row report">
                     <div class="col-3 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
-                        onclick="window.location.href='{{ route('organization', ['id' => $organization->id]) }}'">
+                        onclick="window.location.href='{{ route('organization.show', ['id' => $organization->id]) }}'">
                         <div class="pr-2">
                             <img src="{{ asset('storage/organizations/' . $organization->photo) }}">
                         </div>

@@ -11,7 +11,6 @@ class ReportComment extends Model
     public $timestamps = false;
 
     protected $table = 'reports_comment';
-    public $timestamps = false;
 
 
     // check later (not all fields are fillable)
