@@ -23,11 +23,13 @@
                         <span class="{{ request()->routeIs('my-events') ? 'active' : '' }}"> MEUS EVENTOS </span>
                     </a>
                 </li>
-
-                <form id="search-form" class="form-inline my-2 my-lg-0 looged_in">
-                    <input id="search_bar" class="mr-sm-2 looged_in" type="text" placeholder="Pesquisa por evento"
+                
+                @if(!request()->routeIs('search'))
+                <form id="search-form" class="form-inline my-2 my-lg-0 looged_in" action="{{ route('search') }}"method="get">
+                    <input id="search_bar" class="mr-sm-2 looged_in" name="query" type="text" placeholder="Pesquisa por evento"
                         style="background-image: url(http://127.0.0.1:8000/storage/search-Icon.svg);">
                 </form>
+                @endif
 
             </ul>
 

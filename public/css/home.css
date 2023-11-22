@@ -40,8 +40,6 @@
     padding-left: 0.4em;
     padding-top: 0.5em;
 
-    border-top-left-radius: 0.9em ;
-    border-top-right-radius: 0.9em;
 }
 
 .row.flex-row.flex-nowrap.overflow-auto::-webkit-scrollbar {
