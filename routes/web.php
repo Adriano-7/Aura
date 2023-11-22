@@ -55,12 +55,16 @@ Route::controller(EventController::class)->group(function () {
     Route::get('/eventos/{id}', 'show')->name('events');
     Route::get('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
+
 });
 
 
 //My Events
 Route::middleware(['auth'])->group(function () {
-    Route::get('/meus-eventos', [MyEventsController::class, 'show'])->name('my-events');
+    Route::get('/meus-eventos', [MyEventsController::class, 'participating'])->name('my-events');
+    Route::get('/filter-events/participating', [MyEventsController::class, 'participating'])->name('participating');
+    Route::get('/filter-events/organizing', [MyEventsController::class, 'organizing'])->name('organizing');
+
 });
 
 //Create Events

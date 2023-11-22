@@ -114,3 +114,9 @@
     color: #808080
 
 }
+
+.btn-primary:hover {
+    background-color: #7e5efa;
+    border: none;
+    color: white;
+}
