@@ -19,275 +19,184 @@ tags:
   - name: 'M03: Administracao e páginas estáticas'
 
 paths:
-
-  # VIEW PAGES
-  /login:
-    get:
-      operationId: R101
-      summary: 'R101: Página de Login'
-      description: 'Providenciar formulário de login. Acesso: PUB'
-      tags:
-        - 'M01: Autenticação e Perfil'
-      responses:
-        '200':
-          description: 'Ok. Mostrar UI de login'
-        '302':
-          description: 'Redireciona se o utilizador ja estiver autenticado'
-          headers:
-            Location:
-              schema:
-                type: string
-              example:
-                302Success:
-                  description: ''
-                  value: '/'
-                302Error:
-                  description: ''
-                  value: '/login'
-    post:
-      operationId: R102
-      summary: 'R102: Autenticar Utilizador'
-      description: 'Autenticar utilizador. Acesso: PUB'
-      tags:
-        - 'M01: Autenticação e Perfil'
-      requestBody:
-        description: 'Dados de autenticação'
-        required: true
-        content:
-          application/x-www-form-urllencoded:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  example: 'johndoe@email.com'
-                password:
-                  type: string
-                  example: '123456'
-              required:
-                - email
-                - password
-      responses:
-        '302':
-          description: 'Redireciona para a página inicial'
-          headers:
-            Location:
-              schema:
-                type: string
-              example:
-                302Success:
-                  description: 'Login efetuado com sucesso'
-                  value: '/'
-                302Error:
-                  description: 'Login falhou'
-                  value: '/login'
-        
-  /registo:
-    get:
-      operationId: R103
-      summary: 'R103: Página de Registo'
-      description: 'Providenciar formulário de registo. Acesso: PUB'
-      tags:
-        - 'M01: Autenticação e Perfil'
-      responses:
-        '200':
-          description: 'Ok. Mostrar UI de registo'
-        '302':
-          description: 'Redireciona se o utilizador ja estiver autenticado'
-          headers:
-            Location:
-              schema:
-                type: string
-              example:
-                302Success:
-                  description: ''
-                  value: '/'
-                302Error:
-                  description: ''
-                  value: '/login'
-                    
-    post:
-      operationId: R104
-      summary: 'R104: Registar Utilizador'
-      description: 'Registar utilizador. Acesso: PUB'
-      tags:
-        - 'M01: Autenticação e Perfil'
-      requestBody:
-        description: 'Dados de registo'
-        required: true
-        content:
-          application/x-www-form-urllencoded:
-            schema:
-              type: object
-              properties:
-                nome:
-                  type: string
-                  example: 'John Doe'
-                email:
-                  type: string
-                  example: 'johndoe@email.com'
-                password:
-                  type: string
-                  example: '123456'
-                password_confirmation:
-                  type: string
-                  example: '123456'
-                foto:
-                  type: string
-                  example: 'https://i.imgur.com/1.jpg'
-              required:
-                - nome
-                - email
-                - password
-                - password_confirmation
-                - foto
-      responses:
-        '302':
-          description: 'Redireciona para a página inicial'
-          headers:
-            Location:
-              schema:
-                type: string
-              example:
-                302Success:
-                  description: 'Registo efetuado com sucesso'
-                  value: '/'
-                302Error:
-                  description: 'Registo falhou'
-                  value: '/registo'
-
-  /perfil:
-    get:
-      operationId: R105
-      summary: 'R105: Página de Perfil'
-      description: 'Providenciar página de perfil. Acesso: USR'
-      tags:
-        - 'M01: Autenticação e Perfil'
-      responses:
-        '200':
-          description: 'Ok. Mostrar UI de perfil'
-        '302':
-          description: 'Redireciona se o utilizador não estiver autenticado'
-          headers:
-            Location:
-              schema:
-                type: string
-              example:
-                302Error:
-                  description: 'Necessário autenticar'
-                  value: '/login'
-            
-  /notificacoes:
-    get:
-      operationId: R106
-      summary: 'R106: Página de Notificações'
-      description: 'Providenciar lista de notificações do utilizador. Acesso: USR'
-      tags:
-        - 'M01: Autenticação e Perfil'
-      responses:
-        '200':
-          description: 'Ok. Mostrar UI de notificações'
-        
-    
-    delete: 
-      operationId: R107
-      summary: 'R107: Apagar Notificação'
-      description: 'Apagar notificação. Acesso: USR'
-      tags:
-        - 'M01: Autenticação e Perfil'
-      responses:
-        '200':
-          description: 'Ok. Notificação apagada'
-        '403':
-          description: 'Proibido. Notificação não pertence ao utilizador'
-        '404':
-          description: 'Notificação não existe'
-        
-    # ? patch - abrir notificacao marca-a como lida
-    # ? post - aceitar convite: adiciona user à lista de participantes do evento
-
-  /sobre:
-    get:
-      operationId: R108
-      summary: 'R108: Página Sobre'
-      description: 'Providenciar página sobre. Acesso: PUB'
-      tags:
-        - 'M03: Administracao e páginas estáticas'
-      responses:
-        '200':
-          description: 'Ok. Mostrar UI da página "sobre"'
-          
+openapi: 3.0.0
+info:
+  title: Laravel Web API Documentation
+  version: 1.0.0
+paths:
   /:
     get:
-      operationId: R109
-      summary: 'R109: Página Inicial'
-      description: 'Providenciar página inicial. Acesso: PUB'
-      tags:
-        - 'M02: Eventos e Organizacoes'
+      summary: Get home page
+      operationId: R101
+      tags: 
+          - 'M02: Eventos e organizações'
       responses:
         '200':
-          description: 'Ok. Mostrar UI da página inicial'
+          description: A página inicial é mostrada com sucesso, listando eventos e organizações.
+        
 
-  /pesquisa:
+  /dashboard/denuncias:
     get:
-      operationId: R110
-      summary: 'R110: Página de Pesquisa'
-      description: 'Providenciar página de pesquisa. Acesso: PUB'
-      tags:
-        - 'M02: Eventos e Organizacoes'
-      parameters:
-        - name: query
-          in: query
-          description: 'Termo de pesquisa'
-          required: false
-          schema:
-            type: string
-            example: 'evento'
-        - name: local
-          in: query
-          description: 'Localização do evento'
-          required: false
-          schema:
-            type: string
-            example: 'Porto'
-        - name: dataInicio
-          in: query
-          description: 'Data de início do intervalo de tempo'
-          required: false
-          schema:
-            type: string
-            example: '2024-05-01'
-        - name: dataFim
-          in: query
-          description: 'Data de fim do intervalo de tempo'
-          required: false
-          schema:
-            type: string
-            example: '2024-05-31'
-        - name: sort
-          in: query
-          description: 'Ordenação dos resultados'
-          required: false
-          schema:
-            type: string
-            enum: ['dataInicio', 'nome', 'numParticipantes', 'numDenuncias']
-            example: 'dataInicio'
-        - name: tags
-          in: query
-          description: 'Tags do evento'
-          required: false
-          schema:
-            type: string
-            example: 'desporto'
+      summary: Get reports in the dashboard
+      operationId: R102
+      tags: 
+        - 'M03: Administracao e páginas estáticas'
+      access:
+        - admin
       responses:
         '200':
-          description: 'Ok. Mostrar UI da página de pesquisa'
+          description: É mostrada uma página com todos as denúncias.
+        '403':
+          description: Acesso negado
+
+  /dashboard/membros:
+    get:
+      summary: Get members in the dashboard
+      operationId: R103
+      tags: 
+        - 'M03: Administracao e páginas estáticas'
+      access:
+        - admin
+      responses:
+        '200':
+          description: É mostrada uma página com os utilizadores da plataforma.
+        '403':
+          description: Acesso negado
+
+  /dashboard/organizacoes:
+    get:
+      summary: Get organizations in the dashboard
+      operationId: R104
+      tags: 
+        - 'M03: Administracao e páginas estáticas'
+      access:
+        - admin
+      responses:
+        '200':
+          description: É mostrada uma página com os utilizadores da plataforma.
+        '403':
+          description: Acesso negado
+
+  /notificacoes:
+    get:
+      summary: Get notifications
+      operationId: R105
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+      responses:
+        '200':
+          description: É mostrada uma página com as notificações do utilizador autenticado.
+        '302':
+          description: 'Redirect se o utilizador não tiver sessão iniciada'
+        
+
+  /notificacoes/{id}/apagar:
+    delete:
+      summary: Delete notification by ID
+      operationId: R106
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+      parameters:
+       - in: path
+         name: id
+         description: 'ID da notificação'
+         schema:
+           type: integer
+         required: true
+      responses:
+        '204':
+          description: As notificação indicado pelo id é apagada.
+        '404':
+          description: Não encontrado
+        '302':
+          description: 'Redirect se o utilizador não tiver sessão iniciada'
+        
+        
+
+  /notificacoes/{id}/marcar-como-vista:
+    get:
+      summary: Mark notification as seen
+      operationId: R107
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+      parameters:
+       - in: path
+         name: id
+         description: 'ID da notificação'
+         schema:
+           type: integer
+         required: true
+      responses:
+        '200':
+          description: As notificação indicado pelo id é marcada como vista.
+        '404':
+          description: Não encontrado
+        '302':
+          description: 'Redirect se o utilizador não tiver sessão iniciada'
+        
+        
+
+  /notificacoes/{id}/aceitar-convite:
+    patch:
+      summary: Accept invitation notification
+      operationId: R108
+      tags:
+        -'M02: Eventos e Organizacoes'
+      acess:
+        - auth
+      parameters:
+       - in: path
+         name: id
+         description: 'ID da notificação'
+         schema:
+           type: integer
+         required: true
+      responses:
+        '200':
+          description: O convite indicado na notificação é aceite.
+        '404':
+          description: Não encontrado
+        '302':
+          description: 'Redirect se o utilizador não tiver sessão iniciada'
+        
+
+  /notificacoes/{id}/aprovar-organizacao:
+    patch:
+      summary: Approve organization notification
+      operationId: R109
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+        - admin
+      parameters:
+       - in: path
+         name: id
+         description: 'ID da notificação'
+         schema:
+           type: integer
+         required: true
+      responses:
+        '200':
+          description: A organização indicada na notificação é aprovada.
+        '404':
+          description: Não encontrado
+        '302':
+          description: 'Redirect se o utilizador não tiver sessão iniciada'
+        '401':
+          description: 'Não autorizado'
+        
 
   /evento/{id}:
     get:
-      operationId: R111
-      summary: 'R111: Página de Evento'
-      description: 'Providenciar página de evento. Acesso: PUB'
+      summary: Get event by ID
+      operationId: R110
       tags:
         - 'M02: Eventos e Organizacoes'
       parameters:
@@ -300,97 +209,252 @@ paths:
             example: 1
       responses:
         '200':
-          description: 'Ok. Mostrar UI da página de evento'
+          description: A página do evento indicado pelo ID é mostrada
         '404':
-          description: 'Evento não existe'
-        '403':
-          description: 'Proibido. Evento privado'
+          description: Não encontrado
 
-  /meus-eventos:
-    get:
-      operationId: R112
-      summary: 'R112: Página de Meus Eventos'
-      description: 'Providenciar página de meus eventos. Acesso: USR'
+  /api/evento/{id}/aderir:
+    post:
+      summary: Join event by ID
+      operationId: R111
       tags:
         - 'M02: Eventos e Organizacoes'
-      responses:
-        '200':
-          description: 'Ok. Mostrar UI da página de meus eventos'
-        '302':
-          description: 'Redireciona se o utilizador não estiver autenticado'
-          headers:
-            Location:
-              schema:
-                type: string
-              example:
-                302Error:
-                  description: 'Necessário autenticar'
-                  value: '/login'
-  
-  /criar-evento:
-    get:
-      operationId: R113
-      summary: 'R113: Página de Criar Evento'
-      description: 'Formulário de criação de um evento. Acesso: ORG'
+      access:
+        - auth
+        - not participant
+        - not admin
       parameters:
         - name: id
-          in: query
+          in: path
           description: 'ID do evento'
-          required: False
+          required: true
           schema:
             type: integer
             example: 1
-      tags:
-        - 'M02: Eventos e Organizacoes'
       responses:
-        '200':
-          description: 'Ok. Mostrar UI da página de criar evento'
-        '302':
-          description: 'Redireciona se o utilizador não estiver autenticado'
-          headers:
-            Location:
-              schema:
-                type: string
-              example:
-                302Error:
-                  description: 'Necessário autenticar'
-                  value: '/login'
-        '403':
-          description: 'Proibido. Utilizador não é organizador'
-    
-  /criar-organizacao:
-    get:
-      operationId: R114
-      summary: 'R114: Página de Criar Organização'
-      description: 'Formulário de criação de uma organização. Acesso: USR'
-      tags:
-        - 'M02: Eventos e Organizacoes'
-      responses:
-        '200':
-          description: 'Ok. Mostrar UI da página de criar evento'
-        '302':
-          description: 'Redireciona se o utilizador não estiver autenticado'
-          headers:
-            Location:
-              schema:
-                type: string
-              example:
-                302Error:
-                  description: 'Necessário autenticar'
-                  value: '/login'
-        '403':
-          description: 'Proibido. Apenas utilizadores podem criar organizações'
+        '204':
+          description: O utilizador autenticado passa a participar no evento.
+        '404':
+          description: Não encontrado
+        '401':
+          description: 'Não autorizado'
 
-  /organizacao:
+  /api/evento/{id}/sair:
+    post:
+      summary: Leave event by ID
+      operationId: R112
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+        - participant
+        - not admin
+      parameters:
+        - name: id
+          in: path
+          description: 'ID do evento'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: O utilizador autenticado deixa de participar no evento.
+        '404':
+          description: Não encontrado
+        '401':
+          description: 'Não autorizado'
+        
+
+  /evento/{id}/apagar:
+    delete:
+      summary: Delete event by ID
+      operationId: R113
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - organizer
+        - admin
+      parameters:
+        - name: id
+          in: path
+          description: 'ID do evento'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: O evento é apagado.
+        '404':
+          description: Não encontrado
+        '401':
+          description: 'Não autorizado'
+
+  /evento/convidar-utilizador:
+    post:
+      summary: Invite user to event
+      operationId: R114
+      access:
+        - auth
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '201':
+          description: O utilizador é convidado para participar no evento.
+        '401':
+          description: 'Não autorizado'
+        
+
+  /api/eventos/pesquisa: 
     get:
+      summary: Search events
       operationId: R115
-      summary: 'R115: Página de Organização'
-      description: 'Providenciar página de organização. Acesso: PUB'
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200:
+          description: É retornadsa uma lista com os eventos adequado à pesquisa.
+
+  /edit-event/{id}
+    get:
+      summary: Edit events
+      operationId: R115
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200:
+          description: A página de editar o evento é mostrada com suesso.
+        '401':
+          description: 'Não autorizado'
+  /update-event/{id}
+    get:
+      summary: Edit events
+      operationId: R115
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200:
+          description: A página de editar o evento é mostrada com suesso.
+        '401':
+          description: 'Não autorizado'
+
+/update-event/{id}
+    put:
+      summary: Update event
+      operationId: R115
+        parameters:
+        - name: eventId
+          in: path
+          required: true
+          description: ID of the event to update
+          schema:
+            type: string
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200:
+          description: Evento atualizado com sucesso.
+        '404':
+          description: 'Evento não encontrado'
+  /update-event/{id}
+
+
+  /meus-eventos:
+    get:
+      summary: Get user's events
+      operationId: R116
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+      responses:
+        '200':
+          description: É mostrada uma página com os eventos em que participo e organizo.
+
+  /filter-events/participating:
+    get:
+      summary: Get user's participating events (Filtered)
+      operationId: R117
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+      responses:
+        '200':
+          description: É mostrada uma página com os eventos em que participo.
+
+  /filter-events/organizing:
+    get:
+      summary: Get user's organizing events (Filtered)
+      operationId: R118
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+      responses:
+        '200':
+          description: É mostrada uma página com os eventos que organizo.
+
+  /criar-evento:
+    get:
+      summary: Show create event form
+      operationId: R119
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+      responses:
+        '200':
+          description: É mostrado um formulário para criar um novo evento.
+          
+  /submit-event:
+    post:
+      summary: Submit event form
+      operationId: R120
+      tags:
+          - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_name:
+                  type: string
+                  description: The name of the event
+                  example: 'My Event'
+                start_date:
+                  type: string
+                  format: date
+                  description: The start date of the event
+                  example: '2022-12-31'
+                start_time:
+                  type: string
+                  format: time
+                  description: The start time of the event
+                  example: '12:00'
+                end_date:
+                  type: string
+                  format: date
+                  description: The end date of the event (optional)
+                  example: '2023-01-01'
+      responses:
+        '200':
+          description: Um novo evento é criado e armazenado na base de dados.
+ 
+  /organizacao/{id}:
+    get:
+      summary: Get organization by ID
+      operationId: R121
       tags:
         - 'M02: Eventos e Organizacoes'
       parameters:
         - name: id
-          in: query
+          in: path
           description: 'ID da organização'
           required: true
           schema:
@@ -398,59 +462,340 @@ paths:
             example: 1
       responses:
         '200':
-          description: 'Ok. Mostrar UI da página de organização'
+          description: É mostrada a página da organização indicada pelo ID.
         '404':
-          description: 'Organização não existe'
-  
-  /admin/{tab}: # tab can have 3 values: 'denuncias', 'membros', 'organizacoes'
-    get:
-      operationId: R116
-      summary: 'R116: Página de Administração'
-      description: 'Providenciar página de administração. Acesso: ADM'
+          description: Não encontrado
+
+  /organizacao/{id}/aderir:
+    post:
+      summary: Join organization by ID
+      operationId: R122
       tags:
-        - 'M03: Administracao e páginas estáticas'
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - invitee
       parameters:
-        - name: tab
+        - name: id
           in: path
-          description: 'Tab a mostrar'
+          description: 'ID da organização'
           required: true
           schema:
-            type: string
-            enum: ['denuncias', 'membros', 'organizacoes']
-            example: 'denuncias'
+            type: integer
+            example: 1
       responses:
         '200':
-          description: 'Ok. Mostrar UI da página de administração'
-        '302':
-          description: 'Redireciona se o utilizador não estiver autenticado'
-          headers:
-            Location:
-              schema:
-                type: string
-              example:
-                302Error:
-                  description: 'Necessário autenticar'
-                  value: '/login'
-        '403':
-          description: 'Proibido. Apenas administradores podem aceder à página de administração'
+          description: O utilizador autenticado passa a pertencer à organização indicada pelo ID.
         '404':
-          description: 'Tab não disponível'
+          description: Não encontrado
 
-  # API
-  /api/event/{eventId}/comments:
+  /organizacao/convidar-utilizador:
+    post:
+      summary: Invite user to organization
+      operationId: R123
+      acess:
+        - organizer
+        - admin
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200':
+          description: Um convite é enviado a um utilizador para pertencer a uma organização.
+
+  /organizacao/remover-utilizador:
+    post:
+      summary: Eliminate organization member
+      operationId: R124
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - admin
+        - organizer
+      responses:
+        '200':
+          description: Um membro deixa de pertencer a uma organização.
+
+  /api/organization/{id}:
+    delete:
+      summary: Delete organization by ID
+      operationId: R125
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - admin
+        - organizer
+      parameters:
+        - name: id
+          in: path
+          description: 'ID da organização'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: A organização indicada é apagada.
+        '404':
+          description: Não encontrado
+
+  /pesquisa:
     get:
-      operationId: R117
-      summary: 'R117: Comentários de um evento'
-      description: 'API para receber todos os comentários de um evento, Acesso: PUB'
+      summary: Show search page
+      operationId: R126
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200':
+          description: É mostrada uma página com os resultados da pesquisa efetuada.
+
+  /api/comments:
+    get:
+      summary: Get comments
+      operationId: R127
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      responses:
+        '200':
+          description: É retornada uma llista de comentários
+
+  /api/comments/{id}:
+    get:
+      summary: Get comment by ID
+      operationId: R128
       tags:
         - 'M02: Eventos e Organizacoes'
       parameters:
-        - name: eventId
+        - name: id
           in: path
-          description: 'Id do evento'
+          description: 'ID do comentário'
           required: true
+          schema:
+            type: integer
+            example: 1
       responses:
         '200':
-          description: 'Ok, receber todos os comentários de um evento'
-        '404':
-          description: 'Evento não existe'
+          description: É retornado o comentário com o id indicado.
+    delete:
+      summary: Delete comment by ID
+      operationId: R129
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      parameters:
+        - name: id
+          in: path
+          description: 'ID do comentário'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      access:
+        - author
+        - admin
+      responses:
+        '204':
+          description: O comentário indicado é apagado com sucesso.
+
+  /comments/add:
+    post:
+      summary: Add comment
+      operationId: R130
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+        - participant
+      responses:
+        '200':
+          description: O comtário é submetido com sucesso.
+
+  /api/comments/like:
+    post:
+      summary: Add like to comment
+      operationId: R131
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+        - user has not liked that comment yet
+      responses:
+        '200':
+          description: O utilizador adiciona um gosto no comentário.
+
+  /api/comments/removeLike:
+    post:
+      summary: Remove like from comment
+      operationId: R132
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - auth
+        - user has already liked that comment
+      responses:
+        '200':
+          description: O utilizador remove um like do comentário.
+
+  /api/reports/event:
+    get:
+      summary: Get event reports
+      operationId: R133
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - admin
+      responses:
+        '200':
+          description: São retornadas as denúncias de eventos.
+
+  /api/reports/event/{id}/resolved:
+    patch:
+      summary: Mark event report as resolved
+      operationId: R134
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - admin
+      parameters:
+        - name: id
+          in: path
+          description: 'ID do comentário'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: A denúncia identificada pelo ID é marcada como resolvida.
+
+  /api/reports/comment:
+    get:
+      summary: Get comment reports
+      operationId: R135
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - admin
+      responses:
+        '200':
+          description: São retornadas as denúncias de comentários.
+
+  /api/reports/comment/{id}/resolved:
+    patch:
+      summary: Mark comment report as resolved
+      operationId: R136
+      tags:
+        - 'M02: Eventos e Organizacoes'
+      access:
+        - admin
+      parameters:
+        - name: id
+          in: path
+          description: 'ID do comentário'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: A denúncia identificada pelo ID é marcada como resolvida.
+
+
+  /api/user/{id}:
+    delete:
+      summary: Delete user by ID
+      operationId: R137
+      tags:
+        - 'M01: Autenticação e Perfil'
+      access:
+        - admin
+      parameters:
+        - name: id
+          in: path
+          description: 'ID do comentário'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '204':
+          description: O utilizador identificado pelo ID é apagado.
+
+  /iniciar-sessao:
+    get:
+      summary: Show login form
+      operationId: R138
+      tags:
+        - 'M01: Autenticação e Perfil'
+      responses:
+        '200':
+          description: É mostrada a página com o formulário de início de sessão.
+    post:
+      summary: Authenticate user
+      operationId: R139
+      tags:
+        - 'M01: Autenticação e Perfil'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Email do utilizador
+                password:
+                  type: string
+                  description: Password do utilizador
+      responses:
+        '200':
+          description: A autenticação é feita com sucesso.
+
+  /terminar-sessao:
+    get:
+      summary: Logout user
+      operationId: R140
+      tags:
+        - 'M01: Autenticação e Perfil'
+      access:
+        - auth
+      responses:
+        '200':
+          description: O término de sessão é executado com sucess.
+
+  /registar:
+    get:
+      summary: Show registration form
+      operationId: R141
+      tags:
+        - 'M01: Autenticação e Perfil'
+      responses:
+        '200':
+          description: É mostrado uma página com o formlário para registar um novo cliente.
+    post:
+      summary: Register user
+      operationId: R142
+      tags:
+        - 'M01: Autenticação e Perfil'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  description: Nome do utilizador
+                email:
+                  type: string
+                  format: email
+                  description: Email do utilizador
+                password:
+                  type: string
+                  description: Password do utilizador
+                confPassword:
+                  type: string
+                  description: Repetição da password
+      responses:
+        '200':
+          description: É registado um novo utilizador.
