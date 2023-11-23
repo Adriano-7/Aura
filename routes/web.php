@@ -72,7 +72,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/edit-event/{id}', [EditEventController::class, 'show'])->name('edit-event');
     Route::get('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
     Route::put('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
-
 });
 
 //My Events
@@ -80,7 +79,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/meus-eventos', [MyEventsController::class, 'participating'])->name('my-events');
     Route::get('/filter-events/participating', [MyEventsController::class, 'participating'])->name('participating');
     Route::get('/filter-events/organizing', [MyEventsController::class, 'organizing'])->name('organizing');
-
 });
 
 //Create Events

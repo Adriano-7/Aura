@@ -1,28 +1,11 @@
-openapi: 3.0.0
-
+openapi: '3.0.2'
 info:
-  version: '1.0'
   title: LBAW AURA Web API
+  version: '1.0'
   description: Especificação de Recursos Web (A7) para AURA
-
 servers:
   - url: "http://lbaw2384.lbaw-prod.fe.up.pt"
     description: "Servidor de produção"
-
-externalDocs:
-  description: ""
-  url: "https://git.fe.up.pt/lbaw/lbaw2324/lbaw2384/-/wikis/home"
-
-tags:
-  - name: 'M01: Autenticação e Perfil'
-  - name: 'M02: Eventos e Organizacoes'
-  - name: 'M03: Administracao e páginas estáticas'
-
-paths:
-openapi: 3.0.0
-info:
-  title: Laravel Web API Documentation
-  version: 1.0.0
 paths:
   /:
     get:
@@ -41,8 +24,8 @@ paths:
       operationId: R102
       tags: 
         - 'M03: Administracao e páginas estáticas'
-      access:
-        - admin
+      security:
+        - admin: []
       responses:
         '200':
           description: É mostrada uma página com todos as denúncias.
@@ -55,8 +38,8 @@ paths:
       operationId: R103
       tags: 
         - 'M03: Administracao e páginas estáticas'
-      access:
-        - admin
+      security:
+        - admin: []
       responses:
         '200':
           description: É mostrada uma página com os utilizadores da plataforma.
@@ -69,8 +52,8 @@ paths:
       operationId: R104
       tags: 
         - 'M03: Administracao e páginas estáticas'
-      access:
-        - admin
+      security:
+        - admin: []
       responses:
         '200':
           description: É mostrada uma página com os utilizadores da plataforma.
@@ -83,8 +66,8 @@ paths:
       operationId: R105
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
+      security:
+        - auth: []
       responses:
         '200':
           description: É mostrada uma página com as notificações do utilizador autenticado.
@@ -98,8 +81,8 @@ paths:
       operationId: R106
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
+      security:
+        - auth: []
       parameters:
        - in: path
          name: id
@@ -123,8 +106,8 @@ paths:
       operationId: R107
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
+      security:
+        - auth: []
       parameters:
        - in: path
          name: id
@@ -141,22 +124,21 @@ paths:
           description: 'Redirect se o utilizador não tiver sessão iniciada'
         
         
-
   /notificacoes/{id}/aceitar-convite:
     patch:
       summary: Accept invitation notification
       operationId: R108
       tags:
-        -'M02: Eventos e Organizacoes'
-      acess:
-        - auth
+        - 'M02: Eventos e Organizacoes'
+      security:
+        - auth: []
       parameters:
-       - in: path
-         name: id
-         description: 'ID da notificação'
-         schema:
-           type: integer
-         required: true
+      - in: path
+        name: id
+        description: 'ID da notificação'
+        schema:
+          type: integer
+        required: true
       responses:
         '200':
           description: O convite indicado na notificação é aceite.
@@ -164,7 +146,6 @@ paths:
           description: Não encontrado
         '302':
           description: 'Redirect se o utilizador não tiver sessão iniciada'
-        
 
   /notificacoes/{id}/aprovar-organizacao:
     patch:
@@ -172,9 +153,9 @@ paths:
       operationId: R109
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
-        - admin
+      security:
+        - auth: []
+        - admin: []
       parameters:
        - in: path
          name: id
@@ -219,10 +200,10 @@ paths:
       operationId: R111
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
-        - not participant
-        - not admin
+      security:
+        - auth: []
+        - not participant: []
+        - not admin: []
       parameters:
         - name: id
           in: path
@@ -245,10 +226,10 @@ paths:
       operationId: R112
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
-        - participant
-        - not admin
+      security:
+        - auth: []
+        - participant: []
+        - not admin: []
       parameters:
         - name: id
           in: path
@@ -272,9 +253,9 @@ paths:
       operationId: R113
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - organizer
-        - admin
+      security:
+        - organizer: []
+        - admin: []
       parameters:
         - name: id
           in: path
@@ -295,8 +276,8 @@ paths:
     post:
       summary: Invite user to event
       operationId: R114
-      access:
-        - auth
+      security:
+        - auth: []
       tags:
         - 'M02: Eventos e Organizacoes'
       responses:
@@ -307,43 +288,42 @@ paths:
         
 
   /api/eventos/pesquisa: 
-    get:
-      summary: Search events
-      operationId: R115
-      tags:
-        - 'M02: Eventos e Organizacoes'
-      responses:
-        '200:
-          description: É retornadsa uma lista com os eventos adequado à pesquisa.
+      get:
+        summary: Search events
+        operationId: R115
+        tags:
+          - 'M02: Eventos e Organizacoes'
+        responses:
+          '200':
+            description: É retornadsa uma lista com os eventos adequado à pesquisa.
 
-  /edit-event/{id}
+  /edit-event/{id}:
     get:
       summary: Edit events
       operationId: R115
       tags:
         - 'M02: Eventos e Organizacoes'
       responses:
-        '200:
+        '200':
           description: A página de editar o evento é mostrada com suesso.
         '401':
           description: 'Não autorizado'
-  /update-event/{id}
+
+  /update-event/{id}:
     get:
       summary: Edit events
       operationId: R115
       tags:
         - 'M02: Eventos e Organizacoes'
       responses:
-        '200:
+        '200':
           description: A página de editar o evento é mostrada com suesso.
         '401':
           description: 'Não autorizado'
-
-/update-event/{id}
     put:
       summary: Update event
       operationId: R115
-        parameters:
+      parameters:
         - name: eventId
           in: path
           required: true
@@ -353,12 +333,10 @@ paths:
       tags:
         - 'M02: Eventos e Organizacoes'
       responses:
-        '200:
+        '200':
           description: Evento atualizado com sucesso.
         '404':
           description: 'Evento não encontrado'
-  /update-event/{id}
-
 
   /meus-eventos:
     get:
@@ -366,8 +344,8 @@ paths:
       operationId: R116
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
+      security:
+        - auth: []
       responses:
         '200':
           description: É mostrada uma página com os eventos em que participo e organizo.
@@ -378,8 +356,8 @@ paths:
       operationId: R117
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
+      security:
+        - auth: []
       responses:
         '200':
           description: É mostrada uma página com os eventos em que participo.
@@ -390,8 +368,8 @@ paths:
       operationId: R118
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
+      security:
+        - auth: []
       responses:
         '200':
           description: É mostrada uma página com os eventos que organizo.
@@ -402,8 +380,8 @@ paths:
       operationId: R119
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
+      security:
+        - auth: []
       responses:
         '200':
           description: É mostrado um formulário para criar um novo evento.
@@ -414,8 +392,8 @@ paths:
       operationId: R120
       tags:
           - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
+      security:
+        - auth: []
       requestBody:
         required: true
         content:
@@ -472,8 +450,8 @@ paths:
       operationId: R122
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - invitee
+      security:
+        - invited: []
       parameters:
         - name: id
           in: path
@@ -492,9 +470,9 @@ paths:
     post:
       summary: Invite user to organization
       operationId: R123
-      acess:
-        - organizer
-        - admin
+      security:
+        - organizer: []
+        - admin: []
       tags:
         - 'M02: Eventos e Organizacoes'
       responses:
@@ -507,9 +485,9 @@ paths:
       operationId: R124
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - admin
-        - organizer
+      security:
+        - admin: []
+        - organizer: []
       responses:
         '200':
           description: Um membro deixa de pertencer a uma organização.
@@ -520,9 +498,9 @@ paths:
       operationId: R125
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - admin
-        - organizer
+      security:
+        - admin: []
+        - organizer:  []
       parameters:
         - name: id
           in: path
@@ -587,9 +565,9 @@ paths:
           schema:
             type: integer
             example: 1
-      access:
-        - author
-        - admin
+      security:
+        - author: []
+        - admin: []
       responses:
         '204':
           description: O comentário indicado é apagado com sucesso.
@@ -600,9 +578,9 @@ paths:
       operationId: R130
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
-        - participant
+      security:
+        - auth: []
+        - participant: []
       responses:
         '200':
           description: O comtário é submetido com sucesso.
@@ -613,9 +591,9 @@ paths:
       operationId: R131
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
-        - user has not liked that comment yet
+      security:
+        - auth: []
+        - user has not liked that comment yet: []
       responses:
         '200':
           description: O utilizador adiciona um gosto no comentário.
@@ -626,9 +604,9 @@ paths:
       operationId: R132
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - auth
-        - user has already liked that comment
+      security:
+        - auth: []
+        - user has already liked that comment: []
       responses:
         '200':
           description: O utilizador remove um like do comentário.
@@ -639,8 +617,8 @@ paths:
       operationId: R133
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - admin
+      security:
+        - admin: []
       responses:
         '200':
           description: São retornadas as denúncias de eventos.
@@ -651,8 +629,8 @@ paths:
       operationId: R134
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - admin
+      security:
+        - admin: []
       parameters:
         - name: id
           in: path
@@ -671,8 +649,8 @@ paths:
       operationId: R135
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - admin
+      security:
+        - admin: []
       responses:
         '200':
           description: São retornadas as denúncias de comentários.
@@ -683,8 +661,8 @@ paths:
       operationId: R136
       tags:
         - 'M02: Eventos e Organizacoes'
-      access:
-        - admin
+      security:
+        - admin: []
       parameters:
         - name: id
           in: path
@@ -704,8 +682,8 @@ paths:
       operationId: R137
       tags:
         - 'M01: Autenticação e Perfil'
-      access:
-        - admin
+      security:
+        - admin: []
       parameters:
         - name: id
           in: path
@@ -756,8 +734,8 @@ paths:
       operationId: R140
       tags:
         - 'M01: Autenticação e Perfil'
-      access:
-        - auth
+      security:
+        - auth: []
       responses:
         '200':
           description: O término de sessão é executado com sucess.
