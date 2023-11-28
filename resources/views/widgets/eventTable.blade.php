@@ -37,7 +37,7 @@
                         <div class="row ">
                             <div class="col-4 col-md-3 col-lg-3 col-xl-2 p-2 text-center d-sm-block">
                                 <img class=" card-img-aura img-fluid"
-                                    src="{{ asset('storage/eventos/' . $event->photo) }}" alt="Card image cap"
+                                    src="{{ asset('assets/eventos/' . $event->photo) }}" alt="Card image cap"
                                     style="object-fit: cover;">
                             </div>
 

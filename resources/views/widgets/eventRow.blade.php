@@ -3,7 +3,7 @@
     <div class="row flex-row flex-nowrap overflow-auto">
         @foreach ($events as $event)
             <a class="card" href="{{ route('event', ['id' => $event->id]) }}">
-                <img class="card-img-top img-fluid card-img-aura" src="{{ asset('storage/eventos/' . $event->photo) }}"
+                <img class="card-img-top img-fluid card-img-aura" src="{{ asset('assets/eventos/' . $event->photo) }}"
                     alt="Card image cap" style="object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">{{ $event->name }}</h5>

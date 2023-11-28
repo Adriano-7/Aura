@@ -26,7 +26,7 @@
                             <form action="{{ route('notification.acceptInvitation', ['id' => $notification->id]) }}" method="POST" id="acceptForm{{ $notification->id }}">
                                 @csrf
                                 @method('PATCH')
-                                <img src="{{ asset('storage/check-icon.svg') }}" onclick="document.getElementById('acceptForm{{ $notification->id }}').submit()" style="cursor: pointer;">
+                                <img src="{{ asset('assets/check-icon.svg') }}" onclick="document.getElementById('acceptForm{{ $notification->id }}').submit()" style="cursor: pointer;">
                             </form>
                         </div>
                     @endif
@@ -35,7 +35,7 @@
                         <form action="{{ route('notification.delete', ['id' => $notification->id]) }}" method="POST" id="deleteForm{{ $notification->id }}">
                             @csrf
                             @method('DELETE')
-                            <img src="{{ asset('storage/close-icon.svg') }}" onclick="document.getElementById('deleteForm{{ $notification->id }}').submit()" style="cursor: pointer;">
+                            <img src="{{ asset('assets/close-icon.svg') }}" onclick="document.getElementById('deleteForm{{ $notification->id }}').submit()" style="cursor: pointer;">
                         </form>
                     </div>
                 </div>

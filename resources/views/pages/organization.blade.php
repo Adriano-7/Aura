@@ -31,7 +31,7 @@
     @endif
 
     <div class="container position-relative d-flex align-items-end w-100">
-        <img src="{{ asset('storage/organizations/' . $organization->photo) }}" id="bandBanner" class=""
+        <img src="{{ asset('assets/organizations/' . $organization->photo) }}" id="bandBanner" class=""
             id="org-img">
         <h1 id="bandName" class="position-absolute text-white">{{ $organization->name }}</h1>
     </div>
@@ -113,7 +113,7 @@
                     <div class="row report">
                         <div class="col-3 members-profile d-flex align-items-center">
                             <div class="pr-2">
-                                <img src="{{ asset('storage/profile/' . $member->photo) }}">
+                                <img src="{{ asset('assets/profile/' . $member->photo) }}">
                             </div>
                             <div>
                                 <h1>{{ $member->name }}</h1>
@@ -129,7 +129,7 @@
                                     <input type="hidden" name="organization_id" value="{{ $organization->id }}">
                                     <input type="hidden" name="user_id" value="{{ $member->id }}">
                                     <button class="btn" type="submit">
-                                        <img src="{{ asset('storage/close-icon.svg') }}" alt="more">
+                                        <img src="{{ asset('assets/close-icon.svg') }}" alt="more">
                                     </button>
                                 </form>
                             </div>

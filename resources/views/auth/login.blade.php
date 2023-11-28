@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-sm-6 text-black">
                         <div class="px-5 ms-xl-4">
-                            <a href="/"><img src="{{ asset('storage/AuraLogo.svg') }}" alt="Logo" style="width: 7rem;" class="pt-5 mt-xl-4"></a>
+                            <a href="/"><img src="{{ asset('assets/AuraLogo.svg') }}" alt="Logo" style="width: 7rem;" class="pt-5 mt-xl-4"></a>
                         </div>
 
                         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-xl-n5">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 px-0 d-none d-sm-block">
-                        <img src="{{ asset('storage/LoginBanner.jpg') }}" alt="Login image" class="w-100 vh-100"
+                        <img src="{{ asset('assets/LoginBanner.jpg') }}" alt="Login image" class="w-100 vh-100"
                             style="object-fit: cover; object-position: left;">
                     </div>
                 </div>

@@ -17,7 +17,7 @@
 
 @section('content')
     <div class="container dashboard-container">
-        <img src="{{ asset('storage/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
+        <img src="{{ asset('assets/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
 
         <div class="navbar-collapse" id="dash-nav">
             <ul class="navbar-nav flex-row">
@@ -61,7 +61,7 @@
             <div class="row report">
                 <div class="col-2 dashboard-profile d-flex align-items-center">
                     <div class="pr-2">
-                        <img src="{{asset('storage/profile/' . $report->comment->author->photo)}}">
+                        <img src="{{asset('assets/profile/' . $report->comment->author->photo)}}">
                     </div>
                     <div>
                         <h1>{{$report->comment->author->name}}</h1>
@@ -77,7 +77,7 @@
                     <div class="dropdown">
                         <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                             aria-expanded="false">
-                            <img src="{{asset('storage/Three-Dots-Icon.svg')}}" alt="more">
+                            <img src="{{asset('assets/Three-Dots-Icon.svg')}}" alt="more">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                             <li><button class="dropdown-item delete-comment" data-comment-id="{{ $report->comment->id }}">Apagar comentário</button></li>
@@ -110,7 +110,7 @@
                 <div class="col-2 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
                     onclick="window.location.href='{{ route('event', ['id' => $report->event->id]) }}'">
                     <div class="pr-2">
-                        <img src="{{asset('storage/eventos/' . $report->event->photo)}}">
+                        <img src="{{asset('assets/eventos/' . $report->event->photo)}}">
                     </div>
                     <div>
                         <h1>{{$report->event->name}}</h1>
@@ -124,7 +124,7 @@
                     <div class="dropdown">
                         <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                             aria-expanded="false">
-                            <img src="{{asset('storage/Three-Dots-Icon.svg')}}" alt="more">
+                            <img src="{{asset('assets/Three-Dots-Icon.svg')}}" alt="more">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                             <li><button class="dropdown-item delete-event" data-event-id="{{ $report->event->id }}">Eliminar Evento</button></li>

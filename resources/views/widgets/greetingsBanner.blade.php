@@ -5,7 +5,7 @@
             <p id="Banner-subtitle">Excelente ter-te de volta!</p>
         </div>
         <div class="col-md-6">
-            <img src="{{ asset('storage/WelcomeBanner.png') }}" alt="Descriptive text" class="img-fluid" id="home-banner-img">
+            <img src="{{ asset('assets/WelcomeBanner.png') }}" alt="Descriptive text" class="img-fluid" id="home-banner-img">
         </div>
     </div>
 </div>
