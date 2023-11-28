@@ -1,11 +1,3 @@
-
-#bandBanner {
-    max-height: 15rem;
-    height: 20rem;
-    object-fit: cover;
-    width: 100%;
-}
-
 #bandName {
     color: #FFF;
     font-size: 35px;
@@ -13,7 +5,25 @@
     padding-left: 1.5rem;
 
     background-color: rgba(0, 0, 0, 0.4);
+}
 
+.alert{
+    background-color: #11141A;
+    border: none;
+    color: #808080;
+}
+
+.alert a{
+    color: rgb(195, 191, 191);
+    text-decoration: none;
+}
+
+#org-img {
+    height: 24rem;
+
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .navbar-nav {
@@ -22,6 +32,9 @@
 
 #orgNav {
     background-color: #000000;
+    position: sticky; 
+    top: 0px; 
+    z-index: 2;
 }
 
 #orgNav a {
@@ -32,16 +45,9 @@
     font-weight: 600;
 }
 
-#results-title {
-    color: #FFF;
-    font-size: 20px;
-    font-weight: 700;
-}
-
-#section1{
+#events{
     margin-top: 2rem;
 }
-
 
 .card{
     padding-bottom: 1rem;
@@ -59,10 +65,6 @@
     transform: translateX(-50%);
 
     border-bottom: 1px solid #808080;
-    padding: 1rem;
-}
-
-#about{
     padding: 1rem;
 }
 
@@ -89,6 +91,20 @@ p{
     font-weight: 400;
 }
 
+
+
+#results-title {
+    color: #FFF;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+#about{
+    padding: 1rem;
+}
+
+
 #join-event,
 #leave-event {
     /*no wrap*/
@@ -109,48 +125,7 @@ p{
     color: #11141A;
 }
 
-@media (min-width: 765px){
-    .event {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
 
-    .event .col-md-2,
-    .event .col-md-2.ml-auto {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-}
-
-@media (max-width: 765px){
-    .event .col-md-2,
-    .event .col-md-2.ml-auto {
-        display: flex;
-        justify-content: flex-end;
-
-        margin-top: 0rem;
-    }
-
-}
-
-.alert{
-    background-color: #11141A;
-    border: none;
-    color: #808080;
-}
-
-.alert a{
-    color: rgb(195, 191, 191);
-    text-decoration: none;
-}
-
-#org-img{
-    width: 100%;
-    object-fit: cover;
-    object-position: top;
-}
 
 .members-container{
     margin-top: 2rem;
@@ -276,5 +251,31 @@ p{
 #approveForm .btn{
     color: #cdc9c9;
     background-color: transparent;
+
+}
+
+@media (min-width: 765px){
+    .event {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .event .col-md-2,
+    .event .col-md-2.ml-auto {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 765px){
+    .event .col-md-2,
+    .event .col-md-2.ml-auto {
+        display: flex;
+        justify-content: flex-end;
+
+        margin-top: 0rem;
+    }
 
 }

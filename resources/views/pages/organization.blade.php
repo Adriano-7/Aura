@@ -16,6 +16,11 @@
         @include('widgets.popUpNotification', ['message' => session('status')])
     @endif
 
+    <div class="container position-relative d-flex align-items-end w-100">
+        <img src="{{ asset('assets/organizations/' . $organization->photo) }}"  id="org-img">
+        <h1 id="bandName" class="position-absolute text-white">{{ $organization->name }}</h1>
+    </div>
+
     @if (!$organization->approved)
         <div class="alert alert-warning d-flex align-items-center" role="alert">
             <div>Esta organização ainda não foi aprovada.</div>
@@ -29,12 +34,6 @@
             @endif
         </div>
     @endif
-
-    <div class="container position-relative d-flex align-items-end w-100">
-        <img src="{{ asset('assets/organizations/' . $organization->photo) }}" id="bandBanner" class=""
-            id="org-img">
-        <h1 id="bandName" class="position-absolute text-white">{{ $organization->name }}</h1>
-    </div>
 
     <nav id="orgNav" class="navbar">
         <div class="container">
@@ -143,7 +142,7 @@
     @endif
 
 
-    <div class="container" id="eventos">
+    <div class="container" id="events">
         <div class="row">
             <div class="col-12 ">
                 <h1 id="results-title">Eventos • {{ $organization->events->count() }} Resultados</h1>
