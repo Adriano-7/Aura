@@ -1,3 +1,11 @@
+#content{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-bottom: 4rem;
+}
+
 #bandName {
     color: #FFF;
     font-size: 35px;
@@ -26,7 +34,7 @@
     object-position: center;
 }
 
-.navbar-nav {
+#content .navbar-nav {
     flex-direction: row !important;
 }
 
@@ -45,17 +53,13 @@
     font-weight: 600;
 }
 
-#events{
-    margin-top: 2rem;
-}
-
 .card{
     padding-bottom: 1rem;
     background-color: #11141A;
     border-radius: 1rem;
 
     margin-top:1rem;
-    margin-bottom: 7rem;
+    margin-bottom: 3rem;
 }
 
 .event{
@@ -97,6 +101,7 @@ p{
     color: #FFF;
     font-size: 20px;
     font-weight: 700;
+    margin-top: 2.5rem;
 }
 
 
@@ -276,6 +281,11 @@ p{
         justify-content: flex-end;
 
         margin-top: 0rem;
+    }
+
+    #org-img {
+        height: 12rem;
+    
     }
 
 }

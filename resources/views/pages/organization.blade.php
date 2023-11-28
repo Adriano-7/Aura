@@ -142,7 +142,7 @@
     @endif
 
 
-    <div class="container" id="events">
+    <div class="container" id="eventos">
         <div class="row">
             <div class="col-12 ">
                 <h1 id="results-title">Eventos • {{ $organization->events->count() }} Resultados</h1>
