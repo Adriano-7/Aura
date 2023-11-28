@@ -218,6 +218,9 @@ CREATE TRIGGER event_search_update
     EXECUTE PROCEDURE event_search_update();
 
 
+CREATE INDEX events_gin_idx ON events USING gin(tsvectors);
+
+
 -- TRIGGERS
 
 -- TRIGGER01

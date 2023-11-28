@@ -6,21 +6,25 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Event;
 use App\Models\Notification;
 use App\Models\User;
 
 
-class EventController extends Controller{
-    public function show($id): View {
+class EventController extends Controller
+{
+    public function show($id): View
+    {
         return view('pages.event', [
             'user' => Auth::user(),
             'event' => Event::find($id)
         ]);
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $event = Event::findOrFail($id);
         $this->authorize('delete', $event);
         $event->delete();
@@ -28,7 +32,8 @@ class EventController extends Controller{
         return redirect()->route('organizing')->with('status', "Evento {$event->name} removido com sucesso.");
     }
 
-    public function leaveEvent($id) {
+    public function leaveEvent($id)
+    {
         $event = Event::find($id);
         $this->authorize('leave', $event);
         $user = Auth::user();
@@ -36,15 +41,16 @@ class EventController extends Controller{
         return response()->json(['status' => 'success']);
     }
 
-    public function joinEvent($id) {
+    public function joinEvent($id)
+    {
         $event = Event::find($id);
         $this->authorize('leave', $event);
         $user = Auth::user();
         $event->participants()->attach($user->id);
         return response()->json(['status' => 'success']);
     }
-
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $request->validate([
             'query' => 'nullable|string',
             'tags' => 'nullable|integer',
@@ -59,7 +65,8 @@ class EventController extends Controller{
 
         $eventsQuery = Event::with('tags')
             ->when($query, function (Builder $queryBuilder) use ($query) {
-                $queryBuilder->where('name', 'ILIKE', "%$query%");
+                $queryBuilder->whereRaw("tsvectors @@ phraseto_tsquery('portuguese', ?)", [$query])
+                    ->orderByRaw("ts_rank(tsvectors, phraseto_tsquery('portuguese', ?)) DESC", [$query]);
             })
             ->when($tags, function (Builder $queryBuilder) use ($tags) {
                 $queryBuilder->whereHas('tags', function (Builder $tagQuery) use ($tags) {
@@ -71,15 +78,15 @@ class EventController extends Controller{
             })
             ->when($endDate, function (Builder $queryBuilder) use ($endDate) {
                 $queryBuilder->where('end_date', '<=', $endDate);
-            })
-            ->orderBy('start_date', 'asc');
+            });
 
         $results = $eventsQuery->get();
 
         return response()->json($results);
     }
 
-    public function ApiDelete(int $id) {
+    public function ApiDelete(int $id)
+    {
         $event = Event::find($id);
 
         if (!$event) {
@@ -96,16 +103,16 @@ class EventController extends Controller{
         ], 200);
     }
 
-    public function inviteUser(Request $request){
+    public function inviteUser(Request $request)
+    {
         $event = Event::findOrFail($request->event_id);
         $this->authorize('invite_user', $event);
 
         $user = User::where('email', $request->email)->first();
 
-        if($user == null){
+        if ($user == null) {
             return redirect()->back()->with('status', 'Utilizador não encontrado!');
-        }
-        elseif($user->id == Auth::user()->id || $user->isOrganizer($event->organization) || $user->isAdmin()){
+        } elseif ($user->id == Auth::user()->id || $user->isOrganizer($event->organization) || $user->isAdmin()) {
             return redirect()->back()->with('status', 'Utilizador não pode ser convidado!');
         }
 
