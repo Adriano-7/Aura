@@ -30,9 +30,23 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-// Home
-Route::controller(HomeController::class)->group(function () {
-    Route::get('/',  'show')->name('home');
+//Login
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/iniciar-sessao', 'showLoginForm')->name('login');
+    Route::post('/iniciar-sessao', 'authenticate');
+
+    Route::get('/terminar-sessao', 'logout')->name('logout');
+});
+
+//Register
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('/registar', 'showRegistrationForm')->name('register');
+    Route::post('/registar', 'register');
+});
+
+//User API
+Route::controller(UserController::class)->group(function() {
+    Route::delete('api/utilizador/{id}', 'destroy');
 });
 
 //Dashboard
@@ -42,10 +56,15 @@ Route::controller(DashboardController::class)->group(function () {
     Route::get('/dashboard/organizacoes', 'showOrganizations')->name('dashboard.organizations');
 });
 
+// Home
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/',  'show')->name('home');
+});
 
 //Notifications
 Route::controller(NotificationsController::class)->group(function () {
     Route::get('/notificacoes', 'show')->name('notifications');
+
     Route::get('notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen');
 
     //TODO: Colocar isto como API
@@ -54,86 +73,71 @@ Route::controller(NotificationsController::class)->group(function () {
     Route::patch('api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization');
 });
 
-//Events
-Route::controller(EventController::class)->group(function () {
-    Route::get('/evento/{id}', 'show')->name('event');
-    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join');
-    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave');
-    Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
-    Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser');
-
-    Route::get('/api/eventos/pesquisa', 'search')->name('events.search');
-
-    Route::delete('api/evento/{id}/apagar', 'ApiDelete'); // Needs to be refactored (We cant use both delete methods)
+Route::controller(ReportEventController::class)->group(function () {
+    Route::get('api/denuncias/evento', 'index');
+    Route::patch('api/denuncias/evento/{id}/resolvido', [ReportEventController::class, 'markAsResolved']);
 });
 
-//Edit Events
-Route::controller(EditEventController::class)->group(function () {
-    Route::get('/edit-event/{id}', 'show')->name('edit-event');
-    Route::get('/update-event/{id}', 'update')->name('update-event');
-    Route::put('/update-event/{id}', 'update');
+Route::controller(ReportCommentController::class)->group(function () {
+    Route::get('api/denuncias/comentarios', 'index');
+    Route::patch('api/denuncias/comentarios/{id}/resolvido', 'markAsResolved');
 });
 
 //My Events
 Route::controller(MyEventsController::class)->group(function () {
     Route::get('/meus-eventos', 'participating')->name('my-events');
-    Route::get('/filter-events/participating', 'participating')->name('participating');
-    Route::get('/filter-events/organizing', 'organizing')->name('organizing');
+
+    //TODO: Apagar isto... isto a fazer-se, faz-se com Javascript não deve ser uma pagina diferente
+    Route::get('/meus-eventos/participacao', 'participating')->name('participating');
+    Route::get('/meus-eventos/organizacao', 'organizing')->name('organizing');
 });
 
 //Create Events
 Route::controller(CreateEventController::class)->group(function () {
     Route::get('/criar-evento','show')->name('criar-evento');
-    Route::post('/submit-event','store') ->name('submit-event');
+    Route::post('/submeter-evento','store') ->name('submit-event');
+});
+
+//Edit Events
+Route::controller(EditEventController::class)->group(function () {
+    Route::get('/editar-evento/{id}', 'show')->name('edit-event');
+
+    Route::put('/atualizar-evento/{id}', 'update')->name('update-event'); // Should be a patch
+});
+
+//Events
+Route::controller(EventController::class)->group(function () {
+    Route::get('/evento/{id}', 'show')->name('event');
+    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join'); //Should be a post
+    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave'); //Should be a delete
+    Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete'); 
+    Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser'); 
+
+    Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
+
+    Route::delete('api/evento/{id}/apagar', 'ApiDelete'); // Needs to be refactored (We cant use both delete methods, either we use the api or php)
+});
+
+//Comments
+Route::controller(CommentController::class)->group(function () {
+    Route::get('api/comentarios', 'index');
+    Route::get('api/comentarios/{id}', 'show');
+    Route::delete('api/comentarios/{id}', 'destroy')->name('comment.delete');
+    Route::post('api/comentario/inserir', 'store')->name('comment.add');
 });
 
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization.show');
-    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
-    Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser');
-    Route::post('organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember');
+    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join'); //Should be a post
+    Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser'); 
+    Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //Should be a api delete
 
     // refactor later
-    Route::delete('api/organization/{id}', 'ApiDelete');
+    Route::delete('api/organizacao/{id}', 'ApiDelete');
 });
 
 //Search
 Route::controller(SearchController::class)->group(function () {
     Route::get('/pesquisa', 'show')->name('search');
 }); 
-
-
-Route::controller(CommentController::class)->group(function () {
-    Route::get('api/comments', 'index');
-    Route::get('api/comments/{id}', 'show');
-    Route::delete('api/comments/{id}', 'destroy')->name('comment.delete');
-    Route::post('comments/add', 'store')->name('comment.add');
-});
-
-
-Route::controller(ReportEventController::class)->group(function () {
-    Route::patch('api/reports/event/{id}/resolved', [ReportEventController::class, 'markAsResolved']);
-    Route::get('api/reports/event', 'index');
-});
-
-Route::controller(ReportCommentController::class)->group(function () {
-    Route::get('api/reports/comment', 'index');
-    Route::patch('api/reports/comment/{id}/resolved', 'markAsResolved');
-});
-
-Route::controller(UserController::class)->group(function() {
-    Route::delete('api/user/{id}', 'destroy');
-});
-
-// Authentication
-Route::controller(LoginController::class)->group(function () {
-    Route::get('/iniciar-sessao', 'showLoginForm')->name('login');
-    Route::post('/iniciar-sessao', 'authenticate');
-    Route::get('/terminar-sessao', 'logout')->name('logout');
-});
-
-Route::controller(RegisterController::class)->group(function () {
-    Route::get('/registar', 'showRegistrationForm')->name('register');
-    Route::post('/registar', 'register');
-});

@@ -15,7 +15,7 @@ function delete_comments() {
       const commentId = e.target.dataset.id;
       const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
-      fetch(`api/comments/${commentId}`, {
+      fetch(`api/comentarios/${commentId}`, {
         method: 'DELETE',
         headers: {
           'content-type': 'application/json',
