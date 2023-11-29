@@ -26,7 +26,7 @@ class OrganizationController extends Controller{
         return redirect()->route('notifications')->with('status', "Entraste com sucesso na organização {$organization->name}");
     }
 
-    public function ApiDelete(int $id) {
+    public function deleteOrg(int $id) {
         $org = Organization::find($id);
 
         if (!$org) {

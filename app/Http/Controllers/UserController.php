@@ -6,39 +6,7 @@ use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index() {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user) {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user) {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+class UserController extends Controller{
     public function destroy(int $id) {
         $user = User::find($id);
 
@@ -48,7 +16,7 @@ class UserController extends Controller
             ], 404);
         }
 
-        $this->authorize('delete', $user);
+        $this->authorize('delete', $user); //TODO: Deal with the 403 error
         $user->delete();
 
         return response()->json([

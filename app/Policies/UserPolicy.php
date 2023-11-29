@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Auth;
 
 
 class UserPolicy{
+    public function delete(User $user){
+        return Auth::check() && (Auth::user()->is_admin || Auth::user()->id == $user->id);
+    }
+
     public function showReports(){
         return Auth::check() && Auth::user()->is_admin;
     }

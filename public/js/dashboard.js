@@ -118,7 +118,7 @@ deleteUserButtons.forEach(button => {
   const userId = button.dataset.userId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/utilizador/${userId}`, {
+    fetch(`/api/utilizador/${userId}/apagar`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
@@ -147,7 +147,7 @@ deleteOrgButtons.forEach(button => {
   const orgId = button.dataset.orgId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/organizacao/${orgId}`, {
+    fetch(`/api/organizacao/${orgId}/apagar`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',

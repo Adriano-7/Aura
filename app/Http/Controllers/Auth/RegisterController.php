@@ -13,7 +13,7 @@ use App\Models\User;
 class RegisterController extends Controller
 {
     /**
-     * Display a login form.
+     * Display the register form.
      */
     public function showRegistrationForm() {
         if(Auth::check()) {
@@ -23,7 +23,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * Register a new user.
+     * Register the new user.
      */
     public function register(Request $request) {
         $request->validate([

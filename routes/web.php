@@ -46,7 +46,7 @@ Route::controller(RegisterController::class)->group(function () {
 
 //User API
 Route::controller(UserController::class)->group(function() {
-    Route::delete('api/utilizador/{id}', 'destroy');
+    Route::delete('api/utilizador/{id}/apagar', 'destroy');
 });
 
 //Dashboard
@@ -102,20 +102,20 @@ Route::controller(CreateEventController::class)->group(function () {
 Route::controller(EditEventController::class)->group(function () {
     Route::get('/editar-evento/{id}', 'show')->name('edit-event');
 
-    Route::put('/atualizar-evento/{id}', 'update')->name('update-event'); // Should be a patch
+    Route::put('/atualizar-evento/{id}', 'update')->name('update-event'); //TODO: Should be a patch
 });
 
 //Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/evento/{id}', 'show')->name('event');
-    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join'); //Should be a post
-    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave'); //Should be a delete
+    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join'); //TODO: Should be a post
+    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave'); //TODO: Should be a delete
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete'); 
     Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser'); 
 
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
 
-    Route::delete('api/evento/{id}/apagar', 'ApiDelete'); // Needs to be refactored (We cant use both delete methods, either we use the api or php)
+    Route::delete('api/evento/{id}/apagar', 'ApiDelete'); //TODO:  Needs to be refactored (We cant use both delete methods, either we use the api or php)
 });
 
 //Comments
@@ -129,12 +129,11 @@ Route::controller(CommentController::class)->group(function () {
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization.show');
-    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join'); //Should be a post
+    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join'); //TODO: Should be a post
     Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser'); 
-    Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //Should be a api delete
+    Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: Should be a api delete
 
-    // refactor later
-    Route::delete('api/organizacao/{id}', 'ApiDelete');
+    Route::delete('api/organizacao/{id}/apagar', 'deleteOrg');
 });
 
 //Search
