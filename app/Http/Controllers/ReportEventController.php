@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\ReportEvent;
@@ -46,3 +47,5 @@ class ReportEventController extends Controller
         ]);
     }
 }
+
+

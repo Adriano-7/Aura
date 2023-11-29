@@ -63,7 +63,7 @@ deleteEventButtons.forEach(button => {
   const eventId = button.dataset.eventId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/event/${eventId}`, {
+    fetch(`/api/evento/${eventId}/apagar`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',

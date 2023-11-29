@@ -56,9 +56,10 @@ class CommentController extends Controller{
         $this->authorize('delete', $comment);
         $comment->delete();
 
-        return redirect(URL::previous() . '#comments')->with('success', 'Comment added successfully');  
+        return response()->json([
+            'message' => 'Comment deleted successfully'
+        ]);
     }
-
 
     public function store(Request $request)
     {

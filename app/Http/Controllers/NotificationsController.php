@@ -20,19 +20,6 @@ class NotificationsController extends Controller{
         ]);
     }
 
-    public function delete(Request $request){
-        if(!Auth::check()){
-            abort(403, 'You must be logged in to delete a notification');
-        }
-
-        $notification = Notification::findOrFail($request->id);
-        $this->authorize('delete', $notification);
-
-        $notification->delete();
-        
-        return redirect()->route('notifications');
-    }
-
     public function markAsSeen(Request $request){
         if(!Auth::check()){
             abort(403, 'You must be logged in to mark a notification as seen');
@@ -45,6 +32,21 @@ class NotificationsController extends Controller{
         $notification->save();
 
         return redirect($notification->getLink());
+    }
+
+    //TODO: Transform the methods below into api endpoints
+
+    public function delete(Request $request){
+        if(!Auth::check()){
+            abort(403, 'You must be logged in to delete a notification');
+        }
+
+        $notification = Notification::findOrFail($request->id);
+        $this->authorize('delete', $notification);
+
+        $notification->delete();
+        
+        return redirect()->route('notifications');
     }
 
     public function acceptInvitation(Request $request){
