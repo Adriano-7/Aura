@@ -163,13 +163,11 @@ CREATE TABLE notifications (
 
 
 -- Performance Indexes
-/*
 -- Index 01
-CREATE INDEX notf_inv_event_user ON notf_inv_event USING hash (receiver_id);
+CREATE INDEX notification_user_indx ON notifications USING hash (receiver_id);
 
 -- Index 02
-CREATE INDEX notf_inv_event_date ON notf_inv_event USING btree (date);
-*/
+CREATE INDEX notification_date_idx ON notifications USING btree (date);
 
 -- Index 03
 CREATE INDEX event_start_date ON events USING btree (start_date);
