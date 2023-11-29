@@ -17,7 +17,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm() {
         if(Auth::check()) {
-            return redirect('/');
+            return redirect()->route('home');
         }
         return view('auth.register');
     }
@@ -42,6 +42,6 @@ class RegisterController extends Controller
         Auth::attempt($credentials);
         $request->session()->regenerate();
         return redirect()->route('home')
-            ->withSuccess('Foste registado com sucesso!');
+            ->withSuccess('Registado com sucesso!');
     }
 }
