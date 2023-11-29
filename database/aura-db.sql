@@ -5,20 +5,11 @@ SET client_encoding TO 'UTF8';
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
+    is_admin BOOLEAN NOT NULL DEFAULT FALSE,
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     photo TEXT default 'default.jpeg'
-);
-
-DROP TABLE IF EXISTS clients CASCADE;
-CREATE TABLE clients (
-    id INTEGER PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS administrators CASCADE;
-CREATE TABLE administrators (
-    id INTEGER PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS organizations CASCADE;
@@ -50,7 +41,7 @@ CREATE TABLE events (
 
 DROP TABLE IF EXISTS participants CASCADE;
 CREATE TABLE participants (
-    user_id INTEGER REFERENCES clients (id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
     event_id INTEGER REFERENCES events (id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, event_id)
 );
@@ -84,7 +75,7 @@ CREATE TABLE files (
 DROP TABLE IF EXISTS comments CASCADE;
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
-    author_id INTEGER NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
     text TEXT NOT NULL,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
     vote_balance INT NOT NULL DEFAULT 0,
@@ -338,7 +329,7 @@ BEGIN
     IF NOT EXISTS (
         SELECT * 
         FROM participants p
-        WHERE p.user_id = NEW.author_id AND p.event_id = NEW.event_id
+        WHERE p.user_id = NEW.user_id AND p.event_id = NEW.event_id
     )
     THEN
         RAISE EXCEPTION 'The comment author does not participate in the event.';
@@ -427,7 +418,7 @@ BEGIN
         THEN
             RAISE EXCEPTION 'Event invitation notification has extra fields';
         ELSEIF
-            EXISTS (SELECT * FROM administrators a WHERE a.id = NEW.user_emitter_id)
+            EXISTS (SELECT * FROM users a WHERE a.is_admin = TRUE AND a.id = NEW.user_emitter_id )
         THEN
             RAISE EXCEPTION 'Event invitation notification cannot be sent by an admin';
         END IF;
@@ -482,53 +473,73 @@ BEFORE INSERT ON notifications
 FOR EACH ROW
 EXECUTE FUNCTION check_notification_insert();
 
-
-INSERT INTO users (name, email, password, photo) VALUES
-    ('João Silva', 'admin@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'joao_silva.jpeg'),
-    ('Maria Santos', 'maria@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'maria_santos.jpeg'),
-    ('António Pereira', 'antonio@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'antonio_pereira.jpeg'),
-    ('Isabel Alves', 'isabel@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'isabel_alves.jpeg'),
-    ('Francisco Rodrigues', 'francisco@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'francisco_rodrigues.jpeg'),
-    ('Ana Carvalho', 'ana@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'ana_carvalho.jpeg'),
-    ('Manuel Gomes', 'manuel@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'manuel_gomes.jpeg'),
-    ('Sofia Fernandes', 'sofia@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'sofia_fernandes.jpeg'),
-    ('Luís Sousa', 'luis@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'luis_sousa.jpeg'),
-    ('Margarida Martins', 'margarida@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'margarida_martins.jpeg'),
-    ('Carlos Costa', 'carlos@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'carlos_costa.jpeg'),
-    ('Helena Oliveira', 'helena@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'helena_oliveira.jpeg'),
-    ('Rui Torres', 'rui@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'rui_torres.jpeg'),
-    ('Beatriz Pereira', 'beatriz@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'beatriz_pereira.jpeg'),
-    ('José Ferreira', 'jose@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'jose_ferreira.jpeg'),
-    ('Lúcia Santos', 'lucia@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'lucia_santos.jpeg'),
-    ('Pedro Lopes', 'pedro@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'pedro_lopes.jpeg'),
-    ('Teresa Rodrigues', 'teresa@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'teresa_rodrigues.jpeg'),
-    ('Paulo Silva', 'paulo@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'paulo_silva.jpeg'),
-    ('Catarina Santos', 'catarina@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'catarina_santos.jpeg');
+/*
+CREATE OR REPLACE FUNCTION check_user_admin() RETURNS TRIGGER AS $$
+BEGIN
+   IF (NEW.user_id IN (SELECT id FROM users WHERE is_admin = false)) THEN
+      RAISE EXCEPTION 'User needs to be an admin';
+   END IF;
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 
-INSERT INTO administrators (id) VALUES
-    ('1'),
-    ('2');
+CREATE TRIGGER check_admin_before_insert
+BEFORE INSERT ON 
+FOR EACH ROW EXECUTE PROCEDURE check_user_admin();
+*/
 
-INSERT INTO clients (id) VALUES
-    ('3'),
-    ('4'),
-    ('5'),
-    ('6'),
-    ('7'),
-    ('8'),
-    ('9'),
-    ('10'),
-    ('11'),
-    ('12'),
-    ('13'),
-    ('14'),
-    ('15'),
-    ('16'),
-    ('17'),
-    ('18'),
-    ('19'),
-    ('20');
+CREATE OR REPLACE FUNCTION check_user_client() RETURNS TRIGGER AS $$
+BEGIN
+   IF (NEW.user_id IN (SELECT id FROM users WHERE is_admin = true)) THEN
+      RAISE EXCEPTION 'User cant be an admin';
+   END IF;
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS check_client_before_insert on participants CASCADE;
+CREATE TRIGGER check_client_before_insert
+BEFORE INSERT ON participants
+FOR EACH ROW EXECUTE PROCEDURE check_user_client();
+
+DROP TRIGGER IF EXISTS check_client_before_insert on organizers CASCADE;
+CREATE TRIGGER check_client_before_insert
+BEFORE INSERT ON organizers
+FOR EACH ROW EXECUTE PROCEDURE check_user_client();
+
+DROP TRIGGER IF EXISTS check_client_before_insert on comments CASCADE;
+CREATE TRIGGER check_client_before_insert
+BEFORE INSERT ON comments
+FOR EACH ROW EXECUTE PROCEDURE check_user_client();
+
+DROP TRIGGER IF EXISTS check_client_before_insert on vote_comments CASCADE;
+CREATE TRIGGER check_client_before_insert
+BEFORE INSERT ON vote_comments
+FOR EACH ROW EXECUTE PROCEDURE check_user_client();
+
+
+INSERT INTO users (is_admin, name, email, password, photo) VALUES
+    (TRUE,'João Silva', 'admin@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'joao_silva.jpeg'),
+    (TRUE,'Maria Santos', 'maria@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'maria_santos.jpeg'),
+    (FALSE,'António Pereira', 'antonio@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'antonio_pereira.jpeg'),
+    (FALSE,'Isabel Alves', 'isabel@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'isabel_alves.jpeg'),
+    (FALSE,'Francisco Rodrigues', 'francisco@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'francisco_rodrigues.jpeg'),
+    (FALSE,'Ana Carvalho', 'ana@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'ana_carvalho.jpeg'),
+    (FALSE,'Manuel Gomes', 'manuel@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'manuel_gomes.jpeg'),
+    (FALSE,'Sofia Fernandes', 'sofia@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'sofia_fernandes.jpeg'),
+    (FALSE,'Luís Sousa', 'luis@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'luis_sousa.jpeg'),
+    (FALSE,'Margarida Martins', 'margarida@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'margarida_martins.jpeg'),
+    (FALSE,'Carlos Costa', 'carlos@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'carlos_costa.jpeg'),
+    (FALSE,'Helena Oliveira', 'helena@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'helena_oliveira.jpeg'),
+    (FALSE,'Rui Torres', 'rui@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'rui_torres.jpeg'),
+    (FALSE,'Beatriz Pereira', 'beatriz@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'beatriz_pereira.jpeg'),
+    (FALSE,'José Ferreira', 'jose@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'jose_ferreira.jpeg'),
+    (FALSE,'Lúcia Santos', 'lucia@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'lucia_santos.jpeg'),
+    (FALSE,'Pedro Lopes', 'pedro@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'pedro_lopes.jpeg'),
+    (FALSE,'Teresa Rodrigues', 'teresa@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'teresa_rodrigues.jpeg'),
+    (FALSE,'Paulo Silva', 'paulo@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'paulo_silva.jpeg'),
+    (FALSE,'Catarina Santos', 'catarina@example.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'catarina_santos.jpeg');
 
 INSERT INTO organizations (id, name, photo, approved, description) VALUES
     (1, 'Everything is new', 'everything-is-new.png', TRUE, 'A Everything is New é uma promotora de eventos portuguesa, fundada em 2005 por Álvaro Covões, Luís Montez e Vasco Sacramento. A promotora é responsável pela organização de eventos como o NOS Alive, o NOS Primavera Sound, o EDP Cool Jazz, o Super Bock Super Rock, o Sumol Summer Fest, o Vodafone Mexefest, o ID No Limits, o Brunch Electronik, o Jameson Urban Routes, o Super Bock em Stock, o Festival F, o Festival Iminente, o Festival Fado, o Festival Fuso, o Festival Silêncio, o Festival Músicas do Mundo, o Festival de Jazz de Cascais'),
@@ -634,7 +645,7 @@ INSERT INTO tag_event (tag_id, event_id) VALUES
     ('2', '7'),
     ('3', '8');
 
-INSERT INTO comments (id, author_id, text, event_id) VALUES
+INSERT INTO comments (id, user_id, text, event_id) VALUES
     ('1', '4', 'Vai ser um concerto incrível!', '1'),
     ('2', '5', 'Mal posso esperar!', '2'),
     ('3', '6', 'Certamente será um concerto fabuloso!', '3'),
@@ -645,7 +656,7 @@ INSERT INTO comments (id, author_id, text, event_id) VALUES
     ('8', '11', 'Só quero que chegue este dia!', '8');
 
 -- Just to test comments (add more variety to comments later)
-INSERT INTO comments (id, author_id, text, event_id, date) VALUES
+INSERT INTO comments (id, user_id, text, event_id, date) VALUES
     ('9', '5', 'Só quero que chegue este dia!', '2', '2023-12-08');
 
 INSERT INTO vote_comments (comment_id, user_id, is_up) VALUES

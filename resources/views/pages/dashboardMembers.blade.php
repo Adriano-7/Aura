@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="col-3 dashboard-text-content">
-                        @if ($member->isAdmin())
+                        @if ($member->is_admin)
                             <p>Administrador</p>
                         @else
                             <p>Membro</p>

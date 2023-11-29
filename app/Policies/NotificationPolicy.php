@@ -26,6 +26,6 @@ class NotificationPolicy{
      * Determine whether the user can approve the organization.
      */
     public function approve_org(User $user, Notification $notification): bool{
-        return ($user->isAdmin() && $notification->type === 'organization_registration_request');
+        return ($user->is_admin && $notification->type === 'organization_registration_request');
     }
 }

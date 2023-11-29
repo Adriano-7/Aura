@@ -71,7 +71,7 @@ class CommentController extends Controller{
         $this->authorize('store', [Comment::class, $event, $request->user()]);
 
         $comment = new Comment;
-        $comment->author_id = Auth::user()->id;
+        $comment->user_id = Auth::user()->id;
         $comment->text = $request->text;
         $comment->event_id = $request->event_id;
         $comment->save();

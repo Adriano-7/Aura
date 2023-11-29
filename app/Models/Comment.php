@@ -18,7 +18,7 @@ class Comment extends Model
     // not all are fillable (change later)
     protected $fillable = [
         'id',
-        'author_id',
+        'user_id',
         'text',
         'date',
         'vote_balance',
@@ -41,7 +41,7 @@ class Comment extends Model
     }
 
     public function author() {
-        return $this->belongsTo(User::class, 'author_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function file() {

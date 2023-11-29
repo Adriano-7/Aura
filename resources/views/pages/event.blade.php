@@ -66,7 +66,7 @@
                     </div>
                     <div id="third-column">
                         <span id="numParticipants"> {{ $event->participants->count() }} participantes</span>
-                        @if (Auth::check() && !Auth::user()->isAdmin())
+                        @if (Auth::check() && !Auth::user()->is_admin)
                             @if ($user->participatesInEvent($event))
                                 <button id="leave-event" onclick="leaveEvent(<?php echo json_encode($event->id); ?>)">Sair do evento</button>
                             @else
@@ -143,7 +143,7 @@
                 <h2>Comentários ({{$comments->count()}})</h2>
             </div>
             <div class="card">
-                @if(Auth::check() && !Auth::user()->isAdmin() && Auth::user()->participatesInEvent($event))
+                @if(Auth::check() && !Auth::user()->is_admin && Auth::user()->participatesInEvent($event))
                     <div id="add-comment-row" class="comment-row">
                         <img class="profile-pic" src="{{asset('assets/profile/' . $user->photo)}}">
                         <form id="add-comment" method="POST" action="{{route('comment.add')}}" enctype="multipart/form-data">
@@ -170,14 +170,14 @@
                                 <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
                                 @if(Auth::check())
                                 <!--
-                                    @if(Auth::user()->id == $comment->author_id)
+                                    @if(Auth::user()->id == $comment->user_id)
                                         <button class="icon-button">
                                             <img class="icon" src="{{asset('assets/edit-icon.svg')}}">
                                         </button>
                                     @endif
                                 -->
                                     
-                                    @if(Auth::user()->id == $comment->author->id || Auth::user()->isAdmin())
+                                    @if(Auth::user()->id == $comment->author->id || Auth::user()->is_admin)
                                         <form action="{{ route('comment.delete', $comment->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')

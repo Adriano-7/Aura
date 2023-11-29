@@ -24,7 +24,7 @@
     @if (!$organization->approved)
         <div class="alert alert-warning d-flex align-items-center" role="alert">
             <div>Esta organização ainda não foi aprovada.</div>
-            @if (Auth::check() && Auth::user()->isAdmin())
+            @if (Auth::check() && Auth::user()->is_admin)
                 <form id="approveForm" action="{{ route('notification.approveOrganization', ['id' => $organization->id]) }}"
                     method="POST" class="ml-auto">
                     @csrf
@@ -39,7 +39,7 @@
         <div class="container">
             <div id="navbarNav">
                 <ul class="navbar-nav">
-                    @if (Auth::check() && (Auth::user()->isAdmin() || $organization->organizers->contains(Auth::user()->id)))
+                    @if (Auth::check() && (Auth::user()->is_admin || $organization->organizers->contains(Auth::user()->id)))
                         <li class="nav-item">
                             <a class="nav-link active" href="#membros">Membros</a>
                         </li>
@@ -60,7 +60,7 @@
         </div>
     </nav>
 
-    @if (Auth::check() && (Auth::user()->isAdmin() || $organization->organizers->contains(Auth::user()->id)))
+    @if (Auth::check() && (Auth::user()->is_admin || $organization->organizers->contains(Auth::user()->id)))
         <div class="container members-container" id="membros">
             <div class="row">
                 <div class="col-12 d-flex justify-content-between align-items-center mb-4">
@@ -179,7 +179,7 @@
                             <h2>{{ $event->name }}</h2>
                             <h3>{{ $event->city }} • {{ $event->venue }}</h3>
                         </div>
-                        @if (Auth::check() && !Auth::user()->isAdmin())
+                        @if (Auth::check() && !Auth::user()->is_admin)
                             <div class="col-md-2 ml-auto">
                                 <button type="button" id="join-event">Aderir ao Evento</button>
                             </div>

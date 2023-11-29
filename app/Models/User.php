@@ -25,6 +25,7 @@ class User extends Authenticatable{
      */
     protected $fillable = [
         'id',
+        'is_admin',
         'name',
         'email',
         'password',
@@ -47,12 +48,9 @@ class User extends Authenticatable{
      * @var array<string, string>
      */
     protected $casts = [
+        'is_admin' => 'boolean',
         'password' => 'hashed',
     ];
-
-    public function isAdmin() {
-        return $this->hasOne('App\Models\Administrator', 'id')->exists();
-    }
 
     public function participatesInEvent(Event $event) {
         return $event->participants()->get()->contains($this);

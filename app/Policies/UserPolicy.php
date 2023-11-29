@@ -39,7 +39,7 @@ class UserPolicy
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, User $model): bool {
-        return ($user->id === $model->id || $user->isAdmin());
+        return ($user->id === $model->id || $user->is_admin);
     }
 
     /**

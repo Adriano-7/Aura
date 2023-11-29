@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
     DROP TABLE IF EXISTS comments CASCADE;
     CREATE TABLE comments (
         id SERIAL PRIMARY KEY,
-        author_id INTEGER NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
+        user_id INTEGER NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
         text TEXT NOT NULL,
         date TIMESTAMP NOT NULL DEFAULT current_timestamp,
         vote_balance INT NOT NULL DEFAULT 0,

@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarsExample05">
             @if(!request()->routeIs('search'))
             <form id="search-form" class="form-inline my-2 my-lg-0" action="{{ route('search') }}"method="get">
-                <input id="search_bar" class="mr-sm-2 looged_out" name="query" type="text" placeholder="Pesquisa por evento"  style="background-image: url({{ asset('assets/search-Icon.svg') }});">
+                <input id="search_bar" class="mr-sm-2 looged_out" name="query" type="text" placeholder="Pesquisa por evento"  style="background-image: url({{ asset('assets/search-icon.svg') }});">
             </form>
             @endif
 

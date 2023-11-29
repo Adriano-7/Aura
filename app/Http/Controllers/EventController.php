@@ -112,7 +112,7 @@ class EventController extends Controller
 
         if ($user == null) {
             return redirect()->back()->with('status', 'Utilizador não encontrado!');
-        } elseif ($user->id == Auth::user()->id || $user->isOrganizer($event->organization) || $user->isAdmin()) {
+        } elseif ($user->id == Auth::user()->id || $user->isOrganizer($event->organization) || $user->is_admin) {
             return redirect()->back()->with('status', 'Utilizador não pode ser convidado!');
         }
 
