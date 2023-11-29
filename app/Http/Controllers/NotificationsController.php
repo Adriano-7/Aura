@@ -12,6 +12,8 @@ use App\Models\Organization;
 
 class NotificationsController extends Controller{
     public function show(): View{
+        $this->authorize('view', Notification::class);
+
         return view('pages.notifications', [
             'user' => Auth::user(),
             'notifications' => Notification::where('receiver_id', Auth::user()->id)->orderBy('date', 'desc')->get()
@@ -19,17 +21,25 @@ class NotificationsController extends Controller{
     }
 
     public function delete(Request $request){
+        if(!Auth::check()){
+            abort(403, 'You must be logged in to delete a notification');
+        }
+
         $notification = Notification::findOrFail($request->id);
         $this->authorize('delete', $notification);
 
         $notification->delete();
         
-        return redirect()->route('notifications')->with('status', 'Notification deleted successfully!');
+        return redirect()->route('notifications');
     }
 
     public function markAsSeen(Request $request){
+        if(!Auth::check()){
+            abort(403, 'You must be logged in to mark a notification as seen');
+        }
+
         $notification = Notification::find($request->id);
-        $this->authorize('view', $notification);
+        $this->authorize('markAsSeen', $notification);
 
         $notification->seen = true;
         $notification->save();
@@ -38,6 +48,10 @@ class NotificationsController extends Controller{
     }
 
     public function acceptInvitation(Request $request){
+        if(!Auth::check()){
+            abort(403, 'You must be logged in to accept an invitation');
+        }
+
         $notification = Notification::find($request->id);
 
         if($notification->type == 'event_invitation'){
@@ -62,6 +76,10 @@ class NotificationsController extends Controller{
     }
     
     public function approveOrganization(int $organizationId) {
+        if(!Auth::check()){
+            abort(403, 'You must be logged in to approve an organization');
+        }
+
         $organization = Organization::findOrFail($organizationId);
         $notifications = $organization->organizationRegistrationRequests;
 

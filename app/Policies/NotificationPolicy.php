@@ -4,27 +4,22 @@ namespace App\Policies;
 
 use App\Models\Notification;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationPolicy{
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Notification $notification): bool{
-        return $user->id === $notification->receiver_id;
+
+    public function view(User $user): bool{
+        return Auth::check();
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Notification $notification): bool{
-        return $user->id === $notification->receiver_id;
-        
+        return Auth::check() && $user->id === $notification->receiver_id;     
     }
 
-    /**
-     * Determine whether the user can approve the organization.
-     */
+    public function markAsSeen(User $user, Notification $notification): bool{
+        return Auth::check() && $user->id === $notification->receiver_id;
+    }
+
     public function approve_org(User $user, Notification $notification): bool{
         return ($user->is_admin && $notification->type === 'organization_registration_request');
     }

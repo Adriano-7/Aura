@@ -36,23 +36,20 @@ Route::controller(HomeController::class)->group(function () {
 });
 
 //Dashboard
-Route::middleware(['admin'])->group(function () {    
-    Route::get('/dashboard/denuncias', [DashboardController::class, 'showReports'])->name('dashboard.reports');
-    Route::get('/dashboard/membros', [DashboardController::class, 'showMembers'])->name('dashboard.members');
-    Route::get('/dashboard/organizacoes', [DashboardController::class, 'showOrganizations'])->name('dashboard.organizations');
+Route::controller(DashboardController::class)->group(function () {
+    Route::get('/dashboard/denuncias', 'showReports')->name('dashboard.reports');
+    Route::get('/dashboard/membros', 'showUsers')->name('dashboard.members');
+    Route::get('/dashboard/organizacoes', 'showOrganizations')->name('dashboard.organizations');
 });
 
+
 //Notifications
-Route::middleware(['auth'])->group(function () {
-    Route::get('/notificacoes', [NotificationsController::class, 'show'])->name('notifications');
-
-    Route::delete('/notificacoes/{id}/apagar', [NotificationsController::class, 'delete'])->name('notification.delete');
-    Route::get('/notificacoes/{id}/marcar-como-vista', [NotificationsController::class, 'markAsSeen'])->name('notification.markAsSeen');
-    Route::patch('/notificacoes/{id}/aceitar-convite', [NotificationsController::class, 'acceptInvitation'])->name('notification.acceptInvitation');
-
-    Route::middleware(['admin'])->group(function () {
-        Route::patch('/notificacoes/{id}/aprovar-organizacao', [NotificationsController::class, 'approveOrganization'])->name('notification.approveOrganization');
-    });
+Route::controller(NotificationsController::class)->group(function () {
+    Route::get('/notificacoes', 'show')->name('notifications');
+    Route::delete('/notificacoes/{id}/apagar', 'delete')->name('notification.delete');
+    Route::get('/notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen');
+    Route::patch('/notificacoes/{id}/aceitar-convite', 'acceptInvitation')->name('notification.acceptInvitation');
+    Route::patch('/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization');
 });
 
 //Events
