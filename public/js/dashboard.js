@@ -1,18 +1,14 @@
 const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
-/* Reports */
-
+/* Comment Reports */
 const deleteCommentButtons = document.querySelectorAll('.delete-comment');
 const ignoreCommentButtons = document.querySelectorAll('.ignore-comment');
-
-const deleteEventButtons = document.querySelectorAll('.delete-event');
-const ignoreEventButtons = document.querySelectorAll('.ignore-event');
 
 deleteCommentButtons.forEach(button => {
   const commentId = button.dataset.commentId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/comentarios/${commentId}`, {
+    fetch(`/api/comentarios/${commentId}/apagar`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
@@ -37,7 +33,7 @@ ignoreCommentButtons.forEach(button => {
   const reportId = button.dataset.reportId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/denuncias/comentarios/${reportId}/resolvido`, {
+    fetch(`/api/denuncias/comentarios/${reportId}/marcar-resolvido`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',
@@ -58,6 +54,11 @@ ignoreCommentButtons.forEach(button => {
       .catch(err => console.log(err));
   });
 });
+
+
+/* Event Reports */
+const deleteEventButtons = document.querySelectorAll('.delete-event');
+const ignoreEventButtons = document.querySelectorAll('.ignore-event');
 
 deleteEventButtons.forEach(button => {
   const eventId = button.dataset.eventId;
@@ -88,7 +89,7 @@ ignoreEventButtons.forEach(button => {
   const reportId = button.dataset.reportId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/denuncias/evento/${reportId}/resolvido`, {
+    fetch(`/api/denuncias/evento/${reportId}/marcar-resolvido`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',

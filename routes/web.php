@@ -73,14 +73,16 @@ Route::controller(NotificationsController::class)->group(function () {
     Route::patch('api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization');
 });
 
-Route::controller(ReportEventController::class)->group(function () {
-    Route::get('api/denuncias/evento', 'index');
-    Route::patch('api/denuncias/evento/{id}/resolvido', [ReportEventController::class, 'markAsResolved']);
-});
-
+//Comment Reports
 Route::controller(ReportCommentController::class)->group(function () {
     Route::get('api/denuncias/comentarios', 'index');
-    Route::patch('api/denuncias/comentarios/{id}/resolvido', 'markAsResolved');
+    Route::patch('api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
+});
+
+//Event Reports
+Route::controller(ReportEventController::class)->group(function () {
+    Route::get('api/denuncias/evento', 'index');
+    Route::patch('api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
 });
 
 //My Events
@@ -108,21 +110,20 @@ Route::controller(EditEventController::class)->group(function () {
 //Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/evento/{id}', 'show')->name('event');
-    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join'); //TODO: Should be a post
-    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave'); //TODO: Should be a delete
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete'); 
     Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser'); 
 
-    Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
-
+    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join'); //TODO: Should be a post
+    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave'); //TODO: Should be a delete
     Route::delete('api/evento/{id}/apagar', 'ApiDelete'); //TODO:  Needs to be refactored (We cant use both delete methods, either we use the api or php)
+    Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
 });
 
 //Comments
 Route::controller(CommentController::class)->group(function () {
     Route::get('api/comentarios', 'index');
     Route::get('api/comentarios/{id}', 'show');
-    Route::delete('api/comentarios/{id}', 'destroy')->name('comment.delete');
+    Route::delete('api/comentarios/{id}/apagar', 'destroy')->name('comment.delete');
     Route::post('api/comentario/inserir', 'store')->name('comment.add');
 });
 
