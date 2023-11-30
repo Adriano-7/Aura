@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationPolicy{
 
-    public function view(User $user): bool{
-        return Auth::check();
-    }
-
     public function delete(User $user, Notification $notification): bool{
         return Auth::check() && $user->id === $notification->receiver_id;     
     }

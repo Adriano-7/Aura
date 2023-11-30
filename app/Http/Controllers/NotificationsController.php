@@ -12,7 +12,9 @@ use App\Models\Organization;
 
 class NotificationsController extends Controller{
     public function show(): View{
-        $this->authorize('view', Notification::class);
+        if(!Auth::check()){
+            abort(404);
+        }
 
         return view('pages.notifications', [
             'user' => Auth::user(),
@@ -22,7 +24,7 @@ class NotificationsController extends Controller{
 
     public function markAsSeen(Request $request){
         if(!Auth::check()){
-            abort(403, 'You must be logged in to mark a notification as seen');
+            abort(404);
         }
 
         $notification = Notification::find($request->id);
@@ -38,7 +40,7 @@ class NotificationsController extends Controller{
 
     public function delete(Request $request){
         if(!Auth::check()){
-            abort(403, 'You must be logged in to delete a notification');
+            abort(404);
         }
 
         $notification = Notification::findOrFail($request->id);
@@ -51,7 +53,7 @@ class NotificationsController extends Controller{
 
     public function acceptInvitation(Request $request){
         if(!Auth::check()){
-            abort(403, 'You must be logged in to accept an invitation');
+            abort(404);
         }
 
         $notification = Notification::find($request->id);
@@ -79,7 +81,7 @@ class NotificationsController extends Controller{
     
     public function approveOrganization(int $organizationId) {
         if(!Auth::check()){
-            abort(403, 'You must be logged in to approve an organization');
+            abort(404);
         }
 
         $organization = Organization::findOrFail($organizationId);

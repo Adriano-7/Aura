@@ -13,6 +13,10 @@ use App\Models\Event;
 
 class MyEventsController extends Controller{
     public function show(): View{
+        if(!Auth::check()){
+            abort(404);
+        }
+
         $orgEvents = Event::join('organizers', 'events.organization_id', '=', 'organizers.organization_id')
                     ->where('organizers.user_id', Auth::user()->id)
                     ->select('events.*')

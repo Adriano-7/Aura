@@ -26,7 +26,7 @@ class EventController extends Controller
     public function joinEvent($id)
     {
         $event = Event::find($id);
-        $this->authorize('leave', $event);
+        $this->authorize('join', $event);
         $user = Auth::user();
         $event->participants()->attach($user->id);
         return response()->json(['status' => 'success']);
