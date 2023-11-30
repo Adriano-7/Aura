@@ -46,7 +46,7 @@ class EventController extends Controller
         $this->authorize('delete', $event);
         $event->delete();
 
-        return redirect()->route('organizing')->with('status', "Evento {$event->name} removido com sucesso.");
+        return redirect()->route('my-events')->with('status', "Evento {$event->name} removido com sucesso.");
     }
 
     public function inviteUser(Request $request)

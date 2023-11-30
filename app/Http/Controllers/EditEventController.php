@@ -72,6 +72,6 @@ class EditEventController extends Controller{
 
         
 
-        return redirect()->route('organizing')->with('status', "Evento alterado com sucesso.");
+        return redirect()->route('my-events')->with('status', "Evento alterado com sucesso.");
     }
 }

@@ -87,11 +87,7 @@ Route::controller(ReportEventController::class)->group(function () {
 
 //My Events
 Route::controller(MyEventsController::class)->group(function () {
-    Route::get('/meus-eventos', 'participating')->name('my-events');
-
-    //TODO: Apagar isto... isto a fazer-se, faz-se com Javascript não deve ser uma pagina diferente
-    Route::get('/meus-eventos/participacao', 'participating')->name('participating');
-    Route::get('/meus-eventos/organizacao', 'organizing')->name('organizing');
+    Route::get('/meus-eventos', 'show')->name('my-events');
 });
 
 //Create Events
