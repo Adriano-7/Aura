@@ -427,7 +427,7 @@ BEGIN
         THEN
             RAISE EXCEPTION 'Event edit notification missing fields';
         ELSIF
-            NEW.user_emitter_id IS NULL 
+            NEW.user_emitter_id IS NOT NULL 
             OR NEW.organization_id IS NOT NULL 
         THEN
             RAISE EXCEPTION 'Event edit notification has extra fields';
