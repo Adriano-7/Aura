@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\View\View;
 
-class LoginController extends Controller
-{
+class LoginController extends Controller{
 
     /**
      * Display a login form.
@@ -19,7 +18,7 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if(Auth::check()) {
-            return redirect('/');
+            return redirect()->route('home');
         }
         return view('auth.login');
 
@@ -37,12 +36,13 @@ class LoginController extends Controller
  
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+
+            return redirect()->route('home')->withSuccess('Autenticado com sucesso.');
         }
  
         return back()->withErrors([
-            'email' => 'Credenciais inválidas.',
-        ])->onlyInput('email');
+            'login_error' => 'Credenciais inválidas.',
+        ])->withInput();
     }
 
     /**
@@ -53,7 +53,6 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('home')
-            ->withSuccess('Terminou a sessão com sucesso.');
+        return redirect()->route('home')->withSuccess('Terminou a sessão com sucesso.');
     } 
 }

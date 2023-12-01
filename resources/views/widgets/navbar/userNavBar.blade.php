@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('home') }}"> <img src="{{ asset('storage/AuraLogo.svg') }}"> </a>
+        <a class="navbar-brand" href="{{ route('home') }}"> <img src="{{ asset('assets/AuraLogo.svg') }}"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05"
             aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -27,7 +27,7 @@
                 @if(!request()->routeIs('search'))
                 <form id="search-form" class="form-inline my-2 my-lg-0 looged_in" action="{{ route('search') }}"method="get">
                     <input id="search_bar" class="mr-sm-2 looged_in" name="query" type="text" placeholder="Pesquisa por evento"
-                        style="background-image: url(http://127.0.0.1:8000/storage/search-Icon.svg);">
+                        style="background-image: url(http://127.0.0.1:8000/assets/search-icon.svg);">
                 </form>
                 @endif
 
@@ -37,7 +37,7 @@
                 <li class="nav-item dropdown ">
                     <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        <img src="{{ asset('storage/profile/' . $user->photo) }}" class="rounded-circle">
+                        <img src="{{ asset('assets/profile/' . $user->photo) }}" class="rounded-circle">
                         <span class="navbar-text dropdown-toggle">{{ $user->name }}</span>
                     </a>
 

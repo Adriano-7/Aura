@@ -13,17 +13,17 @@ use App\Models\User;
 class RegisterController extends Controller
 {
     /**
-     * Display a login form.
+     * Display the register form.
      */
     public function showRegistrationForm() {
         if(Auth::check()) {
-            return redirect('/');
+            return redirect()->route('home');
         }
         return view('auth.register');
     }
 
     /**
-     * Register a new user.
+     * Register the new user.
      */
     public function register(Request $request) {
         $request->validate([
@@ -42,6 +42,6 @@ class RegisterController extends Controller
         Auth::attempt($credentials);
         $request->session()->regenerate();
         return redirect()->route('home')
-            ->withSuccess('Foste registado com sucesso!');
+            ->withSuccess('Registado com sucesso!');
     }
 }

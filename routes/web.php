@@ -30,117 +30,110 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
+//Login
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/iniciar-sessao', 'showLoginForm')->name('login');
+    Route::post('/iniciar-sessao', 'authenticate');
+
+    Route::get('/terminar-sessao', 'logout')->name('logout');
+});
+
+//Register
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('/registar', 'showRegistrationForm')->name('register');
+    Route::post('/registar', 'register');
+});
+
+//User API
+Route::controller(UserController::class)->group(function() {
+    Route::delete('api/utilizador/{id}/apagar', 'destroy');
+});
+
+//Dashboard
+Route::controller(DashboardController::class)->group(function () {
+    Route::get('/dashboard/denuncias', 'showReports')->name('dashboard.reports');
+    Route::get('/dashboard/membros', 'showUsers')->name('dashboard.members');
+    Route::get('/dashboard/organizacoes', 'showOrganizations')->name('dashboard.organizations');
+});
+
 // Home
 Route::controller(HomeController::class)->group(function () {
     Route::get('/',  'show')->name('home');
 });
 
-//Dashboard
-Route::middleware(['admin'])->group(function () {    
-    Route::get('/dashboard/denuncias', [DashboardController::class, 'showReports'])->name('dashboard.reports');
-    Route::get('/dashboard/membros', [DashboardController::class, 'showMembers'])->name('dashboard.members');
-    Route::get('/dashboard/organizacoes', [DashboardController::class, 'showOrganizations'])->name('dashboard.organizations');
+//Notifications
+Route::controller(NotificationsController::class)->group(function () {
+    Route::get('/notificacoes', 'show')->name('notifications');
+
+    Route::get('notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen');
+
+    //TODO: Colocar isto como API
+    Route::delete('api/notificacoes/{id}/apagar', 'delete')->name('notification.delete');
+    Route::patch('api/notificacoes/{id}/aceitar-convite', 'acceptInvitation')->name('notification.acceptInvitation');
+    Route::patch('api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization');
 });
 
-//Notifications
-Route::middleware(['auth'])->group(function () {
-    Route::get('/notificacoes', [NotificationsController::class, 'show'])->name('notifications');
+//Comment Reports
+Route::controller(ReportCommentController::class)->group(function () {
+    Route::get('api/denuncias/comentarios', 'index');
+    Route::patch('api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
+});
 
-    Route::delete('/notificacoes/{id}/apagar', [NotificationsController::class, 'delete'])->name('notification.delete');
-    Route::get('/notificacoes/{id}/marcar-como-vista', [NotificationsController::class, 'markAsSeen'])->name('notification.markAsSeen');
-    Route::patch('/notificacoes/{id}/aceitar-convite', [NotificationsController::class, 'acceptInvitation'])->name('notification.acceptInvitation');
+//Event Reports
+Route::controller(ReportEventController::class)->group(function () {
+    Route::get('api/denuncias/evento', 'index');
+    Route::patch('api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
+});
 
-    Route::middleware(['admin'])->group(function () {
-        Route::patch('/notificacoes/{id}/aprovar-organizacao', [NotificationsController::class, 'approveOrganization'])->name('notification.approveOrganization');
-    });
+//My Events
+Route::controller(MyEventsController::class)->group(function () {
+    Route::get('/meus-eventos', 'show')->name('my-events');
+});
+
+//Create Events
+Route::controller(CreateEventController::class)->group(function () {
+    Route::get('/criar-evento','show')->name('criar-evento');
+    Route::post('/submeter-evento','store') ->name('submit-event');
+});
+
+//Edit Events
+Route::controller(EditEventController::class)->group(function () {
+    Route::get('/editar-evento/{id}', 'show')->name('edit-event');
+
+    Route::put('/atualizar-evento/{id}', 'update')->name('update-event'); //TODO: Should be a patch
 });
 
 //Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/evento/{id}', 'show')->name('event');
-    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join');
-    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave');
-    Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete');
-    Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser');
+    Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete'); 
+    Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser'); 
 
-    //Api
-    Route::get('/api/eventos/pesquisa', 'search')->name('events.search');
+    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join'); //TODO: Should be a post
+    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave'); //TODO: Should be a delete
+    Route::delete('api/evento/{id}/apagar', 'ApiDelete'); //TODO:  Needs to be refactored (We cant use both delete methods, either we use the api or php)
+    Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
 });
 
-//Edit Events
-Route::middleware(['auth'])->group(function () {
-    Route::get('/edit-event/{id}', [EditEventController::class, 'show'])->name('edit-event');
-    Route::get('/update-event/{id}', [EditEventController::class, 'update'])->name('update-event');
-    Route::put('/update-event/{id}', [EditEventController::class, 'update']);
-});
-
-//My Events
-Route::middleware(['auth'])->group(function () {
-    Route::get('/meus-eventos', [MyEventsController::class, 'participating'])->name('my-events');
-    Route::get('/filter-events/participating', [MyEventsController::class, 'participating'])->name('participating');
-    Route::get('/filter-events/organizing', [MyEventsController::class, 'organizing'])->name('organizing');
-});
-
-//Create Events
-Route::middleware(['auth'])->group(function () {
-    Route::get('/criar-evento', [CreateEventController::class, 'show'])->name('criar-evento');
-    Route::post('/submit-event', [CreateEventController::class, 'store']) ->name('submit-event');
+//Comments
+Route::controller(CommentController::class)->group(function () {
+    Route::get('api/comentarios', 'index');
+    Route::get('api/comentarios/{id}', 'show');
+    Route::delete('api/comentarios/{id}/apagar', 'destroy')->name('comment.delete');
+    Route::post('api/comentario/inserir', 'store')->name('comment.add');
 });
 
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization.show');
-    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
-    Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser');
-    Route::post('organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember');
+    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join'); //TODO: Should be a post
+    Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser'); 
+    Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: Should be a api delete
 
-    // refactor later
-    Route::middleware(['admin'])->group(function () {
-        Route::delete('api/organization/{id}', 'ApiDelete');
-    });
+    Route::delete('api/organizacao/{id}/apagar', 'deleteOrg');
 });
 
 //Search
 Route::controller(SearchController::class)->group(function () {
     Route::get('/pesquisa', 'show')->name('search');
 }); 
-
-// API
-Route::controller(CommentController::class)->group(function () {
-    Route::get('api/comments', 'index');
-    Route::get('api/comments/{id}', 'show');
-    Route::delete('api/comments/{id}', 'destroy')->name('comment.delete');
-    Route::post('comments/add', 'store')->name('comment.add');
-});
-
-Route::controller(ReportEventController::class)->group(function () {
-    Route::middleware(['admin'])->group(function () {
-        Route::get('api/reports/event', 'index');
-        Route::patch('api/reports/event/{id}/resolved', 'markAsResolved');
-    });
-});
-
-Route::controller(ReportCommentController::class)->group(function () {
-    Route::middleware(['admin'])->group(function () {
-        Route::get('api/reports/comment', 'index');
-        Route::patch('api/reports/comment/{id}/resolved', 'markAsResolved');
-    });
-});
-
-Route::controller(UserController::class)->group(function() {
-    Route::middleware(['admin'])->group(function () {
-        Route::delete('api/user/{id}', 'destroy');
-    });
-});
-
-// Authentication
-Route::controller(LoginController::class)->group(function () {
-    Route::get('/iniciar-sessao', 'showLoginForm')->name('login');
-    Route::post('/iniciar-sessao', 'authenticate');
-    Route::get('/terminar-sessao', 'logout')->name('logout');
-});
-
-Route::controller(RegisterController::class)->group(function () {
-    Route::get('/registar', 'showRegistrationForm')->name('register');
-    Route::post('/registar', 'register');
-});

@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller{
 
     public function showReports(): View{
+        $this->authorize('showReports', User::class);
+
         return view('pages.dashboardReports', [
             'user' => Auth::user(),
             'reportEvents' => ReportEvent::where('resolved', false)->get(),
@@ -20,7 +22,9 @@ class DashboardController extends Controller{
         ]);
     }
 
-    public function showMembers(): View{
+    public function showUsers(): View{
+        $this->authorize('showAllUsers', User::class);
+
         return view('pages.dashboardMembers', [
             'user' => Auth::user(),
             'members' => User::where('id', '!=', Auth::id())->get(),
@@ -28,6 +32,8 @@ class DashboardController extends Controller{
     }
 
     public function showOrganizations(): View {
+        $this->authorize('showAllOrganizations', User::class);
+
         $userId = Auth::id();
     
         return view('pages.dashboardOrganizations', [
@@ -38,6 +44,5 @@ class DashboardController extends Controller{
                 ['receiver_id', $userId],
             ])->get(),
         ]);
-    }
-    
+    }    
 }

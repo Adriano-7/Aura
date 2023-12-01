@@ -1,18 +1,14 @@
 const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
-/* Reports */
-
+/* Comment Reports */
 const deleteCommentButtons = document.querySelectorAll('.delete-comment');
 const ignoreCommentButtons = document.querySelectorAll('.ignore-comment');
-
-const deleteEventButtons = document.querySelectorAll('.delete-event');
-const ignoreEventButtons = document.querySelectorAll('.ignore-event');
 
 deleteCommentButtons.forEach(button => {
   const commentId = button.dataset.commentId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/comments/${commentId}`, {
+    fetch(`/api/comentarios/${commentId}/apagar`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
@@ -37,7 +33,7 @@ ignoreCommentButtons.forEach(button => {
   const reportId = button.dataset.reportId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/reports/comment/${reportId}/resolved`, {
+    fetch(`/api/denuncias/comentarios/${reportId}/marcar-resolvido`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',
@@ -59,11 +55,16 @@ ignoreCommentButtons.forEach(button => {
   });
 });
 
+
+/* Event Reports */
+const deleteEventButtons = document.querySelectorAll('.delete-event');
+const ignoreEventButtons = document.querySelectorAll('.ignore-event');
+
 deleteEventButtons.forEach(button => {
   const eventId = button.dataset.eventId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/event/${eventId}`, {
+    fetch(`/api/evento/${eventId}/apagar`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
@@ -88,7 +89,7 @@ ignoreEventButtons.forEach(button => {
   const reportId = button.dataset.reportId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/reports/event/${reportId}/resolved`, {
+    fetch(`/api/denuncias/evento/${reportId}/marcar-resolvido`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',
@@ -118,7 +119,7 @@ deleteUserButtons.forEach(button => {
   const userId = button.dataset.userId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/user/${userId}`, {
+    fetch(`/api/utilizador/${userId}/apagar`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
@@ -147,7 +148,7 @@ deleteOrgButtons.forEach(button => {
   const orgId = button.dataset.orgId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/organization/${orgId}`, {
+    fetch(`/api/organizacao/${orgId}/apagar`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',

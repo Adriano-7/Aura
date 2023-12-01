@@ -7,7 +7,7 @@ use App\Models\Organization;
 
 class OrganizationPolicy{
     public function wasInvited(User $user, Organization $organization){
-        return !$user->isAdmin();
+        return !$user->is_admin;
 
         /*
         TODO: fix this
@@ -16,13 +16,13 @@ class OrganizationPolicy{
     }
 
     public function delete(User $user, Organization $organization){
-        return $user->isAdmin();
+        return $user->is_admin;
     }
     public function invite_user(User $user, Organization $organization): bool{
-        return $user->isAdmin() || $user->isOrganizer($organization);
+        return $user->is_admin || $user->isOrganizer($organization);
     }
 
     public function eliminate_member(User $user, Organization $organization): bool{
-        return $user->isAdmin() || $user->isOrganizer($organization);
+        return $user->is_admin || $user->isOrganizer($organization);
     }
 }

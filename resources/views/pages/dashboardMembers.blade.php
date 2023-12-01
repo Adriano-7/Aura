@@ -17,7 +17,7 @@
 
 @section('content')
     <div class="container dashboard-container">
-        <img src="{{ asset('storage/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
+        <img src="{{ asset('assets/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
 
         <div class="navbar-collapse" id="dash-nav">
             <ul class="navbar-nav flex-row">
@@ -62,14 +62,14 @@
                 <div class="row report">
                     <div class="col-3 dashboard-profile d-flex align-items-center">
                         <div class="pr-2">
-                            <img src="{{ asset('storage/profile/' . $member->photo) }}">
+                            <img src="{{ asset('assets/profile/' . $member->photo) }}">
                         </div>
                         <div>
                             <h1>{{ $member->name }}</h1>
                         </div>
                     </div>
                     <div class="col-3 dashboard-text-content">
-                        @if ($member->isAdmin())
+                        @if ($member->is_admin)
                             <p>Administrador</p>
                         @else
                             <p>Membro</p>
@@ -82,7 +82,7 @@
                         <div class="dropdown">
                             <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                                 aria-expanded="false">
-                                <img src="{{ asset('storage/Three-Dots-Icon.svg') }}" alt="more">
+                                <img src="{{ asset('assets/Three-Dots-Icon.svg') }}" alt="more">
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                                 <li><button class="dropdown-item delete-user" data-user-id="{{ $member->id }}">Apagar</button></li>

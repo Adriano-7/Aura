@@ -12,24 +12,23 @@ use App\Models\Organization;
 
 class NotificationsController extends Controller{
     public function show(): View{
+        if(!Auth::check()){
+            abort(404);
+        }
+
         return view('pages.notifications', [
             'user' => Auth::user(),
             'notifications' => Notification::where('receiver_id', Auth::user()->id)->orderBy('date', 'desc')->get()
         ]);
     }
 
-    public function delete(Request $request){
-        $notification = Notification::findOrFail($request->id);
-        $this->authorize('delete', $notification);
-
-        $notification->delete();
-        
-        return redirect()->route('notifications')->with('status', 'Notification deleted successfully!');
-    }
-
     public function markAsSeen(Request $request){
+        if(!Auth::check()){
+            abort(404);
+        }
+
         $notification = Notification::find($request->id);
-        $this->authorize('view', $notification);
+        $this->authorize('markAsSeen', $notification);
 
         $notification->seen = true;
         $notification->save();
@@ -37,7 +36,26 @@ class NotificationsController extends Controller{
         return redirect($notification->getLink());
     }
 
+    //TODO: Transform the methods below into api endpoints
+
+    public function delete(Request $request){
+        if(!Auth::check()){
+            abort(404);
+        }
+
+        $notification = Notification::findOrFail($request->id);
+        $this->authorize('delete', $notification);
+
+        $notification->delete();
+        
+        return redirect()->route('notifications');
+    }
+
     public function acceptInvitation(Request $request){
+        if(!Auth::check()){
+            abort(404);
+        }
+
         $notification = Notification::find($request->id);
 
         if($notification->type == 'event_invitation'){
@@ -62,6 +80,10 @@ class NotificationsController extends Controller{
     }
     
     public function approveOrganization(int $organizationId) {
+        if(!Auth::check()){
+            abort(404);
+        }
+
         $organization = Organization::findOrFail($organizationId);
         $notifications = $organization->organizationRegistrationRequests;
 

@@ -56,9 +56,10 @@ class CommentController extends Controller{
         $this->authorize('delete', $comment);
         $comment->delete();
 
-        return redirect(URL::previous() . '#comments')->with('success', 'Comment added successfully');  
+        return response()->json([
+            'message' => 'Comment deleted successfully'
+        ]);
     }
-
 
     public function store(Request $request)
     {
@@ -71,7 +72,7 @@ class CommentController extends Controller{
         $this->authorize('store', [Comment::class, $event, $request->user()]);
 
         $comment = new Comment;
-        $comment->author_id = Auth::user()->id;
+        $comment->user_id = Auth::user()->id;
         $comment->text = $request->text;
         $comment->event_id = $request->event_id;
         $comment->save();

@@ -117,7 +117,7 @@
             <div class="form-group text-center">
                 <button type="submit" class="btn btn-primary me-4">Editar Evento</button>
                 <button type="button" class="btn btn-secondary me-4"
-                    onclick="window.location='{{ route('organizing') }}'">Cancelar</button>
+                    onclick="window.location='{{ route('my-events') }}'">Cancelar</button>
                 <button type="button" class="btn btn-danger" onclick="deleteEvent()">Delete</button>
 
             </div>

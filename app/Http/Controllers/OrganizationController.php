@@ -26,7 +26,7 @@ class OrganizationController extends Controller{
         return redirect()->route('notifications')->with('status', "Entraste com sucesso na organização {$organization->name}");
     }
 
-    public function ApiDelete(int $id) {
+    public function deleteOrg(int $id) {
         $org = Organization::find($id);
 
         if (!$org) {
@@ -49,7 +49,7 @@ class OrganizationController extends Controller{
 
         $user = User::where('email', $request->email)->first();
 
-        if($user == null || $user->id == Auth::user()->id || $user->isOrganizer($organization) || $user->isAdmin()){
+        if($user == null || $user->id == Auth::user()->id || $user->isOrganizer($organization) || $user->is_admin){
             return redirect()->back()->with('status', 'Utilizador não encontrado!');
         }
 

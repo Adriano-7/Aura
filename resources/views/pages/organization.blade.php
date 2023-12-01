@@ -16,10 +16,15 @@
         @include('widgets.popUpNotification', ['message' => session('status')])
     @endif
 
+    <div class="container position-relative d-flex align-items-end w-100">
+        <img src="{{ asset('assets/organizations/' . $organization->photo) }}"  id="org-img">
+        <h1 id="bandName" class="position-absolute text-white">{{ $organization->name }}</h1>
+    </div>
+
     @if (!$organization->approved)
         <div class="alert alert-warning d-flex align-items-center" role="alert">
             <div>Esta organização ainda não foi aprovada.</div>
-            @if (Auth::check() && Auth::user()->isAdmin())
+            @if (Auth::check() && Auth::user()->is_admin)
                 <form id="approveForm" action="{{ route('notification.approveOrganization', ['id' => $organization->id]) }}"
                     method="POST" class="ml-auto">
                     @csrf
@@ -30,17 +35,11 @@
         </div>
     @endif
 
-    <div class="container position-relative d-flex align-items-end w-100">
-        <img src="{{ asset('storage/organizations/' . $organization->photo) }}" id="bandBanner" class=""
-            id="org-img">
-        <h1 id="bandName" class="position-absolute text-white">{{ $organization->name }}</h1>
-    </div>
-
     <nav id="orgNav" class="navbar">
         <div class="container">
             <div id="navbarNav">
                 <ul class="navbar-nav">
-                    @if (Auth::check() && (Auth::user()->isAdmin() || $organization->organizers->contains(Auth::user()->id)))
+                    @if (Auth::check() && (Auth::user()->is_admin || $organization->organizers->contains(Auth::user()->id)))
                         <li class="nav-item">
                             <a class="nav-link active" href="#membros">Membros</a>
                         </li>
@@ -61,7 +60,7 @@
         </div>
     </nav>
 
-    @if (Auth::check() && (Auth::user()->isAdmin() || $organization->organizers->contains(Auth::user()->id)))
+    @if (Auth::check() && (Auth::user()->is_admin || $organization->organizers->contains(Auth::user()->id)))
         <div class="container members-container" id="membros">
             <div class="row">
                 <div class="col-12 d-flex justify-content-between align-items-center mb-4">
@@ -113,7 +112,7 @@
                     <div class="row report">
                         <div class="col-3 members-profile d-flex align-items-center">
                             <div class="pr-2">
-                                <img src="{{ asset('storage/profile/' . $member->photo) }}">
+                                <img src="{{ asset('assets/profile/' . $member->photo) }}">
                             </div>
                             <div>
                                 <h1>{{ $member->name }}</h1>
@@ -129,7 +128,7 @@
                                     <input type="hidden" name="organization_id" value="{{ $organization->id }}">
                                     <input type="hidden" name="user_id" value="{{ $member->id }}">
                                     <button class="btn" type="submit">
-                                        <img src="{{ asset('storage/close-icon.svg') }}" alt="more">
+                                        <img src="{{ asset('assets/close-icon.svg') }}" alt="more">
                                     </button>
                                 </form>
                             </div>
@@ -180,7 +179,7 @@
                             <h2>{{ $event->name }}</h2>
                             <h3>{{ $event->city }} • {{ $event->venue }}</h3>
                         </div>
-                        @if (Auth::check() && !Auth::user()->isAdmin())
+                        @if (Auth::check() && !Auth::user()->is_admin)
                             <div class="col-md-2 ml-auto">
                                 <button type="button" id="join-event">Aderir ao Evento</button>
                             </div>

@@ -111,13 +111,13 @@ class Notification extends Model{
             case 'event_invitation':
             case 'organization_invitation':
             case 'organization_registration_request':
-                return "storage/profile/{$this->userEmitter->photo}";
+                return "assets/profile/{$this->userEmitter->photo}";
 
             case 'event_edit':
-                return "storage/eventos/{$this->event->photo}";
+                return "assets/eventos/{$this->event->photo}";
 
             case 'organization_registration_response':
-                return "storage/organizations/{$this->organization->photo}";
+                return "assets/organizations/{$this->organization->photo}";
 
             default:
                 throw new \Exception("Invalid notification type: {$this->type}");

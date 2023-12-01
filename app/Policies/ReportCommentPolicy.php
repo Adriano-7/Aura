@@ -3,23 +3,20 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\ReportComment;
 use Illuminate\Support\Facades\Auth;
 
-
-class UserPolicy{
-    public function delete(User $user){
-        return Auth::check() && (Auth::user()->is_admin || Auth::user()->id == $user->id);
-    }
-
-    public function showReports(){
+class ReportCommentPolicy
+{
+    public function viewAny(): bool {
         return Auth::check() && Auth::user()->is_admin;
     }
 
-    public function showAllUsers(){
+    public function delete(): bool {
         return Auth::check() && Auth::user()->is_admin;
     }
 
-    public function showAllOrganizations(){
+    public function markAsResolved(): bool {
         return Auth::check() && Auth::user()->is_admin;
     }
 }

@@ -32,7 +32,7 @@
     @endphp
 
     <section id="event-header">
-        <img src="{{ asset('storage/eventos/' . $event->photo) }}">
+        <img src="{{ asset('assets/eventos/' . $event->photo) }}">
         <h1>{{ $event->name }}</h1>
     </section>
 
@@ -66,7 +66,7 @@
                     </div>
                     <div id="third-column">
                         <span id="numParticipants"> {{ $event->participants->count() }} participantes</span>
-                        @if (Auth::check() && !Auth::user()->isAdmin())
+                        @if (Auth::check() && !Auth::user()->is_admin)
                             @if ($user->participatesInEvent($event))
                                 <button id="leave-event" onclick="leaveEvent(<?php echo json_encode($event->id); ?>)">Sair do evento</button>
                             @else
@@ -85,7 +85,7 @@
                                                     <div class="row">
                                                         <div class="col-2">
                                                             <img
-                                                                src="{{ asset('storage/profile/' . $participant->photo) }}">
+                                                                src="{{ asset('assets/profile/' . $participant->photo) }}">
                                                         </div>
                                                         <div class="col-10">
                                                             <h1>{{ $participant->name }}</h1>
@@ -143,19 +143,19 @@
                 <h2>Comentários ({{$comments->count()}})</h2>
             </div>
             <div class="card">
-                @if(Auth::check() && !Auth::user()->isAdmin() && Auth::user()->participatesInEvent($event))
+                @if(Auth::check() && !Auth::user()->is_admin && Auth::user()->participatesInEvent($event))
                     <div id="add-comment-row" class="comment-row">
-                        <img class="profile-pic" src="{{asset('storage/profile/' . $user->photo)}}">
+                        <img class="profile-pic" src="{{asset('assets/profile/' . $user->photo)}}">
                         <form id="add-comment" method="POST" action="{{route('comment.add')}}" enctype="multipart/form-data">
                             @csrf
                             <input type="text" name="text" placeholder="Adicione um comentário">
                             <input type="hidden" name="event_id" value="{{$event->id}}">
                             <label for="file-upload" class="icon-button">
-                                <img class="icon" src="{{asset('storage/clip-icon.svg')}}">
+                                <img class="icon" src="{{asset('assets/clip-icon.svg')}}">
                                 <input id="file-upload" type="file" name="file" style="display:none;">
                             </label>
                             <button type="submit" class="icon-button">
-                                <img class="icon" src="{{asset('storage/send-icon.svg')}}">
+                                <img class="icon" src="{{asset('assets/send-icon.svg')}}">
                             </button>
                         </form>
                     </div>
@@ -163,26 +163,26 @@
 
                 @foreach($comments as $comment)
                     <div class="comment-row">
-                        <img class="profile-pic" src="{{asset('storage/profile/' . $comment->author->photo)}}">
+                        <img class="profile-pic" src="{{asset('assets/profile/' . $comment->author->photo)}}">
                         <div class="comment-content">
                             <div class="username-and-date">
                                 <span class="comment-author">{{$comment->author->name}}</span>
                                 <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
                                 @if(Auth::check())
                                 <!--
-                                    @if(Auth::user()->id == $comment->author_id)
+                                    @if(Auth::user()->id == $comment->user_id)
                                         <button class="icon-button">
-                                            <img class="icon" src="{{asset('storage/edit-icon.svg')}}">
+                                            <img class="icon" src="{{asset('assets/edit-icon.svg')}}">
                                         </button>
                                     @endif
                                 -->
                                     
-                                    @if(Auth::user()->id == $comment->author->id || Auth::user()->isAdmin())
+                                    @if(Auth::user()->id == $comment->author->id || Auth::user()->is_admin)
                                         <form action="{{ route('comment.delete', $comment->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button class="icon-button">
-                                                <img class="icon" src="{{asset('storage/delete-icon.svg')}}">
+                                                <img class="icon" src="{{asset('assets/delete-icon.svg')}}">
                                             </button>
                                         </form>
                                     @endif
@@ -191,8 +191,8 @@
                             <p class="comment-text">{{$comment->text}}</p>
                             @if($comment->file_id)
                                 <div class="comment-file">
-                                    <a href="{{ asset('storage/uploads/' . $comment->file->file_name) }}">
-                                        <img src="{{ asset('storage/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
+                                    <a href="{{ asset('assets/uploads/' . $comment->file->file_name) }}">
+                                        <img src="{{ asset('assets/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
                                     </a>   
                                 </div>
                             @endif
