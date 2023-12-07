@@ -89,12 +89,37 @@ class Notification extends Model{
         return end($timeUnits) . ' anos atrás';
     }
 
+    public function getFieldChanged(){
+        switch ($this->changed_field) {
+            case 'name':
+                return 'O nome';
+            case 'description':
+                return 'A descrição';
+            case 'photo':
+                return 'A foto';
+            case 'address':
+                return 'A morada';
+            case 'venue':
+                return 'O local';
+            case 'city':
+                return 'A cidade';
+            case 'start_date':
+                return 'A data de início';
+            case 'end_date':
+                return 'A data de fim';
+            case 'is_public':
+                return 'A visibilidade';
+            default:
+                throw new \Exception("Invalid notification type: {$this->type}");
+        }
+    }
+
     public function getContent(){
         switch ($this->type) {
             case 'event_invitation':
                 return "{$this->userEmitter->name} convidou-te a participar no evento {$this->event->name}.";
             case "event_edit":
-                return "O evento {$this->event->name} foi alterado.";
+                return "{$this->getFieldChanged()} do evento {$this->event->name} foi alterado.";
             case "organization_invitation":
                 return "{$this->userEmitter->name} convidou-te a participar na organização {$this->organization->name}.";
             case "organization_registration_request":

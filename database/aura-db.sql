@@ -48,7 +48,7 @@ CREATE TABLE participants (
 
 DROP TABLE IF EXISTS organizers CASCADE;
 CREATE TABLE organizers (
-    user_id INTEGER REFERENCES clients (id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
     organization_id INTEGER REFERENCES organizations (id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, organization_id)
 );
@@ -75,7 +75,7 @@ CREATE TABLE files (
 DROP TABLE IF EXISTS comments CASCADE;
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     text TEXT NOT NULL,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
     vote_balance INT NOT NULL DEFAULT 0,
@@ -86,7 +86,7 @@ CREATE TABLE comments (
 DROP TABLE IF EXISTS vote_comments CASCADE;
 CREATE TABLE vote_comments (
     comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE,
-    user_id INTEGER REFERENCES clients (id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
     is_up BOOLEAN NOT NULL,
     PRIMARY KEY (comment_id, user_id)
 );
@@ -427,7 +427,7 @@ BEGIN
         THEN
             RAISE EXCEPTION 'Event edit notification missing fields';
         ELSIF
-            NEW.user_emitter_id IS NULL 
+            NEW.user_emitter_id IS NOT NULL 
             OR NEW.organization_id IS NOT NULL 
         THEN
             RAISE EXCEPTION 'Event edit notification has extra fields';

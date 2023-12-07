@@ -12,6 +12,9 @@ use App\Models\Event;
 use DateTime;
 class CreateEventController extends Controller{
     public function show(): View{
+        if(!Auth::check()){
+            return abort(403);
+        }
 
         $user = Auth::user();
         $organizations = $user->userOrganizations()->get();
@@ -23,48 +26,54 @@ class CreateEventController extends Controller{
     }
 
     public function store(Request $request){
+        if (!Auth::check()) {
+            return abort(403);
+        }
+    
         $validatedData = $request->validate([
             'event_name' => 'required|max:255',
             'start_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
+            'end_date' => 'nullable|date',
+            'end_time' => 'nullable|date_format:H:i',
             'event_address' => 'nullable|string|max:255',
             'event_city' => 'required|string|max:255',
             'event_venue' => 'required|string|max:255',
             'organization' => 'required',
             'event_visibility' => 'required',
-            'event_description' => 'required|string|max:255'
+            'event_description' => 'required|string',
         ]);
-        
-
+    
         $event = new Event;
         $event->name = $validatedData['event_name'];
         $start_date = $validatedData['start_date'];
         $start_time = $validatedData['start_time'];
         $start_datetime = new DateTime("{$start_date} {$start_time}");
         $event->start_date = $start_datetime;
-
+    
         if ($validatedData['end_date'] && $validatedData['end_time']) {
             $end_date = $validatedData['end_date'];
             $end_time = $validatedData['end_time'];
             $end_datetime = new DateTime("{$end_date} {$end_time}");
             $event->end_date = $end_datetime;
+    
+            if ($end_datetime <= $start_datetime) {
+                return redirect()->back()->withInput()->withErrors(['end_date' => 'End date and time must be after start date and time']);
+            }
         } else {
             $event->end_date = null;
         }
-
+    
         $event->address = $validatedData['event_address'];
         $event->city = $validatedData['event_city'];
         $event->venue = $validatedData['event_venue'];
         $event->organization_id = $validatedData['organization'];
-        $event->is_public = $validatedData['event_visibility'] === 'public' ? true : false;
+        $event->is_public = $validatedData['event_visibility'] === 'public';
         $event->description = $validatedData['event_description'];
-        
+    
         $event->save();
-
+    
         return redirect()->route('my-events')->with('success', 'Event created successfully');
-        }
     }
-
+}    
 

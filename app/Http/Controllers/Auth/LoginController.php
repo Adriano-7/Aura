@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -10,14 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\View\View;
 
-class LoginController extends Controller{
+class LoginController extends Controller
+{
 
     /**
      * Display a login form.
      */
     public function showLoginForm()
     {
-        if(Auth::check()) {
+        if (Auth::check()) {
             return redirect()->route('home');
         }
         return view('auth.login');
@@ -33,13 +34,13 @@ class LoginController extends Controller{
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
- 
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
             return redirect()->route('home')->withSuccess('Autenticado com sucesso.');
         }
- 
+
         return back()->withErrors([
             'login_error' => 'Credenciais inválidas.',
         ])->withInput();
@@ -54,5 +55,5 @@ class LoginController extends Controller{
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('home')->withSuccess('Terminou a sessão com sucesso.');
-    } 
+    }
 }
