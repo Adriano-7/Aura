@@ -109,8 +109,8 @@ Route::controller(EventController::class)->group(function () {
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete'); 
     Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser'); 
 
-    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join'); //TODO: Should be a post
-    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave'); //TODO: Should be a delete
+    Route::post('api/evento/{id}/aderir', 'joinEvent')->name('event.join');
+    Route::delete('api/evento/{id}/sair', 'leaveEvent')->name('event.leave');
     Route::delete('api/evento/{id}/apagar', 'ApiDelete'); //TODO:  Needs to be refactored (We cant use both delete methods, either we use the api or php)
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
 });

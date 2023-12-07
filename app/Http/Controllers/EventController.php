@@ -23,13 +23,12 @@ class EventController extends Controller
         ]);
     }
 
-    public function joinEvent($id)
-    {
+    public function joinEvent($id){
         $event = Event::find($id);
         $this->authorize('join', $event);
         $user = Auth::user();
         $event->participants()->attach($user->id);
-        return response()->json(['status' => 'success']);
+        return redirect()->route('event', ['id' => $id]);
     }
     public function leaveEvent($id)
     {
@@ -37,7 +36,7 @@ class EventController extends Controller
         $this->authorize('leave', $event);
         $user = Auth::user();
         $event->participants()->detach($user->id);
-        return response()->json(['status' => 'success']);
+        return redirect()->route('event', ['id' => $id]);
     }
 
     public function destroy($id)
