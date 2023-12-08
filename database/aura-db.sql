@@ -69,7 +69,8 @@ CREATE TABLE tag_event (
 DROP TABLE IF EXISTS files CASCADE;
 CREATE TABLE files (
     id SERIAL PRIMARY KEY,
-    file_name TEXT NOT NULL
+    file_name TEXT NOT NULL,
+    comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS comments CASCADE;
@@ -85,10 +86,10 @@ CREATE TABLE comments (
 
 DROP TABLE IF EXISTS vote_comments CASCADE;
 CREATE TABLE vote_comments (
+    id SERIAL PRIMARY KEY,
     comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE,
     user_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
-    is_up BOOLEAN NOT NULL,
-    PRIMARY KEY (comment_id, user_id)
+    is_up BOOLEAN NOT NULL
 );
 
 DROP TABLE IF EXISTS report_reasons_event CASCADE;
@@ -301,22 +302,41 @@ FOR EACH ROW
 WHEN (OLD.approved = FALSE AND NEW.approved = TRUE)
 EXECUTE FUNCTION notify_organization_approval();
 
--- TRIGGER03
--- When a comment is deleted, all its votes are deleted as well
-CREATE OR REPLACE FUNCTION delete_comment_votes()
+-- TRIGGER03.1
+-- When a vote is added, the comment balance is updated
+CREATE OR REPLACE FUNCTION update_comment_balance_insert()
 RETURNS TRIGGER AS $$
 BEGIN
-    DELETE FROM vote_comments
-    WHERE vote_comments.comment_id = OLD.id;
+    UPDATE comments
+    SET vote_balance = vote_balance + (CASE WHEN NEW.is_up THEN 1 ELSE -1 END)
+    WHERE comments.id = NEW.comment_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS update_comment_balance_insert_trigger ON vote_comments CASCADE;
+CREATE TRIGGER update_comment_balance_insert_trigger
+AFTER INSERT ON vote_comments
+FOR EACH ROW
+EXECUTE FUNCTION update_comment_balance_insert();
+
+-- TRIGGER03.2
+-- When a vote is removed, the comment balance is updated
+CREATE OR REPLACE FUNCTION update_comment_balance_delete()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE comments
+    SET vote_balance = vote_balance - (CASE WHEN OLD.is_up THEN 1 ELSE -1 END)
+    WHERE comments.id = OLD.comment_id;
     RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS delete_comment_votes_trigger ON comments CASCADE;
-CREATE TRIGGER delete_comment_votes_trigger
-AFTER DELETE ON comments
+DROP TRIGGER IF EXISTS update_comment_balance_delete_trigger ON vote_comments CASCADE;
+CREATE TRIGGER update_comment_balance_delete_trigger
+AFTER DELETE ON vote_comments
 FOR EACH ROW
-EXECUTE FUNCTION delete_comment_votes();
+EXECUTE FUNCTION update_comment_balance_delete();
 
 
 -- TRIGGER04

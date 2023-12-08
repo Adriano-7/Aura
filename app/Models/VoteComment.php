@@ -5,46 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-/*
-    DROP TABLE IF EXISTS comments CASCADE;
-    CREATE TABLE comments (
-        id SERIAL PRIMARY KEY,
-        user_id INTEGER NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
-        text TEXT NOT NULL,
-        date TIMESTAMP NOT NULL DEFAULT current_timestamp,
-        vote_balance INT NOT NULL DEFAULT 0,
-        event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
-        file_id INTEGER REFERENCES files (id) ON DELETE CASCADE
-    );
-
-
-    DROP TABLE IF EXISTS vote_comments CASCADE;
-    CREATE TABLE vote_comments (
-        comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE,
-        user_id INTEGER REFERENCES clients (id) ON DELETE CASCADE,
-        is_up BOOLEAN NOT NULL,
-        PRIMARY KEY (comment_id, user_id)
-    );
-*/
-
 class VoteComment extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $table = 'vote_comments';
 
     protected $fillable = [
+        'id',
         'comment_id',
         'user_id',
         'is_up'
     ];
 
-
     protected $casts = [
         'is_up' => 'boolean'
     ];
 
-    static public function voteValue($user_id, $comment_id) : int{
+    static public function voteValue($comment_id, $user_id) : int{
         $vote = self::where('user_id', $user_id)->where('comment_id', $comment_id)->first();
 
         if ($vote) {
@@ -52,5 +32,18 @@ class VoteComment extends Model
         }
 
         return 0;
+    }
+
+    static public function addVote($comment_id, $user_id, $isUp) {
+        $vote = new VoteComment();
+        $vote->comment_id = $comment_id;
+        $vote->user_id = $user_id;
+        $vote->is_up = $isUp;
+        $vote->save();
+    }
+
+    static public function removeVote($comment_id, $user_id) {
+        $vote = VoteComment::where('user_id', $user_id)->where('comment_id', $comment_id)->first();
+        $vote->delete();
     }
 }

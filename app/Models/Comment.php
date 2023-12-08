@@ -48,7 +48,7 @@ class Comment extends Model
         return $this->hasOne(File::class, 'id', 'file_id');
     }
 
-    public function vote($user_id) {
+    public function userVote($user_id) {
         return VoteComment::voteValue($this->id, $user_id);
     }
 

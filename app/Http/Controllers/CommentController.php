@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Event;
 use App\Models\File;
+use App\Models\VoteComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
@@ -82,16 +83,23 @@ class CommentController extends Controller{
             $file = new File();
             $file->file_name = time() . "-" . $fileRequest->getClientOriginalName();
             $file->comment_id = $comment->id;
-            $file->save(); // Save the file to generate an ID
-
-            $comment->file_id = $file->id; // Set the file_id on the comment
-            // update comment in table
+            $file->save();
+            $comment->file_id = $file->id;
             $comment->save();
-
-            /* store the file in app/public/uploads */
-            $fileRequest->storeAs('public/uploads', $file->file_name);
+            $fileRequest->storeAs('public', $file->file_name);
+            $fileRequest->move(public_path('uploads'), $file->fileName);
         }
 
         return redirect(URL::previous() . '#comments')->with('success', 'Comment added successfully');
+    }
+
+    public function addLike(int $commentId){
+        VoteComment::addVote($commentId, Auth::user()->id, true);
+        return response()->json(['success' => true]);
+    }
+
+    public function removeLike(int $commentId){
+        VoteComment::removeVote($commentId, Auth::user()->id);
+        return response()->json(['success'=> true]);
     }
 }
