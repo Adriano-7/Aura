@@ -64,24 +64,25 @@ deleteEventButtons.forEach(button => {
   const eventId = button.dataset.eventId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/evento/${eventId}/apagar`, {
-      method: 'DELETE',
-      headers: {
-        'content-type': 'application/json',
-        'X-CSRF-TOKEN': csrf
-      }
-    })
-      .then(res => {
-        if (res.ok) {
-          e.target
-            .parentElement
-            .parentElement
-            .parentElement
-            .parentElement
-            .parentElement.remove();
+    try {
+        const response = await fetch(`/evento/${eventId}/apagar`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrf,
+                'Accept': 'application/json',
+            }
+        });
+
+        if (response.ok) {
+            e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+        } 
+        else {
+            console.error(`Failed to delete event. Status: ${response.status}`);
         }
-      })
-      .catch(err => console.log(err));
+    } catch (err) {
+        console.error(err);
+    }
   });
 });
 

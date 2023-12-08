@@ -23,7 +23,8 @@ class EventController extends Controller
         ]);
     }
 
-    public function joinEvent($id){
+    public function joinEvent($id)
+    {
         $event = Event::find($id);
         $this->authorize('join', $event);
         $user = Auth::user();
@@ -38,14 +39,35 @@ class EventController extends Controller
         $event->participants()->detach($user->id);
         return redirect()->route('event', ['id' => $id]);
     }
-
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $event = Event::findOrFail($id);
-        $this->authorize('delete', $event);
+        $event = Event::find($id);
+
+        if (!$event) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'Event not found.'], 404);
+            } else {
+                abort(404, 'Event not found.');
+            }
+        }
+
+        try {
+            $this->authorize('delete', $event);
+        } catch (AuthorizationException $e) {
+            if ($request->wantsJson()) {
+                return response()->json(['message' => 'User not authorized to delete this event.'], 403);
+            } else {
+                abort(403, 'User not authorized to delete this event.');
+            }
+        }
+
         $event->delete();
 
-        return redirect()->route('my-events')->with('status', "Evento {$event->name} removido com sucesso.");
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Event deleted.'], 200);
+        } else {
+            return redirect()->back()->with('status', "Evento {$event->name} removido com sucesso.");
+        }
     }
 
     public function inviteUser(Request $request)
@@ -107,29 +129,4 @@ class EventController extends Controller
 
         return response()->json($results);
     }
-
-    public function ApiDelete(int $id)
-    {
-        $event = Event::find($id);
-
-        if (!$event) {
-            return response()->json([
-                'message' => 'Event not found.'
-            ], 404);
-        }
-
-        try {
-            $this->authorize('delete', $event);
-        } catch (AuthorizationException $e) {
-            return response()->json([
-                'message' => 'User not authorized to delete this event.'
-            ], 403);
-        }
-        $event->delete();
-
-        return response()->json([
-            'message' => 'Event deleted.'
-        ], 200);
-    }
-
 }
