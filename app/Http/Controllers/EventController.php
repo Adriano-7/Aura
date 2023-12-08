@@ -34,6 +34,7 @@ class EventController extends Controller
 
         return redirect()->route('event', ['id' => $id]);
     }
+    
     public function leaveEvent($id)
     {
         $event = Event::find($id);
@@ -42,6 +43,7 @@ class EventController extends Controller
         $event->participants()->detach($user->id);
         return redirect()->route('event', ['id' => $id]);
     }
+
     public function destroy(Request $request, $id)
     {
         $event = Event::find($id);

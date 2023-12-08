@@ -65,24 +65,24 @@ Route::controller(HomeController::class)->group(function () {
 Route::controller(NotificationsController::class)->group(function () {
     Route::get('/notificacoes', 'show')->name('notifications');
 
-    Route::get('notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen');
+    Route::get('notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen'); //Change http method to put
 
     //TODO: Colocar isto como API
     Route::delete('api/notificacoes/{id}/apagar', 'delete')->name('notification.delete');
-    Route::patch('api/notificacoes/{id}/aceitar-convite', 'acceptInvitation')->name('notification.acceptInvitation');
-    Route::patch('api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization');
+    Route::put('api/notificacoes/{id}/aceitar-convite', 'acceptInvitation')->name('notification.acceptInvitation');
+    Route::put('api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization');
 });
 
 //Comment Reports
 Route::controller(ReportCommentController::class)->group(function () {
     Route::get('api/denuncias/comentarios', 'index');
-    Route::patch('api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
+    Route::put('api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
 });
 
 //Event Reports
 Route::controller(ReportEventController::class)->group(function () {
     Route::get('api/denuncias/evento', 'index');
-    Route::patch('api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
+    Route::put('api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
 });
 
 //My Events

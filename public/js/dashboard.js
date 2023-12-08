@@ -34,7 +34,7 @@ ignoreCommentButtons.forEach(button => {
 
   button.addEventListener('click', async e => {
     fetch(`/api/denuncias/comentarios/${reportId}/marcar-resolvido`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
         'X-CSRF-TOKEN': csrf
@@ -91,7 +91,7 @@ ignoreEventButtons.forEach(button => {
 
   button.addEventListener('click', async e => {
     fetch(`/api/denuncias/evento/${reportId}/marcar-resolvido`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         'content-type': 'application/json',
         'X-CSRF-TOKEN': csrf

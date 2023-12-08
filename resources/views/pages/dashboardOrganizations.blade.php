@@ -70,7 +70,7 @@
                                     <form id="approveForm" action="{{ route('notification.approveOrganization', ['id' => $request->organization->id]) }}"
                                         method="POST" class="ml-auto">
                                         @csrf
-                                        @method('PATCH')
+                                        @method('PUT')
                                         <button type="submit" class="dropdown-item">Aprovar</button>
                                     </form>
                                 </li>
