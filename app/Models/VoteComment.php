@@ -42,7 +42,7 @@ class VoteComment extends Model
         $vote->save();
     }
 
-    static public function removeVote($comment_id, $user_id) {
+    static public function deleteVote($comment_id, $user_id) {
         $vote = VoteComment::where('user_id', $user_id)->where('comment_id', $comment_id)->first();
         $vote->delete();
     }

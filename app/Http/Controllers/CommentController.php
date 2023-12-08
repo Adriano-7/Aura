@@ -98,8 +98,13 @@ class CommentController extends Controller{
         return response()->json(['success' => true]);
     }
 
-    public function removeLike(int $commentId){
-        VoteComment::removeVote($commentId, Auth::user()->id);
+    public function addDislike(int $commentId){
+        VoteComment::addVote($commentId, Auth::user()->id, false);
+        return response()->json(['success' => true]);
+    }
+
+    public function removeVote(int $commentId){
+        VoteComment::deleteVote($commentId, Auth::user()->id);
         return response()->json(['success'=> true]);
     }
 }
