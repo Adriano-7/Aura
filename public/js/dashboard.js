@@ -65,12 +65,11 @@ deleteEventButtons.forEach(button => {
 
   button.addEventListener('click', async e => {
     try {
-        const response = await fetch(`/evento/${eventId}/apagar`, {
+        const response = await fetch(`/api/evento/${eventId}/apagar`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': csrf,
-                'Accept': 'application/json',
             }
         });
 

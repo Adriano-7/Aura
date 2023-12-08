@@ -111,6 +111,7 @@ Route::controller(EventController::class)->group(function () {
     Route::post('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/sair', 'leaveEvent')->name('event.leave');
 
+    Route::delete('api/evento/{id}/apagar', 'apiDestroy')->name('event.apiDelete');
     Route::post('api/evento/{id}/aderir', 'apiJoinEvent')->name('event.apiJoin');
     Route::delete('api/evento/{id}/sair', 'apiLeaveEvent')->name('event.apiLeave');
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 

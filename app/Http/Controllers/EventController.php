@@ -85,33 +85,30 @@ class EventController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        $event = Event::findOrFail($id);
+        $this->authorize('delete', $event);
+        $event->delete();
+
+        return redirect()->back()->with('status', "Evento {$event->name} removido com sucesso.");
+    }
+
+    public function apiDestroy(Request $request, $id)
+    {
         $event = Event::find($id);
 
         if (!$event) {
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'Event not found.'], 404);
-            } else {
-                abort(404, 'Event not found.');
-            }
+            return response()->json(['message' => 'Event not found.'], 404);
         }
 
         try {
             $this->authorize('delete', $event);
         } catch (AuthorizationException $e) {
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'User not authorized to delete this event.'], 403);
-            } else {
-                abort(403, 'User not authorized to delete this event.');
-            }
+            return response()->json(['message' => 'User not authorized to delete this event.'], 403);
         }
 
         $event->delete();
 
-        if ($request->wantsJson()) {
-            return response()->json(['message' => 'Event deleted.'], 200);
-        } else {
-            return redirect()->back()->with('status', "Evento {$event->name} removido com sucesso.");
-        }
+        return response()->json(['message' => 'Event deleted.'], 200);
     }
 
     public function inviteUser(Request $request)
