@@ -41,8 +41,7 @@
     font-weight: 400;
 }
 
-#join-event,
-#leave-event {
+.result-button {
     /*no wrap*/
     white-space: nowrap;
 
@@ -55,8 +54,7 @@
     color: white;
 }
 
-#join-event:hover,
-#leave-event:hover {
+.result-button:hover{
     background-color: #A08AFA;
     color: #11141A;
 }

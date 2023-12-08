@@ -111,6 +111,8 @@ Route::controller(EventController::class)->group(function () {
     Route::post('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/sair', 'leaveEvent')->name('event.leave');
 
+    Route::post('api/evento/{id}/aderir', 'apiJoinEvent')->name('event.apiJoin');
+    Route::delete('api/evento/{id}/sair', 'apiLeaveEvent')->name('event.apiLeave');
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
 });
 
@@ -127,8 +129,8 @@ Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization.show');
     Route::post('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
     Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser'); 
-    Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: Should be a api delete
 
+    Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: We still need to refactor to make it an api
     Route::delete('api/organizacao/{id}/apagar', 'deleteOrg');
 });
 

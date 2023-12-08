@@ -34,6 +34,26 @@ class EventController extends Controller
 
         return redirect()->route('event', ['id' => $id]);
     }
+
+    public function apiJoinEvent($id){
+        $event = Event::find($id);
+        if(!$event){
+            return response()->json(['message' => 'Event not found.'], 404);
+        }
+
+        try {
+            $this->authorize('join', $event);
+        } 
+        catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to join this event.'], 403);
+        }
+
+        $user = Auth::user();
+        $event->participants()->attach($user->id);
+        $user->notifications()->where('type', 'event_invitation')->where('event_id', $id)->delete();
+
+        return response()->json(['message' => 'User joined event.'], 200);
+    }
     
     public function leaveEvent($id)
     {
@@ -42,6 +62,25 @@ class EventController extends Controller
         $user = Auth::user();
         $event->participants()->detach($user->id);
         return redirect()->route('event', ['id' => $id]);
+    }
+
+    public function apiLeaveEvent($id){
+        $event = Event::find($id);
+        if(!$event){
+            return response()->json(['message' => 'Event not found.'], 404);
+        }
+
+        try {
+            $this->authorize('leave', $event);
+        } 
+        catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to leave this event.'], 403);
+        }
+
+        $user = Auth::user();
+        $event->participants()->detach($user->id);
+
+        return response()->json(['message' => 'User left event.'], 200);
     }
 
     public function destroy(Request $request, $id)
@@ -130,8 +169,10 @@ class EventController extends Controller
                 $queryBuilder->where('end_date', '<=', $endDate);
             });
 
-        $results = $eventsQuery->get();
+        $results = $eventsQuery->get()->map(function ($event) {
+            $event->isParticipating = $event->participants()->get()->contains(Auth::user());
+            return $event;
+        });
 
         return response()->json($results);
-    }
-}
+    }}
