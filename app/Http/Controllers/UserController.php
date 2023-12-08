@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Auth\Access\AuthorizationException;
 
-use App\Models\Administrator;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller{
     public function destroy(int $id) {
@@ -16,7 +15,11 @@ class UserController extends Controller{
             ], 404);
         }
 
-        $this->authorize('delete', $user); //TODO: Deal with the 403 error
+        try {
+            $this->authorize('delete', $user);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to delete this user'], 403);
+        }
         $user->delete();
 
         return response()->json([

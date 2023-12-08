@@ -16,10 +16,6 @@
 @endsection
 
 @section('content')
-    @if (session('status'))
-        @include('widgets.popUpNotification', ['message' => session('status')])
-    @endif
-
     <div class="container dashboard-container">
         <img src="{{ asset('assets/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
 

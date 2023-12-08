@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Access\AuthorizationException;
 
 use App\Models\Event;
 use App\Models\Notification;
@@ -118,11 +118,18 @@ class EventController extends Controller
             ], 404);
         }
 
-        $this->authorize('delete', $event);
+        try {
+            $this->authorize('delete', $event);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'message' => 'User not authorized to delete this event.'
+            ], 403);
+        }
         $event->delete();
 
         return response()->json([
             'message' => 'Event deleted.'
         ], 200);
     }
+
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\AuthorizationException;
 
  use App\Models\Organization; 
  use App\Models\Notification;
@@ -35,7 +36,12 @@ class OrganizationController extends Controller{
             ], 404);
         }
 
-        $this->authorize('delete', $org);
+        try {
+            $this->authorize('delete', $org);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to delete this organization'], 403);
+        }
+
         $org->delete();
 
         return response()->json([
