@@ -20,22 +20,28 @@
                 </p>
             </div>
             <div class="col-md-1 notification-buttons">
-                <div class="row">
-                    @if ($notification->type == 'event_invitation' || $notification->type == 'organization_invitation')
-                        <div class="col-md-1">
-                            <form action="{{ route('notification.acceptInvitation', ['id' => $notification->id]) }}" method="POST" id="acceptForm{{ $notification->id }}">
+                <div class="row ">
+                    @if ($notification->type == 'event_invitation')
+                        <div class="col-md-1 ">
+                            <form method="POST" action="{{ route('event.join', $notification->event->id) }}">
                                 @csrf
-                                @method('PATCH')
-                                <img src="{{ asset('assets/check-icon.svg') }}" onclick="document.getElementById('acceptForm{{ $notification->id }}').submit()" style="cursor: pointer;">
+                                <img src="{{ asset('assets/check-icon.svg') }}" onclick="submit()" style="cursor: pointer;">
+                            </form>
+                        </div>
+                    @elseif ($notification->type == 'organization_invitation')
+                        <div class="col-md-1 ">
+                            <form method="POST" action="{{ route('organization.join', $notification->organization->id) }}">
+                                @csrf
+                                <img src="{{ asset('assets/check-icon.svg') }}" onclick="submit()" style="cursor: pointer;">
                             </form>
                         </div>
                     @endif
 
-                    <div class="col-md-1">
-                        <form action="{{ route('notification.delete', ['id' => $notification->id]) }}" method="POST" id="deleteForm{{ $notification->id }}">
+                    <div class="col-md-1 ">
+                        <form action="{{ route('notification.delete', ['id' => $notification->id]) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <img src="{{ asset('assets/close-icon.svg') }}" onclick="document.getElementById('deleteForm{{ $notification->id }}').submit()" style="cursor: pointer;">
+                            <img src="{{ asset('assets/close-icon.svg') }}" onclick="submit()" style="cursor: pointer;">
                         </form>
                     </div>
                 </div>

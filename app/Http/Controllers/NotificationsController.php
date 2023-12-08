@@ -18,7 +18,6 @@ class NotificationsController extends Controller{
 
         return view('pages.notifications', [
             'user' => Auth::user(),
-            'notifications' => Notification::where('receiver_id', Auth::user()->id)->orderBy('date', 'desc')->get()
         ]);
     }
 
@@ -49,34 +48,6 @@ class NotificationsController extends Controller{
         $notification->delete();
         
         return redirect()->route('notifications');
-    }
-
-    public function acceptInvitation(Request $request){
-        if(!Auth::check()){
-            abort(404);
-        }
-
-        $notification = Notification::find($request->id);
-
-        if($notification->type == 'event_invitation'){
-            $this->authorize('join', $notification->event);
-
-            $eventId = $notification->event->id;
-            $notification->delete();
-
-            return redirect()->route('event.join', ['id' => $eventId]);
-        }
-        
-        else if($notification->type == 'organization_invitation'){
-            $this->authorize('wasInvited', $notification->organization);
-
-            $organizationId = $notification->organization->id;
-            $notification->delete();
-
-            return redirect()->route('organization.join', ['id' => $organizationId]);
-        }
-
-        abort(403, 'This notification is not an invitation');
     }
     
     public function approveOrganization(int $organizationId) {

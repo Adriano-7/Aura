@@ -29,6 +29,9 @@ class EventController extends Controller
         $this->authorize('join', $event);
         $user = Auth::user();
         $event->participants()->attach($user->id);
+
+        $user->notifications()->where('type', 'event_invitation')->where('event_id', $id)->delete();
+
         return redirect()->route('event', ['id' => $id]);
     }
     public function leaveEvent($id)

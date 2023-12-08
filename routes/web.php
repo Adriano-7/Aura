@@ -125,7 +125,7 @@ Route::controller(CommentController::class)->group(function () {
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization.show');
-    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join'); //TODO: Should be a post
+    Route::post('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
     Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser'); 
     Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: Should be a api delete
 

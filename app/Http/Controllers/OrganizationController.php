@@ -24,7 +24,10 @@ class OrganizationController extends Controller{
         $organization = Organization::find($id);
         $this->authorize('wasInvited', $organization);
         $organization->organizers()->attach(Auth::user()->id);
-        return redirect()->route('notifications')->with('status', "Entraste com sucesso na organização {$organization->name}");
+
+        Auth::user()->notifications()->where('type', 'organization_invitation')->where('organization_id', $id)->delete();
+
+        return redirect()->route('organization.show', ['id' => $id]);
     }
 
     public function deleteOrg(int $id) {

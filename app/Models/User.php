@@ -63,4 +63,8 @@ class User extends Authenticatable{
     public function isOrganizer(Organization $organization){
         return $this->userOrganizations->contains($organization);
     }
+
+    public function notifications(): HasMany{
+        return $this->hasMany(Notification::class, 'receiver_id');
+    }
 }
