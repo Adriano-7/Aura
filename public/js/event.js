@@ -19,7 +19,7 @@ $(document).ready(function(){
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         let commentId = $(this).attr('id').split('-')[1];
 
-        fetch(new URL(`api/comentarios/${commentId}/addLike`,  window.location.origin), {
+        fetch(new URL(`api/comentarios/${commentId}/up`,  window.location.origin), {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -44,7 +44,7 @@ $(document).ready(function(){
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         let commentId = $(this).attr('id').split('-')[1];
 
-        fetch(new URL(`api/comentarios/${commentId}/addDislike`,  window.location.origin), {
+        fetch(new URL(`api/comentarios/${commentId}/down`,  window.location.origin), {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -69,7 +69,7 @@ $(document).ready(function(){
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         let commentId = $(this).attr('id').split('-')[1];
 
-        fetch(new URL(`api/comentarios/${commentId}/removeVote`,  window.location.origin), {
+        fetch(new URL(`api/comentarios/${commentId}/unvote`,  window.location.origin), {
             method: 'DELETE',
             headers: {
                 'content-type': 'application/json',
@@ -94,7 +94,7 @@ $(document).ready(function(){
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         let commentId = $(this).attr('id').split('-')[1];
 
-        fetch(new URL(`api/comentarios/${commentId}/removeVote`,  window.location.origin), {
+        fetch(new URL(`api/comentarios/${commentId}/unvote`,  window.location.origin), {
             method: 'DELETE',
             headers: {
                 'content-type': 'application/json',
@@ -119,7 +119,7 @@ $(document).ready(function(){
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         let commentId = $(this).attr('id').split('-')[1];
 
-        fetch(new URL(`api/comentarios/${commentId}/removeVote`,  window.location.origin), {
+        fetch(new URL(`api/comentarios/${commentId}/unvote`,  window.location.origin), {
             method: 'DELETE',
             headers: {
                 'content-type': 'application/json',
@@ -144,7 +144,7 @@ $(document).ready(function(){
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         let commentId = $(this).attr('id').split('-')[1];
 
-        fetch(new URL(`api/comentarios/${commentId}/removeVote`,  window.location.origin), {
+        fetch(new URL(`api/comentarios/${commentId}/unvote`,  window.location.origin), {
             method: 'DELETE',
             headers: {
                 'content-type': 'application/json',

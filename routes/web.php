@@ -121,9 +121,9 @@ Route::controller(CommentController::class)->group(function () {
     Route::get('api/comentarios/{id}', 'show');
     Route::delete('api/comentarios/{id}/apagar', 'destroy')->name('comment.delete');
     Route::post('api/comentarios/inserir', 'store')->name('comment.add');
-    Route::post('api/comentarios/{id}/addLike', 'addLike')->name('comment.addLike');
-    Route::post('api/comentarios/{id}/addDislike', 'addDislike')->name('comment.addDislike');
-    Route::delete('api/comentarios/{id}/removeVote', 'removeVote')->name('comment.removeLike');
+    Route::post('api/comentarios/{id}/up', 'addLike');
+    Route::post('api/comentarios/{id}/down', 'addDislike');
+    Route::delete('api/comentarios/{id}/unvote', 'removeVote');
 });
 
 //Organization

@@ -94,16 +94,22 @@ class CommentController extends Controller{
     }
 
     public function addLike(int $commentId){
+        $comment = Comment::findOrFail($commentId);
+        $this->authorize('addVote', [VoteComment::class, $comment]);
         VoteComment::addVote($commentId, Auth::user()->id, true);
         return response()->json(['success' => true]);
     }
 
     public function addDislike(int $commentId){
+        $comment = Comment::findOrFail($commentId);
+        $this->authorize('addVote', [VoteComment::class, $comment]);
         VoteComment::addVote($commentId, Auth::user()->id, false);
         return response()->json(['success' => true]);
     }
 
     public function removeVote(int $commentId){
+        $comment = Comment::findOrFail($commentId);
+        $this->authorize('deleteVote', [VoteComment::class, $comment]);
         VoteComment::deleteVote($commentId, Auth::user()->id);
         return response()->json(['success'=> true]);
     }

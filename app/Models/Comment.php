@@ -35,9 +35,7 @@ class Comment extends Model
      * Get all comments for a given event, sorted by date (newest first)
      */
     static public function event_comments(int $event_id): Collection {
-        return Comment::where('event_id', $event_id)
-            ->orderBy('date', 'desc')
-            ->get();
+        return Comment::where('event_id', $event_id)->orderBy('date', 'desc')->get();
     }
 
     public function author() {

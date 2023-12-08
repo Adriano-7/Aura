@@ -25,12 +25,10 @@ class VoteComment extends Model
     ];
 
     static public function voteValue($comment_id, $user_id) : int{
-        $vote = self::where('user_id', $user_id)->where('comment_id', $comment_id)->first();
-
+        $vote = VoteComment::where('user_id', $user_id)->where('comment_id', $comment_id)->first();
         if ($vote) {
             return $vote->is_up ? 1 : -1;
         }
-
         return 0;
     }
 
