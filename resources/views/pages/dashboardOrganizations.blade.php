@@ -44,7 +44,7 @@
         <h1 class="subtitle"> Pedidos de Registo</h1>
         <div class="dashboard-table limit-table">
             @foreach ($organizationRequests as $request)
-                <div class="row report">
+                <div class="row report" id="request-{{$request->organization->id}}">
                     <div class="col-3 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
                     onclick="window.location.href='{{ route('organization.show', ['id' => $request->organization->id]) }}'">
                         <div class="pr-2">
@@ -67,12 +67,7 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                                 <li>
-                                    <form id="approveForm" action="{{ route('notification.approveOrganization', ['id' => $request->organization->id]) }}"
-                                        method="POST" class="ml-auto">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="submit" class="dropdown-item">Aprovar</button>
-                                    </form>
+                                    <button class="dropdown-item" onclick="approveOrg({{$request->organization->id}})">Aprovar</button>
                                 </li>
                             </ul>
                         </div>

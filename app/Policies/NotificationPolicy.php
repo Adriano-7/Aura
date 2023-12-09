@@ -15,8 +15,4 @@ class NotificationPolicy{
     public function markAsSeen(User $user, Notification $notification): bool{
         return Auth::check() && $user->id === $notification->receiver_id;
     }
-
-    public function approve_org(User $user, Notification $notification): bool{
-        return ($user->is_admin && $notification->type === 'organization_registration_request');
-    }
 }

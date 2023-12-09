@@ -54,26 +54,4 @@ class NotificationsController extends Controller{
         
         return response()->json(['message' => 'Notification deleted successfully']);
     }
-    
-    
-    //TODO: Transform the methods below into api endpoints
-    public function approveOrganization(int $organizationId) {
-        if(!Auth::check()){
-            abort(404);
-        }
-
-        $organization = Organization::findOrFail($organizationId);
-        $notifications = $organization->organizationRegistrationRequests;
-
-        foreach ($notifications as $notification) {
-            $this->authorize('approve_org', $notification);
-            $notification->delete();
-        }
-    
-        $organization->approved = true;
-        $organization->save();
-    
-        return redirect()->back()->with('status', 'Organização aprovada com sucesso!');
-    }
-
 }

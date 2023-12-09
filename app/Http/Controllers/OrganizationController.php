@@ -83,4 +83,30 @@ class OrganizationController extends Controller{
         return redirect()->back()->with('status', 'Membro eliminado com sucesso!');
     }
 
+    public function approve(int $organizationId) {
+        if(!Auth::check()){
+            return response()->json(['error' => 'User not logged in'], 403);
+        }
+
+        $organization = Organization::find($organizationId);
+        if (!$organization) {
+            return response()->json(['error' => 'Organization not found'], 404);
+        }
+
+        try{
+            $this->authorize('approve', $organization);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to approve this organization'], 403);
+        }
+
+        $notifications = $organization->organizationRegistrationRequests;
+        foreach ($notifications as $notification) {
+            $notification->delete();
+        }
+    
+        $organization->approved = true;
+        $organization->save();
+    
+        return response()->json(['message' => 'Organization approved successfully']);
+    }
 }

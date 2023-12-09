@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ asset('css/organization.css') }}">
 @endsection
 
+@section('scripts')
+    <script src="{{ asset('js/organization.js') }}" defer></script>
+@endsection
+
 @section('header')
     @include('widgets.navBar')
 @endsection
@@ -22,15 +26,10 @@
     </div>
 
     @if (!$organization->approved)
-        <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <div id="approveWarning" class="alert d-flex align-items-center">
             <div>Esta organização ainda não foi aprovada.</div>
             @if (Auth::check() && Auth::user()->is_admin)
-                <form id="approveForm" action="{{ route('notification.approveOrganization', ['id' => $organization->id]) }}"
-                    method="POST" class="ml-auto">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn">Aprovar.</button>
-                </form>
+                <button id="approveButton" class="btn" onclick="approveOrg({{$organization->id}})">Aprovar.</button>
             @endif
         </div>
     @endif

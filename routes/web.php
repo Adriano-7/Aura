@@ -67,7 +67,6 @@ Route::controller(NotificationsController::class)->group(function () {
     Route::put('/notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen');
 
     Route::delete('/api/notificacoes/{id}/apagar', 'delete')->name('notification.delete');
-    Route::put('/api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization'); //TODO: Change this to the organization controller
 }); 
 
 //Comment Reports
@@ -132,6 +131,8 @@ Route::controller(OrganizationController::class)->group(function () {
 
     Route::post('/api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: We still need to refactor to make it an api
     Route::delete('/api/organizacao/{id}/apagar', 'deleteOrg');
+    Route::put('/api/organizacao/{id}/aprovar', 'approve')->name('organization.approve');
+
 });
 
 //Search
