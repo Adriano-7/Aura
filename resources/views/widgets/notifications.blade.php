@@ -29,7 +29,6 @@
                         <div class="col-md-1">
                             <form method="POST" action="{{ route('event.join', $notification->event->id) }}">
                                 @csrf
-                                @method('PUT')
                                 <img src="{{ asset('assets/check-icon.svg') }}" onclick="submit()"
                                     style="cursor: pointer;">
                             </form>
@@ -39,7 +38,6 @@
                             <form method="POST"
                                 action="{{ route('organization.join', $notification->organization->id) }}">
                                 @csrf
-                                @method('PUT')
                                 <img src="{{ asset('assets/check-icon.svg') }}" onclick="submit()"
                                     style="cursor: pointer;">
                             </form>
