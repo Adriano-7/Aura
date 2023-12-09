@@ -65,24 +65,24 @@ Route::controller(HomeController::class)->group(function () {
 Route::controller(NotificationsController::class)->group(function () {
     Route::get('/notificacoes', 'show')->name('notifications');
 
-    Route::get('notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen');
+    Route::get('notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen'); //Change http method to put
 
     //TODO: Colocar isto como API
     Route::delete('api/notificacoes/{id}/apagar', 'delete')->name('notification.delete');
-    Route::patch('api/notificacoes/{id}/aceitar-convite', 'acceptInvitation')->name('notification.acceptInvitation');
-    Route::patch('api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization');
+    Route::put('api/notificacoes/{id}/aceitar-convite', 'acceptInvitation')->name('notification.acceptInvitation');
+    Route::put('api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization');
 });
 
 //Comment Reports
 Route::controller(ReportCommentController::class)->group(function () {
     Route::get('api/denuncias/comentarios', 'index');
-    Route::patch('api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
+    Route::put('api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
 });
 
 //Event Reports
 Route::controller(ReportEventController::class)->group(function () {
     Route::get('api/denuncias/evento', 'index');
-    Route::patch('api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
+    Route::put('api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
 });
 
 //My Events
@@ -100,7 +100,7 @@ Route::controller(CreateEventController::class)->group(function () {
 Route::controller(EditEventController::class)->group(function () {
     Route::get('/editar-evento/{id}', 'show')->name('edit-event');
 
-    Route::put('/atualizar-evento/{id}', 'update')->name('update-event'); //TODO: Should be a patch
+    Route::put('/atualizar-evento/{id}', 'update')->name('update-event');
 });
 
 //Events
@@ -108,10 +108,12 @@ Route::controller(EventController::class)->group(function () {
     Route::get('/evento/{id}', 'show')->name('event');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete'); 
     Route::post('/evento/convidar-utilizador', 'inviteUser')->name('event.inviteUser'); 
+    Route::post('/evento/{id}/aderir', 'joinEvent')->name('event.join');
+    Route::delete('/evento/{id}/sair', 'leaveEvent')->name('event.leave');
 
-    Route::get('api/evento/{id}/aderir', 'joinEvent')->name('event.join'); //TODO: Should be a post
-    Route::get('api/evento/{id}/sair', 'leaveEvent')->name('event.leave'); //TODO: Should be a delete
-    Route::delete('api/evento/{id}/apagar', 'ApiDelete'); //TODO:  Needs to be refactored (We cant use both delete methods, either we use the api or php)
+    Route::delete('api/evento/{id}/apagar', 'apiDestroy')->name('event.apiDelete');
+    Route::post('api/evento/{id}/aderir', 'apiJoinEvent')->name('event.apiJoin');
+    Route::delete('api/evento/{id}/sair', 'apiLeaveEvent')->name('event.apiLeave');
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
 });
 
@@ -126,10 +128,10 @@ Route::controller(CommentController::class)->group(function () {
 //Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization.show');
-    Route::get('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join'); //TODO: Should be a post
+    Route::post('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
     Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser'); 
-    Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: Should be a api delete
 
+    Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: We still need to refactor to make it an api
     Route::delete('api/organizacao/{id}/apagar', 'deleteOrg');
 });
 

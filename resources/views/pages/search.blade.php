@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Notifications')
+@section('title', 'Pesquisa')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/search.css') }}">

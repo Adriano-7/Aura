@@ -122,6 +122,10 @@
 
 }
 
+#third-column form {
+    width: 100%;
+}
+
 #third-column #span-container button {
     font-size: small;
     color: #ffffff;

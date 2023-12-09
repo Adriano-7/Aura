@@ -4,12 +4,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReportEvent;
-use Illuminate\Http\Request;
+use Illuminate\Auth\Access\AuthorizationException;
+
 
 class ReportEventController extends Controller
 {
     public function index() {
-        $this->authorize('viewAny', ReportEvent::class);
+        try{
+            $this->authorize('viewAny', ReportEvent::class);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to view reports'], 403);
+        }
 
         $reports = ReportEvent::all();
 
@@ -17,7 +22,11 @@ class ReportEventController extends Controller
     }
 
     public function markAsResolved(int $id) {
-        $this->authorize('markAsResolved', ReportEvent::class);
+        try{
+            $this->authorize('markAsResolved', ReportEvent::class);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to mark reports as resolved'], 403);
+        }
 
         $report = ReportEvent::find($id);
 

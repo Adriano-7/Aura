@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    @include('widgets.notifications', ['notifications' => $notifications])
+    @include('widgets.notifications', ['notifications' => $user->notifications])
 
     @if (session('status'))
         @include('widgets.popUpNotification', ['message' => session('status')])

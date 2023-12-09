@@ -16,10 +16,6 @@
 @endsection
 
 @section('content')
-    @if (session('status'))
-        @include('widgets.popUpNotification', ['message' => session('status')])
-    @endif
-
     <div class="container dashboard-container">
         <img src="{{ asset('assets/WelcomeBanner.png') }}" alt="GreetingsBanner" id="DashboardBanner">
 
@@ -74,7 +70,7 @@
                                     <form id="approveForm" action="{{ route('notification.approveOrganization', ['id' => $request->organization->id]) }}"
                                         method="POST" class="ml-auto">
                                         @csrf
-                                        @method('PATCH')
+                                        @method('PUT')
                                         <button type="submit" class="dropdown-item">Aprovar</button>
                                     </form>
                                 </li>

@@ -8,8 +8,12 @@ use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Auth\Access\AuthorizationException;
+
 
 class CommentController extends Controller{
+
+    //TODO: add this->authorize
     public function index(Request $request) {
         if (!$request->has('eventId')) {
             return response()->json([
@@ -29,7 +33,7 @@ class CommentController extends Controller{
                 'message' => 'Event not found'
             ], 404);
         }
-
+        
         $comments = Comment::event_comments($event_id);
         return response()->json([
             'eventId' => $event_id,
@@ -52,8 +56,20 @@ class CommentController extends Controller{
     }
 
     public function destroy(int $id) {
-        $comment = Comment::findOrFail($id);
-        $this->authorize('delete', $comment);
+        $comment = Comment::find($id);
+        if (!$comment) {
+            return response()->json([
+                'message' => 'Comment not found'
+            ], 404);
+        }
+
+        try {
+            $this->authorize('delete', $comment);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'message' => 'User not authorized to delete this comment'
+            ], 403);
+        }
         $comment->delete();
 
         return response()->json([

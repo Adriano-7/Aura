@@ -68,9 +68,16 @@
                         <span id="numParticipants"> {{ $event->participants->count() }} participantes</span>
                         @if (Auth::check() && !Auth::user()->is_admin)
                             @if ($user->participatesInEvent($event))
-                                <button id="leave-event" onclick="leaveEvent(<?php echo json_encode($event->id); ?>)">Sair do evento</button>
+                                <form method="POST" action="{{ route('event.leave', $event->id) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button id="leave-event" type="submit">Sair do evento</button>
+                                </form>
                             @else
-                                <button id="join-event" onclick="joinEvent(<?php echo json_encode($event->id); ?>)">Aderir ao evento</button>
+                                <form method="POST" action="{{ route('event.join', $event->id) }}">
+                                    @csrf
+                                    <button id="join-event" type="submit">Aderir ao evento</button>
+                                </form>
                             @endif
                             <div id="span-container">
                                 <button type="button" id="show-participants" class="btn" data-toggle="modal"
