@@ -1,6 +1,6 @@
 <div class="container" id="notifications-container">
     @foreach ($notifications as $notification)
-        <div class="row notification">
+        <div class="row notification" id="notification-{{$notification->id}}">
             <div class="col-md-3 notification-profile">
                 <img class="rounded-circle notification-profile-img" src="{{ asset($notification->getImage()) }}"
                     alt="Profile Image">
@@ -38,11 +38,7 @@
                     @endif
 
                     <div class="col-md-1 ">
-                        <form action="{{ route('notification.delete', ['id' => $notification->id]) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <img src="{{ asset('assets/close-icon.svg') }}" onclick="submit()" style="cursor: pointer;">
-                        </form>
+                        <img src="{{ asset('assets/close-icon.svg') }}" onclick="deleteNotification('{{ $notification->id }}')" style="cursor: pointer;">
                     </div>
                 </div>
             </div>

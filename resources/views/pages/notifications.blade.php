@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 @endsection
 
+@section('scripts')
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
+@endsection
+
 @section('header')
     @include('widgets.navBar')
 @endsection
