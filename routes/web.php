@@ -121,11 +121,11 @@ Route::controller(EventController::class)->group(function () {
 Route::controller(CommentController::class)->group(function () {
     Route::get('api/comentarios', 'index');
     Route::get('api/comentarios/{id}', 'show');
-    Route::delete('api/comentarios/{id}/apagar', 'destroy')->name('comment.delete');
+    Route::delete('api/comentario/{id}/apagar', 'destroy')->name('comment.delete');
     Route::post('api/comentarios/inserir', 'store')->name('comment.add');
-    Route::post('api/comentarios/{id}/up', 'addLike');
-    Route::post('api/comentarios/{id}/down', 'addDislike');
-    Route::delete('api/comentarios/{id}/unvote', 'removeVote');
+    Route::post('api/comentario/{id}/up', 'addLike');
+    Route::post('api/comentario/{id}/down', 'addDislike');
+    Route::delete('api/comentario/{id}/unvote', 'removeVote');
 });
 
 //Organization
