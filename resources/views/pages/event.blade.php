@@ -149,7 +149,7 @@
         <section id="comments" class="event-field">
                 <h2>Comentários ({{$comments->count()}})</h2>
             </div>
-            <div class="card">
+            <div class="card" id="comments-card">
                 @if(Auth::check() && !Auth::user()->is_admin && Auth::user()->participatesInEvent($event))
                     <div id="add-comment-row" class="comment-row">
                         <img class="profile-pic" src="{{asset('assets/profile/' . $user->photo)}}">
@@ -161,7 +161,7 @@
                                 <img class="icon" src="{{asset('assets/clip-icon.svg')}}">
                                 <input id="file-upload" type="file" name="file" style="display:none;">
                             </label>
-                            <button type="submit" class="icon-button">
+                            <button type="submit" class="icon-button insert-comment">
                                 <img class="icon" src="{{asset('assets/send-icon.svg')}}">
                             </button>
                         </form>
