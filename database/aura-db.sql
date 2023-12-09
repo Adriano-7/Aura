@@ -70,7 +70,7 @@ DROP TABLE IF EXISTS files CASCADE;
 CREATE TABLE files (
     id SERIAL PRIMARY KEY,
     file_name TEXT NOT NULL,
-    comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE
+    comment_id INTEGER
 );
 
 DROP TABLE IF EXISTS comments CASCADE;
@@ -81,8 +81,11 @@ CREATE TABLE comments (
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
     vote_balance INT NOT NULL DEFAULT 0,
     event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
-    file_id INTEGER REFERENCES files (id) ON DELETE CASCADE
+    file_id INTEGER
 );
+
+ALTER TABLE files ADD CONSTRAINT fk_comment_id FOREIGN KEY (comment_id) REFERENCES comments (id) ON DELETE CASCADE;
+ALTER TABLE comments ADD CONSTRAINT fk_file_id FOREIGN KEY (file_id) REFERENCES files (id) ON DELETE CASCADE;
 
 DROP TABLE IF EXISTS vote_comments CASCADE;
 CREATE TABLE vote_comments (
