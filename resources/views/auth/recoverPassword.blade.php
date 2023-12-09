@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Log In')
-
+@section('title', 'Recuperar password')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/login_register.css') }}">
@@ -19,30 +18,24 @@
                         </div>
 
                         <!-- TODO: Improve css pos -->
-                        @if ($errors->has('login_error'))
-                            <span class="error">
-                                {{ $errors->first('login_error') }}
-                            </span>
-                        @endif
+                        <!-- @if ($errors->has('login_error')) -->
+                        <!--     <span class="error"> -->
+                        <!--         {{ $errors->first('login_error') }} -->
+                        <!--     </span> -->
+                        <!-- @endif -->
 
                         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-xl-n5">
                             <form method="POST" action="{{ route('login') }}">
-                                {{ csrf_field() }}
-                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Email"
+                                @csrf
+                                <input type="email" name="email" placeholder="Email"
                                     required />
 
-
-                                <input type="password" name="password" placeholder="Palavra passe" required />
-
-                                <button id="submit-button" type="submit">Iniciar sessão</button>
-                                <p>Ainda não tem conta? <a href="{{ route('register') }}"
-                                        id="registo-mensagem">Registe-se!</a></p>
-                                <p>Esqueceu-se da sua palavra passe? <a href="{{ route('recoverPassword') }}"
+                                <button id="submit-button" type="submit">Recuperar password</button>
                             </form>
                         </div>
                     </div>
                     <div class="col-sm-6 px-0 d-none d-sm-block">
-                        <img src="{{ asset('assets/LoginBanner.jpg') }}" alt="Login image" class="w-100 vh-100"
+                        <img src="{{ asset('assets/LoginBanner.jpg') }}" alt="Recover password image" class="w-100 vh-100"
                             style="object-fit: cover; object-position: center;">
                     </div>
                 </div>

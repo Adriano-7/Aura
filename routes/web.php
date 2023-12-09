@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RecoverPasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,10 @@ Route::controller(LoginController::class)->group(function () {
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/registar', 'showRegistrationForm')->name('register');
     Route::post('/registar', 'register');
+});
+
+Route::controller(RecoverPasswordController::class)->group(function () {
+    Route::get('/recuperar-password', 'showRecoverPasswordForm')->name('recoverPassword');
 });
 
 //User API
