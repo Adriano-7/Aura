@@ -185,13 +185,9 @@
                                 -->
                                     
                                     @if(Auth::user()->id == $comment->author->id || Auth::user()->is_admin)
-                                        <form action="{{ route('comment.delete', $comment->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="icon-button" type="submit">
-                                                <img class="icon" src="{{asset('assets/delete-icon.svg')}}">
-                                            </button>
-                                        </form>
+                                        <button class="icon-button trash-bin" id="{{'DELETE-' . $comment->id}}">
+                                            <img class="icon" src="{{asset('assets/delete-icon.svg')}}">
+                                        </button>
                                     @endif
                                 @endif
                             </div>

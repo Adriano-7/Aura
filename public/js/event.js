@@ -148,4 +148,33 @@ $(document).ready(function(){
             })
         .catch(err => console.log(err));
     });
+
+    $(document).on('click', '.trash-bin', function(){
+        if (!confirm('Tem a certeza?')) {
+            return;
+        }
+
+        let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        let commentId = $(this).attr('id').split('-')[1];
+
+        fetch(new URL(`api/comentario/${commentId}/apagar`,  window.location.origin), {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+        }).then(res => {
+                if (res.ok) {
+                    // remove comment row
+                    let commentRow = $(this).parent().parent().parent();
+                    commentRow.remove();
+                    // update comments count
+                    let commentCount = $('#comments').find('h2').text().split('(')[1].split(')')[0];
+                    commentCount = parseInt(commentCount);
+                    commentCount--;
+                    $('#comments').find('h2').text(`Comentários (${commentCount})`);
+                }
+            })
+        .catch(err => console.log(err));
+    });
 });
