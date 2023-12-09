@@ -25,4 +25,8 @@ class OrganizationPolicy{
     public function eliminate_member(User $user, Organization $organization): bool{
         return $user->is_admin || $user->isOrganizer($organization);
     }
+
+    public function approve(User $user, Organization $organization): bool{
+        return $user->is_admin;
+    }
 }

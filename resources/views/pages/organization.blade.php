@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ asset('css/organization.css') }}">
 @endsection
 
+@section('scripts')
+    <script src="{{ asset('js/organization.js') }}" defer></script>
+@endsection
+
 @section('header')
     @include('widgets.navBar')
 @endsection
@@ -22,15 +26,10 @@
     </div>
 
     @if (!$organization->approved)
-        <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <div id="approveWarning" class="alert d-flex align-items-center">
             <div>Esta organização ainda não foi aprovada.</div>
             @if (Auth::check() && Auth::user()->is_admin)
-                <form id="approveForm" action="{{ route('notification.approveOrganization', ['id' => $organization->id]) }}"
-                    method="POST" class="ml-auto">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn">Aprovar.</button>
-                </form>
+                <button id="approveButton" class="btn" onclick="approveOrg({{$organization->id}})">Aprovar.</button>
             @endif
         </div>
     @endif
@@ -109,7 +108,7 @@
                 </div>
 
                 @foreach ($organization->organizers as $member)
-                    <div class="row report">
+                    <div class="row report" id="member-{{$member->id}}">
                         <div class="col-3 members-profile d-flex align-items-center">
                             <div class="pr-2">
                                 <img src="{{ asset('assets/profile/' . $member->photo) }}">
@@ -123,14 +122,9 @@
                         </div>
                         <div class="col-2 members-actions d-flex justify-content-center">
                             <div class="dropdown">
-                                <form action="{{ route('organization.eliminateMember') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="organization_id" value="{{ $organization->id }}">
-                                    <input type="hidden" name="user_id" value="{{ $member->id }}">
-                                    <button class="btn" type="submit">
-                                        <img src="{{ asset('assets/close-icon.svg') }}" alt="more">
-                                    </button>
-                                </form>
+                                <button class="btn" onclick="eliminateMember({{ $organization->id }}, {{ $member->id }})">
+                                    <img src="{{ asset('assets/close-icon.svg') }}" alt="more">
+                                </button>
                             </div>
                         </div>
                     </div>
