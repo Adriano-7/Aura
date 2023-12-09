@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Access\AuthorizationException;
 
 use App\Models\Event;
 use App\Models\Notification;
@@ -29,24 +29,86 @@ class EventController extends Controller
         $this->authorize('join', $event);
         $user = Auth::user();
         $event->participants()->attach($user->id);
-        return response()->json(['status' => 'success']);
+
+        $user->notifications()->where('type', 'event_invitation')->where('event_id', $id)->delete();
+
+        return redirect()->route('event', ['id' => $id]);
     }
+
+    public function apiJoinEvent($id){
+        $event = Event::find($id);
+        if(!$event){
+            return response()->json(['message' => 'Event not found.'], 404);
+        }
+
+        try {
+            $this->authorize('join', $event);
+        } 
+        catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to join this event.'], 403);
+        }
+
+        $user = Auth::user();
+        $event->participants()->attach($user->id);
+        $user->notifications()->where('type', 'event_invitation')->where('event_id', $id)->delete();
+
+        return response()->json(['message' => 'User joined event.'], 200);
+    }
+    
     public function leaveEvent($id)
     {
         $event = Event::find($id);
         $this->authorize('leave', $event);
         $user = Auth::user();
         $event->participants()->detach($user->id);
-        return response()->json(['status' => 'success']);
+        return redirect()->route('event', ['id' => $id]);
     }
 
-    public function destroy($id)
+    public function apiLeaveEvent($id){
+        $event = Event::find($id);
+        if(!$event){
+            return response()->json(['message' => 'Event not found.'], 404);
+        }
+
+        try {
+            $this->authorize('leave', $event);
+        } 
+        catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to leave this event.'], 403);
+        }
+
+        $user = Auth::user();
+        $event->participants()->detach($user->id);
+
+        return response()->json(['message' => 'User left event.'], 200);
+    }
+
+    public function destroy(Request $request, $id)
     {
         $event = Event::findOrFail($id);
         $this->authorize('delete', $event);
         $event->delete();
 
-        return redirect()->route('my-events')->with('status', "Evento {$event->name} removido com sucesso.");
+        return redirect()->back()->with('status', "Evento {$event->name} removido com sucesso.");
+    }
+
+    public function apiDestroy(Request $request, $id)
+    {
+        $event = Event::find($id);
+
+        if (!$event) {
+            return response()->json(['message' => 'Event not found.'], 404);
+        }
+
+        try {
+            $this->authorize('delete', $event);
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to delete this event.'], 403);
+        }
+
+        $event->delete();
+
+        return response()->json(['message' => 'Event deleted.'], 200);
     }
 
     public function inviteUser(Request $request)
@@ -104,26 +166,10 @@ class EventController extends Controller
                 $queryBuilder->where('end_date', '<=', $endDate);
             });
 
-        $results = $eventsQuery->get();
+        $results = $eventsQuery->get()->map(function ($event) {
+            $event->isParticipating = $event->participants()->get()->contains(Auth::user());
+            return $event;
+        });
 
         return response()->json($results);
-    }
-
-    public function ApiDelete(int $id)
-    {
-        $event = Event::find($id);
-
-        if (!$event) {
-            return response()->json([
-                'message' => 'Event not found.'
-            ], 404);
-        }
-
-        $this->authorize('delete', $event);
-        $event->delete();
-
-        return response()->json([
-            'message' => 'Event deleted.'
-        ], 200);
-    }
-}
+    }}

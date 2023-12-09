@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReportComment;
-use Illuminate\Http\Request;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class ReportCommentController extends Controller
 {
     public function index() {
-        $this->authorize('viewAny', ReportComment::class);
+        try {
+            $this->authorize('viewAny', ReportComment::class);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to view reports'], 403);
+        }
 
         $reports = ReportComment::all();
 
@@ -16,7 +20,11 @@ class ReportCommentController extends Controller
     }
 
     public function destroy(int $id) {
-        $this->authorize('delete', ReportComment::class);
+        try {
+            $this->authorize('delete', ReportComment::class);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to delete reports'], 403);
+        }
 
         $report = ReportComment::find($id);
 
@@ -34,7 +42,11 @@ class ReportCommentController extends Controller
     }
 
     public function markAsResolved(int $id) {
-        $this->authorize('markAsResolved', ReportComment::class);
+        try {
+            $this->authorize('markAsResolved', ReportComment::class);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to mark reports as resolved'], 403);
+        }
 
         $report = ReportComment::find($id);
 
