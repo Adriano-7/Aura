@@ -108,7 +108,7 @@
                 </div>
 
                 @foreach ($organization->organizers as $member)
-                    <div class="row report">
+                    <div class="row report" id="member-{{$member->id}}">
                         <div class="col-3 members-profile d-flex align-items-center">
                             <div class="pr-2">
                                 <img src="{{ asset('assets/profile/' . $member->photo) }}">
@@ -122,14 +122,9 @@
                         </div>
                         <div class="col-2 members-actions d-flex justify-content-center">
                             <div class="dropdown">
-                                <form action="{{ route('organization.eliminateMember') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="organization_id" value="{{ $organization->id }}">
-                                    <input type="hidden" name="user_id" value="{{ $member->id }}">
-                                    <button class="btn" type="submit">
-                                        <img src="{{ asset('assets/close-icon.svg') }}" alt="more">
-                                    </button>
-                                </form>
+                                <button class="btn" onclick="eliminateMember({{ $organization->id }}, {{ $member->id }})">
+                                    <img src="{{ asset('assets/close-icon.svg') }}" alt="more">
+                                </button>
                             </div>
                         </div>
                     </div>

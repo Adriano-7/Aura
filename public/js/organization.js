@@ -18,3 +18,22 @@ approveOrg = async (id) => {
         warning.remove();
     }
 }
+
+eliminateMember = async (orgId, memberId) => {
+    const response = await fetch('/api/organizacao/remover-utilizador', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrf,
+        },
+        body: JSON.stringify({ organization_id: orgId, user_id: memberId })
+    });
+
+    if (!response.ok) {
+        console.error(`Error: ${response.statusText}`);
+        return;
+    }
+
+    const member = document.getElementById(`member-${memberId}`);
+    member.remove();
+}

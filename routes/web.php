@@ -129,7 +129,7 @@ Route::controller(OrganizationController::class)->group(function () {
     Route::post('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
     Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser'); 
 
-    Route::post('/api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: We still need to refactor to make it an api
+    Route::post('/api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember');
     Route::delete('/api/organizacao/{id}/apagar', 'deleteOrg');
     Route::put('/api/organizacao/{id}/aprovar', 'approve')->name('organization.approve');
 
