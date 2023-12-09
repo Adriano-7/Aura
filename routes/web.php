@@ -64,7 +64,7 @@ Route::controller(HomeController::class)->group(function () {
 //Notifications
 Route::controller(NotificationsController::class)->group(function () {
     Route::get('/notificacoes', 'show')->name('notifications');
-    Route::get('/notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen'); //Change http method to put
+    Route::put('/notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen');
 
     Route::delete('/api/notificacoes/{id}/apagar', 'delete')->name('notification.delete');
     Route::put('/api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization'); //TODO: Change this to the organization controller
@@ -96,7 +96,6 @@ Route::controller(CreateEventController::class)->group(function () {
 //Edit Events
 Route::controller(EditEventController::class)->group(function () {
     Route::get('/editar-evento/{id}', 'show')->name('edit-event');
-
     Route::put('/atualizar-evento/{id}', 'update')->name('update-event');
 });
 

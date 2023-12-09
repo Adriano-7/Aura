@@ -43,7 +43,6 @@ class NotificationsController extends Controller{
             return response()->json(['message' => 'Notification not found'], 404);
         }
 
-
         try{
             $this->authorize('delete', $notification);
         }

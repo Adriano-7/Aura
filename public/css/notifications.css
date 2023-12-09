@@ -63,19 +63,15 @@
     font-size: 0.8rem;
     font-weight: 300;
     position: relative;
-    top: 50%;
-    transform: translateY(-60%);
     word-wrap: break-word;
 
-    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    border: none;
 }
 
 .notification-buttons {
     margin-left: auto; 
-
-    position: relative;
-    top: 50%;
-    transform: translateY(20%);
 }
 
 @media (max-width: 765px) {
