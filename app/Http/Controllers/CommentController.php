@@ -63,7 +63,13 @@ class CommentController extends Controller{
             'file' => 'file|mimes:jpg,jpeg,png,bmp,gif,svg,pdf|max:2048'
         ]);
         $event = Event::findOrFail($request->event_id);
-        $this->authorize('store', [Comment::class, $event, $request->user()]);
+
+        try{
+            $this->authorize('store', [Comment::class, $event, $request->user()]);
+        }
+        catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to comment on this event'], 403);
+        }
 
         $comment = new Comment;
         $comment->user_id = Auth::user()->id;
@@ -79,9 +85,8 @@ class CommentController extends Controller{
             $comment->file_id = $file->id;
             $comment->save();
             $fileRequest->storeAs('public', $file->file_name);
-            $fileRequest->move(public_path('uploads'), $file->fileName);
         }
-        return redirect(URL::previous() . '#comments')->with('success', 'Comment added successfully');
+        return response()->json(['message' => 'Comment added successfully', 'comment' => $comment, 'author' => Auth::user()]);
     }
 
     public function addLike(int $commentId){
