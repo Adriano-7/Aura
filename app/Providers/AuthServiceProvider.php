@@ -19,7 +19,8 @@ class AuthServiceProvider extends ServiceProvider
         Organization::class => OrganizationPolicy::class,
         ReportComment::class => ReportCommentPolicy::class,
         ReportEvent::class => ReportEventPolicy::class,
-        User::class => UserPolicy::class,        
+        User::class => UserPolicy::class,
+        VoteComment::class => VoteCommentPolicy::class,    
     ];
 
     /**

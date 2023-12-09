@@ -35,9 +35,7 @@ class Comment extends Model
      * Get all comments for a given event, sorted by date (newest first)
      */
     static public function event_comments(int $event_id): Collection {
-        return Comment::where('event_id', $event_id)
-            ->orderBy('date', 'desc')
-            ->get();
+        return Comment::where('event_id', $event_id)->orderBy('date', 'desc')->get();
     }
 
     public function author() {
@@ -48,7 +46,7 @@ class Comment extends Model
         return $this->hasOne(File::class, 'id', 'file_id');
     }
 
-    public function vote($user_id) {
+    public function userVote($user_id) {
         return VoteComment::voteValue($this->id, $user_id);
     }
 
