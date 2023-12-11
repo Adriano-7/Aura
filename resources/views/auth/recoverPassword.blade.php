@@ -17,15 +17,9 @@
                                     style="width: 7rem;" class="pt-5 mt-xl-4"></a>
                         </div>
 
-                        <!-- TODO: Improve css pos -->
-                        <!-- @if ($errors->has('login_error')) -->
-                        <!--     <span class="error"> -->
-                        <!--         {{ $errors->first('login_error') }} -->
-                        <!--     </span> -->
-                        <!-- @endif -->
-
+                        <!-- TODO: Add a title -->
                         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-xl-n5">
-                            <form method="POST" action="{{ route('login') }}">
+                            <form method="POST" action="{{ route('recoverPassword') }}">
                                 @csrf
                                 <input type="email" name="email" placeholder="Email"
                                     required />

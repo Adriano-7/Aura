@@ -37,7 +37,8 @@
                                 <button id="submit-button" type="submit">Iniciar sessão</button>
                                 <p>Ainda não tem conta? <a href="{{ route('register') }}"
                                         id="registo-mensagem">Registe-se!</a></p>
-                                <p>Esqueceu-se da sua palavra passe? <a href="{{ route('recoverPassword') }}"
+                                <p>Esqueceu-se da sua palavra passe? <a href="{{ route('recoverPassword') }}">
+                                    Recupere-a aqui!</a></p>
                             </form>
                         </div>
                     </div>

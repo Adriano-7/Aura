@@ -162,6 +162,13 @@ CREATE TABLE notifications (
     FOREIGN KEY (user_emitter_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS recover_password CASCADE;
+CREATE TABLE recover_password (
+    id SERIAL PRIMARY KEY,
+    email TEXT NOT NULL,
+    token TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp
+);
 
 -- Performance Indexes
 -- Index 01

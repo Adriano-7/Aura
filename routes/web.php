@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\RecoverPasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +15,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportEventController;
 use App\Http\Controllers\EditEventController;
+use App\Http\Controllers\RecoverPasswordController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -47,6 +47,7 @@ Route::controller(RegisterController::class)->group(function () {
 
 Route::controller(RecoverPasswordController::class)->group(function () {
     Route::get('/recuperar-password', 'showRecoverPasswordForm')->name('recoverPassword');
+    Route::post('/recuperar-password', 'post');
 });
 
 //User API

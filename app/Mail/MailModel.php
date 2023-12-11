@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -28,7 +29,9 @@ class MailModel extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
+            // some error with env
+            // from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
+            from: new Address("todo@email.com", "Test"),
             subject: 'Aura - Recuperação de password',
         );
     }
