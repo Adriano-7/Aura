@@ -49,4 +49,38 @@ class RecoverPasswordController extends Controller
         // success regardless of whether the email exists or not (security reasons)
         return back()->withSuccess('Email enviado com sucesso!');
     }
+
+    public function showResetPasswordForm(Request $request) {
+        if (Auth::check()) {
+            return redirect()->route('home');
+        }
+
+        $data = DB::table('recover_password')->where('token', $request->route('token'))->first();
+
+        if (!$data) {
+            return redirect()->route('home')->withErrors(['token' => 'Token inválido!']);
+        }
+
+        if (strtotime($data->created_at) < strtotime('-1 day')) {
+            return redirect()->route('home')->withErrors(['token' => 'Token expirado!']);
+        }
+
+        return view('auth.resetPassword', ['email' => $data->email]);
+    }
+
+    public function reset(Request $request) {
+        $request->validate([
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        $data = DB::table('recover_password')->where('email', $request->email)->first();
+
+        DB::table('users')->where('email', $request->email)->update([
+            'password' => bcrypt($request->password),
+        ]);
+
+        DB::table('recover_password')->where('email', $request->email)->delete();
+
+        return redirect()->route('home')->withSuccess('Password alterada com sucesso!');
+    }
 }

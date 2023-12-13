@@ -48,6 +48,9 @@ Route::controller(RegisterController::class)->group(function () {
 Route::controller(RecoverPasswordController::class)->group(function () {
     Route::get('/recuperar-password', 'showRecoverPasswordForm')->name('recoverPassword');
     Route::post('/recuperar-password', 'post');
+
+    Route::get('/recuperar-password/{token}', 'showResetPasswordForm')->name('resetPassword');
+    Route::post('/recuperar-password/{token}', 'reset')->name('resetPasswordPost');
 });
 
 //User API
