@@ -7,6 +7,10 @@
 @endsection
 
 @section('content')
+    @if (session('success'))
+        @include('widgets.popUpNotification', ['message' => session('success')])
+    @endif
+
     <section class="text-center text-lg-start">
         <section class="vh-100">
             <div class="container-fluid">
@@ -15,9 +19,9 @@
                         <div class="px-5 ms-xl-4">
                             <a href="/"><img src="{{ asset('assets/AuraLogo.svg') }}" alt="Logo"
                                     style="width: 7rem;" class="pt-5 mt-xl-4"></a>
+                            <h1 class="mt-5 mb-4 display-10 fw-bold lh-1" style="color: #808080;">Recuperar password</h1>
                         </div>
 
-                        <!-- TODO: Add a title -->
                         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-xl-n5">
                             <form method="POST" action="{{ route('recoverPassword') }}">
                                 @csrf
