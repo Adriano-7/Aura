@@ -29,9 +29,7 @@ class MailModel extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            // some error with env
-            // from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
-            from: new Address("todo@email.com", "Test"),
+            from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
             subject: 'Aura - Recuperação de password',
         );
     }
