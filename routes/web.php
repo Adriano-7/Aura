@@ -116,8 +116,9 @@ Route::controller(EventController::class)->group(function () {
 Route::controller(CommentController::class)->group(function () {
     Route::get('api/comentarios', 'index');
     Route::get('api/comentarios/{id}', 'show');
-    Route::delete('api/comentario/{id}/apagar', 'destroy');
     Route::post('api/comentario/inserir', 'store')->name('comment.add');
+    Route::put('api/comentario/{id}/editar', 'update')->name('comment.edit');
+    Route::delete('api/comentario/{id}/apagar', 'destroy');
     Route::post('api/comentario/{id}/up', 'addLike');
     Route::post('api/comentario/{id}/down', 'addDislike');
     Route::delete('api/comentario/{id}/unvote', 'removeVote');

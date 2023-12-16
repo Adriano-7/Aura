@@ -89,6 +89,24 @@ class CommentController extends Controller{
         return response()->json(['message' => 'Comment added successfully', 'comment' => $comment, 'author' => Auth::user()]);
     }
 
+    public function update(Request $request, int $id) {
+        $comment = Comment::find($id);
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found'], 404);
+        }
+        /*
+        try {
+            $this->authorize('update', $comment);
+        } 
+        catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to update this comment'], 403);
+        }
+        */
+        $comment->text = $request->text;
+        $comment->save();
+        return response()->json(['message' => 'Comment updated successfully']);
+    }
+
     public function addLike(int $commentId){
         $comment = Comment::find($commentId);
         if(!$comment){
