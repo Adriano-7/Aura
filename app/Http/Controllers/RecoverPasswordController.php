@@ -47,7 +47,7 @@ class RecoverPasswordController extends Controller
         }
 
         // success regardless of whether the email exists or not (security reasons)
-        return back()->withSuccess('Email enviado com sucesso!');
+        return redirect()->route('home')->withSuccess('Email enviado com sucesso!');
     }
 
     public function showResetPasswordForm(Request $request) {
