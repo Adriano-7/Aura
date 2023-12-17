@@ -344,34 +344,38 @@ $(document).ready(function(){
 
     document.addEventListener('submit', function(e){
         if(e.target.matches('.edit-comment-form')) {
-            e.preventDefault();
-            let form = e.target;
-            let url = form.action;
-            let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            let formData = new FormData(form);
-            let formParams = new URLSearchParams(formData);
-
-            let request = new XMLHttpRequest();
-            request.open('PUT', url);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            request.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-            request.send(formParams);
-            request.onload = function(){
-                let commentId = form.id.split('-')[1];
-                let commentText = form.children[0].value;
-                let commentTextElement = document.createElement('p');
-                commentTextElement.setAttribute('class', 'comment-text');
-                commentTextElement.innerText = commentText;
-                form.replaceWith(commentTextElement);
-                let editButton = document.getElementById(`EDIT-${commentId}`);
-                editButton.setAttribute('class', 'icon-button edit-comment-btn');
-                let editIcon = document.createElement('img');
-                editIcon.setAttribute('class', 'icon');
-                editIcon.setAttribute('src', `${window.location.origin}/assets/edit-icon.svg`);
-                editButton.innerHTML = '';
-                editButton.appendChild(editIcon);
-            }
+            editComment(e);
         }
     });
 });
+
+function editComment(e){
+    e.preventDefault();
+    let form = e.target;
+    let url = form.action;
+    let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    let formData = new FormData(form);
+    let formParams = new URLSearchParams(formData);
+
+    let request = new XMLHttpRequest();
+    request.open('PUT', url);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    request.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+    request.send(formParams);
+    request.onload = function(){
+        let commentId = form.id.split('-')[1];
+        let commentText = form.children[0].value;
+        let commentTextElement = document.createElement('p');
+        commentTextElement.setAttribute('class', 'comment-text');
+        commentTextElement.innerText = commentText;
+        form.replaceWith(commentTextElement);
+        let editButton = document.getElementById(`EDIT-${commentId}`);
+        editButton.setAttribute('class', 'icon-button edit-comment-btn');
+        let editIcon = document.createElement('img');
+        editIcon.setAttribute('class', 'icon');
+        editIcon.setAttribute('src', `${window.location.origin}/assets/edit-icon.svg`);
+        editButton.innerHTML = '';
+        editButton.appendChild(editIcon);
+    }
+}
