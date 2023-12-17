@@ -315,7 +315,7 @@ $(document).ready(function(){
         submitButton.setAttribute('class', 'icon-button edit-comment');
         let submitIcon = document.createElement('img');
         submitIcon.setAttribute('class', 'icon');
-        submitIcon.setAttribute('src', `${window.location.origin}/assets/send-icon.svg`);
+        submitIcon.setAttribute('src', `${window.location.origin}/assets/save-icon.svg`);
         submitButton.appendChild(submitIcon);
         
         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -358,24 +358,31 @@ function editComment(e){
     let formData = new FormData(form);
     let formParams = new URLSearchParams(formData);
 
-    let request = new XMLHttpRequest();
-    request.open('PUT', url);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    request.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-    request.send(formParams);
-    request.onload = function(){
-        let commentId = form.id.split('-')[1];
-        let commentText = form.children[0].value;
-        let commentTextElement = document.createElement('p');
-        commentTextElement.setAttribute('class', 'comment-text');
-        commentTextElement.innerText = commentText;
-        form.replaceWith(commentTextElement);
-        let editButton = document.getElementById(`EDIT-${commentId}`);
-        editButton.setAttribute('class', 'icon-button edit-comment-btn');
-        let editIcon = document.createElement('img');
-        editIcon.setAttribute('class', 'icon');
-        editIcon.setAttribute('src', `${window.location.origin}/assets/edit-icon.svg`);
-        editButton.innerHTML = '';
-        editButton.appendChild(editIcon);
-    }
+    fetch(new URL(url,  window.location.origin), {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: formParams
+    }).then(res => {
+            if (res.ok) {
+                res.json().then(data => {
+                    let commentId = form.id.split('-')[1];
+                    let commentText = form.children[0].value;
+                    let commentTextElement = document.createElement('p');
+                    commentTextElement.setAttribute('class', 'comment-text');
+                    commentTextElement.innerText = commentText;
+                    form.replaceWith(commentTextElement);
+                    let editButton = document.getElementById(`EDIT-${commentId}`);
+                    editButton.setAttribute('class', 'icon-button edit-comment-btn');
+                    let editIcon = document.createElement('img');
+                    editIcon.setAttribute('class', 'icon');
+                    editIcon.setAttribute('src', `${window.location.origin}/assets/edit-icon.svg`);
+                    editButton.innerHTML = '';
+                    editButton.appendChild(editIcon);
+                });
+            }
+        }
+    ).catch(err => console.log(err));
 }
