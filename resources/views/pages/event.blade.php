@@ -155,7 +155,7 @@
                         <img class="profile-pic" src="{{asset('assets/profile/' . $user->photo)}}">
                         <form id="add-comment" method="POST" action="{{route('comment.add')}}" enctype="multipart/form-data">
                             @csrf
-                            <input type="text" name="text" placeholder="Adicione um comentário" autocomplete="off">
+                            <input type="text" name="text" placeholder="Adicione um comentário" autocomplete="off" required>
                             <input type="hidden" name="event_id" value="{{$event->id}}">
                             <label for="file-upload" class="icon-button">
                                 <img class="icon" src="{{asset('assets/clip-icon.svg')}}">
@@ -176,16 +176,13 @@
                                 <span class="comment-author">{{$comment->author->name}}</span>
                                 <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
                                 @if(Auth::check())
-                                <!--
                                     @if(Auth::user()->id == $comment->user_id)
-                                        <button class="icon-button">
+                                        <button class="icon-button edit-comment-btn" id="{{'EDIT-' . $comment->id}}">
                                             <img class="icon" src="{{asset('assets/edit-icon.svg')}}">
                                         </button>
                                     @endif
-                                -->
-                                    
                                     @if(Auth::user()->id == $comment->author->id || Auth::user()->is_admin)
-                                        <button class="icon-button trash-bin" id="{{'DELETE-' . $comment->id}}">
+                                        <button class="icon-button delete-comment-btn" id="{{'DELETE-' . $comment->id}}">
                                             <img class="icon" src="{{asset('assets/delete-icon.svg')}}">
                                         </button>
                                     @endif

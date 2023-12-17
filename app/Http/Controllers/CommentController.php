@@ -13,8 +13,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 
 class CommentController extends Controller{
-
-    //TODO: add this->authorize
     public function index(Request $request) {
         if (!$request->has('eventId')) {
             return response()->json(['message' => 'Event id is required'], 400);
@@ -48,8 +46,7 @@ class CommentController extends Controller{
         }
         try {
             $this->authorize('delete', $comment);
-        } 
-        catch (AuthorizationException $e) {
+        } catch (AuthorizationException $e) {
             return response()->json(['message' => 'User not authorized to delete this comment'], 403);
         }
         $comment->delete();
@@ -66,8 +63,7 @@ class CommentController extends Controller{
 
         try{
             $this->authorize('store', [Comment::class, $event, $request->user()]);
-        }
-        catch (AuthorizationException $e) {
+        } catch (AuthorizationException $e) {
             return response()->json(['message' => 'User not authorized to comment on this event'], 403);
         }
 
@@ -86,7 +82,22 @@ class CommentController extends Controller{
             $comment->save();
             $fileRequest->storeAs('public', $file->file_name);
         }
-        return response()->json(['message' => 'Comment added successfully', 'comment' => $comment, 'author' => Auth::user()]);
+        return response()->json(['message' => 'Comment added successfully', 'comment' => $comment, 'author' => Auth::user()], 200);
+    }
+
+    public function update(Request $request, int $id) {
+        $comment = Comment::find($id);
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found'], 404);
+        }
+        try {
+            $this->authorize('update', $comment);
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to update this comment'], 403);
+        }
+        $comment->text = $request->text;
+        $comment->save();
+        return response()->json(['message' => 'Comment updated successfully']);
     }
 
     public function addLike(int $commentId){
@@ -96,8 +107,7 @@ class CommentController extends Controller{
         }
         try{
             $this->authorize('addVote', [VoteComment::class, $comment]);
-        }
-        catch (AuthorizationException $e){
+        } catch (AuthorizationException $e){
             return response()->json(['error'=> $e->getMessage()],403);
         }
         VoteComment::addVote($commentId, Auth::user()->id, true);
@@ -111,8 +121,7 @@ class CommentController extends Controller{
         }
         try{
             $this->authorize('addVote', [VoteComment::class, $comment]);
-        }
-        catch (AuthorizationException $e){
+        } catch (AuthorizationException $e){
             return response()->json(['error'=> $e->getMessage()],403);
         }
         VoteComment::addVote($commentId, Auth::user()->id, false);
@@ -126,8 +135,7 @@ class CommentController extends Controller{
         }
         try{
             $this->authorize('deleteVote', [VoteComment::class, $comment]);
-        }
-        catch (AuthorizationException $e){
+        } catch (AuthorizationException $e){
             return response()->json(['error'=> $e->getMessage()],403);
         }
         VoteComment::deleteVote($commentId, Auth::user()->id);

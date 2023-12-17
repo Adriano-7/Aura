@@ -149,35 +149,6 @@ $(document).ready(function(){
         .catch(err => console.log(err));
     });
 
-    $(document).on('click', '.trash-bin', function(){
-        if (!confirm('Tem a certeza?')) {
-            return;
-        }
-
-        let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        let commentId = $(this).attr('id').split('-')[1];
-
-        fetch(new URL(`api/comentario/${commentId}/apagar`,  window.location.origin), {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-        }).then(res => {
-                if (res.ok) {
-                    // remove comment row
-                    let commentRow = $(this).parent().parent().parent();
-                    commentRow.remove();
-                    // update comments count
-                    let commentCount = $('#comments').find('h2').text().split('(')[1].split(')')[0];
-                    commentCount = parseInt(commentCount);
-                    commentCount--;
-                    $('#comments').find('h2').text(`Comentários (${commentCount})`);
-                }
-            })
-        .catch(err => console.log(err));
-    });
-
     $(document).on('submit', '#add-comment', function(e){
         e.preventDefault();
         let form = $(this);
@@ -219,9 +190,22 @@ $(document).ready(function(){
                         usernameAndDate.appendChild(commentAuthor);
                         usernameAndDate.appendChild(commentDate);
 
+                        // Create edit button
+                        let editButton = document.createElement('button');
+                        editButton.setAttribute('class', 'icon-button edit-comment-btn');
+                        editButton.setAttribute('id', `EDIT-${comment.id}`);
+
+                        // Create edit icon
+                        let editIcon = document.createElement('img');
+                        editIcon.setAttribute('class', 'icon');
+                        editIcon.setAttribute('src', `${window.location.origin}/assets/edit-icon.svg`);
+                        editButton.appendChild(editIcon);
+
+                        usernameAndDate.appendChild(editButton);
+
                         // Create trash bin button
                         let trashBinButton = document.createElement('button');
-                        trashBinButton.setAttribute('class', 'icon-button trash-bin');
+                        trashBinButton.setAttribute('class', 'icon-button delete-comment-btn');
                         trashBinButton.setAttribute('id', `DELETE-${comment.id}`);
 
                         // Create trash bin icon
@@ -276,4 +260,129 @@ $(document).ready(function(){
             }
         ).catch(err => console.log(err));
     });
+
+    $(document).on('click', '.delete-comment-btn', function(){
+        if (!confirm('Tem a certeza?')) {
+            return;
+        }
+
+        let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        let commentId = $(this).attr('id').split('-')[1];
+
+        fetch(new URL(`api/comentario/${commentId}/apagar`,  window.location.origin), {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+        }).then(res => {
+                if (res.ok) {
+                    // remove comment row
+                    let commentRow = $(this).parent().parent().parent();
+                    commentRow.remove();
+                    // update comments count
+                    let commentCount = $('#comments').find('h2').text().split('(')[1].split(')')[0];
+                    commentCount = parseInt(commentCount);
+                    commentCount--;
+                    $('#comments').find('h2').text(`Comentários (${commentCount})`);
+                }
+            })
+        .catch(err => console.log(err));
+    });
+
+    $(document).on('click', '.edit-comment-btn', function(){
+        let commentRow = $(this).parent().parent().parent();
+        let commentText = commentRow.find('.comment-text');
+        let commentTextValue = commentText.text();
+        let commentId = $(this).attr('id').split('-')[1];
+
+        // Create form
+        let form = document.createElement('form');
+        form.setAttribute('action', `${window.location.origin}/api/comentario/${commentId}/editar`);
+        form.setAttribute('method', 'POST');
+        form.setAttribute('id', `editComment-${commentId}`);
+        form.setAttribute('class', 'edit-comment-form');
+        // Create input
+        let input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('name', 'text');
+        input.setAttribute('value', commentTextValue);
+        // set autocomplete to off
+        input.setAttribute('autocomplete', 'off');
+        // Create submit button
+        let submitButton = document.createElement('button');
+        submitButton.setAttribute('type', 'submit');
+        submitButton.setAttribute('class', 'icon-button edit-comment');
+        let submitIcon = document.createElement('img');
+        submitIcon.setAttribute('class', 'icon');
+        submitIcon.setAttribute('src', `${window.location.origin}/assets/save-icon.svg`);
+        submitButton.appendChild(submitIcon);
+        
+        let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        let hiddenCSRF = document.createElement('input');
+        hiddenCSRF.setAttribute('type', 'hidden');
+        hiddenCSRF.setAttribute('name', '_token');
+        hiddenCSRF.setAttribute('value', csrfToken);
+        // Append input and submit button to form
+        form.appendChild(input);
+        form.appendChild(submitButton);
+        form.appendChild(hiddenCSRF);
+        // Replace comment text with form
+        commentText.replaceWith(form);
+
+        // change this icon to a cancel icon
+        $(this).attr('class', 'icon-button cancel-edit-comment-btn');
+        let cancelIcon = document.createElement('img');
+        cancelIcon.setAttribute('class', 'icon');
+        cancelIcon.setAttribute('src', `${window.location.origin}/assets/cross-icon.svg`);
+        $(this).html(cancelIcon);
+    });
+
+    $(document).on('click', '.cancel-edit-comment-btn', function(){
+        location.reload();
+    });
+
+    document.addEventListener('submit', function(e){
+        if(e.target.matches('.edit-comment-form')) {
+            editComment(e);
+        }
+    });
 });
+
+function editComment(e){
+    e.preventDefault();
+    let form = e.target;
+    let url = form.action;
+    let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    let formData = new FormData(form);
+    let formParams = new URLSearchParams(formData);
+
+    fetch(new URL(url,  window.location.origin), {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: formParams
+    }).then(res => {
+            if (res.ok) {
+                res.json().then(data => {
+                    let commentId = form.id.split('-')[1];
+                    let commentText = form.children[0].value;
+                    let commentTextElement = document.createElement('p');
+                    commentTextElement.setAttribute('class', 'comment-text');
+                    commentTextElement.innerText = commentText;
+                    form.replaceWith(commentTextElement);
+                    let editButton = document.getElementById(`EDIT-${commentId}`);
+                    editButton.setAttribute('class', 'icon-button edit-comment-btn');
+                    let editIcon = document.createElement('img');
+                    editIcon.setAttribute('class', 'icon');
+                    editIcon.setAttribute('src', `${window.location.origin}/assets/edit-icon.svg`);
+                    editButton.innerHTML = '';
+                    editButton.appendChild(editIcon);
+                });
+            }
+        }
+    ).catch(err => console.log(err));
+}
