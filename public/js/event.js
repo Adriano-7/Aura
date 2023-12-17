@@ -290,51 +290,10 @@ $(document).ready(function(){
         .catch(err => console.log(err));
     });
 
-    /*
-    
-    <div class="comment-row">
-        <img class="profile-pic" src="http://127.0.0.1:8000/assets/profile/luis_sousa.jpeg">
-        <div class="comment-content">
-            <div class="username-and-date">
-                <span class="comment-author">Luís Sousa</span>
-                <span class="comment-date">11 minutes ago</span>
-            </div>
-            <p class="comment-text">Mal posso esperar!</p>
-            <div class="votes-row">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff"
-                    class="bi bi-arrow-up-circle L0" viewBox="0 0 16 16"
-                    style="cursor: pointer; margin-right:0.5em" id="L-6">
-                    <path fill-rule="evenodd"
-                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z" />
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff"
-                    class="bi bi-arrow-down-circle D0" viewBox="0 0 16 16"
-                    style="cursor: pointer; margin-right:0.5em" id="D-6">
-                    <path fill-rule="evenodd"
-                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z" />
-                </svg>
-                <span class="comment-votes" inert>1</span>
-            </div>
-        </div>
-    </div>
-    
-    */
-
     $(document).on('click', '.edit-comment-btn', function(){
-        // This function should make the comment editable by changing the <p> to a form:
-        // <form action="{{ route('comentario.edit', $comment->id) }}" method="PUT">
-        //     <input type="text" name="text" value="{{ $comment->text }}">
-        //     <input type="submit" value="Editar">
-        // </form>
-
-        // Get comment row
         let commentRow = $(this).parent().parent().parent();
-        // Get comment text
         let commentText = commentRow.find('.comment-text');
-        // Get comment text value
         let commentTextValue = commentText.text();
-
-        // commentId is the attribute id of the button split by '-'
         let commentId = $(this).attr('id').split('-')[1];
 
         // Create form
@@ -348,17 +307,9 @@ $(document).ready(function(){
         input.setAttribute('type', 'text');
         input.setAttribute('name', 'text');
         input.setAttribute('value', commentTextValue);
+        // set autocomplete to off
+        input.setAttribute('autocomplete', 'off');
         // Create submit button
-
-        /* 
-        <label for="file-upload" class="icon-button">
-            <img class="icon" src="{{asset('assets/clip-icon.svg')}}">
-            <input id="file-upload" type="file" name="file" style="display:none;">
-        </label>
-        <button type="submit" class="icon-button edit-comment">
-            <img class="icon" src="{{asset('assets/send-icon.svg')}}">
-        </button>
-        */
         let submitButton = document.createElement('button');
         submitButton.setAttribute('type', 'submit');
         submitButton.setAttribute('class', 'icon-button edit-comment');
@@ -379,7 +330,7 @@ $(document).ready(function(){
         // Replace comment text with form
         commentText.replaceWith(form);
 
-        // change this iscon to a cancel icon
+        // change this icon to a cancel icon
         $(this).attr('class', 'icon-button cancel-edit-comment-btn');
         let cancelIcon = document.createElement('img');
         cancelIcon.setAttribute('class', 'icon');
@@ -387,32 +338,40 @@ $(document).ready(function(){
         $(this).html(cancelIcon);
     });
 
-    // cancel-edit-comment-btn to reload the page
     $(document).on('click', '.cancel-edit-comment-btn', function(){
         location.reload();
     });
 
-    $(document).on('submit', '.edit-comment-form', function(e){
-        e.preventDefault();
-        let form = $(this);
-        let formData = new FormData(form[0]);
-        let url = form.attr('action');
-        let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    document.addEventListener('submit', function(e){
+        if(e.target.matches('.edit-comment-form')) {
+            e.preventDefault();
+            let form = e.target;
+            let url = form.action;
+            let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        console.log(formData);
+            let formData = new FormData(form);
+            let formParams = new URLSearchParams(formData);
 
-        fetch(new URL(url,  window.location.origin), {
-            method: 'PUT',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            body: formData
-        }).then(res => {
-                if (res.ok) {
-                    res.json().then(data => {
-                        console.log("Success editing comment");
-                    });
-                }
-        })
+            let request = new XMLHttpRequest();
+            request.open('PUT', url);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            request.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+            request.send(formParams);
+            request.onload = function(){
+                let commentId = form.id.split('-')[1];
+                let commentText = form.children[0].value;
+                let commentTextElement = document.createElement('p');
+                commentTextElement.setAttribute('class', 'comment-text');
+                commentTextElement.innerText = commentText;
+                form.replaceWith(commentTextElement);
+                let editButton = document.getElementById(`EDIT-${commentId}`);
+                editButton.setAttribute('class', 'icon-button edit-comment-btn');
+                let editIcon = document.createElement('img');
+                editIcon.setAttribute('class', 'icon');
+                editIcon.setAttribute('src', `${window.location.origin}/assets/edit-icon.svg`);
+                editButton.innerHTML = '';
+                editButton.appendChild(editIcon);
+            }
+        }
     });
 });
