@@ -153,7 +153,7 @@
                 @if(Auth::check() && !Auth::user()->is_admin && Auth::user()->participatesInEvent($event))
                     <div id="add-comment-row" class="comment-row">
                         <img class="profile-pic" src="{{asset('assets/profile/' . $user->photo)}}">
-                        <form id="add-comment" method="POST" action="{{route('comment.add')}}" enctype="multipart/form-data">
+                        <form id="add-comment-form" method="POST" action="{{route('comment.add')}}" enctype="multipart/form-data">
                             @csrf
                             <input type="text" name="text" placeholder="Adicione um comentário" autocomplete="off" required>
                             <input type="hidden" name="event_id" value="{{$event->id}}">
