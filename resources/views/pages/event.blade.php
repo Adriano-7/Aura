@@ -169,7 +169,7 @@
                 @endif
 
                 @foreach($comments as $comment)
-                    <div class="comment-row">
+                    <div class="comment-row" id="{{'COMMENT-' . $comment->id}}">
                         <img class="profile-pic" src="{{asset('assets/profile/' . $comment->author->photo)}}">
                         <div class="comment-content">
                             <div class="username-and-date">
@@ -177,12 +177,12 @@
                                 <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
                                 @if(Auth::check())
                                     @if(Auth::user()->id == $comment->user_id)
-                                        <button class="icon-button edit-comment-btn" id="{{'EDIT-' . $comment->id}}">
+                                        <button class="icon-button edit-comment-btn" id="{{'editButton-' . $comment->id}}">
                                             <img class="icon" src="{{asset('assets/edit-icon.svg')}}">
                                         </button>
                                     @endif
                                     @if(Auth::user()->id == $comment->author->id || Auth::user()->is_admin)
-                                        <button class="icon-button delete-comment-btn" id="{{'DELETE-' . $comment->id}}">
+                                        <button class="icon-button delete-comment-btn">
                                             <img class="icon" src="{{asset('assets/delete-icon.svg')}}">
                                         </button>
                                     @endif
