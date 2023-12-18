@@ -27,9 +27,11 @@ class User extends Authenticatable{
         'id',
         'is_admin',
         'name',
+        'username',
         'email',
         'password',
-        'photo'
+        'photo',
+        'background_color',
     ];
 
     /**
