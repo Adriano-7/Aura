@@ -1,339 +1,5 @@
 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-/*
-
-~ unfilled up arrow
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-up-circle L0" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em" id="{{'upIcon-' . $comment->id}}">
-    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
-</svg>
-
-~ unfilled down arrow
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-down-circle D0" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em" id="{{'downIcon-' . $comment->id}}">
-    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
-</svg>
-
-~ filled up arrow
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-up-circle-fill L1" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em" id="{{'upIcon-' . $comment->id}}">
-    <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
-</svg>
-
-~ filled down arrow
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-down-circle-fill D-1" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em" id="{{'downIcon-' . $comment->id}}">
-    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
-</svg>
-
-*/
-
-document.addEventListener('click', function(event){
-    if(event.target.matches('.L0')){
-        console.log("You clicked in L0");
-
-        let commentId = event.target.id.split('-')[1];
-        fetch(new URL(`api/comentario/${commentId}/up`,  window.location.origin), {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-        }).then(res => {
-                if (res.ok) {
-                    event.target.classList.remove("L0");
-                    event.target.classList.add("L1");
-                    event.target.innerHTML = '<path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>';
-                    let otherBtnId = 'downIcon-' + commentId;
-                    let otherBtn = document.getElementById(otherBtnId);
-                    otherBtn.classList.remove("D0");
-                    otherBtn.classList.add("D1");
-                    let voteSpan = Array.from(event.target.parentNode.children).find(el => el.className === 'comment-votes');
-                    let voteBalance = parseInt(voteSpan.textContent);
-                    voteSpan.textContent = voteBalance + 1;
-                }
-            })
-        .catch(err => console.log(err));
-    }
-
-    if(event.target.matches('.D0')){        
-        console.log("You clicked in D0");
-        
-        let commentId = event.target.id.split('-')[1];
-        fetch(new URL(`api/comentario/${commentId}/down`,  window.location.origin), {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-        }).then(res => {
-                if (res.ok) {
-                    event.target.classList.remove("D0");
-                    event.target.classList.add("D-1");
-                    event.target.innerHTML = '<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>';
-                    let otherBtnId = 'upIcon-' + commentId;
-                    let otherBtn = document.getElementById(otherBtnId);
-                    otherBtn.classList.remove("L0");
-                    otherBtn.classList.add("L-1");
-                    let voteSpan = Array.from(event.target.parentNode.children).find(el => el.className === 'comment-votes');
-                    let voteBalance = parseInt(voteSpan.textContent);
-                    voteSpan.textContent = voteBalance - 1;
-                }
-            })
-        .catch(err => console.log(err));
-    }
-
-    if(event.target.matches('.L1')){
-        console.log("You clicked in L1");
-        
-        let commentId = event.target.id.split('-')[1];
-        fetch(new URL(`api/comentario/${commentId}/unvote`,  window.location.origin), {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-        }).then(res => {
-                if (res.ok) {
-                    event.target.classList.remove("L1");
-                    event.target.classList.add("L0");
-                    event.target.innerHTML = '<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>';
-                    let otherBtnId = 'downIcon-' + commentId;
-                    let otherBtn = document.getElementById(otherBtnId);
-                    otherBtn.classList.remove("D1");
-                    otherBtn.classList.add("D0");
-                    let voteSpan = Array.from(event.target.parentNode.children).find(el => el.className === 'comment-votes');
-                    let voteBalance = parseInt(voteSpan.textContent);
-                    voteSpan.textContent = voteBalance - 1;
-                }
-            })
-        .catch(err => console.log(err));
-    }
-
-    if(event.target.matches('.D1')){
-        console.log("You clicked in D1");
-        
-        let commentId = event.target.id.split('-')[1];
-        fetch(new URL(`api/comentario/${commentId}/unvote`,  window.location.origin), {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-        }).then(res => {
-                if (res.ok) {
-                    event.target.classList.remove("D1");
-                    event.target.classList.add("D0");
-                    let otherBtnId = 'upIcon-' + commentId;
-                    let otherBtn = document.getElementById(otherBtnId);
-                    otherBtn.classList.remove("L1");
-                    otherBtn.classList.add("L0");
-                    otherBtn.innerHTML = '<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>';
-                    let voteSpan = Array.from(event.target.parentNode.children).find(el => el.className === 'comment-votes');
-                    let voteBalance = parseInt(voteSpan.textContent);
-                    voteSpan.textContent = voteBalance - 1;
-                }
-            })
-        .catch(err => console.log(err));
-    }
-
-    if(event.target.matches('.L-1')){
-        console.log("You clicked in L-1");
-        
-        let commentId = event.target.id.split('-')[1];
-        fetch(new URL(`api/comentario/${commentId}/unvote`,  window.location.origin), {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-        }).then(res => {
-                if (res.ok) {
-                    event.target.classList.remove("L-1");
-                    event.target.classList.add("L0");
-                    let otherBtnId = 'downIcon-' + commentId;
-                    let otherBtn = document.getElementById(otherBtnId);
-                    otherBtn.classList.remove("D-1");
-                    otherBtn.classList.add("D0");
-                    otherBtn.innerHTML = '<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>';
-                    let voteSpan = Array.from(event.target.parentNode.children).find(el => el.className === 'comment-votes');
-                    let voteBalance = parseInt(voteSpan.textContent);
-                    voteSpan.textContent = voteBalance + 1;
-                }
-            })
-        .catch(err => console.log(err));
-    }
-
-    if(event.target.matches('.D-1')){        
-        console.log("You clicked in D-1");
-        
-        let commentId = event.target.id.split('-')[1];
-        fetch(new URL(`api/comentario/${commentId}/unvote`,  window.location.origin), {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
-            },
-        }).then(res => {
-                if (res.ok) {
-                    event.target.classList.remove("D-1");
-                    event.target.classList.add("D0");
-                    event.target.innerHTML = '<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>';
-                    let otherBtnId = 'upIcon-' + commentId;
-                    let otherBtn = document.getElementById(otherBtnId);
-                    otherBtn.classList.remove("L-1");
-                    otherBtn.classList.add("L0");
-                    let voteSpan = Array.from(event.target.parentNode.children).find(el => el.className === 'comment-votes');
-                    let voteBalance = parseInt(voteSpan.textContent);
-                    voteSpan.textContent = voteBalance + 1;
-                }
-            })
-        .catch(err => console.log(err));
-    }
-});
-
-/*
-$(document).on('click', '.L0', function(){
-    let commentId = $(this).attr('id').split('-')[1];
-
-    fetch(new URL(`api/comentario/${commentId}/up`,  window.location.origin), {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-    }).then(res => {
-            if (res.ok) {
-                $(this).attr('class', "bi bi-arrow-up-circle-fill L1");
-                $(this).html('<path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>');
-                otherBtnId = 'D-' + commentId;
-                otherBtn = document.getElementById(otherBtnId);
-                otherBtn.setAttribute('class', "bi bi-arrow-up-circle D1");
-                let voteSpan = $(this).nextAll('.comment-votes').first();
-                let voteBalance = parseInt(voteSpan.text());
-                voteSpan.text(voteBalance + 1);
-            }
-        })
-    .catch(err => console.log(err));
-});
-
-$(document).on('click', '.D0', function(){
-    let commentId = $(this).attr('id').split('-')[1];
-
-    fetch(new URL(`api/comentario/${commentId}/down`,  window.location.origin), {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-    }).then(res => {
-            if (res.ok) {
-                $(this).attr('class', "bi bi-arrow-up-circle D-1");
-                $(this).html('<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>');
-                otherBtnId = 'L-' + commentId;
-                otherBtn = document.getElementById(otherBtnId);
-                otherBtn.setAttribute('class', "bi bi-arrow-up-circle L-1");
-                let voteSpan = $(this).nextAll('.comment-votes').first();
-                let voteBalance = parseInt(voteSpan.text());
-                voteSpan.text(voteBalance - 1);
-            }
-        })
-    .catch(err => console.log(err));
-});
-
-$(document).on('click', '.L1', function(){
-    let commentId = $(this).attr('id').split('-')[1];
-
-    fetch(new URL(`api/comentario/${commentId}/unvote`,  window.location.origin), {
-        method: 'DELETE',
-        headers: {
-            'content-type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-    }).then(res => {
-            if (res.ok) {
-                $(this).attr('class', "bi bi-arrow-up-circle L0");
-                $(this).html('<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>');
-                otherBtnId = 'D-' + commentId;
-                otherBtn = document.getElementById(otherBtnId);
-                otherBtn.setAttribute('class', "bi bi-arrow-up-circle D0");
-                let voteSpan = $(this).nextAll('.comment-votes').first();
-                let voteBalance = parseInt(voteSpan.text());
-                voteSpan.text(voteBalance - 1);
-            }
-        })
-    .catch(err => console.log(err));
-});
-
-$(document).on('click', '.D1', function(){
-    let commentId = $(this).attr('id').split('-')[1];
-
-    fetch(new URL(`api/comentario/${commentId}/unvote`,  window.location.origin), {
-        method: 'DELETE',
-        headers: {
-            'content-type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-    }).then(res => {
-            if (res.ok) {
-                $(this).attr('class', "bi bi-arrow-up-circle D0");
-                otherBtnId = 'L-' + commentId;
-                otherBtn = document.getElementById(otherBtnId);
-                otherBtn.setAttribute('class', "bi bi-arrow-up-circle L0");
-                otherBtn.innerHTML = '<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>';
-                let voteSpan = $(this).nextAll('.comment-votes').first();
-                let voteBalance = parseInt(voteSpan.text());
-                voteSpan.text(voteBalance - 1);
-            }
-        })
-    .catch(err => console.log(err));
-});
-
-$(document).on('click', '.L-1', function(){
-    let commentId = $(this).attr('id').split('-')[1];
-
-    fetch(new URL(`api/comentario/${commentId}/unvote`,  window.location.origin), {
-        method: 'DELETE',
-        headers: {
-            'content-type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-    }).then(res => {
-            if (res.ok) {
-                $(this).attr('class', "bi bi-arrow-up-circle L0");
-                otherBtnId = 'D-' + commentId;
-                otherBtn = document.getElementById(otherBtnId);
-                otherBtn.setAttribute('class', "bi bi-arrow-up-circle D0");
-                otherBtn.innerHTML = '<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>';
-                let voteSpan = $(this).nextAll('.comment-votes').first();
-                let voteBalance = parseInt(voteSpan.text());
-                voteSpan.text(voteBalance + 1);
-            }
-        })
-    .catch(err => console.log(err));
-});
-
-$(document).on('click', '.D-1', function(){
-    let commentId = $(this).attr('id').split('-')[1];
-
-    fetch(new URL(`api/comentario/${commentId}/unvote`,  window.location.origin), {
-        method: 'DELETE',
-        headers: {
-            'content-type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-    }).then(res => {
-            if (res.ok) {
-                $(this).attr('class', "bi bi-arrow-up-circle D0");
-                $(this).html('<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>');
-                otherBtnId = 'L-' + commentId;
-                otherBtn = document.getElementById(otherBtnId);
-                otherBtn.setAttribute('class', "bi bi-arrow-up-circle L0");
-                let voteSpan = $(this).nextAll('.comment-votes').first();
-                let voteBalance = parseInt(voteSpan.text());
-                voteSpan.text(voteBalance + 1);
-            }
-        })
-    .catch(err => console.log(err));
-});
-*/
-
 document.addEventListener('submit', function(e){
     if(e.target.matches('.edit-comment-form')) {
         updateComment(e);
@@ -341,20 +7,6 @@ document.addEventListener('submit', function(e){
     if(e.target.matches('#add-comment-form')) {
         addComment(e);
     }
-});
-
-const deleteCommentButtons = document.querySelectorAll('.delete-comment-btn');
-deleteCommentButtons.forEach(button => {
-    button.addEventListener('click', async e => {
-        deleteComment(button);
-    });
-});
-
-const editCommentButtons = document.querySelectorAll('.edit-comment-btn');
-editCommentButtons.forEach(button => {
-    button.addEventListener('click', async e => {
-        activateEditComment(button);
-    });
 });
 
 function updateComment(e){
@@ -377,7 +29,7 @@ function updateComment(e){
             if (res.ok) {
                 res.json().then(data => {
                     let commentText = data.text;
-                    commentRow = document.getElementById(`COMMENT-${commentId}`);
+                    commentRow = document.getElementById(`comment-${commentId}`);
 
                     let commentTextElement = document.createElement('p');
                     commentTextElement.setAttribute('class', 'comment-text');
@@ -494,7 +146,7 @@ function addComment(e){
                         commentContent.appendChild(commentText);
                         commentContent.appendChild(votesRow);
                         commentRow.appendChild(commentContent);
-                        commentRow.setAttribute('id', `COMMENT-${comment.id}`);
+                        commentRow.setAttribute('id', `comment-${comment.id}`);
                         let comments = document.getElementById('comments-card');
 
                         comments.insertBefore(commentRow, comments.children[1]);
@@ -507,6 +159,14 @@ function addComment(e){
             }
         ).catch(err => console.log(err));
 }
+
+
+const deleteCommentButtons = document.querySelectorAll('.delete-comment-btn');
+deleteCommentButtons.forEach(button => {
+    button.addEventListener('click', async e => {
+        deleteComment(button);
+    });
+});
 
 function deleteComment(button){
     if (!confirm('Tem a certeza?')) {
@@ -534,6 +194,14 @@ function deleteComment(button){
         })
     .catch(err => console.log(err));
 }
+
+
+const editCommentButtons = document.querySelectorAll('.edit-comment-btn');
+editCommentButtons.forEach(button => {
+    button.addEventListener('click', async e => {
+        activateEditComment(button);
+    });
+});
 
 function activateEditComment(button){
     let commentRow = button.parentElement.parentElement.parentElement;
@@ -584,4 +252,161 @@ function activateEditComment(button){
 
     let editButton = document.getElementById(`editButton-${commentId}`);
     editButton.style.visibility = 'hidden';
+}
+
+const upvoteButtons = document.querySelectorAll('.up-btn');
+upvoteButtons.forEach(button => {
+    button.addEventListener('click', async e => {
+        upVote(button);
+    });
+});
+
+function upVote(upButton){
+    let commentRow = upButton.parentElement.parentElement.parentElement;
+    let downButton = commentRow.querySelector('.down-btn');
+    let commentVotes = commentRow.querySelector('.comment-votes');
+    let votesBalance = parseInt(commentVotes.textContent);
+    
+    let upVoteSelected = upButton.hasAttribute('selected');
+    let downVoteSelected = downButton.hasAttribute('selected');
+    
+    let commentId = commentRow.id.split('-')[1];
+    let url = `${window.location.origin}/api/comentario/${commentId}/`;
+    let method = 'POST';
+
+    if(upVoteSelected && !downVoteSelected){
+        // remove upvote
+        url += 'unvote'
+        method = 'DELETE'
+    }
+    else if(!upVoteSelected && downVoteSelected){
+        // remove downvote
+        url += 'unvote'
+        method = 'DELETE'
+    }
+    else if(!upVoteSelected && !downVoteSelected){
+        // add upvote
+        url += 'up'
+    }
+    else{
+        console.log('You cannot upvote and downvote');
+        return;
+    }
+
+    fetch(new URL(url,  window.location.origin), {
+        method: method,
+        headers: {
+            'content-type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    }).then(res => {
+        if (res.ok) {
+            if(upVoteSelected && !downVoteSelected){
+                upButton.removeAttribute('selected');
+                upButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-up-circle" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                    </svg>
+                `;
+                commentVotes.textContent = votesBalance - 1;
+            }
+            else if(!upVoteSelected && downVoteSelected){
+                downButton.removeAttribute('selected');
+                downButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-down-circle" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                    </svg>
+                `;
+                commentVotes.textContent = votesBalance + 1;
+            }
+            else if(!upVoteSelected && !downVoteSelected){
+                upButton.setAttribute('selected', '');
+                upButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
+                        <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                    </svg>
+                `;
+                commentVotes.textContent = votesBalance + 1;
+            }
+        }
+    })
+}
+
+const downvoteButtons = document.querySelectorAll('.down-btn');
+downvoteButtons.forEach(button => {
+    button.addEventListener('click', async e => {
+        downVote(button);
+    });
+});
+
+function downVote(downButton){
+    let commentRow = downButton.parentElement.parentElement.parentElement;
+    let upButton = commentRow.querySelector('.up-btn');
+    let commentVotes = commentRow.querySelector('.comment-votes');
+    let votesBalance = parseInt(commentVotes.textContent);
+    
+    let upVoteSelected = upButton.hasAttribute('selected');
+    let downVoteSelected = downButton.hasAttribute('selected');
+    
+    let commentId = commentRow.id.split('-')[1];
+    let url = `${window.location.origin}/api/comentario/${commentId}/`;
+    let method = 'POST';
+
+    if(upVoteSelected && !downVoteSelected){
+        // remove upvote
+        url += 'unvote'
+        method = 'DELETE'
+    }
+    else if(!upVoteSelected && downVoteSelected){
+        // remove downvote
+        url += 'unvote'
+        method = 'DELETE'
+    }
+    else if(!upVoteSelected && !downVoteSelected){
+        // add downvote
+        url += 'down'
+    }
+    else{
+        console.log('You cannot upvote and downvote');
+        return;
+    }
+
+    fetch(new URL(url,  window.location.origin), {
+        method: method,
+        headers: {
+            'content-type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    }).then(res => {
+        if (res.ok) {
+            if(upVoteSelected && !downVoteSelected){
+                upButton.removeAttribute('selected');
+                upButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-up-circle" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                    </svg>
+                `;
+                commentVotes.textContent = votesBalance - 1;
+            }
+            else if(!upVoteSelected && downVoteSelected){
+                downButton.removeAttribute('selected');
+                downButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-down-circle" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
+                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8m15 0A8 8 0 1 0 0 8a8 8 0 0 0 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                    </svg>
+                `;
+                commentVotes.textContent = votesBalance + 1;
+
+            }
+            else if(!upVoteSelected && !downVoteSelected){
+                downButton.setAttribute('selected', '');
+                downButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                    </svg>
+                `;
+                commentVotes.textContent = votesBalance - 1;
+            }
+        }
+    })
 }
