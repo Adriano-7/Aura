@@ -97,7 +97,7 @@ class CommentController extends Controller{
         }
         $comment->text = $request->text;
         $comment->save();
-        return response()->json(['message' => 'Comment updated successfully']);
+        return response()->json(['message' => 'Comment updated successfully', 'text' => $comment->text]);
     }
 
     public function addLike(int $commentId){
