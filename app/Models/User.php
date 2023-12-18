@@ -58,15 +58,20 @@ class User extends Authenticatable{
         return $event->participants()->get()->contains($this);
     }
 
-    public function userOrganizations(){
+    public function organizations(){
         return $this->belongsToMany('App\Models\Organization', 'organizers', 'user_id', 'organization_id');
     }
 
     public function isOrganizer(Organization $organization){
-        return $this->userOrganizations->contains($organization);
+        return $this->organizations->contains($organization);
     }
 
     public function notifications(): HasMany{
         return $this->hasMany(Notification::class, 'receiver_id');
+    }
+
+    public function eventsWhichParticipates(){
+        $partEvents = Event::whereHas('participants', function ($query) { $query->where('user_id', $this->id);})->get();
+        return $partEvents;
     }
 }

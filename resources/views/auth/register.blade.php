@@ -25,6 +25,7 @@
                                 <span class="error">
                                     {{ $errors->first('username') }}
                                 </span>
+                            @endif
 
                             @if ($errors->has('email'))
                                 <span class="error">

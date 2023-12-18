@@ -22,7 +22,7 @@ class EditEventController extends Controller{
         return view('pages.editEvent', [
             'user' => Auth::user(),
             'event' => $event,
-            'organizations' => Auth::user()->userOrganizations()->get()
+            'organizations' => Auth::user()->organizations()->get()
         ]);
     }
 

@@ -6,6 +6,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+use App\Helpers\ColorHelper;
+
 
 class UserController extends Controller{
     public function destroy(int $id) {
@@ -37,10 +39,16 @@ class UserController extends Controller{
                 'message' => 'User not found'
             ], 404);
         }
-
+    
+        $color1_increment = -120;
+        $color2_increment = 50;
         return view('pages.profile', [
             'userProfile' => $userProfile,
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'color1' => ColorHelper::adjustBrightness($userProfile->background_color, $color1_increment),
+            'color2' => ColorHelper::adjustBrightness($userProfile->background_color, $color2_increment),
+            'organizations' =>  $userProfile->organizations,
+            'events' => $userProfile->eventsWhichParticipates(),
         ]);
     }
 }

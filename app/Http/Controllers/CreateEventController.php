@@ -17,7 +17,7 @@ class CreateEventController extends Controller{
         }
 
         $user = Auth::user();
-        $organizations = $user->userOrganizations()->get();
+        $organizations = $user->organizations()->get();
 
         return view('pages.createEvent', [
             'user' => Auth::user(),
