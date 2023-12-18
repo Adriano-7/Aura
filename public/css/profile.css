@@ -1,0 +1,45 @@
+#content {
+    margin: 0 10%;
+}
+
+#profile-header {
+    height: 30%;
+}
+
+#background-banner {
+    position: relative;
+    height: 15em;
+    border-bottom: 2px solid #fff;
+}
+
+#profile-pic {
+    position: absolute;
+    transform: translateY(-50%); 
+    width: 15em;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin-left: 5%;
+}
+
+#profile-fields{
+    position: absolute;
+    margin: 2em 25%;
+}
+
+#complete-name {
+    font-size: 2em;
+    font-weight: bold;
+    color: #fff;
+}
+
+#username, #email {
+    font-size: 1em;
+    color: #fff;
+    font-weight: 200;
+}
+
+#username::after {
+    content: "•";
+    margin: 0 1em;
+    font-weight: 600;
+}

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Auth\Access\AuthorizationException;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller{
     public function destroy(int $id) {
@@ -25,5 +27,20 @@ class UserController extends Controller{
         return response()->json([
             'message' => 'User deleted'
         ], 200);
+    }
+
+    public function show(string $username) {
+        $userProfile = User::where('username', $username)->first();
+
+        if (!$userProfile) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        return view('pages.profile', [
+            'userProfile' => $userProfile,
+            'user' => Auth::user()
+        ]);
     }
 }
