@@ -15,6 +15,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportEventController;
 use App\Http\Controllers\EditEventController;
+use App\Http\Controllers\PollController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -110,6 +111,8 @@ Route::controller(EventController::class)->group(function () {
     Route::post('/api/evento/{id}/aderir', 'apiJoinEvent')->name('event.apiJoin');
     Route::delete('/api/evento/{id}/sair', 'apiLeaveEvent')->name('event.apiLeave');
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
+
+    
 });
 
 //Comments
@@ -122,6 +125,16 @@ Route::controller(CommentController::class)->group(function () {
     Route::post('api/comentario/{id}/up', 'addLike');
     Route::post('api/comentario/{id}/down', 'addDislike');
     Route::delete('api/comentario/{id}/unvote', 'removeVote');
+});
+
+//Polls
+Route::controller(PollController::class)->group(function () {
+    Route::get('/api/pesquisa/{id}', 'show');
+    Route::post('/api/pesquisa/inserir', 'store')->name('polls.store');
+    Route::put('/api/pesquisa/{id}/editar', 'update');
+    Route::delete('/api/pesquisa/{id}/apagar', 'destroy');
+    Route::post('/api/pesquisa/{id}/votar', 'vote');
+    Route::delete('/api/pesquisa/{id}/unvote', 'unvote');
 });
 
 //Organization

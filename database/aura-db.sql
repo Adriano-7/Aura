@@ -125,11 +125,35 @@ CREATE TABLE reports_comment (
     reason_id INTEGER NOT NULL REFERENCES report_reasons_comment (id) ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS poll CASCADE;
+CREATE TABLE polls (
+    id SERIAL PRIMARY KEY,
+    event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
+    question TEXT NOT NULL,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp
+);
+
+DROP TABLE IF EXISTS poll_option CASCADE;
+CREATE TABLE poll_option (
+    id SERIAL PRIMARY KEY,
+    poll_id INTEGER NOT NULL REFERENCES polls (id) ON DELETE CASCADE,
+    text TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS poll_vote CASCADE;
+CREATE TABLE poll_vote (
+    id SERIAL PRIMARY KEY,
+    poll_option_id INTEGER NOT NULL REFERENCES poll_option (id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE
+);
+
 DROP TYPE IF EXISTS notification_type CASCADE;
 CREATE TYPE notification_type AS ENUM ('event_invitation', 'event_edit', 'organization_invitation', 'organization_registration_request', 'organization_registration_response');
 
 DROP TYPE IF EXISTS event_field CASCADE;
 CREATE TYPE event_field AS ENUM ('name', 'description', 'photo', 'address', 'venue', 'city', 'start_date', 'end_date', 'is_public');
+
+
 
 /*
     event_invitation -> user_emitter_id, event_id

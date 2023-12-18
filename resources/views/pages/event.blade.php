@@ -145,6 +145,27 @@
             <div class="card">
                 <p id="about-text">{{$event->description}}</p>
             </div>
+
+        <section id="polls" class="event-field">
+            <h2>Polls</h2>
+            @if(Auth::check())
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Create a new poll</h5>
+                        <form method="POST" action="{{ route('polls.store') }}">
+                            @csrf
+                            <input type="hidden" name="event_id" value="{{ $event->id }}">
+                            <div class="form-group">
+                                <label for="question">Question:</label>
+                                <input type="text" class="form-control" id="question" name="question" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create Poll</button>
+                        </form>
+                    </div>
+                </div>
+            @endif
+        </section>
+
         </section>
         <section id="comments" class="event-field">
                 <h2>Comentários ({{$comments->count()}})</h2>
