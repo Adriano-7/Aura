@@ -1,5 +1,5 @@
 <div class="container home-row">
-    <h1 class="row_title">Artistas Mais Populares</h1>
+    <h1 class="row_title">{{$text}}</h1>
     <div class="row flex-row flex-nowrap overflow-auto">
         @foreach ($organizations as $organization)
             <a class="card" href="{{ route('organization.show', ['id' => $organization->id]) }}">

@@ -26,6 +26,6 @@
         @include('widgets.greetingsBanner')
     @endif
 
-    @include('widgets.eventRow', ['events' => $events])
-    @include('widgets.organizationRow', ['organizations' => $organizations])
+    @include('widgets.eventRow', ['events' => $events, 'text' => 'Eventos recomendados'])
+    @include('widgets.organizationRow', ['organizations' => $organizations, 'text' => 'Artistas mais populares'])
 @endsection
