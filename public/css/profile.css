@@ -115,6 +115,6 @@ scrollbar-width: none;  /* Firefox */
 }
 
 .section-card {
-    max-width: 45%;
+    width: 45%;
 }
 

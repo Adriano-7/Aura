@@ -170,10 +170,14 @@
 
                 @foreach($comments as $comment)
                     <div class="comment-row" id="{{'comment-' . $comment->id}}">
-                        <img class="profile-pic" src="{{asset('assets/profile/' . $comment->author->photo)}}">
+                        <a href="{{route('user', $comment->author->username)}}">
+                            <img class="profile-pic" src="{{asset('assets/profile/' . $comment->author->photo)}}">
+                        </a>
                         <div class="comment-content">
                             <div class="username-and-date">
-                                <span class="comment-author">{{$comment->author->name}}</span>
+                                <a href="{{route('user', $comment->author->username)}}">
+                                    <span class="comment-author">{{$comment->author->name}}</span>
+                                </a>
                                 <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
                                 @if(Auth::check())
                                     @if(Auth::user()->id == $comment->user_id)
