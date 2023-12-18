@@ -1,3 +1,4 @@
+DROP SCHEMA IF EXISTS lbaw2384 CASCADE;
 CREATE SCHEMA IF NOT EXISTS lbaw2384;
 SET search_path TO lbaw2384;
 SET client_encoding TO 'UTF8';
@@ -95,11 +96,8 @@ CREATE TABLE vote_comments (
     is_up BOOLEAN NOT NULL
 );
 
-DROP TABLE IF EXISTS report_reasons_event CASCADE;
-CREATE TABLE report_reasons_event (
-    id SERIAL PRIMARY KEY,
-    text TEXT NOT NULL UNIQUE
-);
+DROP TYPE IF EXISTS report_reasons_event CASCADE;
+CREATE TYPE report_reasons_event AS ENUM ( 'suspect_fraud', 'inappropriate_content', 'incorrect_information');
 
 DROP TABLE IF EXISTS reports_event CASCADE;
 CREATE TABLE reports_event (
@@ -107,14 +105,11 @@ CREATE TABLE reports_event (
     event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
     resolved BOOLEAN NOT NULL DEFAULT FALSE,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    reason_id INTEGER NOT NULL REFERENCES report_reasons_event (id) ON DELETE CASCADE
+    reason report_reasons_event NOT NULL CHECK (reason IN ('suspect_fraud', 'inappropriate_content', 'incorrect_information'))
 );
 
-DROP TABLE IF EXISTS report_reasons_comment CASCADE;
-CREATE TABLE report_reasons_comment (
-    id SERIAL PRIMARY KEY,
-    text TEXT NOT NULL UNIQUE
-);
+DROP TYPE IF EXISTS report_reasons_comment CASCADE;
+CREATE TYPE report_reasons_comment AS ENUM ('inappropriate_content', 'violence_threats', 'incorrect_information', 'harassment_bullying', 'commercial_spam');
 
 DROP TABLE IF EXISTS reports_comment CASCADE;
 CREATE TABLE reports_comment (
@@ -122,7 +117,7 @@ CREATE TABLE reports_comment (
     comment_id INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE,
     resolved BOOLEAN NOT NULL DEFAULT FALSE,
     date TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    reason_id INTEGER NOT NULL REFERENCES report_reasons_comment (id) ON DELETE CASCADE
+    reason report_reasons_comment NOT NULL CHECK (reason IN ('inappropriate_content', 'violence_threats', 'incorrect_information', 'harassment_bullying', 'commercial_spam'))
 );
 
 DROP TYPE IF EXISTS notification_type CASCADE;
@@ -691,27 +686,19 @@ INSERT INTO vote_comments (comment_id, user_id, is_up) VALUES
     ('8', '19', TRUE),
     ('1', '20', FALSE);
 
-INSERT INTO report_reasons_event (id, text) VALUES
-    ('1', 'Suspeita de fraude ou golpe'),
-    ('2', 'Conteúdo inadequado ou ofensivo'),
-    ('3', 'Informações incorretas sobre o evento');
+INSERT INTO reports_event (id, event_id, reason) VALUES
+    ('1', '1', 'inappropriate_content'),
+    ('2', '2', 'suspect_fraud'),
+    ('3', '3', 'incorrect_information'),
+    ('4', '4', 'incorrect_information'),
+    ('5', '5', 'inappropriate_content');
 
-INSERT INTO report_reasons_comment (id, text) VALUES
-    ('1', 'Conteúdo inadequado ou não apropriado'),
-    ('2', 'Ameaças ou incitação à violência'),
-    ('3', 'Informações incorretas ou enganosas'),
-    ('4', 'Assédio ou bullying'),
-    ('5', 'Conteúdo comercial ou spam');
-
-INSERT INTO reports_event (id, event_id, reason_id) VALUES
-    ('1', '1', '1'),
-    ('2', '2', '2'),
-    ('3', '3', '3');
-
-INSERT INTO reports_comment (id, comment_id, reason_id) VALUES
-    ('1', '1', '1'),
-    ('2', '2', '2'),
-    ('3', '5', '5');
+INSERT INTO reports_comment (id, comment_id, reason) VALUES
+    ('1', '1', 'inappropriate_content'),
+    ('2', '2', 'violence_threats'),
+    ('3', '3', 'incorrect_information'),
+    ('4', '4', 'harassment_bullying'),
+    ('5', '5', 'commercial_spam');
 
 --Insert notifications for event invite
 INSERT INTO notifications(id, receiver_id, type, user_emitter_id, event_id) VALUES
@@ -801,5 +788,3 @@ SELECT setval('comments_id_seq', (SELECT MAX(id) FROM comments));
 SELECT setval('notifications_id_seq', (SELECT MAX(id) FROM notifications));
 SELECT setval('reports_event_id_seq', (SELECT MAX(id) FROM reports_event));
 SELECT setval('reports_comment_id_seq', (SELECT MAX(id) FROM reports_comment));
-SELECT setval('report_reasons_event_id_seq', (SELECT MAX(id) FROM report_reasons_event));
-SELECT setval('report_reasons_comment_id_seq', (SELECT MAX(id) FROM report_reasons_comment));
