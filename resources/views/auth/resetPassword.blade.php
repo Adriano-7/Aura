@@ -32,7 +32,7 @@
                                 @csrf
                                 <input type="email" name="email" value="{{ $email }}" hidden />
 
-                                <input type="password" name="password" placeholder="Palavra passe" required />
+                                <input type="password" name="password" placeholder="Nova palavra passe" required />
 
                                 <input type="password" name="password_confirmation" placeholder="Confirme a palavra passe"
                                     required />

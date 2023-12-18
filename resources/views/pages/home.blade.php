@@ -16,8 +16,8 @@
         @include('widgets.popUpNotification', ['message' => 'Ocorreu um erro ao recuperar a password: ' . $errors->first('token')])
     @endif
 
-    @if (session('success'))
-        @include('widgets.popUpNotification', ['message' => session('success')])
+    @if (session()->has('ResetMsg'))
+        @include('widgets.popUpNotification', ['message' => session()->get('ResetMsg')])
     @endif
 
     @if (!Auth::check())

@@ -46,8 +46,7 @@ class RecoverPasswordController extends Controller
             Mail::to($request->email)->send(new MailModel($mailData));
         }
 
-        // success regardless of whether the email exists or not (security reasons)
-        return redirect()->route('home')->withSuccess('Email enviado com sucesso!');
+        return redirect()->route('home')->with('ResetMsg', 'Segue as instruções no email para recuperar a password!');
     }
 
     public function showResetPasswordForm(Request $request) {
@@ -81,6 +80,17 @@ class RecoverPasswordController extends Controller
 
         DB::table('recover_password')->where('email', $request->email)->delete();
 
-        return redirect()->route('home')->withSuccess('Password alterada com sucesso!');
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->route('home')->with('ResetMsg', 'Password alterada com sucesso!');
+        }
+
+        return redirect()->route('home')->with('ResetMsg', 'Erro ao alterar a password!');
     }
 }
