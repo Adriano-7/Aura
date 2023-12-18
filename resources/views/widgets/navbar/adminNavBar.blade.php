@@ -43,8 +43,7 @@
 
 
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Definições</a></li>
-                        <li><a class="dropdown-item" href="#">Perfil</a></li>
+                        <li><a class="dropdown-item" href="{{ route('user', $user->username)}}">Perfil</a></li>
                         <li><a class="dropdown-item" href="{{ route('logout') }}">Log Out</a></li>
                     </ul>
                 </li>

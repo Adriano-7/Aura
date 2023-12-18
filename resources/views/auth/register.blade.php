@@ -21,6 +21,12 @@
                             <h1>Vamos criar a tua conta!</h1>
                             <h3>Junta-te à nossa comunidade!</h3>
 
+                            @if ($errors->has('username'))
+                                <span class="error">
+                                    {{ $errors->first('username') }}
+                                </span>
+                            @endif
+
                             @if ($errors->has('email'))
                                 <span class="error">
                                     {{ $errors->first('email') }}
@@ -37,18 +43,11 @@
                         <div class="d-flex align-items-center px-5 ms-xl-4 mt-xl-n5">
                             <form method="POST" action="{{ route('register') }}">
                                 {{ csrf_field() }}
-
-                                <input type="text" name="name" placeholder="Primeiro e último nome" required />
-
-                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Email"
-                                    required />
-
-
-                                <input type="password" name="password" placeholder="Palavra passe" required />
-
-                                <input type="password" name="password_confirmation" placeholder="Confirme a palavra passe"
-                                    required />
-
+                                <input type="text" name="name" placeholder="Primeiro e último nome" required autocomplete="off"/>
+                                <input type="text" name="username" placeholder="Nome de utilizador" required autocomplete="off"/>
+                                <input type="email" name="email" placeholder="Email" required autocomplete="off"/>
+                                <input type="password" name="password" placeholder="Palavra passe" required autocomplete="off"/>
+                                <input type="password" name="password_confirmation" placeholder="Confirme a palavra passe"required autocomplete="off"r/>
                                 <button id="submit-button" type="submit">Registar</button>
                                 <p>Já tem conta? <a href="{{ route('login') }}" id="registo-mensagem">Inicie sessão!</a></p>
                             </form>

@@ -1,5 +1,5 @@
 <div class="container home-row">
-    <h1 class="row_title">Eventos Recomendados</h1>
+    <h1 class="row_title">{{$text}}</h1>
     <div class="row flex-row flex-nowrap overflow-auto">
         @foreach ($events as $event)
             <a class="card" href="{{ route('event', ['id' => $event->id]) }}">
