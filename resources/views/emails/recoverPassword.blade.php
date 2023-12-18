@@ -1,8 +1,4 @@
 <style>
-    body {
-        background-color: #f5f5f5;
-    }
-
     h1 {
         font-size: 2.5rem;
     }

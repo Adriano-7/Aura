@@ -19,10 +19,14 @@
                         <div class="px-5 ms-xl-4">
                             <a href="/"><img src="{{ asset('assets/AuraLogo.svg') }}" alt="Logo"
                                     style="width: 7rem;" class="pt-5 mt-xl-4"></a>
-                            <h1 class="mt-5 mb-4 display-10 fw-bold lh-1" style="color: #808080;">Recuperar password</h1>
                         </div>
 
-                        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-xl-n5">
+                        <div id = "sample-text">
+                            <h1>Recupere a sua password</h1>
+                            <h3>Insira o seu email para recuperar a sua password</h3>
+                        </div>
+
+                        <div class="d-flex h-custom-2 px-5 ms-xl-4 mt-xl-n5">
                             <form method="POST" action="{{ route('recoverPassword') }}">
                                 @csrf
                                 <input type="email" name="email" placeholder="Email"
