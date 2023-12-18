@@ -28,18 +28,27 @@
 
 #complete-name {
     font-size: 2em;
-    font-weight: bold;
+    font-weight: 600;
     color: #fff;
 }
 
 #username, #email {
     font-size: 1em;
     color: #fff;
-    font-weight: 200;
+    font-weight: 300;
 }
 
 #username::after {
     content: "•";
     margin: 0 1em;
     font-weight: 600;
+}
+
+#username::before {
+    content: "@";
+    font-weight: 300;
+}
+
+.dropdown-item, .three-dots {
+    cursor: pointer;
 }
