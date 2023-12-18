@@ -74,13 +74,51 @@ class OrganizationController extends Controller{
     }
 
     public function eliminateMember(Request $request){
-        $organization = Organization::findOrFail($request->organization_id);
-        $this->authorize('eliminate_member', $organization);
+        $organization = Organization::find($request->organization_id);
+        if(!$organization){
+            return response()->json(['error' => 'Organization not found'], 404);
+        }
 
-        $user = User::findOrFail($request->user_id);
+        try{
+            $this->authorize('eliminate_member', $organization);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to eliminate this member'], 403);
+        }
+
+        $user = User::find($request->user_id);
+        if(!$user){
+            return response()->json(['error' => 'Member not found'], 404);
+        }
+
         $organization->organizers()->detach($user->id);
 
-        return redirect()->back()->with('status', 'Membro eliminado com sucesso!');
+        return response()->json(['message' => 'Member eliminated successfully']);
     }
 
+    public function approve(int $organizationId) {
+        if(!Auth::check()){
+            return response()->json(['error' => 'User not logged in'], 403);
+        }
+
+        $organization = Organization::find($organizationId);
+        if (!$organization) {
+            return response()->json(['error' => 'Organization not found'], 404);
+        }
+
+        try{
+            $this->authorize('approve', $organization);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to approve this organization'], 403);
+        }
+
+        $notifications = $organization->organizationRegistrationRequests;
+        foreach ($notifications as $notification) {
+            $notification->delete();
+        }
+    
+        $organization->approved = true;
+        $organization->save();
+    
+        return response()->json(['message' => 'Organization approved successfully']);
+    }
 }

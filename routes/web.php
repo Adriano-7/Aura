@@ -55,7 +55,7 @@ Route::controller(RecoverPasswordController::class)->group(function () {
 
 //User API
 Route::controller(UserController::class)->group(function() {
-    Route::delete('api/utilizador/{id}/apagar', 'destroy');
+    Route::delete('/api/utilizador/{id}/apagar', 'destroy');
 });
 
 //Dashboard
@@ -73,25 +73,21 @@ Route::controller(HomeController::class)->group(function () {
 //Notifications
 Route::controller(NotificationsController::class)->group(function () {
     Route::get('/notificacoes', 'show')->name('notifications');
+    Route::put('/notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen');
 
-    Route::get('notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen'); //Change http method to put
-
-    //TODO: Colocar isto como API
-    Route::delete('api/notificacoes/{id}/apagar', 'delete')->name('notification.delete');
-    Route::put('api/notificacoes/{id}/aceitar-convite', 'acceptInvitation')->name('notification.acceptInvitation');
-    Route::put('api/notificacoes/{id}/aprovar-organizacao', 'approveOrganization')->name('notification.approveOrganization');
-});
+    Route::delete('/api/notificacoes/{id}/apagar', 'delete')->name('notification.delete');
+}); 
 
 //Comment Reports
 Route::controller(ReportCommentController::class)->group(function () {
-    Route::get('api/denuncias/comentarios', 'index');
-    Route::put('api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
+    Route::get('/api/denuncias/comentarios', 'index');
+    Route::put('/api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
 });
 
 //Event Reports
 Route::controller(ReportEventController::class)->group(function () {
-    Route::get('api/denuncias/evento', 'index');
-    Route::put('api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
+    Route::get('/api/denuncias/evento', 'index');
+    Route::put('/api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
 });
 
 //My Events
@@ -108,7 +104,6 @@ Route::controller(CreateEventController::class)->group(function () {
 //Edit Events
 Route::controller(EditEventController::class)->group(function () {
     Route::get('/editar-evento/{id}', 'show')->name('edit-event');
-
     Route::put('/atualizar-evento/{id}', 'update')->name('update-event');
 });
 
@@ -120,9 +115,9 @@ Route::controller(EventController::class)->group(function () {
     Route::post('/evento/{id}/aderir', 'joinEvent')->name('event.join');
     Route::delete('/evento/{id}/sair', 'leaveEvent')->name('event.leave');
 
-    Route::delete('api/evento/{id}/apagar', 'apiDestroy')->name('event.apiDelete');
-    Route::post('api/evento/{id}/aderir', 'apiJoinEvent')->name('event.apiJoin');
-    Route::delete('api/evento/{id}/sair', 'apiLeaveEvent')->name('event.apiLeave');
+    Route::delete('/api/evento/{id}/apagar', 'apiDestroy')->name('event.apiDelete');
+    Route::post('/api/evento/{id}/aderir', 'apiJoinEvent')->name('event.apiJoin');
+    Route::delete('/api/evento/{id}/sair', 'apiLeaveEvent')->name('event.apiLeave');
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
 });
 
@@ -130,8 +125,9 @@ Route::controller(EventController::class)->group(function () {
 Route::controller(CommentController::class)->group(function () {
     Route::get('api/comentarios', 'index');
     Route::get('api/comentarios/{id}', 'show');
-    Route::delete('api/comentario/{id}/apagar', 'destroy')->name('comment.delete');
-    Route::post('api/comentarios/inserir', 'store')->name('comment.add');
+    Route::post('api/comentario/inserir', 'store')->name('comment.add');
+    Route::put('api/comentario/{id}/editar', 'update');
+    Route::delete('api/comentario/{id}/apagar', 'destroy');
     Route::post('api/comentario/{id}/up', 'addLike');
     Route::post('api/comentario/{id}/down', 'addDislike');
     Route::delete('api/comentario/{id}/unvote', 'removeVote');
@@ -143,8 +139,10 @@ Route::controller(OrganizationController::class)->group(function () {
     Route::post('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
     Route::post('/organizacao/convidar-utilizador', 'inviteUser')->name('organization.inviteUser'); 
 
-    Route::post('api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember'); //TODO: We still need to refactor to make it an api
-    Route::delete('api/organizacao/{id}/apagar', 'deleteOrg');
+    Route::post('/api/organizacao/remover-utilizador', 'eliminateMember')->name('organization.eliminateMember');
+    Route::delete('/api/organizacao/{id}/apagar', 'deleteOrg');
+    Route::put('/api/organizacao/{id}/aprovar', 'approve')->name('organization.approve');
+
 });
 
 //Search

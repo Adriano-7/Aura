@@ -251,10 +251,9 @@ p{
     border-radius: 10px;
 }
 
-#approveForm .btn{
+#approveButton{
     color: #cdc9c9;
     background-color: transparent;
-
 }
 
 @media (min-width: 765px){

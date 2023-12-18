@@ -23,4 +23,11 @@ class CommentPolicy
         }
         return Response::deny('Apenas participantes podem comentar no evento.');
     }
+
+    public function update(User $user, Comment $comment){
+        if ($user->id === $comment->user_id){
+            return Response::allow();
+        }
+        return Response::deny('Não pode editar este comentário.');
+    }
 }
