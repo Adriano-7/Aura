@@ -15,13 +15,22 @@ class PollVote extends Model
 
     public $timestamps = false;
 
-    protected $table='poll_option';
+    protected $table='poll_vote';
     protected $fillable = [
         'id',
         'poll_option_id',
         'user_id',
     ];
 
+    public function pollOption()
+    {
+        return $this->belongsTo(PollOption::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
    
 
 }

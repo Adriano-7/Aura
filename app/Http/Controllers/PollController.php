@@ -51,6 +51,43 @@ class PollController extends Controller{
         }
         return response()->json(['message' => 'Poll created successfully']);
     }
+
+    public function results(int $id) {
+        
+        // Find the poll by id
+        $poll = Poll::findOrFail($id);
+        // Get the options of the poll
+        $options = $poll->options;
+
+        // Initialize an array to store the results
+        $results = [];
+
+        // Loop through each option
+        foreach ($options as $option) {
+            
+            // Count the votes for the option
+            
+            $voteCount = optional($option->votes())->count() ?? 0;   
+            
+            // Calculate the percentage of votes for the option
+            $totalVotes = $poll->votes()->count();
+            
+            $percentage = $totalVotes > 0 ? ($voteCount / $totalVotes) * 100 : 0;            
+            
+            
+            
+            // Store the result
+            $results[] = [
+                'option_id' => $option->id,
+                'text' => $option->text,
+                'percentage' => round($percentage, 2)
+            ];
+        }
+
+        // Return the results
+        
+        return response()->json($results);    
+    }        
 }
 
 

@@ -129,12 +129,7 @@ Route::controller(CommentController::class)->group(function () {
 
 //Polls
 Route::controller(PollController::class)->group(function () {
-    Route::get('/api/pesquisa/{id}', 'show');
-    Route::post('/api/pesquisa/inserir', 'store')->name('polls.store');
-    Route::put('/api/pesquisa/{id}/editar', 'update');
-    Route::delete('/api/pesquisa/{id}/apagar', 'destroy');
-    Route::post('/api/pesquisa/{id}/votar', 'vote');
-    Route::delete('/api/pesquisa/{id}/unvote', 'unvote');
+    Route::get('/api/poll/{id}/resultados', 'results')->name('poll.results');
 });
 
 //Organization

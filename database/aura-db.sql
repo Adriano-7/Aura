@@ -125,7 +125,7 @@ CREATE TABLE reports_comment (
     reason_id INTEGER NOT NULL REFERENCES report_reasons_comment (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS poll CASCADE;
+DROP TABLE IF EXISTS polls CASCADE;
 CREATE TABLE polls (
     id SERIAL PRIMARY KEY,
     event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
@@ -815,6 +815,38 @@ INSERT INTO notifications(id, receiver_id, type, organization_id, user_emitter_i
     ('68', '2',  'organization_registration_request', '18', '18'),
     ('69', '1',  'organization_registration_request', '19', '19'),
     ('70', '2',  'organization_registration_request', '19', '19');
+
+-- Insert a poll
+INSERT INTO polls (id, event_id, question) VALUES
+    ('1', '1', 'What is your favorite programming language?'),
+    ('2', '1', 'What is your favorite music genre?');
+
+-- Insert options for the poll
+INSERT INTO poll_option (id, poll_id, text) VALUES
+    ('1', '1', 'Python'),
+    ('2', '1', 'JavaScript'),
+    ('3', '1', 'Java'),
+    ('4', '1', 'C#'),
+    ('5', '2', 'Rock'),
+    ('6', '2', 'Pop'),
+    ('7', '2', 'Metal'),
+    ('8', '2', 'Alternativo'),
+    ('9', '2', 'Folk');
+
+-- Insert votes for the poll
+INSERT INTO poll_vote (id, poll_option_id, user_id) VALUES
+    ('1', '1', '1'), -- User 1 votes for Python
+    ('2', '1', '2'), -- User 2 votes for Python
+    ('3', '2', '3'), -- User 3 votes for JavaScript
+    ('4', '3', '4'), -- User 4 votes for Java
+    ('5', '3', '5'), -- User 5 votes for Java
+    ('6', '4', '6'), -- User 6 votes for C#
+    ('7', '5', '7'), -- User 7 votes for Rock
+    ('8', '6', '8'), -- User 8 votes for Pop
+    ('9', '7', '9'), -- User 9 votes for Metal
+    ('10', '8', '10'), -- User 10 votes for Alternativo
+    ('11', '9', '11'); -- User 11 votes for Folk
+
 
 
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));

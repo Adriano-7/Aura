@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Event;
 use App\Models\PollOption;
+use App\Models\PollVote;
+
 
 
 
@@ -31,6 +33,10 @@ class Poll extends Model
 
     public function options() {
         return $this->hasMany(PollOption::class);
+    }
+
+    public function votes() {
+        return $this->hasManyThrough(PollVote::class, PollOption::class);
     }
 
 

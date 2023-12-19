@@ -5,10 +5,12 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 @endsection
 
 @section('scripts')
     <script src="{{ asset('js/event.js') }}" defer></script>
+    <script src="{{ asset('js/poll.js') }}" defer></script>
 @endsection
 
 @section('header')
@@ -146,26 +148,31 @@
                 <p id="about-text">{{$event->description}}</p>
             </div>
 
-        <section id="polls" class="event-field">
-            <h2>Polls</h2>
-            @if(Auth::check())
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Create a new poll</h5>
-                        <form method="POST" action="{{ route('polls.store') }}">
-                            @csrf
-                            <input type="hidden" name="event_id" value="{{ $event->id }}">
-                            <div class="form-group">
-                                <label for="question">Question:</label>
-                                <input type="text" class="form-control" id="question" name="question" required>
+        @if($event->polls->isNotEmpty())
+            <section id="polls" class="event-field">
+                <h2>Current Polls</h2>
+                @foreach($event->polls as $poll)
+                    <div class="card poll-card">
+                        <div class="card-header" id="heading_{{ $poll->id }}" data-toggle="collapse" data-target="#collapse_{{ $poll->id }}" aria-expanded="false" aria-controls="collapse_{{ $poll->id }}">
+                            <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                                {{ $poll->question }}
+                                <i class="bi bi-chevron-down" id="arrow_{{ $poll->id }}"></i> <!-- Arrow icon with unique ID -->
+                            </h5>
+                        </div>
+                        <div id="collapse_{{ $poll->id }}" class="collapse" aria-labelledby="heading_{{ $poll->id }}" data-parent="#polls">
+                            <div class="card-body">
+                                @foreach($poll->options as $option)
+                                    <div class="option-box" data-option-id="{{ $option->id }}">
+                                        {{ $option->text }}
+                                    </div>
+                                @endforeach
+                                <button type="submit" class="btn btn-primary">Submit</button> <!-- Submit button -->
                             </div>
-                            <button type="submit" class="btn btn-primary">Create Poll</button>
-                        </form>
+                        </div>
                     </div>
-                </div>
-            @endif
-        </section>
-
+                @endforeach
+            </section>
+        @endif
         </section>
         <section id="comments" class="event-field">
                 <h2>Comentários ({{$comments->count()}})</h2>

@@ -271,3 +271,50 @@ input[type="text"]:focus {
     color: #A08AFA;
     border: #A08AFA 1px solid;
 }
+
+.poll-card {
+    background-color: #11141A;
+    color: #ffffff;
+    margin-bottom: 1em;
+    cursor: pointer;
+    border: none;
+}
+
+.option-box {
+    padding: 10px;
+    border: 1px solid #A08AFA;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 12px;
+
+}
+
+.option-box.selected {
+    background-color: #A08AFA;
+    color: black;
+}
+
+.card-header {
+    background-color: #11141A;
+    color: #ffffff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #7e5efa;
+    color: white;
+    border-color: #7e5efa;
+}
+
+
+.btn-primary {
+    background-color: #11141A;
+    color: #A08AFA;
+    border-color: #A08AFA;
+    width: 20%;
+    margin-top: 1em;
+}
+
+.hidden {
+    display: none !important;
+}
