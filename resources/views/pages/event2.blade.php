@@ -216,14 +216,14 @@
                                     </div>
                                     <p class="comment-text">{{ $comment->text }}</p>
                                     <!--
-                                                if($comment->file_id)
-                                                    <div class="comment-file">
-                                                        <a href="{ asset('assets/uploads/' . $comment->file->file_name) }}">
-                                                            <img src="{ asset('assets/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
-                                                        </a>
-                                                    </div>
-                                                endif
-                                                -->
+                                        if($comment->file_id)
+                                            <div class="comment-file">
+                                                <a href="{ asset('assets/uploads/' . $comment->file->file_name) }}">
+                                                    <img src="{ asset('assets/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
+                                                </a>
+                                            </div>
+                                        endif
+                                    -->
                                     <div class="votes-row">
                                         @if (Auth::check() &&
                                                 !Auth::user()->is_admin &&
