@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 @endsection
 
+@section('scripts')
+    <script src="{{ asset('js/profile.js') }}" defer></script>
+@endsection
+
 @section('header')
     @include('widgets.navBar')
 @endsection
@@ -27,8 +31,8 @@
 
                     <ul class="dropdown-menu dropdown-menu-dark"
                         aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item">Editar perfil</a></li>
-                        <li><a class="dropdown-item">Eliminar conta</a></li>
+                        <li><a class="dropdown-item">Editar perfil</a></li>                        
+                        <li><a class="dropdown-item" onclick="deleteAccount({{$user->id}})">Eliminar conta</a></li>
                     </ul>
                 </li>
             @endif
