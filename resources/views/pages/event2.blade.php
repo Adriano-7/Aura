@@ -73,9 +73,11 @@
                 </div>
                 <div class="col-md-6 text-center">
                     @if ($moreThan24Hours)
-                        <h3>{{ $start_date->formatLocalized('%a') }} • {{ $start_date->format('H:i') }} - {{ $end_date->formatLocalized('%a') }} • {{ $end_date->format('H:i') }}</h3>
+                        <h3>{{ $start_date->formatLocalized('%a') }} • {{ $start_date->format('H:i') }} -
+                            {{ $end_date->formatLocalized('%a') }} • {{ $end_date->format('H:i') }}</h3>
                     @else
-                        <h3>{{ $start_date->formatLocalized('%a') }} • {{ $start_date->format('H:i') }} - {{ $end_date->format('H:i') }}</h3>
+                        <h3>{{ $start_date->formatLocalized('%a') }} • {{ $start_date->format('H:i') }} -
+                            {{ $end_date->format('H:i') }}</h3>
                     @endif
 
                     <h2>{{ $event->name }}</h2>
@@ -87,14 +89,22 @@
                             <p id="numParticipants" style="font-size:0.7rem"> {{ $event->participants->count() }}
                                 participantes</p>
                         </div>
-                        <div class="col-12 text-center">
-                            <button type="button" id="join-event">Aderir ao Evento</button>
-                        </div>
+                        @if (Auth::check() && !Auth::user()->is_admin && !Auth::user()->participatesInEvent($event))
+                            <div class="col-12 text-center">
+                                <button type="button" id="join-event">Aderir ao Evento</button>
+                            </div>
+                        @elseif (Auth::check() && Auth::user()->participatesInEvent($event))
+                            <div class="col-12 text-center">
+                                <button type="button" id="leave-event">Sair do Evento</button>
+                            </div>
+                        @endif
                         <div class="col-12 text-center" style="margin-top: 0.5em;">
                             <button type="button" id="show-participants" class="event-btn" data-toggle="modal"
                                 data-target="#participantsModal">Ver participantes </button>
-                            <button type="button" class="event-btn" data-toggle="modal"
-                                data-target="#inviteModal">Convidar</button>
+                            @if (Auth::check())
+                                <button type="button" class="event-btn" data-toggle="modal"
+                                    data-target="#inviteModal">Convidar</button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -121,7 +131,7 @@
     <div class="container navSect" id="comentarios">
         <div class="row">
             <div class="col-12">
-                <h1 id="section-title">Comentários • {{ $event->comments->count() }}</h1>
+                <h1 id="section-title">Comentários • {{ $comments->count() }}</h1>
             </div>
         </div>
 
@@ -163,7 +173,7 @@
                             </div>
                         </div>
 
-                        @if ($event->comments->count() == 0)
+                        @if ($comments->count() == 0)
                             <div class="row">
                                 <div class="col-12">
                                     <p>Este evento ainda não tem comentários.</p>
@@ -171,7 +181,7 @@
                             </div>
                         @endif
 
-                        @foreach ($event->comments as $comment)
+                        @foreach ($comments as $comment)
                             <div class="comment-row comment" id="{{ 'comment-' . $comment->id }}">
                                 <a href="{{ route('user', $comment->author->username) }}">
                                     <img class="profile-pic"
@@ -181,49 +191,53 @@
                                     <div class="username-and-date">
                                         <span class="comment-author"
                                             onclick="window.location.href='{{ route('user', $comment->author->username) }}'"
-                                            style="cursor: pointer"> {{ $comment->author->username }}</span>
+                                            style="cursor: pointer"> {{ $comment->author->name }}</span>
                                         <span
                                             class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}</span>
 
-                                        <li class="nav-item dropdown">
-                                            <img class="three-dots" src="{{ asset('assets/three-dots-horizontal.svg') }}"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                style="display: none; cursor: pointer;">
+                                        @if (Auth::check())
+                                            <li class="nav-item dropdown">
+                                                <img class="three-dots"
+                                                    src="{{ asset('assets/three-dots-horizontal.svg') }}"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                    style="display: none; cursor: pointer;">
 
-                                            <ul class="dropdown-menu dropdown-menu-dark"
-                                                aria-labelledby="navbarDarkDropdownMenuLink">
-                                                @if (Auth::check() && !Auth::user()->is_admin && Auth::user()->id != $comment->author->id)
-                                                    <li><a class="dropdown-item"
-                                                            onclick="openReportModal({{ $comment->id }})"
-                                                            style="cursor: pointer;">Denunciar</a></li>
-                                                @endif
-                                                @if (Auth::check() && Auth::user()->id == $comment->author->id)
-                                                    <li><a class="dropdown-item"
-                                                            onclick="editComment({{ $comment->id }})"
-                                                            style="cursor: pointer;">Editar</a></li>
-                                                @endif
+                                                <ul class="dropdown-menu dropdown-menu-dark"
+                                                    aria-labelledby="navbarDarkDropdownMenuLink">
+                                                    @if (!Auth::user()->is_admin && Auth::user()->id != $comment->author->id)
+                                                        <li><a class="dropdown-item"
+                                                                onclick="openReportModal({{ $comment->id }})"
+                                                                style="cursor: pointer;">Denunciar</a></li>
+                                                    @endif
 
-                                                @if (Auth::check() &&
-                                                        (Auth::user()->id == $comment->author->id ||
+                                                    @if (Auth::user()->id == $comment->author->id)
+                                                        <li><a class="dropdown-item"
+                                                                onclick="activateEditComment({{ $comment->id }})"
+                                                                style="cursor: pointer;">Editar</a></li>
+                                                    @endif
+
+                                                    @if (Auth::user()->id == $comment->author->id ||
                                                             Auth::user()->is_admin ||
-                                                            $event->organization->organizers->contains(Auth::user())))
-                                                    <li><a class="dropdown-item"
-                                                            onclick="deleteComment({{ $comment->id }})"
-                                                            style="cursor: pointer;">Apagar</a></li>
-                                                @endif
-                                            </ul>
-                                        </li>
+                                                            $event->organization->organizers->contains(Auth::user()))
+                                                        <li><a class="dropdown-item"
+                                                                onclick="deleteComment({{ $comment->id }})"
+                                                                style="cursor: pointer;">Apagar</a></li>
+                                                    @endif
+                                                </ul>
+                                            </li>
+                                        @endif
+                                        
                                     </div>
                                     <p class="comment-text">{{ $comment->text }}</p>
                                     <!--
-                                        if($comment->file_id)
-                                            <div class="comment-file">
-                                                <a href="{ asset('assets/uploads/' . $comment->file->file_name) }}">
-                                                    <img src="{ asset('assets/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
-                                                </a>
-                                            </div>
-                                        endif
-                                    -->
+                                                        if($comment->file_id)
+                                                            <div class="comment-file">
+                                                                <a href="{ asset('assets/uploads/' . $comment->file->file_name) }}">
+                                                                    <img src="{ asset('assets/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
+                                                                </a>
+                                                            </div>
+                                                        endif
+                                                    -->
                                     <div class="votes-row">
                                         @if (Auth::check() &&
                                                 !Auth::user()->is_admin &&
@@ -344,8 +358,8 @@
                                             src="{{ asset('assets/profile/' . $participant->photo) }}">
                                     </div>
                                     <div class="">
-                                        <h2>{{ $participant->username }}</h2>
-                                        <h3>{{ $participant->name }}</h3>
+                                        <h2>{{ $participant->name }}</h2>
+                                        <h3>{{ $participant->username }}</h3>
                                     </div>
                                 </div>
                             @endforeach

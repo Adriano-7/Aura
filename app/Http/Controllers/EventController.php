@@ -21,9 +21,18 @@ class EventController extends Controller
         if(!$event){
             abort(404, 'Evento não encontrado.');
         }
+    
+        if (Auth::check()) {
+            $comments = $event->comments()->with('author')->orderByRaw('user_id = ? DESC', [Auth::user()->id])->orderBy('date', 'DESC')->get();
+        } 
+        else {
+            $comments = $event->comments()->orderBy('date', 'DESC')->get();
+        }
+
         return view('pages.event2', [
             'user' => Auth::user(),
             'event' => $event,
+            'comments' => $comments,
         ]);
     }
 
