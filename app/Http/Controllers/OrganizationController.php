@@ -16,10 +16,7 @@ class OrganizationController extends Controller{
     public function show($id): View{
         $organization = Organization::find($id);
         if(!$organization){
-            return view('pages.notFound', [
-                'user' => Auth::user(),
-                'text' => 'Organização não encontrada'
-            ]);
+            abort(404, 'Organização não encontrada.');
         }
 
         return view('pages.organization', [

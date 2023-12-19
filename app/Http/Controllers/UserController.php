@@ -35,10 +35,7 @@ class UserController extends Controller{
         $userProfile = User::where('username', $username)->first();
 
         if (!$userProfile) {
-            return view('pages.notFound', [
-                'user' => Auth::user(),
-                'text' => 'Utilizador não encontrado'
-            ]);
+            abort(404, 'Utilizador não encontrado.');
         }
     
         $color1_increment = -120;
