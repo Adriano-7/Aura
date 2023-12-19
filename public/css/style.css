@@ -142,3 +142,23 @@ body {
 .modal-content{
     background-color: transparent;
 }
+
+/***************** Footer *****************/
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    padding: 1rem 2rem;
+    background-color: #11141A;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+footer p {
+    margin: 0;
+    padding: 0;
+}
