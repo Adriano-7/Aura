@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
 /****** Specific for events ********/
 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -72,6 +71,7 @@ function openReportModal(commentId) {
 }
 
 $('#reportCommentModal').on('hidden.bs.modal', function () { resetModalContent(); });
+
 function resetModalContent() {
     const reportCommentForm = document.getElementById('reportCommentForm');
     const commentIdInput = reportCommentForm.querySelector('input[name="comment_id"]');
@@ -90,6 +90,22 @@ function resetModalContent() {
     denunciarButton.disabled = true;
 }
 
+
+function showThreeDots(comment) {
+    const threeDots = comment.querySelector('.three-dots');
+    const commentId = comment.id.split('-')[1];
+
+    threeDots.style.display = 'block';
+}
+
+
+function hideThreeDots(comment) {
+    const threeDots = comment.querySelector('.three-dots');
+    const commentId = comment.id.split('-')[1];
+
+    threeDots.style.display = 'none';
+}
+
 /*Comments */
 document.addEventListener('DOMContentLoaded', function () {
     const comment = document.querySelectorAll('.comment');
@@ -105,21 +121,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 hideThreeDots(comment);
             });
         });
-    }
-
-    function showThreeDots(comment) {
-        const threeDots = comment.querySelector('.three-dots');
-        const commentId = comment.id.split('-')[1];
-
-        threeDots.style.display = 'block';
-    }
-
-
-    function hideThreeDots(comment) {
-        const threeDots = comment.querySelector('.three-dots');
-        const commentId = comment.id.split('-')[1];
-
-        threeDots.style.display = 'none';
     }
 
     const fileUpload = document.getElementById('file-upload');
@@ -193,11 +194,15 @@ function addComment(e) {
                 form.reset();
 
                 //Insert the new comment under the file upload section
-                const commentBox = document.getElementById('comment-box');
                 const newComment = createCommentElement(data);
-                let fileUploadSection = document.querySelector('#file-upload-section');
 
+                let fileUploadSection = document.querySelector('#file-upload-section');
                 fileUploadSection.insertAdjacentElement('afterend', newComment);
+
+                let sectionTitle = document.querySelector('#comentarios #section-title');
+                let numberOfComments = sectionTitle.textContent.split('•')[1].trim();
+                numberOfComments++;
+                sectionTitle.textContent = `Comentários • ${numberOfComments}`;
             });
         }
     }
@@ -205,127 +210,92 @@ function addComment(e) {
 }
 
 function createCommentElement(commentData) {
-    console.log(commentData);
+    let commentDiv = document.createElement('div');
+    commentDiv.setAttribute('class', 'comment-row comment');
+    commentDiv.setAttribute('id', `comment-${commentData.comment.id}`);
 
-    /*
-{
-    "message": "Comment added successfully",
-    "comment": {
-        "user_id": 18,
-        "text": "sdsd",
-        "event_id": "6",
-        "id": 127
-    },
-    "author": {
-        "id": 18,
-        "is_admin": false,
-        "name": "Teresa Rodrigues",
-        "username": "teresa.rodrigues",
-        "email": "teresa@example.com",
-        "photo": "teresa_rodrigues.jpeg",
-        "background_color": "#A08AFA"
-    }
-}
-
-
-    Create something like this:
-    
-<div class="comment-row comment" id="comment-116">
-    <a href="http://127.0.0.1:8000/utilizador/teresa.rodrigues">
-        <img class="profile-pic" src="http://127.0.0.1:8000/assets/profile/teresa_rodrigues.jpeg">
-    </a>
-    <div class="comment-content">
-        <div class="username-and-date">
-            <span class="comment-author"
-                onclick="window.location.href='http://127.0.0.1:8000/utilizador/teresa.rodrigues'"
-                style="cursor: pointer"> teresa.rodrigues</span>
-            <span class="comment-date">6 minutes ago</span>
-
-            <li class="nav-item dropdown">
-                <img class="three-dots" src="http://127.0.0.1:8000/assets/three-dots-horizontal.svg"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    style="display: none; cursor: pointer;">
-
-                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                    <li><a class="dropdown-item" onclick="activateEditComment(116)"
-                            style="cursor: pointer;">Editar</a></li>
-
-                    <li><a class="dropdown-item" onclick="deleteComment(116)" style="cursor: pointer;">Apagar</a>
-                    </li>
-                </ul>
-            </li>
-        </div>
-        <p class="comment-text">lllll</p>
-        <!--
-                if($comment->file_id)
-                    <div class="comment-file">
-                        <a href="{ asset('assets/uploads/' . $comment->file->file_name) }}">
-                            <img src="{ asset('assets/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
-                        </a>
-                    </div>
-                endif
-            -->
-        <div class="votes-row">
-            <img src="http://127.0.0.1:8000/assets/icons/vote-disallowed.svg" class="vote-icon"
-                style="margin-right:0.5em">
-            <span class="comment-votes" inert>0</span>
-        </div>
-    </div>
-</div>
-*/
-
-    const commentDiv = document.createElement('div');
-    commentDiv.classList.add('comment-row', 'comment');
-    commentDiv.id = 'comment-' + commentData.id;
-
-    // create comment content
-    const profileLink = document.createElement('a');
-    //profileLink.href = window.location.origin + '/utilizador/' + commentData.author.username;
-
-    const profilePic = document.createElement('img');
-    profilePic.classList.add('profile-pic');
-    profilePic.src = window.location.origin + '/assets/profile/' + commentData.author.photo; // Using relative URL
-
+    let profileLink = document.createElement('a');
+    profileLink.setAttribute('href', `http://127.0.0.1:8000/utilizador/${commentData.author.username}`);
+    let profilePic = document.createElement('img');
+    profilePic.setAttribute('class', 'profile-pic');
+    profilePic.setAttribute('src', `http://127.0.0.1:8000/assets/profile/${commentData.author.photo}`);
     profileLink.appendChild(profilePic);
-
-    const commentContent = document.createElement('div');
-    commentContent.classList.add('comment-content');
-
-    const usernameAndDate = document.createElement('div');
-    usernameAndDate.classList.add('username-and-date');
-
-    const authorLink = document.createElement('span');
-    authorLink.classList.add('comment-author');
-    authorLink.textContent = commentData.author.username;
-    authorLink.onclick = function () {
-        window.location.href = window.location.origin + '/utilizador/' + commentData.author.username; // Using relative URL
-    };
-
-    const dateSpan = document.createElement('span');
-    dateSpan.classList.add('comment-date');
-    dateSpan.textContent = '1 minute ago';
-
-    usernameAndDate.appendChild(authorLink);
-    usernameAndDate.appendChild(dateSpan);
-
-    // Other elements like three-dots, dropdown, etc., can be created similarly based on your existing HTML structure
-
-    // Append elements to the commentContent div
-    commentContent.appendChild(usernameAndDate);
-
-    const commentText = document.createElement('p');
-    commentText.classList.add('comment-text');
-    commentText.textContent = commentData.text;
-
-    commentContent.appendChild(commentText);
-
-    // Append commentContent to commentDiv
     commentDiv.appendChild(profileLink);
-    commentDiv.appendChild(commentContent);
+
+    let commentContentDiv = document.createElement('div');
+    commentContentDiv.setAttribute('class', 'comment-content');
+
+    let usernameDateDiv = document.createElement('div');
+    usernameDateDiv.setAttribute('class', 'username-and-date');
+
+    let commentAuthorSpan = document.createElement('span');
+    commentAuthorSpan.setAttribute('class', 'comment-author');
+    commentAuthorSpan.setAttribute('style', 'cursor: pointer');
+    commentAuthorSpan.setAttribute('onclick', `window.location.href='http://127.0.0.1:8000/utilizador/${commentData.author.username}'`);
+    commentAuthorSpan.textContent = commentData.author.name;
+    usernameDateDiv.appendChild(commentAuthorSpan);
+
+    let commentDateSpan = document.createElement('span');
+    commentDateSpan.setAttribute('class', 'comment-date');
+    commentDateSpan.textContent = 'just now';
+    usernameDateDiv.appendChild(commentDateSpan);
+
+    let dropdownLi = document.createElement('li');
+    dropdownLi.setAttribute('class', 'nav-item dropdown');
+
+    let dropdownImg = document.createElement('img');
+    dropdownImg.setAttribute('class', 'three-dots');
+    dropdownImg.setAttribute('src', 'http://127.0.0.1:8000/assets/three-dots-horizontal.svg');
+    dropdownImg.setAttribute('data-toggle', 'dropdown');
+    dropdownImg.setAttribute('aria-haspopup', 'true');
+    dropdownImg.setAttribute('aria-expanded', 'false');
+    dropdownImg.setAttribute('style', 'display: none; cursor: pointer;');
+    dropdownLi.appendChild(dropdownImg);
+
+    let dropdownUl = document.createElement('ul');
+    dropdownUl.setAttribute('class', 'dropdown-menu dropdown-menu-dark');
+    dropdownUl.setAttribute('aria-labelledby', 'navbarDarkDropdownMenuLink');
+    dropdownLi.appendChild(dropdownUl);
+
+    let editLi = document.createElement('li');
+    let editA = document.createElement('a');
+    editA.setAttribute('class', 'dropdown-item');
+    editA.setAttribute('onclick', `activateEditComment(${commentData.comment.id})`);
+    editA.setAttribute('style', 'cursor: pointer;');
+    editA.textContent = 'Editar';
+    editLi.appendChild(editA);
+    dropdownUl.appendChild(editLi);
+
+    let deleteLi = document.createElement('li');
+    let deleteA = document.createElement('a');
+    deleteA.setAttribute('class', 'dropdown-item');
+    deleteA.setAttribute('onclick', `deleteComment(${commentData.comment.id})`);
+    deleteA.setAttribute('style', 'cursor: pointer;');
+    deleteA.textContent = 'Apagar';
+    deleteLi.appendChild(deleteA);
+    dropdownUl.appendChild(deleteLi);
+
+    usernameDateDiv.appendChild(dropdownLi);
+
+    commentContentDiv.appendChild(usernameDateDiv);
+
+    let commentTextP = document.createElement('p');
+    commentTextP.setAttribute('class', 'comment-text');
+    commentTextP.textContent = commentData.comment.text;
+    commentContentDiv.appendChild(commentTextP);
+
+    commentDiv.appendChild(commentContentDiv);
+
+    commentDiv.addEventListener('mouseover', () => {
+        showThreeDots(commentDiv);
+    });
+
+    commentDiv.addEventListener('mouseout', () => {
+        hideThreeDots(commentDiv);
+    });
 
     return commentDiv;
 }
-
 
 
 function activateEditComment(commentId) {
