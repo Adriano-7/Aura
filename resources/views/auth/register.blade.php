@@ -20,7 +20,7 @@
                         <div id = "sample-text">
                             <h1>Vamos criar a tua conta!</h1>
                             <h3>Junta-te à nossa comunidade!</h3>
-
+                            
                             @if ($errors->has('username'))
                                 <span class="error">
                                     {{ $errors->first('username') }}

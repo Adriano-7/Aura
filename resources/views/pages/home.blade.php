@@ -12,6 +12,14 @@
 @endsection
 
 @section('content')
+    @if ($errors->has('token'))
+        @include('widgets.popUpNotification', ['message' => 'Ocorreu um erro ao recuperar a password: ' . $errors->first('token')])
+    @endif
+
+    @if (session()->has('ResetMsg'))
+        @include('widgets.popUpNotification', ['message' => session()->get('ResetMsg')])
+    @endif
+
     @if (!Auth::check())
         @include('widgets.welcomeBanner')
     @else
