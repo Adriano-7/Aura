@@ -297,11 +297,91 @@ function createCommentElement(commentData) {
     return commentDiv;
 }
 
-
 function activateEditComment(commentId) {
+    let commentRow = document.getElementById(`comment-${commentId}`);
+    let commentText = commentRow.querySelector('.comment-text');
+    let commentTextValue = commentText.textContent;
+
+    let form = document.createElement('form');
+    form.setAttribute('action', `${window.location.origin}/api/comentario/${commentId}/editar`);
+    form.setAttribute('method', 'POST');
+    form.setAttribute('class', 'edit-comment-form');
+
+    let input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('name', 'text');
+    input.setAttribute('value', commentTextValue);
+    input.setAttribute('autocomplete', 'off');
+
+    let cancelIcon = document.createElement('img');
+    cancelIcon.setAttribute('class', 'icon');
+    cancelIcon.setAttribute('src', `${window.location.origin}/assets/cross-icon.svg`);
+    cancelIcon.addEventListener('click', function(){
+        location.reload();
+    });
+
+    let submitButton = document.createElement('button');
+    submitButton.setAttribute('type', 'submit');
+    submitButton.setAttribute('class', 'icon-button edit-comment');
+    let submitIcon = document.createElement('img');
+    submitIcon.setAttribute('class', 'icon');
+    submitIcon.setAttribute('src', `${window.location.origin}/assets/save-icon.svg`);
+    submitButton.setAttribute('style', 'background-color: transparent; border: none;');
+    submitButton.appendChild(submitIcon);
+    
+    let hiddenCSRF = document.createElement('input');
+    hiddenCSRF.setAttribute('type', 'hidden');
+    hiddenCSRF.setAttribute('name', '_token');
+    hiddenCSRF.setAttribute('value', csrfToken);
+
+    form.appendChild(input);
+    form.appendChild(cancelIcon);
+    form.appendChild(submitButton);
+    form.appendChild(hiddenCSRF);
+    commentText.parentNode.replaceChild(form, commentText);
 }
 
-function updateComment(e) {
+document.addEventListener('submit', function(e){
+    if(e.target.matches('.edit-comment-form')) {
+        updateComment(e);
+    }
+});
+
+function updateComment(e){
+    e.preventDefault();
+    let form = e.target;
+    let url = form.action;
+    let commentId = url.split('/')[5];
+
+    let formData = new FormData(form);
+    let formParams = new URLSearchParams(formData);
+
+    fetch(new URL(url,  window.location.origin), {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: formParams
+    }).then(res => {
+            if (res.ok) {
+                res.json().then(data => {
+                    let commentText = data.text;
+                    commentRow = document.getElementById(`comment-${commentId}`);
+
+                    let commentTextElement = document.createElement('p');
+                    commentTextElement.setAttribute('class', 'comment-text');
+                    commentTextElement.innerText = commentText;
+                    
+                    let commentContent = commentRow.querySelector('.comment-content');
+                    commentContent.replaceChild(commentTextElement, form);
+                    
+                    let editIcon = document.getElementById(`editButton-${commentId}`);
+                    editIcon.style.visibility = 'visible';
+                });
+            }
+        }
+    ).catch(err => console.log(err));
 }
 
 const upvoteButtons = document.querySelectorAll('.up-btn');
@@ -397,18 +477,16 @@ function downVote(downButton){
     let method = 'POST';
 
     if(upVoteSelected && !downVoteSelected){
-        // remove upvote
         url += 'unvote'
         method = 'DELETE'
     }
     else if(!upVoteSelected && downVoteSelected){
-        // remove downvote
         url += 'unvote'
         method = 'DELETE'
     }
     else if(!upVoteSelected && !downVoteSelected){
-        // add downvote
         url += 'down'
+        method = 'POST';
     }
     else{
         console.log('You cannot upvote and downvote');

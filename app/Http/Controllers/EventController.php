@@ -13,8 +13,7 @@ use App\Models\Notification;
 use App\Models\User;
 
 
-class EventController extends Controller
-{
+class EventController extends Controller{
     public function show($id): View
     {
         $event = Event::find($id);
