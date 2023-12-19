@@ -26,18 +26,13 @@
                         @endif
 
                         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-xl-n5">
-                            <form method="POST" action="{{ route('login') }}">
-                                {{ csrf_field() }}
-                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Email"
-                                    required />
-
-
-                                <input type="password" name="password" placeholder="Palavra passe" required />
-
-                                <button id="submit-button" type="submit">Iniciar sessão</button>
-                                <p>Ainda não tem conta? <a href="{{ route('register') }}"
-                                        id="registo-mensagem">Registe-se!</a></p>
-                            </form>
+                        <form method="POST" action="{{ route('login') }}">
+                            {{ csrf_field() }}
+                            <input type="text" name="email_or_username" placeholder="Email ou nome de utilizador" required />
+                            <input type="password" name="password" placeholder="Palavra passe" required/>
+                            <button id="submit-button" type="submit">Iniciar sessão</button>
+                            <p>Ainda não tem conta? <a href="{{ route('register') }}" id="registo-mensagem">Registe-se!</a></p>
+                        </form>
                         </div>
                     </div>
                     <div class="col-sm-6 px-0 d-none d-sm-block">
