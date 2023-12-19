@@ -18,14 +18,17 @@
                                     style="width: 7rem;" class="pt-5 mt-xl-4"></a>
                         </div>
 
-                        <!-- TODO: Improve css pos -->
-                        @if ($errors->has('login_error'))
-                            <span class="error">
-                                {{ $errors->first('login_error') }}
-                            </span>
-                        @endif
+                        <div id = "sample-text">
+                            <h1>Iniciar sessão</h1>
 
-                        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-xl-n5">
+                            @if ($errors->has('login_error'))
+                                <span class="error">
+                                    {{ $errors->first('login_error') }}
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="d-flex align-items-center px-5 ms-xl-4 mt-xl-n5">
                             <form method="POST" action="{{ route('login') }}">
                                 {{ csrf_field() }}
                                 <input type="email" name="email" value="{{ old('email') }}" placeholder="Email"
@@ -35,10 +38,8 @@
                                 <input type="password" name="password" placeholder="Palavra passe" required />
 
                                 <button id="submit-button" type="submit">Iniciar sessão</button>
-                                <p>Ainda não tem conta? <a href="{{ route('register') }}"
-                                        id="registo-mensagem">Registe-se!</a></p>
-                                <p>Esqueceu-se da sua palavra passe? <a href="{{ route('recoverPassword') }}">
-                                    Recupere-a aqui!</a></p>
+                                <p>Ainda não tens conta? <a href="{{ route('register') }}" >Registe-se!</a></p>
+                                <p>Esqueceu-se da sua palavra passe? <a href="{{ route('recoverPassword') }}"> Recupere-a aqui!</a></p>
                             </form>
                         </div>
                     </div>

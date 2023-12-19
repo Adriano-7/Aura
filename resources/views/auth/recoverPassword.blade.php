@@ -33,6 +33,7 @@
                                     required />
 
                                 <button id="submit-button" type="submit">Recuperar password</button>
+                                <p><a href="{{ route('login') }}"> Regressar ao login</a></p>
                             </form>
                         </div>
                     </div>
