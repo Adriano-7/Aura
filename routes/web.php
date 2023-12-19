@@ -15,6 +15,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportEventController;
 use App\Http\Controllers\EditEventController;
+use App\Http\Controllers\RecoverPasswordController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -38,18 +39,27 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/terminar-sessao', 'logout')->name('logout');
 });
 
-//Register
+// Register
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/registar', 'showRegistrationForm')->name('register');
     Route::post('/registar', 'register');
 });
 
-//User API
+Route::controller(RecoverPasswordController::class)->group(function () {
+    Route::get('/recuperar-password', 'showRecoverPasswordForm')->name('recoverPassword');
+    Route::post('/recuperar-password', 'post');
+
+    Route::get('/recuperar-password/{token}', 'showResetPasswordForm')->name('resetPassword');
+    Route::post('/recuperar-password/{token}', 'reset')->name('resetPasswordPost');
+});
+
+// User
 Route::controller(UserController::class)->group(function() {
+    Route::get('/utilizador/{username}', 'show')->name('user');
     Route::delete('/api/utilizador/{id}/apagar', 'destroy');
 });
 
-//Dashboard
+// Dashboard
 Route::controller(DashboardController::class)->group(function () {
     Route::get('/dashboard/denuncias', 'showReports')->name('dashboard.reports');
     Route::get('/dashboard/membros', 'showUsers')->name('dashboard.members');
@@ -61,7 +71,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/',  'show')->name('home');
 });
 
-//Notifications
+// Notifications
 Route::controller(NotificationsController::class)->group(function () {
     Route::get('/notificacoes', 'show')->name('notifications');
     Route::put('/notificacoes/{id}/marcar-como-vista', 'markAsSeen')->name('notification.markAsSeen');
@@ -69,36 +79,36 @@ Route::controller(NotificationsController::class)->group(function () {
     Route::delete('/api/notificacoes/{id}/apagar', 'delete')->name('notification.delete');
 }); 
 
-//Comment Reports
+// Comment Reports
 Route::controller(ReportCommentController::class)->group(function () {
     Route::get('/api/denuncias/comentarios', 'index');
     Route::put('/api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
 });
 
-//Event Reports
+// Event Reports
 Route::controller(ReportEventController::class)->group(function () {
     Route::get('/api/denuncias/evento', 'index');
     Route::put('/api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
 });
 
-//My Events
+// My Events
 Route::controller(MyEventsController::class)->group(function () {
     Route::get('/meus-eventos', 'show')->name('my-events');
 });
 
-//Create Events
+// Create Events
 Route::controller(CreateEventController::class)->group(function () {
     Route::get('/criar-evento','show')->name('criar-evento');
     Route::post('/submeter-evento','store') ->name('submit-event');
 });
 
-//Edit Events
+// Edit Events
 Route::controller(EditEventController::class)->group(function () {
     Route::get('/editar-evento/{id}', 'show')->name('edit-event');
     Route::put('/atualizar-evento/{id}', 'update')->name('update-event');
 });
 
-//Events
+// Events
 Route::controller(EventController::class)->group(function () {
     Route::get('/evento/{id}', 'show')->name('event');
     Route::delete('/evento/{id}/apagar', 'destroy')->name('event.delete'); 
@@ -112,7 +122,7 @@ Route::controller(EventController::class)->group(function () {
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
 });
 
-//Comments
+// Comments
 Route::controller(CommentController::class)->group(function () {
     Route::get('api/comentarios', 'index');
     Route::get('api/comentarios/{id}', 'show');
@@ -124,7 +134,7 @@ Route::controller(CommentController::class)->group(function () {
     Route::delete('api/comentario/{id}/unvote', 'removeVote');
 });
 
-//Organization
+// Organization
 Route::controller(OrganizationController::class)->group(function () {
     Route::get('/organizacao/{id}', 'show')->name('organization.show');
     Route::post('/organizacao/{id}/aderir', 'joinOrganization')->name('organization.join');
@@ -136,7 +146,7 @@ Route::controller(OrganizationController::class)->group(function () {
 
 });
 
-//Search
+// Search
 Route::controller(SearchController::class)->group(function () {
     Route::get('/pesquisa', 'show')->name('search');
 }); 

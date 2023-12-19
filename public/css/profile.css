@@ -1,0 +1,120 @@
+#content {
+    margin: 0 15%;
+}
+
+#profile-header {
+    height: 30%;
+}
+
+#background-banner {
+    position: relative;
+    height: 15em;
+    border-bottom: 2px solid #fff;
+}
+
+#profile-pic {
+    position: absolute;
+    transform: translateY(-50%); 
+    width: 15em;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin-left: 5%;
+}
+
+#profile-fields{
+    position: absolute;
+    margin: 2em 25%;
+}
+
+#complete-name {
+    font-size: 2em;
+    font-weight: 600;
+    color: #fff;
+}
+
+#username, #email {
+    font-size: 1em;
+    color: #fff;
+    font-weight: 300;
+}
+
+#username::after {
+    content: "•";
+    margin: 0 1em;
+    font-weight: 600;
+}
+
+#username::before {
+    content: "@";
+    font-weight: 300;
+}
+
+.dropdown-item, .three-dots {
+    cursor: pointer;
+}
+
+.row_title{
+    margin-top: 2em;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-bottom: 1.7rem;
+}
+
+.card{
+    background-color: #11141A;
+    color: #FFFFFF;
+    padding: 0;
+    width: 8.5rem;
+    text-align: center;
+    margin-right: 1rem;
+    text-decoration: none;
+}
+
+.card:hover{
+    background-color: rgb(25, 28, 37);
+}
+
+.card-title{
+    font-size: 12px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-text{
+    font-size: 8px;
+    font-weight: 300;
+}
+
+.card-img-aura{
+    width: 95%;
+    height: 120px;
+    overflow: hidden;
+    padding-left: 0.4em;
+    padding-top: 0.5em;
+
+}
+
+.row.flex-row.flex-nowrap.overflow-auto::-webkit-scrollbar {
+    display: none;
+}
+
+.row.flex-row.flex-nowrap.overflow-auto {
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
+}
+
+#organizations-events {
+    margin-top: 10em;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.section-card {
+    width: 45%;
+}
+

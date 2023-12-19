@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Log In')
-
+@section('title', 'Register')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/login_register.css') }}">
 @endsection
+
 
 @section('content')
     <section class="text-center text-lg-start">
@@ -17,34 +17,33 @@
                             <a href="/"><img src="{{ asset('assets/AuraLogo.svg') }}" alt="Logo"
                                     style="width: 7rem;" class="pt-5 mt-xl-4"></a>
                         </div>
-
                         <div id = "sample-text">
-                            <h1>Iniciar sessão</h1>
+                            <h3>Recupere a sua password!</h3>
 
-                            @if ($errors->has('login_error'))
+                            @if ($errors->has('password'))
                                 <span class="error">
-                                    {{ $errors->first('login_error') }}
+                                    {{ $errors->first('password') }}
                                 </span>
                             @endif
                         </div>
 
                         <div class="d-flex align-items-center px-5 ms-xl-4 mt-xl-n5">
-                            <form method="POST" action="{{ route('login') }}">
-                                {{ csrf_field() }}
-                                <input type="email" name="email" value="{{ old('email') }}" placeholder="Email"
+                            <form method="POST">
+                                @csrf
+                                <input type="email" name="email" value="{{ $email }}" hidden />
+
+                                <input type="password" name="password" placeholder="Nova palavra passe" required />
+
+                                <input type="password" name="password_confirmation" placeholder="Confirme a palavra passe"
                                     required />
 
-
-                                <input type="password" name="password" placeholder="Palavra passe" required />
-
-                                <button id="submit-button" type="submit">Iniciar sessão</button>
-                                <p>Ainda não tens conta? <a href="{{ route('register') }}" >Registe-se!</a></p>
-                                <p>Esqueceu-se da sua palavra passe? <a href="{{ route('recoverPassword') }}"> Recupere-a aqui!</a></p>
+                                <button id="submit-button" type="submit">Recuperar</button>
+                                
                             </form>
                         </div>
                     </div>
                     <div class="col-sm-6 px-0 d-none d-sm-block">
-                        <img src="{{ asset('assets/LoginBanner.jpg') }}" alt="Login image" class="w-100 vh-100"
+                        <img src="{{ asset('assets/LoginBanner.jpg') }}" alt="Register image" class="w-100 vh-100"
                             style="object-fit: cover; object-position: center;">
                     </div>
                 </div>
