@@ -125,6 +125,8 @@ scrollbar-width: none;  /* Firefox */
     #content {
         margin: 0;
         margin-bottom: 5%;
+        display: flex;
+        flex-direction: column;
     }
 
     #profile-header {
@@ -132,20 +134,17 @@ scrollbar-width: none;  /* Firefox */
     }
 
     #background-banner {
-        height: 15em;
         border-bottom: 2px solid #fff;
     }
 
     #profile-pic {
         width: 15em;
-        border-radius: 50%;
-        border: 2px solid #fff;
-        margin-left: 5%;
+        margin-left: 20%;
     }
 
     #profile-fields{
-        position: absolute;
-        margin: 35% 0 0 5%;
+        margin-left: 10%;
+        margin-top: 90%;
     }
 
     #complete-name {
@@ -208,7 +207,7 @@ scrollbar-width: none;  /* Firefox */
     }
 
     #organizations-events {
-        margin-top: 10em;
+        margin-top: 50%;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -217,6 +216,6 @@ scrollbar-width: none;  /* Firefox */
 
     .section-card {
         width: 100%;
-        margin: 5% 0 0 5%;
+        margin: 5% 0 0 10%;
     }
 }

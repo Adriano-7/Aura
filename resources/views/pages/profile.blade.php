@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $user->name)
+@section('title', $userProfile->name)
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -23,7 +23,7 @@
     <section id="profile-fields">
         <div style="display: flex; flex-direction: row; align-items: center;">
             <span id="complete-name">{{$userProfile->name}}</span>
-            @if($userProfile->id == $user->id)
+            @if(Auth::check() && $userProfile->id == $user->id)
                 <li class="nav-item dropdown options" style="list-style-type: none;">
                     <img class="three-dots" src="{{asset('assets/Three-Dots-Icon.svg')}}" alt="OPTIONS"
                         data-toggle="dropdown" aria-haspopup="true"
