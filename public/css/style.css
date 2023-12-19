@@ -16,7 +16,7 @@ body {
 }
 
 @media (max-width: 576px) {
-    .navbar:not(#orgNav) .active {
+    .navbar:not(#pageNav) .active {
         border-bottom: none;
     }
 }

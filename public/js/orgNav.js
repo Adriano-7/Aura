@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let orgNav = document.querySelector('#orgNav');
-    let navLinks = orgNav.querySelectorAll('.nav-link');
+    let pageNav = document.querySelector('#pageNav');
+    let navLinks = pageNav.querySelectorAll('.nav-link');
     let navSects = document.querySelectorAll('.navSect');
 
     navLinks[0].classList.add('active');

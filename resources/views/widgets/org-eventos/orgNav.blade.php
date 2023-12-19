@@ -1,4 +1,4 @@
-<nav id="orgNav" class="navbar">
+<nav id="pageNav" class="navbar">
     <div class="container">
         <div id="navbarNav">
             <ul class="navbar-nav">

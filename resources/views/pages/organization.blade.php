@@ -10,8 +10,7 @@
 
 @section('scripts')
     <script src="{{ asset('js/organization.js') }}" defer></script>
-    <script src="{{ asset('js/orgNav.js') }}" defer></script>
-
+    <script src="{{ asset('js/pageNav.js') }}" defer></script>
 @endsection
 
 @section('header')
@@ -30,7 +29,7 @@
     @endif
 
     @if (Auth::check() && (Auth::user()->is_admin || $organization->organizers->contains(Auth::user()->id)))
-        @include('widgets.org-eventos.orgNav', ['elements' => ['Membros', 'Eventos', 'Sobre']], ['href' => ['#membros', '#eventos',  '#sobre']])
+        @include('widgets.org-eventos.pageNav', ['elements' => ['Membros', 'Eventos', 'Sobre']], ['href' => ['#membros', '#eventos',  '#sobre']])
         @include('widgets.org-eventos.manageOrg')
     @endif
 

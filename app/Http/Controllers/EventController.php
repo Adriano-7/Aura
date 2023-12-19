@@ -21,7 +21,7 @@ class EventController extends Controller
         if(!$event){
             abort(404, 'Evento não encontrado.');
         }
-        return view('pages.event', [
+        return view('pages.event2', [
             'user' => Auth::user(),
             'event' => $event,
         ]);
