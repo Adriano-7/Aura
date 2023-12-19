@@ -497,22 +497,6 @@ BEFORE INSERT ON notifications
 FOR EACH ROW
 EXECUTE FUNCTION check_notification_insert();
 
-/*
-CREATE OR REPLACE FUNCTION check_user_admin() RETURNS TRIGGER AS $$
-BEGIN
-   IF (NEW.user_id IN (SELECT id FROM users WHERE is_admin = false)) THEN
-      RAISE EXCEPTION 'User needs to be an admin';
-   END IF;
-   RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-
-CREATE TRIGGER check_admin_before_insert
-BEFORE INSERT ON 
-FOR EACH ROW EXECUTE PROCEDURE check_user_admin();
-*/
-
 CREATE OR REPLACE FUNCTION check_user_client() RETURNS TRIGGER AS $$
 BEGIN
    IF (NEW.user_id IN (SELECT id FROM users WHERE is_admin = true)) THEN
@@ -802,11 +786,6 @@ INSERT INTO tag_event (tag_id, event_id) VALUES
     ('1', '6'),
     ('2', '7'),
     ('3', '8');
-
-/*
-User_id range from 1 to 20
-Events range from 1 to 22
-*/
 
 INSERT INTO comments (user_id, text, event_id) VALUES
     /* Evento 1 */

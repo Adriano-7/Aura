@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReportComment;
+use App\Models\Comment;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 
 class ReportCommentController extends Controller
 {
@@ -14,7 +16,7 @@ class ReportCommentController extends Controller
             return response()->json(['error' => 'User not authorized to view reports'], 403);
         }
 
-        $reports = ReportComment::all();
+        $reports = ReportComment::orderBy('created_at', 'desc')->get();
 
         return response()->json($reports);
     }
@@ -61,6 +63,33 @@ class ReportCommentController extends Controller
 
         return response()->json([
             'message' => 'Report marked as resolved'
+        ]);
+    }
+
+    public function report(Request $request, $commentId){
+        $validReasons = ['inappropriate_content', 'violence_threats', 'incorrect_information', 'harassment_bullying', 'commercial_spam'];
+        $reason = $request->input('reason');
+
+        if (!in_array($reason, $validReasons)) {
+            return response()->json([
+                'message' => 'Invalid reason'
+            ], 400);
+        }
+
+        $comment = Comment::find($commentId);
+        if (!$comment) {
+            return response()->json([
+                'message' => 'Comment not found'
+            ], 404);
+        }
+
+        $report = new ReportComment();
+        $report->comment_id = $comment->id;
+        $report->reason = $reason;
+        $report->save();
+
+        return response()->json([
+            'message' => 'Comment reported'
         ]);
     }
 }

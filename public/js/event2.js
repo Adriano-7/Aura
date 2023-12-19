@@ -92,6 +92,77 @@ function resetModalContent() {
     denunciarButton.disabled = true;
 }
 
+function reportComment(){
+    const reportCommentForm = document.getElementById('reportCommentForm');
+    const commentIdInput = reportCommentForm.querySelector('input[name="comment_id"]');
+    const commentId = commentIdInput.value;
+
+    const radioButtons = document.getElementsByName('reason');
+    let reason = '';
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+            reason = radioButton.value;
+            break;
+        }
+    }
+
+    const url = `${window.location.origin}/api/denuncias/comentarios/${commentId}/reportar`;
+
+    fetch(new URL(url,  window.location.origin), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: `reason=${reason}`
+    }).then(res => {
+            if (res.ok) {
+                resetModalContent();
+                $('#reportCommentModal').modal('hide');
+            
+                openMessageModal('Comentário reportado com sucesso!');
+            }
+        }
+    ).catch(err => {
+        resetModalContent();
+        $('#reportCommentModal').modal('hide');
+    
+        openMessageModal('Erro ao reportar comentário!');
+    });
+
+    return false;
+}
+
+function openMessageModal(message) {
+    const messageModal = document.createElement('div');
+    messageModal.setAttribute('class', 'modal fade');
+    messageModal.setAttribute('id', 'messageModal');
+    messageModal.setAttribute('tabindex', '-1');
+    messageModal.setAttribute('role', 'dialog');
+    messageModal.setAttribute('aria-labelledby', 'messageModalLabel');
+    messageModal.setAttribute('aria-hidden', 'true');
+
+    const modalDialog = document.createElement('div');
+    modalDialog.setAttribute('class', 'modal-dialog');
+    modalDialog.setAttribute('role', 'document');
+
+    const modalContent = document.createElement('div');
+    modalContent.setAttribute('class', 'modal-content');
+
+    const modalBody = document.createElement('div');
+    modalBody.setAttribute('class', 'modal-body');
+    modalBody.textContent = message;
+
+    modalContent.appendChild(modalBody);
+
+    modalDialog.appendChild(modalContent);
+
+    messageModal.appendChild(modalDialog);
+
+    document.body.appendChild(messageModal);
+
+    $(messageModal).modal('show');
+}
 
 function showThreeDots(comment) {
     const threeDots = comment.querySelector('.three-dots');

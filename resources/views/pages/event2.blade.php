@@ -19,6 +19,11 @@
 @endsection
 
 @section('content')
+    @if (session('status'))
+        @include('widgets.popUpNotification', ['message' => session('status')])
+    @endif
+
+
     <div class="container position-relative d-flex align-items-end w-100">
         <img src="{{ asset('assets/eventos/' . $event->photo) }}" id="bannerImg">
         <h1 id="bannerName" class="position-absolute text-white">{{ $event->name }}</h1>
@@ -237,14 +242,14 @@
                                     </div>
                                     <p class="comment-text">{{ $comment->text }}</p>
                                     <!--
-                                                            if($comment->file_id)
-                                                                <div class="comment-file">
-                                                                    <a href="{ asset('assets/uploads/' . $comment->file->file_name) }}">
-                                                                        <img src="{ asset('assets/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
-                                                                    </a>
-                                                                </div>
-                                                            endif
-                                                        -->
+                                                                        if($comment->file_id)
+                                                                            <div class="comment-file">
+                                                                                <a href="{ asset('assets/uploads/' . $comment->file->file_name) }}">
+                                                                                    <img src="{ asset('assets/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
+                                                                                </a>
+                                                                            </div>
+                                                                        endif
+                                                                    -->
                                     <div class="votes-row">
                                         @if (Auth::check() &&
                                                 !Auth::user()->is_admin &&
@@ -301,6 +306,8 @@
                     <h5 class="modal-title" id="reportCommentModalLabel">Denunciar Comentário</h5>
 
                     <form id="reportCommentForm">
+                        @csrf
+                        @method('POST')
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="reason" id="inappropriate_content"
                                 value="inappropriate_content" onchange="updateButtonColor()">
@@ -341,7 +348,7 @@
                     <div class="modal-footer" style="border-top: none;">
                         <button type="button" data-dismiss="modal"
                             style="color: white; border-radius: 0.5em; padding: 0.5em;">Cancelar</button>
-                        <button type="button" id="denunciarButton"
+                        <button type="button" id="denunciarButton" onclick="reportComment()"
                             style="color: #808080; border-radius: 0.5em; padding: 0.5em;" disabled>Denunciar</button>
                     </div>
                 </div>
@@ -389,11 +396,13 @@
                             <div class="part-row align-items-center">
                                 <form id="inviteForm" action="{{ route('event.inviteUser') }}" method="POST">
                                     <input type="hidden" name="event_id" value="{{ $event->id }}">
+                                    @csrf
+                                    @method('POST')
                                     <div class="row align-items-center">
                                         <div class="col-8">
                                             <div class="form-group">
-                                                <input type="email" name="email"
-                                                    placeholder="Email ou nome de utilizador" id="inviteInput" required />
+                                                <input type="email" name="email" placeholder="Email"
+                                                    id="inviteInput" required />
                                             </div>
                                         </div>
                                         <div class="col-4">

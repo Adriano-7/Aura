@@ -83,6 +83,7 @@ Route::controller(NotificationsController::class)->group(function () {
 Route::controller(ReportCommentController::class)->group(function () {
     Route::get('/api/denuncias/comentarios', 'index');
     Route::put('/api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
+    Route::post('/api/denuncias/comentarios/{id}/reportar', 'report')->name('comment.report');
 });
 
 // Event Reports
