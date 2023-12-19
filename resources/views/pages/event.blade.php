@@ -147,7 +147,7 @@
             </div>
         </section>
         <section id="comments" class="event-field">
-            @if($comments->count() == 0 && !Auth::user()->participatesInEvent($event))
+            @if($comments->count() == 0 && (!Auth::check() || !Auth::user()->participatesInEvent($event)))
                 <h2>Ainda não foram adicionados comentários</h2>
             @else
                 <h2>Comentários ({{$comments->count()}})</h2>
