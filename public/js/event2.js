@@ -37,9 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 /*Report Modal */
-function updateButtonColor() {
-    const denunciarButton = document.getElementById('denunciarButton');
-    const radioButtons = document.getElementsByName('reason');
+function updateButtonColor(modalId) {
+    const modal = document.getElementById(modalId);
+
+    const denunciarButton = modal.querySelector('#denunciarButton');
+    const radioButtons = modal.querySelectorAll('[name="reason"]');
 
     let isAnyOptionSelected = false;
 
@@ -60,7 +62,7 @@ function updateButtonColor() {
     }
 }
 
-function openReportModal(commentId) {
+function openReportCommentModal(commentId) {
     const reportCommentForm = document.getElementById('reportCommentForm');
     const commentIdInput = document.createElement('input');
     commentIdInput.type = 'hidden';
@@ -72,14 +74,45 @@ function openReportModal(commentId) {
     $('#reportCommentModal').modal('show');
 }
 
-$('#reportCommentModal').on('hidden.bs.modal', function () { resetModalContent(); });
+function openReportEventModal(eventId){
+    const reportEventForm = document.getElementById('reportEventForm');
+    const eventIdInput = document.createElement('input');
+    eventIdInput.type = 'hidden';
+    eventIdInput.name = 'event_id';
+    eventIdInput.value = eventId;
 
-function resetModalContent() {
-    const reportCommentForm = document.getElementById('reportCommentForm');
-    const commentIdInput = reportCommentForm.querySelector('input[name="comment_id"]');
+    reportEventForm.appendChild(eventIdInput);
 
-    if (commentIdInput) {
-        commentIdInput.remove();
+    $('#reportEventModal').modal('show');
+}
+
+$('#reportCommentModal').on('hidden.bs.modal', function () { resetCommentModalContent(); });
+$('#reportEventModal').on('hidden.bs.modal', function () { resetEventModalContent(); });
+
+function resetCommentModalContent() {
+    const modalForm = document.getElementById('reportCommentForm');
+    const inputElement = modalForm.querySelector(`input[name="comment_id"]`);
+
+    if (inputElement) {
+        inputElement.remove();
+    }
+
+    const radioButtons = document.getElementsByName('reason');
+    for (const radioButton of radioButtons) {
+        radioButton.checked = false;
+    }
+
+    const denunciarButton = document.getElementById('denunciarButton');
+    denunciarButton.style.color = '#808080';
+    denunciarButton.disabled = true;
+}
+
+function resetEventModalContent() {
+    const modalForm = document.getElementById('reportEventForm');
+    const inputElement = modalForm.querySelector(`input[name="event_id"]`);
+
+    if (inputElement) {
+        inputElement.remove();
     }
 
     const radioButtons = document.getElementsByName('reason');
@@ -117,17 +150,54 @@ function reportComment(){
         body: `reason=${reason}`
     }).then(res => {
             if (res.ok) {
-                resetModalContent();
+                resetCommentModalContent();
                 $('#reportCommentModal').modal('hide');
             
                 openMessageModal('Comentário reportado com sucesso!');
             }
         }
     ).catch(err => {
-        resetModalContent();
+        resetCommentModalContent();
         $('#reportCommentModal').modal('hide');
     
         openMessageModal('Erro ao reportar comentário!');
+    });
+
+    return false;
+}
+
+function reportEvent(eventId){
+    const radioButtons = document.getElementsByName('reason');
+    let reason = '';
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+            reason = radioButton.value;
+            break;
+        }
+    }
+
+    const url = `${window.location.origin}/api/denuncias/evento/${eventId}/reportar`;
+
+    fetch(new URL(url,  window.location.origin), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: `reason=${reason}`
+    }).then(res => {
+            if (res.ok) {
+                resetEventModalContent();
+                $('#reportEventModal').modal('hide');
+            
+                openMessageModal('Evento reportado com sucesso!');
+            }
+        }
+    ).catch(err => {
+        resetEventModalContent();
+        $('#reportEventModal').modal('hide');
+    
+        openMessageModal('Erro ao reportar evento!');
     });
 
     return false;
@@ -622,4 +692,20 @@ function deleteComment(commentId) {
         }
     })
     .catch(err => console.log(err));
+}
+
+async function deleteEvent(eventId) {
+    const response = await fetch(`/api/evento/${eventId}/apagar`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+        }
+    });
+
+    if (response.ok) {
+        window.location.href = '/';
+    } else {
+        console.error(`Failed to delete event. Status: ${response.status}`);
+    }
 }

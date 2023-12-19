@@ -23,10 +23,34 @@
         @include('widgets.popUpNotification', ['message' => session('status')])
     @endif
 
-
     <div class="container position-relative d-flex align-items-end w-100">
         <img src="{{ asset('assets/eventos/' . $event->photo) }}" id="bannerImg">
-        <h1 id="bannerName" class="position-absolute text-white">{{ $event->name }}</h1>
+        <div id="bannerOverlay" class="position-absolute row">
+            <div class="banner-content">
+                <h1 id="bannerName" class="banner-title">{{ $event->name }}</h1>
+                @if (!$event->is_public)
+                    <img src="{{ asset('assets/icons/lock_close.svg') }}" class="banner-lock">
+                @endif
+                @if (Auth::check())
+                    <li class="nav-item dropdown">
+                        <img class="banner-dots" src="{{ asset('assets/icons/three-dots-vertical-white.svg') }}"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
+
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            @if (!Auth::user()->is_admin && !$event->organization->organizers->contains(Auth::user()))
+                                <li><a class="dropdown-item" onclick="openReportEventModal({{ $event->id }})"
+                                        style="cursor: pointer;">Denunciar</a></li>
+                            @endif
+                            @if (Auth::user()->is_admin || $event->organization->organizers->contains(Auth::user()))
+                                <li><a class="dropdown-item"
+                                        href="{{ route('edit-event', ['id' => $event->id]) }}">Editar</a></li>
+                                <li><a class="dropdown-item" onclick="deleteEvent({{ $event->id }})">Apagar</a></li>
+                            @endif
+                        </ul>
+                    </li>
+                @endif
+            </div>
+        </div>
     </div>
 
     <nav id="pageNav" class="navbar">
@@ -218,7 +242,7 @@
                                                     aria-labelledby="navbarDarkDropdownMenuLink">
                                                     @if (!Auth::user()->is_admin && Auth::user()->id != $comment->author->id)
                                                         <li><a class="dropdown-item"
-                                                                onclick="openReportModal({{ $comment->id }})"
+                                                                onclick="openReportCommentModal({{ $comment->id }})"
                                                                 style="cursor: pointer;">Denunciar</a></li>
                                                     @endif
 
@@ -241,15 +265,6 @@
 
                                     </div>
                                     <p class="comment-text">{{ $comment->text }}</p>
-                                    <!--
-                                                                        if($comment->file_id)
-                                                                            <div class="comment-file">
-                                                                                <a href="{ asset('assets/uploads/' . $comment->file->file_name) }}">
-                                                                                    <img src="{ asset('assets/uploads/' . $comment->file->file_name) }}" style="max-height: 15em;">
-                                                                                </a>
-                                                                            </div>
-                                                                        endif
-                                                                    -->
                                     <div class="votes-row">
                                         @if (Auth::check() &&
                                                 !Auth::user()->is_admin &&
@@ -310,35 +325,35 @@
                         @method('POST')
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="reason" id="inappropriate_content"
-                                value="inappropriate_content" onchange="updateButtonColor()">
+                                value="inappropriate_content" onchange="updateButtonColor('reportCommentModal')">
                             <label class="form-check-label" for="inappropriate_content">
                                 Conteúdo inadequado ou não apropriado
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="reason" id="violence_threats"
-                                value="violence_threats" onchange="updateButtonColor()">
+                                value="violence_threats" onchange="updateButtonColor('reportCommentModal')">
                             <label class="form-check-label" for="violence_threats">
                                 Ameaças ou incitação à violência
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="reason" id="incorrect_information"
-                                value="incorrect_information" onchange="updateButtonColor()">
+                                value="incorrect_information" onchange="updateButtonColor('reportCommentModal')">
                             <label class="form-check-label" for="incorrect_information">
                                 Informações incorretas ou enganosas
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="reason" id="harassment_bullying"
-                                value="harassment_bullying" onchange="updateButtonColor()">
+                                value="harassment_bullying" onchange="updateButtonColor('reportCommentModal')">
                             <label class="form-check-label" for="harassment_bullying">
                                 Assédio ou bullying
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="reason" id="commercial_spam"
-                                value="commercial_spam" onchange="updateButtonColor()">
+                                value="commercial_spam" onchange="updateButtonColor('reportCommentModal')">
                             <label class="form-check-label" for="commercial_spam">
                                 Conteúdo comercial ou spam
                             </label>
@@ -349,6 +364,49 @@
                         <button type="button" data-dismiss="modal"
                             style="color: white; border-radius: 0.5em; padding: 0.5em;">Cancelar</button>
                         <button type="button" id="denunciarButton" onclick="reportComment()"
+                            style="color: #808080; border-radius: 0.5em; padding: 0.5em;" disabled>Denunciar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="reportEventModal" tabindex="-1" role="dialog" aria-labelledby="reportEventModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title" id="reportEventModalLabel">Denunciar Evento</h5>
+                    <form id="reportEventForm">
+                        @csrf
+                        @method('POST')
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" id="suspect_fraud"
+                                value="suspect_fraud" onchange="updateButtonColor('reportEventModal')">
+                            <label class="form-check-label" for="suspect_fraud">
+                                Suspeita de fraude ou golpe
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" id="inappropriate_content"
+                                value="inappropriate_content" onchange="updateButtonColor('reportEventModal')">
+                            <label class="form-check-label" for="inappropriate_content">
+                                Conteúdo inadequado ou ofensivo
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="reason" id="incorrect_information"
+                                value="incorrect_information" onchange="updateButtonColor('reportEventModal')">
+                            <label class="form-check-label" for="incorrect_information">
+                                Informações incorretas sobre o evento
+                            </label>
+                        </div>
+                    </form>
+
+                    <div class="modal-footer" style="border-top: none;">
+                        <button type="button" data-dismiss="modal"
+                            style="color: white; border-radius: 0.5em; padding: 0.5em;">Cancelar</button>
+                        <button type="button" id="denunciarButton" onclick="reportEvent({{ $event->id }})"
                             style="color: #808080; border-radius: 0.5em; padding: 0.5em;" disabled>Denunciar</button>
                     </div>
                 </div>
