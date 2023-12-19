@@ -16,7 +16,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    margin: auto;
+    margin: 0 20%;
     transform: translateY(-50%);
     width: 15%;
     border-radius: 50%;
