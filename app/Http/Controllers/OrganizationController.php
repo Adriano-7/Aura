@@ -14,9 +14,17 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 class OrganizationController extends Controller{
     public function show($id): View{
+        $organization = Organization::find($id);
+        if(!$organization){
+            return view('pages.notFound', [
+                'user' => Auth::user(),
+                'text' => 'Organização não encontrada'
+            ]);
+        }
+
         return view('pages.organization', [
             'user' => Auth::user(),
-            'organization' => Organization::find($id)
+            'organization' => $organization,
         ]);
     }
 

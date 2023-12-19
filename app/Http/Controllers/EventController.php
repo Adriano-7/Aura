@@ -17,9 +17,16 @@ class EventController extends Controller
 {
     public function show($id): View
     {
+        $event = Event::find($id);
+        if(!$event){
+            return view('pages.notFound', [
+                'user' => Auth::user(),
+                'text' => 'Evento não encontrado'
+            ]);
+        }
         return view('pages.event', [
             'user' => Auth::user(),
-            'event' => Event::find($id)
+            'event' => $event,
         ]);
     }
 
