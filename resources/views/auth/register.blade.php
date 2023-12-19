@@ -44,7 +44,7 @@
                             <form method="POST" action="{{ route('register') }}">
                                 {{ csrf_field() }}
                                 <input type="text" name="name" placeholder="Primeiro e último nome" required autocomplete="off"/>
-                                <input type="text" name="username" placeholder="Nome de utilizador" required autocomplete="off"/>
+                                <input type="text" name="username" placeholder="Nome de utilizador" required autocomplete="off" id="username-input"/>                                
                                 <input type="email" name="email" placeholder="Email" required autocomplete="off"/>
                                 <input type="password" name="password" placeholder="Palavra passe" required autocomplete="off"/>
                                 <input type="password" name="password_confirmation" placeholder="Confirme a palavra passe"required autocomplete="off"r/>

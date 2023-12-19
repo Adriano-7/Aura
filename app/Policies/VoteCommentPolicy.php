@@ -3,13 +3,17 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\VoteComment;
 use App\Models\Comment;
+use App\Models\Event;
 use Illuminate\Auth\Access\Response;
 
 
 class VoteCommentPolicy{
     public function addVote(User $user, Comment $comment){
+        $event = Event::find($comment->event_id);
+        if (!$user->participatesInEvent($event)){
+            return Response::deny('Apenas participantes podem votar em comentários.');
+        }
         if ($user->is_admin){
             return Response::deny('Administrador não pode votar.');
         }
@@ -23,6 +27,10 @@ class VoteCommentPolicy{
     }
 
     public function deleteVote(User $user, Comment $comment){
+        $event = Event::find($comment->event_id);
+        if (!$user->participatesInEvent($event)){
+            return Response::deny('Apenas participantes podem votar em comentários.');
+        }
         if($comment->userVote($user->id) == 0){
             return Response::deny('Não pode apagar um voto que não existe.');
         }
