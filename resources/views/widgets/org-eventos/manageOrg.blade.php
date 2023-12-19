@@ -1,5 +1,5 @@
 
-<div class="container members-container" id="membros">
+<div class="container members-container navSect" id="membros">
     <div class="row">
         <div class="col-12 d-flex justify-content-between align-items-center mb-4">
             <h1 id="results-title">Membros</h1>

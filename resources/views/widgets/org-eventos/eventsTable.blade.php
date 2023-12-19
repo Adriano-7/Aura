@@ -1,9 +1,9 @@
 
 
 @if($isOrg)
-    <div class="container" id="eventos">
+    <div class="container navSect" id="eventos">
 @else
-    <div class="container" id="detalhes">
+    <div class="container navSect" id="detalhes">
 @endif
 
     <div class="row">

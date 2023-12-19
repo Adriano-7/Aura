@@ -238,10 +238,27 @@ p{
 
 
 @media (max-width: 765px){
-
     #bannerImg {
         height: 12rem;
     
     }
+}
 
+#content .navbar-nav {
+    flex-direction: row !important;
+}
+
+#orgNav {
+    background-color: #000000;
+    position: sticky; 
+    top: 0px; 
+    z-index: 2;
+}
+
+#orgNav a {
+    color: #FFF;
+    padding: 0rem;
+    margin-right: 1.2rem;
+    font-size: 15px;
+    font-weight: 600;
 }
