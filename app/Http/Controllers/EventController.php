@@ -23,10 +23,14 @@ class EventController extends Controller
         }
     
         if (Auth::check()) {
-            $comments = $event->comments()->with('author')->orderByRaw('user_id = ? DESC', [Auth::user()->id])->orderBy('date', 'DESC')->get();
+            $comments = $event->comments()
+                ->with('author')
+                ->orderByRaw('user_id = ? DESC', [Auth::user()->id])
+                ->orderBy('id', 'DESC')
+                ->get();        
         } 
         else {
-            $comments = $event->comments()->orderBy('date', 'DESC')->get();
+            $comments = $event->comments()->get();
         }
 
         return view('pages.event2', [

@@ -1,15 +1,15 @@
 /****** Common for event-org ********/
 document.addEventListener('DOMContentLoaded', function () {
-    window.addEventListener('scroll', function () {
-        let pageNav = document.querySelector('#pageNav');
-        let navLinks = pageNav.querySelectorAll('.nav-link');
-        let navSects = document.querySelectorAll('.navSect');
+    let pageNav = document.querySelector('#pageNav');
+    let navLinks = pageNav.querySelectorAll('.nav-link');
+    let navSects = document.querySelectorAll('.navSect');
 
+    function setActiveNavLink() {
         let current = '';
 
         navSects.forEach(navSect => {
             const sectionTop = navSect.offsetTop;
-            if (window.pageYOffset + 5 >= sectionTop) {
+            if (window.scrollY + 5 >= sectionTop) {
                 current = navSect.getAttribute('id');
             }
         })
@@ -27,8 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
         }
+    }
 
-    });
+    setActiveNavLink();
+    window.addEventListener('scroll', setActiveNavLink);
 });
 
 /****** Specific for events ********/
@@ -190,10 +192,8 @@ function addComment(e) {
     }).then(res => {
         if (res.ok) {
             res.json().then(data => {
-                // clear form
                 form.reset();
 
-                //Insert the new comment under the file upload section
                 const newComment = createCommentElement(data);
 
                 let fileUploadSection = document.querySelector('#file-upload-section');
@@ -215,10 +215,10 @@ function createCommentElement(commentData) {
     commentDiv.setAttribute('id', `comment-${commentData.comment.id}`);
 
     let profileLink = document.createElement('a');
-    profileLink.setAttribute('href', `http://127.0.0.1:8000/utilizador/${commentData.author.username}`);
+    profileLink.setAttribute('href', `${window.location.origin}/utilizador/${commentData.author.username}`);
     let profilePic = document.createElement('img');
     profilePic.setAttribute('class', 'profile-pic');
-    profilePic.setAttribute('src', `http://127.0.0.1:8000/assets/profile/${commentData.author.photo}`);
+    profilePic.setAttribute('src', `${window.location.origin}/assets/profile/${commentData.author.photo}`);
     profileLink.appendChild(profilePic);
     commentDiv.appendChild(profileLink);
 
@@ -231,13 +231,13 @@ function createCommentElement(commentData) {
     let commentAuthorSpan = document.createElement('span');
     commentAuthorSpan.setAttribute('class', 'comment-author');
     commentAuthorSpan.setAttribute('style', 'cursor: pointer');
-    commentAuthorSpan.setAttribute('onclick', `window.location.href='http://127.0.0.1:8000/utilizador/${commentData.author.username}'`);
+    commentAuthorSpan.setAttribute('onclick', `window.location.href='${window.location.origin}/utilizador/${commentData.author.username}'`);
     commentAuthorSpan.textContent = commentData.author.name;
     usernameDateDiv.appendChild(commentAuthorSpan);
 
     let commentDateSpan = document.createElement('span');
     commentDateSpan.setAttribute('class', 'comment-date');
-    commentDateSpan.textContent = 'just now';
+    commentDateSpan.textContent = '1 second ago';
     usernameDateDiv.appendChild(commentDateSpan);
 
     let dropdownLi = document.createElement('li');
@@ -245,7 +245,7 @@ function createCommentElement(commentData) {
 
     let dropdownImg = document.createElement('img');
     dropdownImg.setAttribute('class', 'three-dots');
-    dropdownImg.setAttribute('src', 'http://127.0.0.1:8000/assets/three-dots-horizontal.svg');
+    dropdownImg.setAttribute('src', `${window.location.origin}/assets/three-dots-horizontal.svg`);    
     dropdownImg.setAttribute('data-toggle', 'dropdown');
     dropdownImg.setAttribute('aria-haspopup', 'true');
     dropdownImg.setAttribute('aria-expanded', 'false');
@@ -302,4 +302,175 @@ function activateEditComment(commentId) {
 }
 
 function updateComment(e) {
+}
+
+const upvoteButtons = document.querySelectorAll('.up-btn');
+upvoteButtons.forEach(button => {
+    button.addEventListener('click', async e => {
+        upVote(button);
+    });
+});
+
+function upVote(upButton){
+    let commentRow = upButton.parentElement.parentElement.parentElement;
+    let downButton = commentRow.querySelector('.down-btn');
+    let commentVotes = commentRow.querySelector('.comment-votes');
+    let votesBalance = parseInt(commentVotes.textContent);
+    
+    let upVoteSelected = upButton.hasAttribute('selected');
+    let downVoteSelected = downButton.hasAttribute('selected');
+    
+    let commentId = commentRow.id.split('-')[1];
+    let url = `${window.location.origin}/api/comentario/${commentId}/`;
+    let method = 'POST';
+
+    if(upVoteSelected && !downVoteSelected){
+        // remove upvote
+        url += 'unvote'
+        method = 'DELETE'
+    }
+    else if(!upVoteSelected && downVoteSelected){
+        // remove downvote
+        url += 'unvote'
+        method = 'DELETE'
+    }
+    else if(!upVoteSelected && !downVoteSelected){
+        // add upvote
+        url += 'up'
+    }
+    else{
+        console.log('You cannot upvote and downvote');
+        return;
+    }
+
+    fetch(new URL(url,  window.location.origin), {
+        method: method,
+        headers: {
+            'content-type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    }).then(res => {
+        if (res.ok) {
+            if(upVoteSelected && !downVoteSelected){
+                upButton.removeAttribute('selected');
+                upButton.innerHTML = `
+                    <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon">
+                `;
+                commentVotes.textContent = votesBalance - 1;
+            }
+            else if(!upVoteSelected && downVoteSelected){
+                downButton.removeAttribute('selected');
+                downButton.innerHTML = `
+                    <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon">
+                `;
+                commentVotes.textContent = votesBalance + 1;
+            }
+            else if(!upVoteSelected && !downVoteSelected){
+                upButton.setAttribute('selected', '');
+                upButton.innerHTML = `
+                    <img src="${window.location.origin}/assets/icons/vote-up-selected.svg" class="vote-icon">
+                `;
+                commentVotes.textContent = votesBalance + 1;
+            }
+        }
+    })
+}
+
+const downvoteButtons = document.querySelectorAll('.down-btn');
+downvoteButtons.forEach(button => {
+    button.addEventListener('click', async e => {
+        downVote(button);
+    });
+});
+
+function downVote(downButton){
+    let commentRow = downButton.parentElement.parentElement.parentElement;
+    let upButton = commentRow.querySelector('.up-btn');
+    let commentVotes = commentRow.querySelector('.comment-votes');
+    let votesBalance = parseInt(commentVotes.textContent);
+    
+    let upVoteSelected = upButton.hasAttribute('selected');
+    let downVoteSelected = downButton.hasAttribute('selected');
+    
+    let commentId = commentRow.id.split('-')[1];
+    let url = `${window.location.origin}/api/comentario/${commentId}/`;
+    let method = 'POST';
+
+    if(upVoteSelected && !downVoteSelected){
+        // remove upvote
+        url += 'unvote'
+        method = 'DELETE'
+    }
+    else if(!upVoteSelected && downVoteSelected){
+        // remove downvote
+        url += 'unvote'
+        method = 'DELETE'
+    }
+    else if(!upVoteSelected && !downVoteSelected){
+        // add downvote
+        url += 'down'
+    }
+    else{
+        console.log('You cannot upvote and downvote');
+        return;
+    }
+
+    fetch(new URL(url,  window.location.origin), {
+        method: method,
+        headers: {
+            'content-type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    }).then(res => {
+        if (res.ok) {
+            if(upVoteSelected && !downVoteSelected){
+                upButton.removeAttribute('selected');
+                upButton.innerHTML = `
+                    <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon">
+                `;
+                commentVotes.textContent = votesBalance - 1;
+            }
+            else if(!upVoteSelected && downVoteSelected){
+                downButton.removeAttribute('selected');
+                downButton.innerHTML = `
+                    <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon">
+                `;
+                commentVotes.textContent = votesBalance + 1;
+
+            }
+            else if(!upVoteSelected && !downVoteSelected){
+                downButton.setAttribute('selected', '');
+                downButton.innerHTML = `
+                    <img src="${window.location.origin}/assets/icons/vote-down-selected.svg" class="vote-icon">
+                `;
+                commentVotes.textContent = votesBalance - 1;
+            }
+        }
+    })
+}
+
+function deleteComment(commentId) {
+    if (!confirm('Tem a certeza?')) {
+        return;
+    }
+
+    let url = `${window.location.origin}/api/comentario/${commentId}/apagar`;
+    fetch(new URL(url, window.location.origin), {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    }).then(res => {
+        if (res.ok) {
+            let commentRow = document.getElementById(`comment-${commentId}`);
+            commentRow.remove();
+
+            let sectionTitle = document.querySelector('#comentarios #section-title');
+            let numberOfComments = sectionTitle.textContent.split('•')[1].trim();
+            numberOfComments--;
+            sectionTitle.textContent = `Comentários • ${numberOfComments}`;
+        }
+    })
+    .catch(err => console.log(err));
 }
