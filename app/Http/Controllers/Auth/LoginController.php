@@ -30,8 +30,16 @@ class LoginController extends Controller
      */
     public function authenticate(Request $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
+        $email_or_username = $request->input('email_or_username');
+        $fieldType = (strpos($email_or_username, '@') !== false) ? 'email' : 'username';  
+
+        $credentials = [
+            $fieldType => $email_or_username,
+            'password' => $request->input('password'),
+        ];
+
+        $request->validate([
+            'email_or_username' => ['required'],
             'password' => ['required'],
         ]);
 

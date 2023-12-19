@@ -13,7 +13,7 @@ use DateTime;
 class CreateEventController extends Controller{
     public function show(): View{
         if(!Auth::check()){
-            return abort(403);
+            return abort(403, 'Utilizador não autenticado.');
         }
 
         $user = Auth::user();
@@ -27,7 +27,7 @@ class CreateEventController extends Controller{
 
     public function store(Request $request){
         if (!Auth::check()) {
-            return abort(403);
+            return abort(403, 'Utilizador não autenticado.');
         }
     
         $validatedData = $request->validate([

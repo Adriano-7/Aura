@@ -15,7 +15,7 @@ use App\Models\Organization;
 class NotificationsController extends Controller{
     public function show(): View{
         if(!Auth::check()){
-            abort(404);
+            abort(403, 'Utilizador não autenticado.');
         }
 
         return view('pages.notifications', [
@@ -25,7 +25,7 @@ class NotificationsController extends Controller{
 
     public function markAsSeen(Request $request){
         if(!Auth::check()){
-            abort(404);
+            abort(403, 'Utilizador não autenticado.');
         }
 
         $notification = Notification::find($request->id);
