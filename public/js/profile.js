@@ -40,12 +40,6 @@ function cancelEdit(){
     photoInput.value = '';
 }
 
-document.addEventListener('submit', function (e) {
-    if (e.target.matches('#editProfileForm')) {
-        editProfile(e);
-    }
-});
-
 document.getElementById('photoInput').addEventListener('change', function(e) {
     previewProfilePhoto(e);
 });
