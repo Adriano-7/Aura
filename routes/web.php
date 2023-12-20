@@ -16,6 +16,7 @@ use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportEventController;
 use App\Http\Controllers\EditEventController;
 use App\Http\Controllers\RecoverPasswordController;
+use App\Http\Controllers\StaticPageController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -32,10 +33,9 @@ use App\Http\Controllers\Auth\RegisterController;
 */
 
 // Static Pages
-
-Route::get('/sobre-nos', function () {
-    return view('pages.aboutUs');
-})->name('aboutUs');
+Route::controller(StaticPageController::class)->group(function () {
+    Route::get('/sobre-nos', 'showAboutUs')->name('aboutUs');
+});
 
 //Login
 Route::controller(LoginController::class)->group(function () {
