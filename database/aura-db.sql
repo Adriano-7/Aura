@@ -817,25 +817,26 @@ INSERT INTO notifications(id, receiver_id, type, organization_id, user_emitter_i
     ('70', '2',  'organization_registration_request', '19', '19');
 
 -- Insert a poll
-INSERT INTO polls (id, event_id, question) VALUES
-    ('1', '1', 'What is your favorite programming language?'),
-    ('2', '1', 'What is your favorite music genre?');
+INSERT INTO polls (event_id, question) VALUES
+    ('1', 'What is your favorite programming language?'),
+    ('1', 'What is your favorite music genre?');
 
 -- Insert options for the poll
-INSERT INTO poll_option (id, poll_id, text) VALUES
-    ('1', '1', 'Python'),
-    ('2', '1', 'JavaScript'),
-    ('3', '1', 'Java'),
-    ('4', '1', 'C#'),
-    ('5', '2', 'Rock'),
-    ('6', '2', 'Pop'),
-    ('7', '2', 'Metal'),
-    ('8', '2', 'Alternativo'),
-    ('9', '2', 'Folk');
+INSERT INTO poll_option (poll_id, text) VALUES
+    ('1', 'Python'),
+    ('1', 'JavaScript'),
+    ('1', 'Java'),
+    ('1', 'C#'),
+    ('2', 'Rock'),
+    ('2', 'Pop'),
+    ('2', 'Metal'),
+    ('2', 'Alternativo'),
+    ('2', 'Folk');
 
 -- Insert votes for the poll
-INSERT INTO poll_vote (id, poll_option_id, user_id) VALUES
-    ('1', '1', '1'); -- User 1 votes for Python
+INSERT INTO poll_vote (poll_option_id, user_id) VALUES
+    ('1', '3'); -- User 1 votes for Python
+
 
 
 

@@ -1,63 +1,69 @@
+function show_results(pollId, optionVoted, card) {
+    // If the user has voted, get the vote percentages for each option
+    fetch('/api/poll/' + pollId + '/resultados')
+    .then(response => {
+        return response.json();
+    })
+    .then(results => {
+        // Get the text node of the element containing the poll question
+        var questionTextNode = card.querySelector('.mb-0').firstChild;
+        // Append ' -Resultados' to the poll question
+        questionTextNode.nodeValue += ' (Resultados)';
+
+        // Update the text and style of each option box
+        card.querySelectorAll('.option-box').forEach(function(box) {
+            var optionId = Number(box.getAttribute('data-option-id'));
+            var result = results.find(result => result.option_id === optionId);
+
+            box.textContent = result.text + ' (' + result.percentage + '%)';
+            box.style.width = result.percentage + '%';
+
+            if (result.percentage === 0) {
+                box.style.width = 'min-content';
+                box.style.textAlign = 'left'; 
+            }
+
+            box.classList.add('disabled');
+
+            // If the user has voted for this option, add the 'selected' class
+            if (optionId === optionVoted) {
+                box.classList.add('highlighted');
+            }
+        });
+
+        // Disable the submit button
+        var submitButton = card.querySelector('.btn-primary');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.classList.add('hidden');
+        }
+    });
+}
+
+
+
 window.onload = function() {
     // Get all poll cards
     var pollCards = document.querySelectorAll('.poll-card');
 
     pollCards.forEach(function(card) {
         var pollId = Number(card.getAttribute('data-poll-id'));
+        var isOrganizerOrAdmin = card.getAttribute('data-is-organizer-or-admin') === 'true';
 
-        // Check if the user has voted in this poll
+        // Check if the user has voted in this poll or is an organizer or admin
         fetch('/api/poll/' + pollId + '/hasVoted')
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                if (data.hasVoted) {
-                    // If the user has voted, get the vote percentages for each option
-                    fetch('/api/poll/' + pollId + '/resultados')
-                        .then(response => {
-                            return response.json();
-                        })
-                        .then(results => {
-                            // Update the text and style of each option box
-                            card.querySelectorAll('.option-box').forEach(function(box) {
-                                var optionId = Number(box.getAttribute('data-option-id'));
-                                var result = results.find(result => result.option_id === optionId);
+                if (data.hasVoted || isOrganizerOrAdmin) {
 
-                                box.textContent = result.text + ' (' + result.percentage + '%)';
-                                box.style.width = result.percentage + '%';
 
-                                if (result.percentage === 0) {
-                                    box.style.width = 'min-content';
-                                    box.style.textAlign = 'left'; 
-                                    
-                                }
-
-                                box.classList.add('disabled');
-
-                                // If the user has voted for this option, add the 'selected' class
-                                if (optionId === data.optionVoted) {
-                                    box.classList.add('highlighted');
-                                }
-                            });
-
-                            // Disable the submit button
-                            var submitButton = card.querySelector('.btn-primary');
-                            if (submitButton) {
-                                submitButton.disabled = true;
-                                submitButton.classList.add('hidden');
-                            }
-                        });
+                    show_results(pollId, data.optionVoted, card);
                 }
             });
     });
 };
-
-
-
-
-
-
-
 
 document.querySelectorAll('.card-header').forEach(function(header) {
     var pollId = header.getAttribute('id').split('_')[1];
@@ -135,57 +141,27 @@ document.querySelectorAll('.poll-card').forEach(function(card) {
             })
             .catch(error => {
                 console.error('Error:', error);
+                alert('Error: ' + error);
             });
 
-        
-
-
-            // Make an AJAX request to get the vote percentages for each option
-            fetch('/api/poll/' + pollId + '/resultados')
-                .then(response => {
-                    return response.json();
-                })
-                .then(results => {
-                    // Update the text and style of each option box
-                    card.querySelectorAll('.option-box').forEach(function(box) {
-                        var optionId = Number(box.getAttribute('data-option-id'));
-                        var result = results.find(result => result.option_id === optionId);
-
-                        box.textContent = result.text + ' (' + result.percentage + '%)';
-
-                        box.style.width = result.percentage + '%';
-
-                        if (result.percentage === 0) {
-                            box.style.width = 'min-content';
-                            box.style.textAlign = 'left'; 
-                        }
-
-                        if (optionId === Number(selectedOptionId)) {
-                            box.classList.add('highlighted');
-                        }
-
-                        box.classList.add('disabled');
-
-                         });
-
-                    });
-
-                    // Disable the submit button
-                    event.target.disabled = true;
-                    event.currentTarget.classList.add('hidden');
-                    
-                });
+            // Show the results
+            show_results(pollId, selectedOptionId, card);
         });
     });
+});
 
 
     document.addEventListener('DOMContentLoaded', function() {
         var optionCount = 3;
         var addOptionButton = document.getElementById('addOption');
         var removeOptionButton = document.getElementById('removeOption');
-        var inputContainer = document.getElementById('inputContainer');
+        var inputContainer = document.getElementById('pollForm');
 
         addOptionButton.addEventListener('click', function() {
+            if (optionCount > 6) {
+                swal("Erro", "Só podes adicionar até 6 opções.", "error");
+                return;
+            }
             var newLabel = document.createElement('label');
             newLabel.setAttribute('for', 'option' + optionCount);
             newLabel.textContent = 'Opção ' + optionCount;
@@ -194,7 +170,11 @@ document.querySelectorAll('.poll-card').forEach(function(card) {
             newInput.setAttribute('type', 'text');
             newInput.setAttribute('id', 'option' + optionCount);
             newInput.setAttribute('name', 'option' + optionCount);
+            
+
+            
             newInput.classList.add('form-control');
+            newInput.setAttribute('required', '');
 
             inputContainer.appendChild(newLabel);
             inputContainer.appendChild(newInput);
@@ -217,18 +197,21 @@ document.querySelectorAll('.poll-card').forEach(function(card) {
         });
     });
 
-
-    document.getElementById('pollForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    document.getElementById('pollForm').addEventListener('submit', function(event) {
+        event.preventDefault();
     
-        var formData = new FormData(this);
+        let formData = new FormData(this);
     
         fetch('/api/poll/criar', {
             method: 'POST',
-            'X-CSRF-TOKEN': csrfToken,
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+            },
             body: formData
         })
         .then(response => response.json())
         .then(data => console.log(data))
         .catch(error => console.error('Error:', error));
     });
+
+    

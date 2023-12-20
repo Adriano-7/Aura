@@ -10,6 +10,8 @@ use App\Models\PollOption;
 use App\Models\PollVote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 use Illuminate\Support\Facades\URL;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -98,8 +100,51 @@ class PollController extends Controller{
 
 
     public function store(Request $request){
-        error_log('PollController@store');
-        error_log(print_r($request->all(), true));
+        error_log('Form data: ' . json_encode($request->all()));
+
+
+
+        $request->validate([
+            'eventId' => 'required|string',
+            'mainQuestion' => 'required|string',
+            'option1' => 'required|string',
+            'option2' => 'required|string',
+            'option3' => 'string',
+            'option4' => 'string',
+            'option5' => 'string',
+            'option6' => 'string',
+        ]);
+
+
+        $event = Event::find(intval($request->eventId));
+        if (!$event) {
+            return response()->json(['message' => 'Event not found'], 404);
+        }
+
+        $poll = Poll::create([
+            'event_id' => intval($request->eventId),
+            'question' => $request->mainQuestion,
+        ]);
+
+        try {
+            $this->authorize('create', $poll);
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to create a poll'], 403);
+        }
+        // Create a PollOption for each option in the request
+        foreach ($request->all() as $key => $value) {
+            error_log('Key: ' . $key . ', Value: ' . $value);
+            if (Str::startsWith($key, 'option') && !empty($value)) {
+                error_log('Creating option: ' . $value);
+                PollOption::create([
+                    'poll_id' => $poll->id,
+                    'text' => $value,
+                ]);
+            }
+        }
+
+        $poll->save();
+
 
         return response()->json(['success' => true]);
       

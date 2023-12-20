@@ -383,3 +383,14 @@ input[type="text"]:focus {
     border-color: rgb(177, 17, 17);
     margin-top: 1em;
 }
+
+#submit {
+    background-color: #11141A;
+    color: #2b860a;
+    border-color: #2b860a;
+    width: 20%;
+}
+
+.modal-footer {
+    border-color: #7e5efa;
+}
