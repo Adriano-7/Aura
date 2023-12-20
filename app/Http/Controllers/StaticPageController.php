@@ -12,4 +12,14 @@ class StaticPageController extends Controller{
             'user' => Auth::user(),
         ]);
     }
+    public function showPrivacy() {
+        return view('pages.aboutUs', [
+            'user' => Auth::user(),
+        ]);
+    }
+    public function showContacts() {
+        return view('pages.aboutUs', [
+            'user' => Auth::user(),
+        ]);
+    }
 }

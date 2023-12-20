@@ -22,5 +22,4 @@
         @include('widgets.popUpNotification', ['message' => session('status')])
     @endif
     
-    @include('widgets.footer')
 @endsection

@@ -151,18 +151,58 @@ body {
 }
 
 /***************** Footer *****************/
-footer {
-    width: 100%;
-    color: white;
-    padding: 1rem 2rem;
-    background-color: #11141A;
+footer{
+    padding-left: 7%;
+    padding-right: 7%;
+}
 
+.footerText{
+    font-size: 0.8rem;
+    text-decoration: none;
+
+    color: #808080;
+}
+.footerText:hover{
+    color: #fff;
+}
+
+footer p{
+    /*center vertically*/
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
+    padding-top: 1em;
 }
 
-footer p {
-    margin: 0;
-    padding: 0;
+@media (max-width: 1100px) {
+    footer p{
+        display: none;
+    }
 }
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+footer{
+    margin-top: auto;
+
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    footer {
+        flex-shrink: 0;
+    }

@@ -55,5 +55,4 @@
         </div>
     </div>
 
-    @include('widgets.footer')
 @endsection

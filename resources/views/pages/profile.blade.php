@@ -80,5 +80,4 @@
             </div>
         @endif
     </section>
-    @include('widgets.footer')
 @endsection

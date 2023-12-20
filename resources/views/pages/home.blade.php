@@ -28,6 +28,4 @@
 
     @include('widgets.eventRow', ['events' => $events, 'text' => 'Eventos recomendados'])
     @include('widgets.organizationRow', ['organizations' => $organizations, 'text' => 'Artistas mais populares'])
-
-    @include('widgets.footer')
 @endsection

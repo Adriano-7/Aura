@@ -40,5 +40,4 @@
 
     </main>
 
-    @include('widgets.footer')
 @endsection

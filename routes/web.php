@@ -35,6 +35,8 @@ use App\Http\Controllers\Auth\RegisterController;
 // Static Pages
 Route::controller(StaticPageController::class)->group(function () {
     Route::get('/sobre-nos', 'showAboutUs')->name('aboutUs');
+    Route::get('/politica-de-privacidade', 'showPrivacy')->name('privacy');
+    Route::get('/contactos', 'showContacts')->name('contacts');
 });
 
 //Login

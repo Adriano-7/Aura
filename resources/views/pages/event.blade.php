@@ -482,6 +482,4 @@
         </div>
         </section>
     </div>        
-    
-    @include('widgets.footer')
 @endsection
