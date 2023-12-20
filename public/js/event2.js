@@ -322,6 +322,8 @@ function addComment(e) {
     e.preventDefault();
     let form = e.target;
     let formData = new FormData(form);
+    formData.append('file', document.getElementById('file-upload').files[0]);
+
     let url = form.getAttribute('action');
 
     fetch(new URL(url, window.location.origin), {
