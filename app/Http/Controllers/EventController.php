@@ -16,6 +16,9 @@ use App\Models\User;
 class EventController extends Controller{
     public function show($id): View
     {
+        if (!is_numeric($id)) {
+            abort(404, 'Evento não encontrado.');
+        }
         $event = Event::find($id);
         if(!$event){
             abort(404, 'Evento não encontrado.');
