@@ -35,7 +35,7 @@ class EventController extends Controller{
             $comments = $event->comments()->get();
         }
 
-        return view('pages.event2', [
+        return view('pages.event', [
             'user' => Auth::user(),
             'event' => $event,
             'comments' => $comments,

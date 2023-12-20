@@ -34,7 +34,7 @@ body {
     font-size: small;
 }
 
-.badge{
+.badge {
     background-color: #A08AFA;
     font-weight: 500;
     color: #000000 !important;
@@ -48,11 +48,11 @@ body {
 
 /***************** Search Bar *****************/
 
-#search-form.looged_in{
+#search-form.looged_in {
     margin-left: 2rem
 }
 
-#search_bar{
+#search_bar {
     border-radius: 0.8em;
     background-color: #11141A;
     border: none;
@@ -72,7 +72,7 @@ body {
     outline: none;
 }
 
-#search_bar::placeholder{
+#search_bar::placeholder {
     color: #888282;
     font-weight: 300;
 }
@@ -87,24 +87,28 @@ body {
 
 @media (min-width: 765px) {
     #search_bar.looged_out {
-        position:absolute;
+        position: absolute;
         left: 50%;
         transform: translate(-50%, -50%);
     }
 }
 
 @media (max-width: 765px) {
-    #search-form{
+    #search-form {
         margin-left: 0 !important;
     }
 
-    #search_bar{
+    #search_bar {
         background-position: 2% 50%;
     }
 }
 
 .navbar-nav {
     white-space: nowrap;
+}
+
+.dropdown-menu .dropdown-item:active {
+    background-color: transparent;
 }
 
 /***************** ScrollBar *****************/
@@ -133,10 +137,13 @@ body {
     scrollbar-color: #1c202a #35353e;
 }
 
-.modal-body{
+.modal-body {
     background-color: #11141A;
     color: #FFFFFF;
     border-radius: 1rem;
+
+    color: #808080;
+    font-size: 0.9rem;
 }
 
 .modal-content{

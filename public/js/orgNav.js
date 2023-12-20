@@ -3,14 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let navLinks = pageNav.querySelectorAll('.nav-link');
     let navSects = document.querySelectorAll('.navSect');
 
-    navLinks[0].classList.add('active');
-
-    window.addEventListener('scroll', function () {
+    function setActiveNavLink() {
         let current = '';
 
         navSects.forEach(navSect => {
             const sectionTop = navSect.offsetTop;
-            if (window.scrollY + 5 >= sectionTop) { // Changed here
+            if (window.scrollY + 5 >= sectionTop) {
                 current = navSect.getAttribute('id');
             }
         })
@@ -28,5 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
         }
-    }); 
+    }
+
+    setActiveNavLink();
+    window.addEventListener('scroll', setActiveNavLink);
 });
