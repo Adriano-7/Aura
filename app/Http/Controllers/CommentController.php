@@ -71,17 +71,21 @@ class CommentController extends Controller{
         $comment->user_id = Auth::user()->id;
         $comment->text = $request->text;
         $comment->event_id = $request->event_id;
-        $comment->save();
+
         if ($request->hasFile('file')) {
             $fileRequest = $request->file('file');
+            $filename = time() . "-" . $fileRequest->getClientOriginalName();
+           
             $file = new File();
-            $file->file_name = time() . "-" . $fileRequest->getClientOriginalName();
+            $file->file_name = $filename;
             $file->comment_id = $comment->id;
             $file->save();
             $comment->file_id = $file->id;
-            $comment->save();
-            $fileRequest->storeAs('public', $file->file_name);
+            $fileRequest->move(public_path('assets/comments'), $filename);
         }
+
+        $comment->save();
+
         return response()->json(['message' => 'Comment added successfully', 'comment' => $comment, 'author' => Auth::user()], 200);
     }
 
