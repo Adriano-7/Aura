@@ -10,7 +10,7 @@
 
 @section('scripts')
     <script src="{{ asset('js/organization.js') }}" defer></script>
-    <script src="{{ asset('js/pageNav.js') }}" defer></script>
+    <script src="{{ asset('js/orgNav.js') }}" defer></script>
 @endsection
 
 @section('header')
@@ -31,6 +31,8 @@
     @if (Auth::check() && (Auth::user()->is_admin || $organization->organizers->contains(Auth::user()->id)))
         @include('widgets.org-eventos.pageNav', ['elements' => ['Membros', 'Eventos', 'Sobre']], ['href' => ['#membros', '#eventos',  '#sobre']])
         @include('widgets.org-eventos.manageOrg')
+    @else
+        @include('widgets.org-eventos.pageNav', ['elements' => ['Eventos', 'Sobre']], ['href' => ['#eventos',  '#sobre']])
     @endif
 
     @include('widgets.org-eventos.eventsTable', ['title' => 'Eventos • ' . $organization->events->count() . ' Resultados', 'events' => $organization->events, 'isOrg' => true])

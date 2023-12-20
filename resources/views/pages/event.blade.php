@@ -136,7 +136,7 @@
                         <div class="col-12 text-center" style="margin-top: 0.5em;">
                             <button type="button" id="show-participants" class="event-btn" data-toggle="modal"
                                 data-target="#participantsModal">Ver participantes </button>
-                            @if (Auth::check())
+                            @if (Auth::check() && !Auth::user()->is_admin)
                                 <button type="button" class="event-btn" data-toggle="modal"
                                     data-target="#inviteModal">Convidar</button>
                             @endif
