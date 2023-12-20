@@ -56,13 +56,13 @@
                                     </div>
                                     @method('PUT')
                                     @csrf
+                                    <div class="modal-footer" style="border-top: none;">
+                                        <button type="button" data-dismiss="modal" onclick="cancelEdit()"
+                                            style="color: white; border-radius: 0.5em; padding: 0.5em;">Cancelar</button>
+                                        <button type="submit" id="save-button"
+                                            style="color: white; border-radius: 0.5em; padding: 0.5em;">Guardar</button>
+                                    </div>
                                 </form>
-                                <div class="modal-footer" style="border-top: none;">
-                                    <button type="button" data-dismiss="modal" onclick="cancelEdit()"
-                                        style="color: white; border-radius: 0.5em; padding: 0.5em;">Cancelar</button>
-                                    <button type="button" id="save-button" onclick="submitForm()"
-                                        style="color: white; border-radius: 0.5em; padding: 0.5em;">Guardar</button>
-                                </div>
                             </div>
                         </div>
                     </div>

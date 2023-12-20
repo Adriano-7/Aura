@@ -74,9 +74,6 @@ class UserController extends Controller{
             $user->save();
         }
 
-        return response()->json([
-            'message' => 'User updated',
-            'username' => $user->username,
-        ], 200);
+        return redirect()->route('user', ['username' => $user->username]);
     }
 }

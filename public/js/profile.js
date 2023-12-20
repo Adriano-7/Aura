@@ -46,34 +46,6 @@ document.addEventListener('submit', function (e) {
     }
 });
 
-function submitForm(){
-    let form = document.querySelector('#editProfileForm');
-    form.submit();
-}
-
-function editProfile(e){
-    e.preventDefault();
-    let form = e.target;
-    let formData = new FormData(form);
-    
-    let userId = formData.get('id');
-    fetch(new URL(`/api/utilizador/${userId}/editar`, window.location.origin),{
-        method: 'PUT',
-        headers: {
-            'X-CSRF-TOKEN': csrf
-        },
-        body: formData
-    }).then(response => {
-        if(response.ok){
-            response.json().then(data => {
-                window.location.href = `/utilizador/${data.username}`;
-            });
-        }
-    }).catch(error => {
-        console.log(error);
-    });
-}
-
 document.getElementById('photoInput').addEventListener('change', function(e) {
     previewProfilePhoto(e);
 });
