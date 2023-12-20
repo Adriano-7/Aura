@@ -41,7 +41,7 @@
                         <div class="modal-content">
                             <div class="modal-body">
                                 <h5 class="modal-title" id="editModalLabel">Editar Perfil</h5>
-                                <form id="editProfileForm">
+                                <form id="editProfileForm" method="POST" action="{{route('user.update', $user->id)}}" enctype="multipart/form-data">
                                     <input type="hidden" name="id" value="{{$user->id}}">
                                     <input id="nameInput" type="text" name="name" class="form-control" placeholder="Nome" value="{{$user->name}}">
                                     <input id="usernameInput" type="text" name="username" class="form-control" placeholder="Nome de utilizador" value="{{$user->username}}">
@@ -50,13 +50,19 @@
                                         <input type="color" name="background_color" class="form-control form-control-color" id="backgroundColorInput" value="{{$user->background_color}}">
                                         <label for="backgroundColorInput" class="form-label">Cor favorita</label>
                                     </div>
+                                    <div id="photo-input">
+                                        <img src="{{ asset('assets/profile/' . $user->photo) }}" id="profile-pic-preview">
+                                        <input type="file" name="photo" class="form-control" id="photoInput" accept="image/png, image/jpeg, image/jpg"> 
+                                    </div>
+                                    @method('PUT')
+                                    @csrf
+                                    <div class="modal-footer" style="border-top: none;">
+                                        <button type="button" data-dismiss="modal" onclick="cancelEdit()"
+                                            style="color: white; border-radius: 0.5em; padding: 0.5em;">Cancelar</button>
+                                        <button type="submit" id="save-button"
+                                            style="color: white; border-radius: 0.5em; padding: 0.5em;">Guardar</button>
+                                    </div>
                                 </form>
-                                <div class="modal-footer" style="border-top: none;">
-                                    <button type="button" data-dismiss="modal" onclick="cancelEdit()"
-                                        style="color: white; border-radius: 0.5em; padding: 0.5em;">Cancelar</button>
-                                    <button type="button" id="save-button" onclick="submitForm()"
-                                        style="color: white; border-radius: 0.5em; padding: 0.5em;">Guardar</button>
-                                </div>
                             </div>
                         </div>
                     </div>
