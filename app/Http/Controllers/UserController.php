@@ -39,8 +39,8 @@ class UserController extends Controller{
             abort(404, 'Utilizador não encontrado.');
         }
     
-        $color1_increment = -120;
-        $color2_increment = 50;
+        $color1_increment = -122;
+        $color2_increment = 55;
         return view('pages.profile', [
             'userProfile' => $userProfile,
             'user' => Auth::user(),

@@ -46,6 +46,10 @@
                                     <input id="nameInput" type="text" name="name" class="form-control" placeholder="Nome" value="{{$user->name}}">
                                     <input id="usernameInput" type="text" name="username" class="form-control" placeholder="Nome de utilizador" value="{{$user->username}}">
                                     <input id="emailInput" type="email" name="email" class="form-control" placeholder="Email" value="{{$user->email}}">
+                                    <div id="color-input">
+                                        <input type="color" name="background_color" class="form-control form-control-color" id="backgroundColorInput" value="{{$user->background_color}}">
+                                        <label for="backgroundColorInput" class="form-label">Cor favorita</label>
+                                    </div>
                                 </form>
                                 <div class="modal-footer" style="border-top: none;">
                                     <button type="button" data-dismiss="modal" onclick="cancelEdit()"

@@ -132,9 +132,9 @@ scrollbar-width: none;  /* Firefox */
     background-color: #11141A;
     color: #FFFFFF;
     border-radius: 1rem;
-    
     color: #808080;
     font-size: 0.9rem;
+    width: 25em;
 }
 
 .modal-content{
@@ -162,6 +162,17 @@ scrollbar-width: none;  /* Firefox */
     border: none;
     border-bottom: 1px solid #808080;
     box-shadow: none;
+}
+
+#color-input{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.form-control[type="color"] {
+    border: none;
+    margin-right: 1em;
 }
 
 /*css to mobile phones*/
