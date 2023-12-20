@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\File;
 use App\Models\Poll;
+use App\Models\PollOption;
+use App\Models\PollVote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
@@ -74,8 +76,6 @@ class PollController extends Controller{
             
             $percentage = $totalVotes > 0 ? ($voteCount / $totalVotes) * 100 : 0;            
             
-            
-            
             // Store the result
             $results[] = [
                 'option_id' => $option->id,
@@ -88,9 +88,44 @@ class PollController extends Controller{
         
         return response()->json($results);    
     }        
+
+
+    public function vote(Request $request, int $id) {
+        $poll = Poll::find($id);
+        if (!$poll) {
+            return response()->json(['message' => 'Poll not found'], 404);
+        }
+        try {
+            $this->authorize('vote', $poll);
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'User not authorized to vote on this poll'], 403);
+        }
+    
+
+        PollVote::addVote(intval($request->option_id), Auth::user()->id);
+        return response()->json(['success' => true]);
+
+       
+    }
+
+    public function hasVoted (int $id) {
+        $poll = Poll::find($id);
+        if (!$poll) {
+            return response()->json(['message' => 'Poll not found'], 404);
+        }
+
+
+        $hasVoted = $poll->hasUserVoted(Auth::user()->id);
+        $optionVoted = $poll->optionUserVoted(Auth::user()->id);
+
+
+        error_log('Vote: ' . json_encode($optionVoted));
+
+        error_log('$hasVoted is: ' . ($hasVoted ? 'true' : 'false'));
+        return response()->json(['hasVoted' => $hasVoted,
+                                 'optionVoted' => $optionVoted->poll_option_id ?? null]);      
+    }
 }
-
-
 
 
 ?>

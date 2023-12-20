@@ -39,5 +39,16 @@ class Poll extends Model
         return $this->hasManyThrough(PollVote::class, PollOption::class);
     }
 
+    public function hasUserVoted($userId) {
+        return $this->votes()->where('user_id', $userId)->exists();
+    }
 
+    public function optionUserVoted($userId) {
+        error_log("Poll option user voted");
+        $vote = $this->votes()->where('user_id', $userId)->first();
+        
+        return $vote;
+       
+
+}
 }

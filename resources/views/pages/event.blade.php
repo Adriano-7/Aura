@@ -6,11 +6,14 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/event.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+
 @endsection
 
 @section('scripts')
     <script src="{{ asset('js/event.js') }}" defer></script>
     <script src="{{ asset('js/poll.js') }}" defer></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 @endsection
 
 @section('header')
@@ -148,11 +151,57 @@
                 <p id="about-text">{{$event->description}}</p>
             </div>
 
-        @if($event->polls->isNotEmpty())
+        
             <section id="polls" class="event-field">
-                <h2>Current Polls</h2>
+                <div style="display: flex; align-items: center;">
+                    <h2>Sondagens Atuais</h2>
+                    @if(Auth::user()->userOrganizations->contains($event->organization_id))  
+                    <button type="button" class="btn" data-toggle="modal"
+                                    data-target="#createPollModal"><i class="bi bi-plus" style="color: white; font-weight: bold; font-size:1.5em; margin-left: 10px;"></i></button>
+                    @endif
+                </div>
+
+            <!-- Create Poll Modal -->
+            <div class="modal fade" id="createPollModal" tabindex="-1" aria-labelledby="createPollModalLabel" aria-hidden="true" style="margin-top: 100px;">                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="createPollModalLabel">Criar Nova Sondagem</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="inputContainer">
+                        <form id="pollForm">
+                            <label for="mainQuestion">Pergunta</label>
+                            <input type="text" id="mainQuestion" name="mainQuestion" class="form-control">
+
+                            <label for="option1">Opção 1</label>
+                            <input type="text" id="option1" name="option1" class="form-control">
+
+                            <label for="option1">Opção 2</label>
+                            <input type="text" id="option2" name="option2" class="form-control">
+
+                            
+                        </div>
+                        <div class="text-center">
+                            <button type="button" id="addOption" class="btn btn-primary">Add Option</button>
+                            <button type="button" id="removeOption" class="btn btn-danger mx-3">Remove Option</button>
+                        </div>
+                        
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+
+                @if($event->polls->isNotEmpty())
                 @foreach($event->polls as $poll)
-                    <div class="card poll-card">
+                    <div class="card poll-card " data-poll-id="{{ $poll->id }}">
                         <div class="card-header" id="heading_{{ $poll->id }}" data-toggle="collapse" data-target="#collapse_{{ $poll->id }}" aria-expanded="false" aria-controls="collapse_{{ $poll->id }}">
                             <h5 class="mb-0 d-flex justify-content-between align-items-center">
                                 {{ $poll->question }}

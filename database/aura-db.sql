@@ -835,17 +835,7 @@ INSERT INTO poll_option (id, poll_id, text) VALUES
 
 -- Insert votes for the poll
 INSERT INTO poll_vote (id, poll_option_id, user_id) VALUES
-    ('1', '1', '1'), -- User 1 votes for Python
-    ('2', '1', '2'), -- User 2 votes for Python
-    ('3', '2', '3'), -- User 3 votes for JavaScript
-    ('4', '3', '4'), -- User 4 votes for Java
-    ('5', '3', '5'), -- User 5 votes for Java
-    ('6', '4', '6'), -- User 6 votes for C#
-    ('7', '5', '7'), -- User 7 votes for Rock
-    ('8', '6', '8'), -- User 8 votes for Pop
-    ('9', '7', '9'), -- User 9 votes for Metal
-    ('10', '8', '10'), -- User 10 votes for Alternativo
-    ('11', '9', '11'); -- User 11 votes for Folk
+    ('1', '1', '1'); -- User 1 votes for Python
 
 
 

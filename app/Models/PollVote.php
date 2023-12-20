@@ -31,6 +31,19 @@ class PollVote extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    static public function addVote($option_id, $user_id) {
+        $vote = new PollVote;
+        $vote->poll_option_id = $option_id;
+        $vote->user_id = $user_id;
+        
+        $vote->save();
+        error_log("Vote added");
+    }
+
+    
    
+
+    
 
 }

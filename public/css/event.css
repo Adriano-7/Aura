@@ -318,3 +318,68 @@ input[type="text"]:focus {
 .hidden {
     display: none !important;
 }
+
+.zero {
+    width: min-content;
+}
+
+.option-box.highlighted {
+    background-color: #A08AFA !important;
+    color: black !important;
+}
+
+.modal-header {
+    background-color: #11141A;
+    color: #ffffff;
+    border: none;
+    margin-bottom: 2em;
+    border-radius: 12px;
+}
+
+.modal-content {
+    border: none;
+}
+
+.form-control {
+    border-radius: 0%;
+    margin-bottom: 2em;
+    }
+
+.form-control:focus{
+    
+    outline: none;
+    border-bottom: 1px solid #50457D;
+    border-radius: 0%;
+    color: #bbb7b7;
+    background-color: transparent;
+    
+    box-shadow: none;
+
+}
+
+.form-control textarea{
+    border: none;
+    border: 1px solid #808080;
+    border-radius: 0.5em;
+    background-color: #11141A;
+    color: #808080;
+    width: 100%;
+    margin-bottom: 8%;
+}
+
+#addOption{
+    width: fit-content ;
+    margin-bottom: 1em ;
+}
+
+#removeOption{
+    width: fit-content ;
+    margin-bottom: 1em ;
+}
+
+.btn-danger {
+    background-color: #11141A;
+    color: rgb(211, 19, 19);
+    border-color: rgb(177, 17, 17);
+    margin-top: 1em;
+}
