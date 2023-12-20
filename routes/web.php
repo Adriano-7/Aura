@@ -57,6 +57,7 @@ Route::controller(RecoverPasswordController::class)->group(function () {
 Route::controller(UserController::class)->group(function() {
     Route::get('/utilizador/{username}', 'show')->name('user');
     Route::delete('/api/utilizador/{id}/apagar', 'destroy');
+    Route::put('/api/utilizador/{id}/editar', 'update');
 });
 
 // Dashboard
