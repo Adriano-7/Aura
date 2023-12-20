@@ -41,7 +41,7 @@
                         <div class="modal-content">
                             <div class="modal-body">
                                 <h5 class="modal-title" id="editModalLabel">Editar Perfil</h5>
-                                <form id="editProfileForm">
+                                <form id="editProfileForm" method="POST" action="{{route('user.update', $user->id)}}" enctype="multipart/form-data">
                                     <input type="hidden" name="id" value="{{$user->id}}">
                                     <input id="nameInput" type="text" name="name" class="form-control" placeholder="Nome" value="{{$user->name}}">
                                     <input id="usernameInput" type="text" name="username" class="form-control" placeholder="Nome de utilizador" value="{{$user->username}}">
@@ -54,6 +54,8 @@
                                         <img src="{{ asset('assets/profile/' . $user->photo) }}" id="profile-pic-preview">
                                         <input type="file" name="photo" class="form-control" id="photoInput" accept="image/png, image/jpeg, image/jpg"> 
                                     </div>
+                                    @method('PUT')
+                                    @csrf
                                 </form>
                                 <div class="modal-footer" style="border-top: none;">
                                     <button type="button" data-dismiss="modal" onclick="cancelEdit()"

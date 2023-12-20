@@ -66,6 +66,14 @@ class UserController extends Controller{
         }
         $user->update($request->all());
 
+        if($request->has('photo')) {
+            $fileRequest = $request->file('photo');
+            $filename = time() . "-" . $fileRequest->getClientOriginalName();
+            $fileRequest->move(public_path('assets/profile'), $filename);
+            $user->photo = $filename;
+            $user->save();
+        }
+
         return response()->json([
             'message' => 'User updated',
             'username' => $user->username,
