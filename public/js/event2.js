@@ -74,7 +74,7 @@ function openReportCommentModal(commentId) {
     $('#reportCommentModal').modal('show');
 }
 
-function openReportEventModal(eventId){
+function openReportEventModal(eventId) {
     const reportEventForm = document.getElementById('reportEventForm');
     const eventIdInput = document.createElement('input');
     eventIdInput.type = 'hidden';
@@ -125,7 +125,7 @@ function resetEventModalContent() {
     denunciarButton.disabled = true;
 }
 
-function reportComment(){
+function reportComment() {
     const reportCommentForm = document.getElementById('reportCommentForm');
     const commentIdInput = reportCommentForm.querySelector('input[name="comment_id"]');
     const commentId = commentIdInput.value;
@@ -141,7 +141,7 @@ function reportComment(){
 
     const url = `${window.location.origin}/api/denuncias/comentarios/${commentId}/reportar`;
 
-    fetch(new URL(url,  window.location.origin), {
+    fetch(new URL(url, window.location.origin), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -149,24 +149,24 @@ function reportComment(){
         },
         body: `reason=${reason}`
     }).then(res => {
-            if (res.ok) {
-                resetCommentModalContent();
-                $('#reportCommentModal').modal('hide');
-            
-                openMessageModal('Comentário reportado com sucesso!');
-            }
+        if (res.ok) {
+            resetCommentModalContent();
+            $('#reportCommentModal').modal('hide');
+
+            openMessageModal('Comentário reportado com sucesso!');
         }
+    }
     ).catch(err => {
         resetCommentModalContent();
         $('#reportCommentModal').modal('hide');
-    
+
         openMessageModal('Erro ao reportar comentário!');
     });
 
     return false;
 }
 
-function reportEvent(eventId){
+function reportEvent(eventId) {
     const radioButtons = document.getElementsByName('reason');
     let reason = '';
     for (const radioButton of radioButtons) {
@@ -178,7 +178,7 @@ function reportEvent(eventId){
 
     const url = `${window.location.origin}/api/denuncias/evento/${eventId}/reportar`;
 
-    fetch(new URL(url,  window.location.origin), {
+    fetch(new URL(url, window.location.origin), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -186,17 +186,17 @@ function reportEvent(eventId){
         },
         body: `reason=${reason}`
     }).then(res => {
-            if (res.ok) {
-                resetEventModalContent();
-                $('#reportEventModal').modal('hide');
-            
-                openMessageModal('Evento reportado com sucesso!');
-            }
+        if (res.ok) {
+            resetEventModalContent();
+            $('#reportEventModal').modal('hide');
+
+            openMessageModal('Evento reportado com sucesso!');
         }
+    }
     ).catch(err => {
         resetEventModalContent();
         $('#reportEventModal').modal('hide');
-    
+
         openMessageModal('Erro ao reportar evento!');
     });
 
@@ -322,7 +322,12 @@ function addComment(e) {
     e.preventDefault();
     let form = e.target;
     let formData = new FormData(form);
-    formData.append('file', document.getElementById('file-upload').files[0]);
+    let fileUpload = document.getElementById('file-upload').files[0];
+    let fileName = document.getElementById('file-name').textContent;
+
+    if (fileUpload) {
+        formData.append('file', fileUpload);
+    }
 
     let url = form.getAttribute('action');
 
@@ -340,6 +345,10 @@ function addComment(e) {
                 const newComment = createCommentElement(data);
 
                 let fileUploadSection = document.querySelector('#file-upload-section');
+
+                fileUploadSection.style.display = 'none';
+                fileUploadSection.querySelector('#file-name').textContent = '';
+
                 fileUploadSection.insertAdjacentElement('afterend', newComment);
 
                 let sectionTitle = document.querySelector('#comentarios #section-title');
@@ -352,7 +361,86 @@ function addComment(e) {
     ).catch(err => console.log(err));
 }
 
+/*
+Example without an image:
+
+<div class="comment-row comment" id="comment-14">
+                                <a href="http://127.0.0.1:8000/utilizador/beatriz.pereira">
+                                    <img class="profile-pic" src="http://127.0.0.1:8000/assets/profile/beatriz_pereira.jpeg">
+                                </a>
+                                <div class="comment-content">
+                                    <div class="username-and-date">
+                                        <span class="comment-author" onclick="window.location.href='http://127.0.0.1:8000/utilizador/beatriz.pereira'" style="cursor: pointer"> Beatriz Pereira</span>
+                                        <span class="comment-date">15 minutes ago</span>
+
+                                                                                    <li class="nav-item dropdown">
+                                                <img class="three-dots" src="http://127.0.0.1:8000/assets/three-dots-horizontal.svg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none; cursor: pointer;">
+
+                                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                                                                                            <li><a class="dropdown-item" onclick="openReportCommentModal(14)" style="cursor: pointer;">Denunciar</a></li>
+                                                    
+                                                    
+                                                                                                    </ul>
+                                            </li>
+                                        
+                                    </div>
+                                    <p class="comment-text">Vai ser uma grande noite!</p>
+                                      
+                                    <div class="votes-row">
+                                                                                                                                    <div class="up-btn">
+                                                    <img src="http://127.0.0.1:8000/assets/icons/vote-up.svg" class="vote-icon">
+                                                </div>
+                                                <div class="down-btn">
+                                                    <img src="http://127.0.0.1:8000/assets/icons/vote-down.svg" class="vote-icon">
+                                                </div>
+                                                                                                                                                                                                                    <span class="comment-votes" inert="">0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+Example with an image:
+
+<div class="comment-row comment" id="comment-112">
+                                <a href="http://127.0.0.1:8000/utilizador/teresa.rodrigues">
+                                    <img class="profile-pic" src="http://127.0.0.1:8000/assets/profile/teresa_rodrigues.jpeg">
+                                </a>
+                                <div class="comment-content">
+                                    <div class="username-and-date">
+                                        <span class="comment-author" onclick="window.location.href='http://127.0.0.1:8000/utilizador/teresa.rodrigues'" style="cursor: pointer"> Teresa Rodrigues</span>
+                                        <span class="comment-date">10 minutes ago</span>
+
+                                                                                    <li class="nav-item dropdown">
+                                                <img class="three-dots" src="http://127.0.0.1:8000/assets/three-dots-horizontal.svg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none; cursor: pointer;">
+
+                                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                                    
+                                                                                                            <li><a class="dropdown-item" onclick="activateEditComment(112)" style="cursor: pointer;">Editar</a></li>
+                                                    
+                                                                                                            <li><a class="dropdown-item" onclick="deleteComment(112)" style="cursor: pointer;">Apagar</a></li>
+                                                                                                    </ul>
+                                            </li>
+                                        
+                                    </div>
+                                    <p class="comment-text">df</p>
+                                                                        <div class="comment-file">
+                                        <a href="http://127.0.0.1:8000/assets/comments/1703080710-3671804_lock_open_icon.svg">
+                                            <img src="http://127.0.0.1:8000/assets/comments/1703080710-3671804_lock_open_icon.svg">
+                                        </a>   
+                                    </div>
+                                      
+                                    <div class="votes-row">
+                                                                                    <img src="http://127.0.0.1:8000/assets/icons/vote-disallowed.svg" class="vote-icon" style="margin-right:0.5em">
+                                                                                <span class="comment-votes" inert="">0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+*/
+
 function createCommentElement(commentData) {
+    console.log(commentData);
+
     let commentDiv = document.createElement('div');
     commentDiv.setAttribute('class', 'comment-row comment');
     commentDiv.setAttribute('id', `comment-${commentData.comment.id}`);
@@ -388,7 +476,7 @@ function createCommentElement(commentData) {
 
     let dropdownImg = document.createElement('img');
     dropdownImg.setAttribute('class', 'three-dots');
-    dropdownImg.setAttribute('src', `${window.location.origin}/assets/three-dots-horizontal.svg`);    
+    dropdownImg.setAttribute('src', `${window.location.origin}/assets/three-dots-horizontal.svg`);
     dropdownImg.setAttribute('data-toggle', 'dropdown');
     dropdownImg.setAttribute('aria-haspopup', 'true');
     dropdownImg.setAttribute('aria-expanded', 'false');
@@ -429,6 +517,21 @@ function createCommentElement(commentData) {
 
     commentDiv.appendChild(commentContentDiv);
 
+    if (commentData.file) {
+        let commentFileDiv = document.createElement('div');
+        commentFileDiv.setAttribute('class', 'comment-file');
+
+        let fileLink = document.createElement('a');
+        fileLink.setAttribute('href', `${window.location.origin}/assets/comments/${commentData.file.file_name}`);
+
+        let fileImg = document.createElement('img');
+        fileImg.setAttribute('src', `${window.location.origin}/assets/comments/${commentData.file.file_name}`);
+
+        fileLink.appendChild(fileImg);
+        commentFileDiv.appendChild(fileLink);
+        commentContentDiv.appendChild(commentFileDiv);
+    }
+
     commentDiv.addEventListener('mouseover', () => {
         showThreeDots(commentDiv);
     });
@@ -459,7 +562,7 @@ function activateEditComment(commentId) {
     let cancelIcon = document.createElement('img');
     cancelIcon.setAttribute('class', 'icon');
     cancelIcon.setAttribute('src', `${window.location.origin}/assets/cross-icon.svg`);
-    cancelIcon.addEventListener('click', function(){
+    cancelIcon.addEventListener('click', function () {
         location.reload();
     });
 
@@ -471,7 +574,7 @@ function activateEditComment(commentId) {
     submitIcon.setAttribute('src', `${window.location.origin}/assets/save-icon.svg`);
     submitButton.setAttribute('style', 'background-color: transparent; border: none;');
     submitButton.appendChild(submitIcon);
-    
+
     let hiddenCSRF = document.createElement('input');
     hiddenCSRF.setAttribute('type', 'hidden');
     hiddenCSRF.setAttribute('name', '_token');
@@ -484,13 +587,13 @@ function activateEditComment(commentId) {
     commentText.parentNode.replaceChild(form, commentText);
 }
 
-document.addEventListener('submit', function(e){
-    if(e.target.matches('.edit-comment-form')) {
+document.addEventListener('submit', function (e) {
+    if (e.target.matches('.edit-comment-form')) {
         updateComment(e);
     }
 });
 
-function updateComment(e){
+function updateComment(e) {
     e.preventDefault();
     let form = e.target;
     let url = form.action;
@@ -499,7 +602,7 @@ function updateComment(e){
     let formData = new FormData(form);
     let formParams = new URLSearchParams(formData);
 
-    fetch(new URL(url,  window.location.origin), {
+    fetch(new URL(url, window.location.origin), {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -507,23 +610,23 @@ function updateComment(e){
         },
         body: formParams
     }).then(res => {
-            if (res.ok) {
-                res.json().then(data => {
-                    let commentText = data.text;
-                    commentRow = document.getElementById(`comment-${commentId}`);
+        if (res.ok) {
+            res.json().then(data => {
+                let commentText = data.text;
+                commentRow = document.getElementById(`comment-${commentId}`);
 
-                    let commentTextElement = document.createElement('p');
-                    commentTextElement.setAttribute('class', 'comment-text');
-                    commentTextElement.innerText = commentText;
-                    
-                    let commentContent = commentRow.querySelector('.comment-content');
-                    commentContent.replaceChild(commentTextElement, form);
-                    
-                    let editIcon = document.getElementById(`editButton-${commentId}`);
-                    editIcon.style.visibility = 'visible';
-                });
-            }
+                let commentTextElement = document.createElement('p');
+                commentTextElement.setAttribute('class', 'comment-text');
+                commentTextElement.innerText = commentText;
+
+                let commentContent = commentRow.querySelector('.comment-content');
+                commentContent.replaceChild(commentTextElement, form);
+
+                let editIcon = document.getElementById(`editButton-${commentId}`);
+                editIcon.style.visibility = 'visible';
+            });
         }
+    }
     ).catch(err => console.log(err));
 }
 
@@ -534,39 +637,39 @@ upvoteButtons.forEach(button => {
     });
 });
 
-function upVote(upButton){
+function upVote(upButton) {
     let commentRow = upButton.parentElement.parentElement.parentElement;
     let downButton = commentRow.querySelector('.down-btn');
     let commentVotes = commentRow.querySelector('.comment-votes');
     let votesBalance = parseInt(commentVotes.textContent);
-    
+
     let upVoteSelected = upButton.hasAttribute('selected');
     let downVoteSelected = downButton.hasAttribute('selected');
-    
+
     let commentId = commentRow.id.split('-')[1];
     let url = `${window.location.origin}/api/comentario/${commentId}/`;
     let method = 'POST';
 
-    if(upVoteSelected && !downVoteSelected){
+    if (upVoteSelected && !downVoteSelected) {
         // remove upvote
         url += 'unvote'
         method = 'DELETE'
     }
-    else if(!upVoteSelected && downVoteSelected){
+    else if (!upVoteSelected && downVoteSelected) {
         // remove downvote
         url += 'unvote'
         method = 'DELETE'
     }
-    else if(!upVoteSelected && !downVoteSelected){
+    else if (!upVoteSelected && !downVoteSelected) {
         // add upvote
         url += 'up'
     }
-    else{
+    else {
         console.log('You cannot upvote and downvote');
         return;
     }
 
-    fetch(new URL(url,  window.location.origin), {
+    fetch(new URL(url, window.location.origin), {
         method: method,
         headers: {
             'content-type': 'application/json',
@@ -574,21 +677,21 @@ function upVote(upButton){
         }
     }).then(res => {
         if (res.ok) {
-            if(upVoteSelected && !downVoteSelected){
+            if (upVoteSelected && !downVoteSelected) {
                 upButton.removeAttribute('selected');
                 upButton.innerHTML = `
                     <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon">
                 `;
                 commentVotes.textContent = votesBalance - 1;
             }
-            else if(!upVoteSelected && downVoteSelected){
+            else if (!upVoteSelected && downVoteSelected) {
                 downButton.removeAttribute('selected');
                 downButton.innerHTML = `
                     <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon">
                 `;
                 commentVotes.textContent = votesBalance + 1;
             }
-            else if(!upVoteSelected && !downVoteSelected){
+            else if (!upVoteSelected && !downVoteSelected) {
                 upButton.setAttribute('selected', '');
                 upButton.innerHTML = `
                     <img src="${window.location.origin}/assets/icons/vote-up-selected.svg" class="vote-icon">
@@ -606,37 +709,37 @@ downvoteButtons.forEach(button => {
     });
 });
 
-function downVote(downButton){
+function downVote(downButton) {
     let commentRow = downButton.parentElement.parentElement.parentElement;
     let upButton = commentRow.querySelector('.up-btn');
     let commentVotes = commentRow.querySelector('.comment-votes');
     let votesBalance = parseInt(commentVotes.textContent);
-    
+
     let upVoteSelected = upButton.hasAttribute('selected');
     let downVoteSelected = downButton.hasAttribute('selected');
-    
+
     let commentId = commentRow.id.split('-')[1];
     let url = `${window.location.origin}/api/comentario/${commentId}/`;
     let method = 'POST';
 
-    if(upVoteSelected && !downVoteSelected){
+    if (upVoteSelected && !downVoteSelected) {
         url += 'unvote'
         method = 'DELETE'
     }
-    else if(!upVoteSelected && downVoteSelected){
+    else if (!upVoteSelected && downVoteSelected) {
         url += 'unvote'
         method = 'DELETE'
     }
-    else if(!upVoteSelected && !downVoteSelected){
+    else if (!upVoteSelected && !downVoteSelected) {
         url += 'down'
         method = 'POST';
     }
-    else{
+    else {
         console.log('You cannot upvote and downvote');
         return;
     }
 
-    fetch(new URL(url,  window.location.origin), {
+    fetch(new URL(url, window.location.origin), {
         method: method,
         headers: {
             'content-type': 'application/json',
@@ -644,14 +747,14 @@ function downVote(downButton){
         }
     }).then(res => {
         if (res.ok) {
-            if(upVoteSelected && !downVoteSelected){
+            if (upVoteSelected && !downVoteSelected) {
                 upButton.removeAttribute('selected');
                 upButton.innerHTML = `
                     <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon">
                 `;
                 commentVotes.textContent = votesBalance - 1;
             }
-            else if(!upVoteSelected && downVoteSelected){
+            else if (!upVoteSelected && downVoteSelected) {
                 downButton.removeAttribute('selected');
                 downButton.innerHTML = `
                     <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon">
@@ -659,7 +762,7 @@ function downVote(downButton){
                 commentVotes.textContent = votesBalance + 1;
 
             }
-            else if(!upVoteSelected && !downVoteSelected){
+            else if (!upVoteSelected && !downVoteSelected) {
                 downButton.setAttribute('selected', '');
                 downButton.innerHTML = `
                     <img src="${window.location.origin}/assets/icons/vote-down-selected.svg" class="vote-icon">
@@ -693,7 +796,7 @@ function deleteComment(commentId) {
             sectionTitle.textContent = `Comentários • ${numberOfComments}`;
         }
     })
-    .catch(err => console.log(err));
+        .catch(err => console.log(err));
 }
 
 async function deleteEvent(eventId) {

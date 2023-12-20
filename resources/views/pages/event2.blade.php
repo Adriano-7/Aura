@@ -265,6 +265,13 @@
 
                                     </div>
                                     <p class="comment-text">{{ $comment->text }}</p>
+                                    @if($comment->file_id)
+                                    <div class="comment-file">
+                                        <a href="{{ asset('assets/comments/' . $comment->file->file_name) }}">
+                                            <img src="{{ asset('assets/comments/' . $comment->file->file_name) }}">
+                                        </a>   
+                                    </div>
+                                    @endif  
                                     <div class="votes-row">
                                         @if (Auth::check() &&
                                                 !Auth::user()->is_admin &&

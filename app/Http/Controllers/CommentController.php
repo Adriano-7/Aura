@@ -82,10 +82,12 @@ class CommentController extends Controller{
             $file->save();
             $comment->file_id = $file->id;
             $fileRequest->move(public_path('assets/comments'), $filename);
+
+            $comment->save();
+            return response()->json(['message' => 'Comment added successfully', 'comment' => $comment, 'author' => Auth::user(), 'file' => $file], 200);
         }
 
         $comment->save();
-
         return response()->json(['message' => 'Comment added successfully', 'comment' => $comment, 'author' => Auth::user()], 200);
     }
 

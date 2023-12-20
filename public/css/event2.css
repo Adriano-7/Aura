@@ -705,3 +705,8 @@ li {
 #inviteInput:-webkit-autofill:active {
     -webkit-text-fill-color: #808080 !important;
 }
+.comment-file img {
+    max-height: 8em;
+    max-width: 100%;
+    object-fit: cover;
+}
