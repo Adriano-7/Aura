@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="col-4 dashboard-text-content">
-                    <p>{{$report->reason->text}}</p>
+                    <p>{{$report->getReasonText()}}</p>
                 </div>
                 <div class="col-4 dashboard-text-content">
                     <p>{{$report->comment->text}}</p>
@@ -110,21 +110,21 @@
                 <div class="col-2 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
                     onclick="window.location.href='{{ route('event', ['id' => $report->event->id]) }}'">
                     <div class="pr-2">
-                        <img src="{{asset('assets/eventos/' . $report->event->photo)}}">
+                        <img src="{{ asset('assets/eventos/' . $report->event->photo) }}">
                     </div>
                     <div>
-                        <h1>{{$report->event->name}}</h1>
+                        <h1>{{ $report->event->name }}</h1>
                     </div>
                 </div>
                 <div class="col-8 dashboard-text-content" style="cursor: pointer;"
                     onclick="window.location.href='{{ route('event', ['id' => $report->event->id]) }}'">
-                    <p>{{$report->reason->text}}</p>
+                    <p>{{ $report->getReasonText() }}</p>
                 </div>
                 <div class="col-2 dashboard-actions">
                     <div class="dropdown">
                         <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                             aria-expanded="false">
-                            <img src="{{asset('assets/Three-Dots-Icon.svg')}}" alt="more">
+                            <img src="{{ asset('assets/Three-Dots-Icon.svg') }}" alt="more">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
                             <li><button class="dropdown-item delete-event" data-event-id="{{ $report->event->id }}">Eliminar Evento</button></li>

@@ -4,8 +4,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReportEvent;
+use App\Models\Event;
 use Illuminate\Auth\Access\AuthorizationException;
-
+use Illuminate\Http\Request;
 
 class ReportEventController extends Controller
 {
@@ -41,6 +42,33 @@ class ReportEventController extends Controller
 
         return response()->json([
             'message' => 'Report marked as resolved'
+        ]);
+    }
+
+    public function report(Request $request, $eventId){
+        $validReasons = ['suspect_fraud', 'inappropriate_content', 'incorrect_information'];
+        $reason = $request->input('reason');
+
+        if (!in_array($reason, $validReasons)) {
+            return response()->json([
+                'message' => 'Invalid reason'
+            ], 400);
+        }
+
+        $event = Event::find($eventId);
+        if (!$event) {
+            return response()->json([
+                'message' => 'Event not found'
+            ], 404);
+        }
+
+        $report = new ReportEvent();
+        $report->event_id = $eventId;
+        $report->reason = $reason;
+        $report->save();
+
+        return response()->json([
+            'message' => 'Comment reported'
         ]);
     }
 }

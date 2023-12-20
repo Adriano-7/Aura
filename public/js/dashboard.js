@@ -8,7 +8,7 @@ deleteCommentButtons.forEach(button => {
   const commentId = button.dataset.commentId;
 
   button.addEventListener('click', async e => {
-    fetch(`/api/comentarios/${commentId}/apagar`, {
+    fetch(`/api/comentario/${commentId}/apagar`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',

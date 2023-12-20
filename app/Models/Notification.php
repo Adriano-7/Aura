@@ -45,7 +45,7 @@ class Notification extends Model{
     }
 
     /*
-            'type' - 'event_invitation', 'event_edit', 'organization_invitation', 'organization_registration_request', 'organization_registration_response'
+        'type' - 'event_invitation', 'event_edit', 'organization_invitation', 'organization_registration_request', 'organization_registration_response'
     */
     public function getSenderName()
     {

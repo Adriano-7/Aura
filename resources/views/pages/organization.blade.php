@@ -5,10 +5,12 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/organization.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/org-eventos.css') }}">
 @endsection
 
 @section('scripts')
     <script src="{{ asset('js/organization.js') }}" defer></script>
+    <script src="{{ asset('js/orgNav.js') }}" defer></script>
 @endsection
 
 @section('header')
@@ -20,184 +22,21 @@
         @include('widgets.popUpNotification', ['message' => session('status')])
     @endif
 
-    <div class="container position-relative d-flex align-items-end w-100">
-        <img src="{{ asset('assets/organizations/' . $organization->photo) }}"  id="org-img">
-        <h1 id="bandName" class="position-absolute text-white">{{ $organization->name }}</h1>
-    </div>
+    @include('widgets.org-eventos.banner', ['photo' => $organization->photo, 'name' => $organization->name])
 
     @if (!$organization->approved)
-        <div id="approveWarning" class="alert d-flex align-items-center">
-            <div>Esta organização ainda não foi aprovada.</div>
-            @if (Auth::check() && Auth::user()->is_admin)
-                <button id="approveButton" class="btn" onclick="approveOrg({{$organization->id}})">Aprovar.</button>
-            @endif
-        </div>
+        @include('widgets.org-eventos.approveWarning')
     @endif
-
-    <nav id="orgNav" class="navbar">
-        <div class="container">
-            <div id="navbarNav">
-                <ul class="navbar-nav">
-                    @if (Auth::check() && (Auth::user()->is_admin || $organization->organizers->contains(Auth::user()->id)))
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#membros">Membros</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link " href="#eventos">Eventos</a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#eventos">Eventos</a>
-                        </li>
-                    @endif
-                    <li class="nav-item">
-                        <a class="nav-link" href="#sobre">Sobre</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     @if (Auth::check() && (Auth::user()->is_admin || $organization->organizers->contains(Auth::user()->id)))
-        <div class="container members-container" id="membros">
-            <div class="row">
-                <div class="col-12 d-flex justify-content-between align-items-center mb-4">
-                    <h1 id="results-title">Membros</h1>
-
-                    <div class="dashboard-actions">
-                        <button type="button" class="btn text-white" data-toggle="modal" data-target="#addMemberModal">
-                            Adicionar Membro
-                        </button>
-                    </div>
-
-                    <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog"
-                        aria-labelledby="addMemberModal" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <form id="addMemberForm" action="{{ route('organization.inviteUser') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="organization_id" value="{{ $organization->id }}">
-                                        <div class="form-group">
-                                            <input type="email" class="form-control" id="email" name="email"
-                                                placeholder="Email" name="email">
-                                        </div>
-                                        <div class="d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="members-table">
-                <div class="row members-header">
-                    <div class="col-3">
-                        <h1>Utilizador</h1>
-                    </div>
-                    <div class="col-6">
-                        <h1>Email</h1>
-                    </div>
-                    <div class="col-2">
-                        <h1>Remover da organização</h1>
-                    </div>
-                </div>
-
-                @foreach ($organization->organizers as $member)
-                    <div class="row report" id="member-{{$member->id}}">
-                        <div class="col-3 members-profile d-flex align-items-center">
-                            <div class="pr-2">
-                                <img src="{{ asset('assets/profile/' . $member->photo) }}">
-                            </div>
-                            <div>
-                                <h1>{{ $member->name }}</h1>
-                            </div>
-                        </div>
-                        <div class="col-6 members-text-content">
-                            <p>{{ $member->email }}</p>
-                        </div>
-                        <div class="col-2 members-actions d-flex justify-content-center">
-                            <div class="dropdown">
-                                <button class="btn" onclick="eliminateMember({{ $organization->id }}, {{ $member->id }})">
-                                    <img src="{{ asset('assets/close-icon.svg') }}" alt="more">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-        </div>
-        </div>
+        @include('widgets.org-eventos.pageNav', ['elements' => ['Membros', 'Eventos', 'Sobre']], ['href' => ['#membros', '#eventos',  '#sobre']])
+        @include('widgets.org-eventos.manageOrg')
+    @else
+        @include('widgets.org-eventos.pageNav', ['elements' => ['Eventos', 'Sobre']], ['href' => ['#eventos',  '#sobre']])
     @endif
 
+    @include('widgets.org-eventos.eventsTable', ['title' => 'Eventos • ' . $organization->events->count() . ' Resultados', 'events' => $organization->events, 'isOrg' => true])
+    @include('widgets.org-eventos.textSection', ['id' => 'sobre', 'title' => 'Sobre', 'text' => $organization->description])
 
-    <div class="container" id="eventos">
-        <div class="row">
-            <div class="col-12 ">
-                <h1 id="results-title">Eventos • {{ $organization->events->count() }} Resultados</h1>
-            </div>
-        </div>
-
-        @if ($organization->events->count() == 0)
-            <div class="card mx-auto">
-                <div class="row ">
-                    <div class="col-md-12">
-                        <p>Não há eventos planeados no momento.</p>
-                    </div>
-                </div>
-            </div>
-        @else
-            <div class="card mx-auto">
-                @foreach ($organization->events as $event)
-                    @php
-                        $start_date = \Carbon\Carbon::parse($event->start_date);
-                        $moreThan24Hours = false;
-                        if ($event->end_date) {
-                            $end_date = \Carbon\Carbon::parse($event->end_date);
-                            $moreThan24Hours = $start_date->diffInHours($end_date) > 24;
-                        }
-                    @endphp
-                    <div class="row event">
-                        <div class="col-md-3">
-                            <h2>{{ $start_date->format('d M') }}</h2>
-                            <h2>{{ $start_date->format('Y') }}</h2>
-                        </div>
-                        <div class="col-md-7" onclick="window.location.href = '/evento/{{ $event->id }}'"
-                            style="cursor: pointer;">
-                            <h3>{{ $start_date->formatLocalized('%a') }} • {{ $start_date->format('H:i') }}</h3>
-                            <h2>{{ $event->name }}</h2>
-                            <h3>{{ $event->city }} • {{ $event->venue }}</h3>
-                        </div>
-                        @if (Auth::check() && !Auth::user()->is_admin)
-                            <div class="col-md-2 ml-auto">
-                                <button type="button" id="join-event">Aderir ao Evento</button>
-                            </div>
-                        @endif
-                    </div>
-                @endforeach
-            </div>
-        @endif
-    </div>
-
-    <div class="container" id="sobre">
-        <div class="row">
-            <div class="col-12">
-                <h1 id="results-title">Sobre</h1>
-            </div>
-        </div>
-
-        <div class="card mx-auto">
-            <div class="row ">
-                <div class="col-md-12">
-                    <p>{{ $organization->description }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
     </main>
 @endsection
