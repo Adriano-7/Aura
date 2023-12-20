@@ -65,7 +65,7 @@ window.onload = function() {
     });
 };
 
-document.querySelectorAll('.card-header').forEach(function(header) {
+document.querySelectorAll('.poll-card-header').forEach(function(header) {
     var pollId = header.getAttribute('id').split('_')[1];
     var arrowIcon = document.getElementById('arrow_' + pollId);
 
@@ -109,7 +109,7 @@ document.querySelectorAll('.option-box').forEach(function(box) {
 });
 
 document.querySelectorAll('.poll-card').forEach(function(card) {
-    var pollId = card.querySelector('.card-header').getAttribute('id').split('_')[1];
+    var pollId = card.querySelector('.poll-card-header').getAttribute('id').split('_')[1];
     var submitButtons = card.querySelectorAll('.btn-primary');
 
     submitButtons.forEach(function(button) {
