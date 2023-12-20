@@ -16,9 +16,11 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Auth\Access\AuthorizationException;
 
 
-class PollController extends Controller{
+class PollController extends Controller
+{
 
-    public function show(int $id) {
+    public function show(int $id)
+    {
         $poll = Poll::find($id);
         if (!$poll) {
             return response()->json(['message' => 'Poll not found'], 404);
@@ -26,29 +28,17 @@ class PollController extends Controller{
         return response()->json(['poll' => $poll]);
     }
 
-    public function results(int $id) {
-        
-        // Find the poll by id
+    public function results(int $id)
+    {
         $poll = Poll::findOrFail($id);
-        // Get the options of the poll
         $options = $poll->options;
-
-        // Initialize an array to store the results
         $results = [];
 
-        // Loop through each option
         foreach ($options as $option) {
-            
-            // Count the votes for the option
-            
-            $voteCount = optional($option->votes())->count() ?? 0;   
-            
-            // Calculate the percentage of votes for the option
+            $voteCount = optional($option->votes())->count() ?? 0;
             $totalVotes = $poll->votes()->count();
-            
-            $percentage = $totalVotes > 0 ? ($voteCount / $totalVotes) * 100 : 0;            
-            
-            // Store the result
+            $percentage = $totalVotes > 0 ? ($voteCount / $totalVotes) * 100 : 0;
+
             $results[] = [
                 'option_id' => $option->id,
                 'text' => $option->text,
@@ -56,13 +46,12 @@ class PollController extends Controller{
             ];
         }
 
-        // Return the results
-        
-        return response()->json($results);    
-    }        
+        return response()->json($results);
+    }
 
 
-    public function vote(Request $request, int $id) {
+    public function vote(Request $request, int $id)
+    {
         $poll = Poll::find($id);
         if (!$poll) {
             return response()->json(['message' => 'Poll not found'], 404);
@@ -72,15 +61,16 @@ class PollController extends Controller{
         } catch (AuthorizationException $e) {
             return response()->json(['message' => 'User not authorized to vote on this poll'], 403);
         }
-    
+
 
         PollVote::addVote(intval($request->option_id), Auth::user()->id);
         return response()->json(['success' => true]);
 
-       
+
     }
 
-    public function hasVoted (int $id) {
+    public function hasVoted(int $id)
+    {
         $poll = Poll::find($id);
         if (!$poll) {
             return response()->json(['message' => 'Poll not found'], 404);
@@ -95,14 +85,13 @@ class PollController extends Controller{
 
         error_log('$hasVoted is: ' . ($hasVoted ? 'true' : 'false'));
         return response()->json(['hasVoted' => $hasVoted,
-                                 'optionVoted' => $optionVoted->poll_option_id ?? null]);      
+            'optionVoted' => $optionVoted->poll_option_id ?? null]);
     }
 
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         error_log('Form data: ' . json_encode($request->all()));
-
-
 
         $request->validate([
             'eventId' => 'required|string',
@@ -131,7 +120,7 @@ class PollController extends Controller{
         } catch (AuthorizationException $e) {
             return response()->json(['message' => 'User not authorized to create a poll'], 403);
         }
-        // Create a PollOption for each option in the request
+
         foreach ($request->all() as $key => $value) {
             error_log('Key: ' . $key . ', Value: ' . $value);
             if (Str::startsWith($key, 'option') && !empty($value)) {
@@ -147,9 +136,6 @@ class PollController extends Controller{
 
 
         return response()->json(['success' => true]);
-      
-
-
-}
+    }
 }
 ?>

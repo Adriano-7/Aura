@@ -571,15 +571,15 @@ li {
 
 .option-box {
     padding: 10px;
-    border: 1px solid #A08AFA;
+    border: 1px solid #594F8A;
     margin-bottom: 10px;
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 1em;
 
 }
 
 .option-box.selected {
-    background-color: #A08AFA;
+    background-color: #594F8A;
     color: black;
 }
 
@@ -590,18 +590,18 @@ li {
 }
 
 #polls .btn-primary:hover {
-    background-color: #7e5efa;
+    background-color: #594F8A;
     color: white;
-    border-color: #7e5efa;
+    border-color: #594F8A;
 }
-
 
 #polls .btn-primary {
     background-color: #11141A;
-    color: #A08AFA;
-    border-color: #A08AFA;
+    color: #594F8A;
+    border-color: #594F8A;
     width: 20%;
     margin-top: 1em;
+    border-radius: 0.7em;
 }
 
 #polls .hidden {

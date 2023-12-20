@@ -4,7 +4,7 @@
             <div class="poll-card-header" id="heading_{{ $poll->id }}" data-toggle="collapse" data-target="#collapse_{{ $poll->id }}" aria-expanded="false" aria-controls="collapse_{{ $poll->id }}">
                 <h5 class="mb-0 d-flex justify-content-between align-items-center">
                     {{ $poll->question }}
-                    <i class="bi bi-chevron-down" id="arrow_{{ $poll->id }}"></i> <!-- Arrow icon with unique ID -->
+                    <i class="bi bi-chevron-down" id="arrow_{{ $poll->id }}"></i>
                 </h5>
             </div>
             <div id="collapse_{{ $poll->id }}" class="collapse" aria-labelledby="heading_{{ $poll->id }}" data-parent="#polls">
@@ -19,5 +19,4 @@
             </div>
         </div>
     @endforeach
-</section>
 @endif
