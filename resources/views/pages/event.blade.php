@@ -254,4 +254,6 @@
             @endif
         </section>
     </div>        
+
+    @include('widgets.footer')
 @endsection

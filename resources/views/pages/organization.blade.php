@@ -200,4 +200,6 @@
         </div>
     </div>
     </main>
+
+    @include('widgets.footer')
 @endsection
