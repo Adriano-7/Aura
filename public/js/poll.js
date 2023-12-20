@@ -223,8 +223,9 @@ document.querySelectorAll('.poll-card').forEach(function(card) {
     
         var formData = new FormData(this);
     
-        fetch('your-endpoint-url', {
+        fetch('/api/poll/criar', {
             method: 'POST',
+            'X-CSRF-TOKEN': csrfToken,
             body: formData
         })
         .then(response => response.json())
