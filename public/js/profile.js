@@ -19,6 +19,20 @@ function deleteAccount(userId){
     });
 }
 
+function cancelEdit(){
+    let nameInput = document.querySelector('#nameInput');
+    let usernameInput = document.querySelector('#usernameInput');
+    let emailInput = document.querySelector('#emailInput');
+
+    let completeName = document.querySelector('#complete-name');
+    let username = document.querySelector('#username');
+    let email = document.querySelector('#email');
+
+    nameInput.value = completeName.textContent;
+    usernameInput.value = username.textContent;
+    emailInput.value = email.textContent;
+}
+
 function submitForm(){
     let form = document.querySelector('#editProfileForm');
     let formData = new FormData(form);

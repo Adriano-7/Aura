@@ -43,14 +43,14 @@
                                 <h5 class="modal-title" id="editModalLabel">Editar Perfil</h5>
                                 <form id="editProfileForm">
                                     <input type="hidden" name="id" value="{{$user->id}}">
-                                    <input type="text" name="name" class="form-control" placeholder="Nome" value="{{$user->name}}">
-                                    <input type="text" name="username" class="form-control" placeholder="Nome de utilizador" value="{{$user->username}}">
-                                    <input type="email" name="email" class="form-control" placeholder="Email" value="{{$user->email}}">
+                                    <input id="nameInput" type="text" name="name" class="form-control" placeholder="Nome" value="{{$user->name}}">
+                                    <input id="usernameInput" type="text" name="username" class="form-control" placeholder="Nome de utilizador" value="{{$user->username}}">
+                                    <input id="emailInput" type="email" name="email" class="form-control" placeholder="Email" value="{{$user->email}}">
                                 </form>
                                 <div class="modal-footer" style="border-top: none;">
-                                    <button type="button" data-dismiss="modal"
+                                    <button type="button" data-dismiss="modal" onclick="cancelEdit()"
                                         style="color: white; border-radius: 0.5em; padding: 0.5em;">Cancelar</button>
-                                    <button type="button" id="saveButton" onclick="submitForm()"
+                                    <button type="button" id="save-button" onclick="submitForm()"
                                         style="color: white; border-radius: 0.5em; padding: 0.5em;">Guardar</button>
                                 </div>
                             </div>

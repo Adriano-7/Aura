@@ -52,25 +52,23 @@ class UserController extends Controller{
     }
 
     public function update(Request $request, int $id) {
-        $user = User::find($request->id);
+        $user = User::find($id);
         if (!$user) {
             return response()->json([
                 'message' => 'User not found'
             ], 404);
         }
-        /*
+        
         try {
             $this->authorize('update', $user);
         } catch (AuthorizationException $e) {
-            return response()->json(['error' => 'User not authorized to update this user'], 403);
+            return response()->json(['error' => $e->getMessage()], 403);
         }
-        */
-
         $user->update($request->all());
 
         return response()->json([
             'message' => 'User updated',
-            'username' => $request->username,
+            'username' => $user->username,
         ], 200);
     }
 }
