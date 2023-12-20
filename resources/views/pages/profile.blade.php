@@ -50,6 +50,10 @@
                                         <input type="color" name="background_color" class="form-control form-control-color" id="backgroundColorInput" value="{{$user->background_color}}">
                                         <label for="backgroundColorInput" class="form-label">Cor favorita</label>
                                     </div>
+                                    <div id="photo-input">
+                                        <img src="{{ asset('assets/profile/' . $user->photo) }}" id="profile-pic-preview">
+                                        <input type="file" name="photo" class="form-control" id="photoInput" accept="image/png, image/jpeg, image/jpg"> 
+                                    </div>
                                 </form>
                                 <div class="modal-footer" style="border-top: none;">
                                     <button type="button" data-dismiss="modal" onclick="cancelEdit()"
