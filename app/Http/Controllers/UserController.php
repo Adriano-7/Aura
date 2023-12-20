@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 use App\Helpers\ColorHelper;
+use Illuminate\Http\Request;
 
 
 class UserController extends Controller{
@@ -38,8 +39,8 @@ class UserController extends Controller{
             abort(404, 'Utilizador não encontrado.');
         }
     
-        $color1_increment = -120;
-        $color2_increment = 50;
+        $color1_increment = -122;
+        $color2_increment = 55;
         return view('pages.profile', [
             'userProfile' => $userProfile,
             'user' => Auth::user(),
@@ -48,5 +49,26 @@ class UserController extends Controller{
             'organizations' =>  $userProfile->organizations,
             'events' => $userProfile->eventsWhichParticipates(),
         ]);
+    }
+
+    public function update(Request $request, int $id) {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+        
+        try {
+            $this->authorize('update', $user);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => $e->getMessage()], 403);
+        }
+        $user->update($request->all());
+
+        return response()->json([
+            'message' => 'User updated',
+            'username' => $user->username,
+        ], 200);
     }
 }

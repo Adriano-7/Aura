@@ -63,6 +63,7 @@ Route::controller(RecoverPasswordController::class)->group(function () {
 Route::controller(UserController::class)->group(function() {
     Route::get('/utilizador/{username}', 'show')->name('user');
     Route::delete('/api/utilizador/{id}/apagar', 'destroy');
+    Route::put('/api/utilizador/{id}/editar', 'update');
 });
 
 // Dashboard
@@ -89,12 +90,14 @@ Route::controller(NotificationsController::class)->group(function () {
 Route::controller(ReportCommentController::class)->group(function () {
     Route::get('/api/denuncias/comentarios', 'index');
     Route::put('/api/denuncias/comentarios/{id}/marcar-resolvido', 'markAsResolved');
+    Route::post('/api/denuncias/comentarios/{id}/reportar', 'report')->name('comment.report');
 });
 
 // Event Reports
 Route::controller(ReportEventController::class)->group(function () {
     Route::get('/api/denuncias/evento', 'index');
     Route::put('/api/denuncias/evento/{id}/marcar-resolvido', 'markAsResolved');
+    Route::post('/api/denuncias/evento/{id}/reportar', 'report')->name('event.report');
 });
 
 // My Events

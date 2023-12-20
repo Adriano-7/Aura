@@ -1,244 +1,468 @@
+/****** Specific for events ********/
 let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-document.addEventListener('submit', function(e){
-    if(e.target.matches('.edit-comment-form')) {
-        updateComment(e);
+/*Report Modal */
+function updateButtonColor(modalId) {
+    const modal = document.getElementById(modalId);
+
+    const denunciarButton = modal.querySelector('#denunciarButton');
+    const radioButtons = modal.querySelectorAll('[name="reason"]');
+
+    let isAnyOptionSelected = false;
+
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+            isAnyOptionSelected = true;
+            break;
+        }
     }
-    if(e.target.matches('#add-comment-form')) {
-        addComment(e);
+
+    if (isAnyOptionSelected) {
+        denunciarButton.style.color = '#826fce';
+        denunciarButton.disabled = false;
     }
-});
+    else {
+        denunciarButton.style.color = '#808080';
+        denunciarButton.disabled = true;
+    }
+}
 
-function updateComment(e){
-    e.preventDefault();
-    let form = e.target;
-    let url = form.action;
-    let commentId = url.split('/')[5];
+function openReportCommentModal(commentId) {
+    const reportCommentForm = document.getElementById('reportCommentForm');
+    const commentIdInput = document.createElement('input');
+    commentIdInput.type = 'hidden';
+    commentIdInput.name = 'comment_id';
+    commentIdInput.value = commentId;
 
-    let formData = new FormData(form);
-    let formParams = new URLSearchParams(formData);
+    reportCommentForm.appendChild(commentIdInput);
 
-    fetch(new URL(url,  window.location.origin), {
-        method: 'PUT',
+    $('#reportCommentModal').modal('show');
+}
+
+function openReportEventModal(eventId) {
+    const reportEventForm = document.getElementById('reportEventForm');
+    const eventIdInput = document.createElement('input');
+    eventIdInput.type = 'hidden';
+    eventIdInput.name = 'event_id';
+    eventIdInput.value = eventId;
+
+    reportEventForm.appendChild(eventIdInput);
+
+    $('#reportEventModal').modal('show');
+}
+
+$('#reportCommentModal').on('hidden.bs.modal', function () { resetCommentModalContent(); });
+$('#reportEventModal').on('hidden.bs.modal', function () { resetEventModalContent(); });
+
+function resetCommentModalContent() {
+    const modalForm = document.getElementById('reportCommentForm');
+    const inputElement = modalForm.querySelector(`input[name="comment_id"]`);
+
+    if (inputElement) {
+        inputElement.remove();
+    }
+
+    const radioButtons = document.getElementsByName('reason');
+    for (const radioButton of radioButtons) {
+        radioButton.checked = false;
+    }
+
+    const denunciarButton = document.getElementById('denunciarButton');
+    denunciarButton.style.color = '#808080';
+    denunciarButton.disabled = true;
+}
+
+function resetEventModalContent() {
+    const modalForm = document.getElementById('reportEventForm');
+    const inputElement = modalForm.querySelector(`input[name="event_id"]`);
+
+    if (inputElement) {
+        inputElement.remove();
+    }
+
+    const radioButtons = document.getElementsByName('reason');
+    for (const radioButton of radioButtons) {
+        radioButton.checked = false;
+    }
+
+    const denunciarButton = document.getElementById('denunciarButton');
+    denunciarButton.style.color = '#808080';
+    denunciarButton.disabled = true;
+}
+
+function reportComment() {
+    const reportCommentForm = document.getElementById('reportCommentForm');
+    const commentIdInput = reportCommentForm.querySelector('input[name="comment_id"]');
+    const commentId = commentIdInput.value;
+
+    const radioButtons = document.getElementsByName('reason');
+    let reason = '';
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+            reason = radioButton.value;
+            break;
+        }
+    }
+
+    const url = `${window.location.origin}/api/denuncias/comentarios/${commentId}/reportar`;
+
+    fetch(new URL(url, window.location.origin), {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'X-CSRF-TOKEN': csrfToken
         },
-        body: formParams
+        body: `reason=${reason}`
     }).then(res => {
-            if (res.ok) {
-                res.json().then(data => {
-                    let commentText = data.text;
-                    commentRow = document.getElementById(`comment-${commentId}`);
+        if (res.ok) {
+            resetCommentModalContent();
+            $('#reportCommentModal').modal('hide');
 
-                    let commentTextElement = document.createElement('p');
-                    commentTextElement.setAttribute('class', 'comment-text');
-                    commentTextElement.innerText = commentText;
-                    
-                    let commentContent = commentRow.querySelector('.comment-content');
-                    commentContent.replaceChild(commentTextElement, form);
-                    
-                    let editIcon = document.getElementById(`editButton-${commentId}`);
-                    editIcon.style.visibility = 'visible';
-                });
-            }
+            openMessageModal('Comentário reportado com sucesso!');
         }
+    }
+    ).catch(err => {
+        resetCommentModalContent();
+        $('#reportCommentModal').modal('hide');
+
+        openMessageModal('Erro ao reportar comentário!');
+    });
+
+    return false;
+}
+
+function reportEvent(eventId) {
+    const radioButtons = document.getElementsByName('reason');
+    let reason = '';
+    for (const radioButton of radioButtons) {
+        if (radioButton.checked) {
+            reason = radioButton.value;
+            break;
+        }
+    }
+
+    const url = `${window.location.origin}/api/denuncias/evento/${eventId}/reportar`;
+
+    fetch(new URL(url, window.location.origin), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: `reason=${reason}`
+    }).then(res => {
+        if (res.ok) {
+            resetEventModalContent();
+            $('#reportEventModal').modal('hide');
+
+            openMessageModal('Evento reportado com sucesso!');
+        }
+    }
+    ).catch(err => {
+        resetEventModalContent();
+        $('#reportEventModal').modal('hide');
+
+        openMessageModal('Erro ao reportar evento!');
+    });
+
+    return false;
+}
+
+function openMessageModal(message) {
+    const messageModal = document.createElement('div');
+    messageModal.setAttribute('class', 'modal fade');
+    messageModal.setAttribute('id', 'messageModal');
+    messageModal.setAttribute('tabindex', '-1');
+    messageModal.setAttribute('role', 'dialog');
+    messageModal.setAttribute('aria-labelledby', 'messageModalLabel');
+    messageModal.setAttribute('aria-hidden', 'true');
+
+    const modalDialog = document.createElement('div');
+    modalDialog.setAttribute('class', 'modal-dialog');
+    modalDialog.setAttribute('role', 'document');
+
+    const modalContent = document.createElement('div');
+    modalContent.setAttribute('class', 'modal-content');
+
+    const modalBody = document.createElement('div');
+    modalBody.setAttribute('class', 'modal-body');
+    modalBody.textContent = message;
+
+    modalContent.appendChild(modalBody);
+
+    modalDialog.appendChild(modalContent);
+
+    messageModal.appendChild(modalDialog);
+
+    document.body.appendChild(messageModal);
+
+    $(messageModal).modal('show');
+}
+
+function showThreeDots(comment) {
+    const threeDots = comment.querySelector('.three-dots');
+    const commentId = comment.id.split('-')[1];
+
+    threeDots.style.display = 'block';
+}
+
+
+function hideThreeDots(comment) {
+    const threeDots = comment.querySelector('.three-dots');
+    const commentId = comment.id.split('-')[1];
+
+    threeDots.style.display = 'none';
+}
+
+/*Comments */
+document.addEventListener('DOMContentLoaded', function () {
+    const comment = document.querySelectorAll('.comment');
+
+    const threeDots = document.querySelector('.three-dots');
+    if (threeDots) {
+        comment.forEach(comment => {
+            comment.addEventListener('mouseover', () => {
+                showThreeDots(comment);
+            });
+
+            comment.addEventListener('mouseout', () => {
+                hideThreeDots(comment);
+            });
+        });
+    }
+
+    const fileUpload = document.getElementById('file-upload');
+    if (fileUpload) {
+        fileUpload.addEventListener('change', () => {
+            handleFileUpload(fileUpload);
+        });
+    }
+    function handleFileUpload(input) {
+        const fileUploadSection = document.getElementById('file-upload-section');
+        const fileInfo = document.getElementById('file-info');
+        const fileName = document.getElementById('file-name');
+        const removeFileBtn = document.getElementById('remove-file');
+
+        const file = input.files[0];
+
+        if (file) {
+            fileName.textContent = file.name;
+            fileUploadSection.style.display = 'flex';
+
+            input.disabled = true;
+        } else {
+            fileUploadSection.style.display = 'none';
+        }
+    }
+
+    const removeFileBtn = document.getElementById('remove-file');
+    removeFileBtn.addEventListener('click', () => {
+        removeFile();
+    });
+
+    function removeFile() {
+        const fileInput = document.getElementById('file-upload');
+        const fileUploadSection = document.getElementById('file-upload-section');
+        const fileInfo = document.getElementById('file-info');
+        const fileName = document.getElementById('file-name');
+
+        fileInput.value = null;
+        fileName.textContent = '';
+        fileUploadSection.style.display = 'none';
+
+        fileInput.disabled = false;
+    }
+});
+
+document.addEventListener('submit', function (e) {
+    if (e.target.matches('.edit-comment-form')) {
+        updateComment(e);
+    }
+    if (e.target.matches('#add-comment-form')) {
+        addComment(e);
+    }
+});
+
+function addComment(e) {
+    e.preventDefault();
+    let form = e.target;
+    let formData = new FormData(form);
+    let fileUpload = document.getElementById('file-upload').files[0];
+    let fileName = document.getElementById('file-name').textContent;
+
+    if (fileUpload) {
+        formData.append('file', fileUpload);
+    }
+
+    let url = form.getAttribute('action');
+
+    fetch(new URL(url, window.location.origin), {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: formData
+    }).then(res => {
+        if (res.ok) {
+            res.json().then(data => {
+                form.reset();
+
+                const newComment = createCommentElement(data);
+
+                let fileUploadSection = document.querySelector('#file-upload-section');
+
+                fileUploadSection.style.display = 'none';
+                fileUploadSection.querySelector('#file-name').textContent = '';
+
+                fileUploadSection.insertAdjacentElement('afterend', newComment);
+
+                let sectionTitle = document.querySelector('#comentarios #section-title');
+                let numberOfComments = sectionTitle.textContent.split('•')[1].trim();
+                numberOfComments++;
+                sectionTitle.textContent = `Comentários • ${numberOfComments}`;
+            });
+        }
+    }
     ).catch(err => console.log(err));
 }
 
-function addComment(e){
-    e.preventDefault();
-        let form = e.target;
-        let formData = new FormData(form);
-        let url = form.getAttribute('action');
+function createCommentElement(commentData) {
+    console.log(commentData);
 
-        fetch(new URL(url, window.location.origin), {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            body: formData
-        }).then(res => {
-                if (res.ok) {
-                    res.json().then(data => {
-                        // clear form
-                        form.reset();
-                        // insert comment
-                        let comment = data.comment;
-                        let author = data.author;
-                        let commentRow = document.createElement('div');
-                        commentRow.setAttribute('class', 'comment-row');
-                        let profilePic = document.createElement('img');
-                        profilePic.setAttribute('class', 'profile-pic');
-                        profilePic.setAttribute('src', `${window.location.origin}/assets/profile/${author.photo}`);
-                        commentRow.appendChild(profilePic);
-                        let commentContent = document.createElement('div');
-                        commentContent.setAttribute('class', 'comment-content');
-                        let usernameAndDate = document.createElement('div');
-                        usernameAndDate.setAttribute('class', 'username-and-date');
-                        let commentAuthor = document.createElement('span');
-                        commentAuthor.setAttribute('class', 'comment-author');
-                        commentAuthor.innerText = author.name;
-                        let commentDate = document.createElement('span');
-                        commentDate.setAttribute('class', 'comment-date');
-                        commentDate.innerText = "Agora mesmo";
-                        usernameAndDate.appendChild(commentAuthor);
-                        usernameAndDate.appendChild(commentDate);
+    let commentDiv = document.createElement('div');
+    commentDiv.setAttribute('class', 'comment-row comment');
+    commentDiv.setAttribute('id', `comment-${commentData.comment.id}`);
 
-                        // Create edit button
-                        let editButton = document.createElement('button');
-                        editButton.setAttribute('class', 'icon-button edit-comment-btn');
-                        editButton.setAttribute('id', `editButton-${comment.id}`);
-                        editButton.addEventListener('click', async e => {
-                            activateEditComment(editButton);
-                        });
-                        let editIcon = document.createElement('img');
-                        editIcon.setAttribute('class', 'icon');
-                        editIcon.setAttribute('src', `${window.location.origin}/assets/edit-icon.svg`);
-                        editButton.appendChild(editIcon);
-                        usernameAndDate.appendChild(editButton);
+    let profileLink = document.createElement('a');
+    profileLink.setAttribute('href', `${window.location.origin}/utilizador/${commentData.author.username}`);
+    let profilePic = document.createElement('img');
+    profilePic.setAttribute('class', 'profile-pic');
+    profilePic.setAttribute('src', `${window.location.origin}/assets/profile/${commentData.author.photo}`);
+    profileLink.appendChild(profilePic);
+    commentDiv.appendChild(profileLink);
 
-                        // Create trash bin button
-                        let trashBinButton = document.createElement('button');
-                        trashBinButton.setAttribute('class', 'icon-button delete-comment-btn');
-                        // add event listener
-                        trashBinButton.addEventListener('click', async e => {
-                            deleteComment(trashBinButton);
-                        });
+    let commentContentDiv = document.createElement('div');
+    commentContentDiv.setAttribute('class', 'comment-content');
 
-                        // Create trash bin icon
-                        let trashBinIcon = document.createElement('img');
-                        trashBinIcon.setAttribute('class', 'icon');
-                        trashBinIcon.setAttribute('src', `${window.location.origin}/assets/delete-icon.svg`);
-                        trashBinButton.appendChild(trashBinIcon);
+    let usernameDateDiv = document.createElement('div');
+    usernameDateDiv.setAttribute('class', 'username-and-date');
 
-                        usernameAndDate.appendChild(trashBinButton);
+    let commentAuthorSpan = document.createElement('span');
+    commentAuthorSpan.setAttribute('class', 'comment-author');
+    commentAuthorSpan.setAttribute('style', 'cursor: pointer');
+    commentAuthorSpan.setAttribute('onclick', `window.location.href='${window.location.origin}/utilizador/${commentData.author.username}'`);
+    commentAuthorSpan.textContent = commentData.author.name;
+    usernameDateDiv.appendChild(commentAuthorSpan);
 
-                        let commentText = document.createElement('p');
-                        commentText.setAttribute('class', 'comment-text');
-                        commentText.innerText = comment.text;
-                        let votesRow = document.createElement('div');
-                        votesRow.setAttribute('class', 'votes-row');
+    let commentDateSpan = document.createElement('span');
+    commentDateSpan.setAttribute('class', 'comment-date');
+    commentDateSpan.textContent = '1 second ago';
+    usernameDateDiv.appendChild(commentDateSpan);
 
-                        // Create SVG element
-                        let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                        svg.setAttribute('width', '16');
-                        svg.setAttribute('height', '16');
-                        svg.setAttribute('fill', '#ffffff');
-                        svg.setAttribute('class', 'bi bi-chevron-expand');
-                        svg.setAttribute('viewBox', '0 0 16 16');
-                        svg.style.marginRight = '0.5em';
+    let dropdownLi = document.createElement('li');
+    dropdownLi.setAttribute('class', 'nav-item dropdown');
 
-                        // Create path element inside SVG
-                        let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                        path.setAttribute('fill-rule', 'evenodd');
-                        path.setAttribute('d', 'M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708zm0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708z');
-                        svg.appendChild(path);
+    let dropdownImg = document.createElement('img');
+    dropdownImg.setAttribute('class', 'three-dots');
+    dropdownImg.setAttribute('src', `${window.location.origin}/assets/three-dots-horizontal.svg`);
+    dropdownImg.setAttribute('data-toggle', 'dropdown');
+    dropdownImg.setAttribute('aria-haspopup', 'true');
+    dropdownImg.setAttribute('aria-expanded', 'false');
+    dropdownImg.setAttribute('style', 'display: none; cursor: pointer;');
+    dropdownLi.appendChild(dropdownImg);
 
-                        votesRow.appendChild(svg);
+    let dropdownUl = document.createElement('ul');
+    dropdownUl.setAttribute('class', 'dropdown-menu dropdown-menu-dark');
+    dropdownUl.setAttribute('aria-labelledby', 'navbarDarkDropdownMenuLink');
+    dropdownLi.appendChild(dropdownUl);
 
-                        let commentVotes = document.createElement('span');
-                        commentVotes.setAttribute('class', 'comment-votes');
-                        commentVotes.setAttribute('inert', '');
-                        commentVotes.innerText = '0';
-                        votesRow.appendChild(commentVotes);
-                        commentContent.appendChild(usernameAndDate);
-                        commentContent.appendChild(commentText);
-                        commentContent.appendChild(votesRow);
-                        commentRow.appendChild(commentContent);
-                        commentRow.setAttribute('id', `comment-${comment.id}`);
-                        let comments = document.getElementById('comments-card');
+    let editLi = document.createElement('li');
+    let editA = document.createElement('a');
+    editA.setAttribute('class', 'dropdown-item');
+    editA.setAttribute('onclick', `activateEditComment(${commentData.comment.id})`);
+    editA.setAttribute('style', 'cursor: pointer;');
+    editA.textContent = 'Editar';
+    editLi.appendChild(editA);
+    dropdownUl.appendChild(editLi);
 
-                        comments.insertBefore(commentRow, comments.children[1]);
-                        let commentCount = document.querySelector('#comments').querySelector('h2').textContent.split('(')[1].split(')')[0];
-                        commentCount = parseInt(commentCount);
-                        commentCount++;
-                        document.querySelector('#comments').querySelector('h2').textContent = `Comentários (${commentCount})`;
-                    });
-                }
-            }
-        ).catch(err => console.log(err));
-}
+    let deleteLi = document.createElement('li');
+    let deleteA = document.createElement('a');
+    deleteA.setAttribute('class', 'dropdown-item');
+    deleteA.setAttribute('onclick', `deleteComment(${commentData.comment.id})`);
+    deleteA.setAttribute('style', 'cursor: pointer;');
+    deleteA.textContent = 'Apagar';
+    deleteLi.appendChild(deleteA);
+    dropdownUl.appendChild(deleteLi);
 
+    usernameDateDiv.appendChild(dropdownLi);
 
-const deleteCommentButtons = document.querySelectorAll('.delete-comment-btn');
-deleteCommentButtons.forEach(button => {
-    button.addEventListener('click', async e => {
-        deleteComment(button);
-    });
-});
+    commentContentDiv.appendChild(usernameDateDiv);
 
-function deleteComment(button){
-    if (!confirm('Tem a certeza?')) {
-        return;
+    let commentTextP = document.createElement('p');
+    commentTextP.setAttribute('class', 'comment-text');
+    commentTextP.textContent = commentData.comment.text;
+    commentContentDiv.appendChild(commentTextP);
+
+    commentDiv.appendChild(commentContentDiv);
+
+    if (commentData.file) {
+        let commentFileDiv = document.createElement('div');
+        commentFileDiv.setAttribute('class', 'comment-file');
+
+        let fileLink = document.createElement('a');
+        fileLink.setAttribute('href', `${window.location.origin}/assets/comments/${commentData.file.file_name}`);
+
+        let fileImg = document.createElement('img');
+        fileImg.setAttribute('src', `${window.location.origin}/assets/comments/${commentData.file.file_name}`);
+
+        fileLink.appendChild(fileImg);
+        commentFileDiv.appendChild(fileLink);
+        commentContentDiv.appendChild(commentFileDiv);
     }
 
-    let commentRow = button.parentElement.parentElement.parentElement;
-    let commentId = commentRow.id.split('-')[1];
+    commentDiv.addEventListener('mouseover', () => {
+        showThreeDots(commentDiv);
+    });
 
-    fetch(new URL(`api/comentario/${commentId}/apagar`,  window.location.origin), {
-        method: 'DELETE',
-        headers: {
-            'content-type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-    }).then(res => {
-            if (res.ok) {
-                commentRow.parentNode.removeChild(commentRow);
-                let commentCountElement = document.querySelector('#comments h2');
-                let commentCount = commentCountElement.textContent.split('(')[1].split(')')[0];
-                commentCount = parseInt(commentCount);
-                commentCount--;
-                commentCountElement.textContent = `Comentários (${commentCount})`;
-            }
-        })
-    .catch(err => console.log(err));
+    commentDiv.addEventListener('mouseout', () => {
+        hideThreeDots(commentDiv);
+    });
+
+    return commentDiv;
 }
 
-
-const editCommentButtons = document.querySelectorAll('.edit-comment-btn');
-editCommentButtons.forEach(button => {
-    button.addEventListener('click', async e => {
-        activateEditComment(button);
-    });
-});
-
-function activateEditComment(button){
-    let commentRow = button.parentElement.parentElement.parentElement;
+function activateEditComment(commentId) {
+    let commentRow = document.getElementById(`comment-${commentId}`);
     let commentText = commentRow.querySelector('.comment-text');
     let commentTextValue = commentText.textContent;
-    let commentId = commentRow.id.split('-')[1];
 
-    // Create form
     let form = document.createElement('form');
     form.setAttribute('action', `${window.location.origin}/api/comentario/${commentId}/editar`);
     form.setAttribute('method', 'POST');
     form.setAttribute('class', 'edit-comment-form');
 
-    // Create input text
     let input = document.createElement('input');
     input.setAttribute('type', 'text');
     input.setAttribute('name', 'text');
     input.setAttribute('value', commentTextValue);
     input.setAttribute('autocomplete', 'off');
 
-    // Create cancel icon
     let cancelIcon = document.createElement('img');
     cancelIcon.setAttribute('class', 'icon');
     cancelIcon.setAttribute('src', `${window.location.origin}/assets/cross-icon.svg`);
-    cancelIcon.addEventListener('click', function(){
+    cancelIcon.addEventListener('click', function () {
         location.reload();
     });
 
-    // Create submit button
     let submitButton = document.createElement('button');
     submitButton.setAttribute('type', 'submit');
     submitButton.setAttribute('class', 'icon-button edit-comment');
     let submitIcon = document.createElement('img');
     submitIcon.setAttribute('class', 'icon');
     submitIcon.setAttribute('src', `${window.location.origin}/assets/save-icon.svg`);
+    submitButton.setAttribute('style', 'background-color: transparent; border: none;');
     submitButton.appendChild(submitIcon);
-    
+
     let hiddenCSRF = document.createElement('input');
     hiddenCSRF.setAttribute('type', 'hidden');
     hiddenCSRF.setAttribute('name', '_token');
@@ -249,9 +473,49 @@ function activateEditComment(button){
     form.appendChild(submitButton);
     form.appendChild(hiddenCSRF);
     commentText.parentNode.replaceChild(form, commentText);
+}
 
-    let editButton = document.getElementById(`editButton-${commentId}`);
-    editButton.style.visibility = 'hidden';
+document.addEventListener('submit', function (e) {
+    if (e.target.matches('.edit-comment-form')) {
+        updateComment(e);
+    }
+});
+
+function updateComment(e) {
+    e.preventDefault();
+    let form = e.target;
+    let url = form.action;
+    let commentId = url.split('/')[5];
+
+    let formData = new FormData(form);
+    let formParams = new URLSearchParams(formData);
+
+    fetch(new URL(url, window.location.origin), {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: formParams
+    }).then(res => {
+        if (res.ok) {
+            res.json().then(data => {
+                let commentText = data.text;
+                commentRow = document.getElementById(`comment-${commentId}`);
+
+                let commentTextElement = document.createElement('p');
+                commentTextElement.setAttribute('class', 'comment-text');
+                commentTextElement.innerText = commentText;
+
+                let commentContent = commentRow.querySelector('.comment-content');
+                commentContent.replaceChild(commentTextElement, form);
+
+                let editIcon = document.getElementById(`editButton-${commentId}`);
+                editIcon.style.visibility = 'visible';
+            });
+        }
+    }
+    ).catch(err => console.log(err));
 }
 
 const upvoteButtons = document.querySelectorAll('.up-btn');
@@ -261,39 +525,39 @@ upvoteButtons.forEach(button => {
     });
 });
 
-function upVote(upButton){
+function upVote(upButton) {
     let commentRow = upButton.parentElement.parentElement.parentElement;
     let downButton = commentRow.querySelector('.down-btn');
     let commentVotes = commentRow.querySelector('.comment-votes');
     let votesBalance = parseInt(commentVotes.textContent);
-    
+
     let upVoteSelected = upButton.hasAttribute('selected');
     let downVoteSelected = downButton.hasAttribute('selected');
-    
+
     let commentId = commentRow.id.split('-')[1];
     let url = `${window.location.origin}/api/comentario/${commentId}/`;
     let method = 'POST';
 
-    if(upVoteSelected && !downVoteSelected){
+    if (upVoteSelected && !downVoteSelected) {
         // remove upvote
         url += 'unvote'
         method = 'DELETE'
     }
-    else if(!upVoteSelected && downVoteSelected){
+    else if (!upVoteSelected && downVoteSelected) {
         // remove downvote
         url += 'unvote'
         method = 'DELETE'
     }
-    else if(!upVoteSelected && !downVoteSelected){
+    else if (!upVoteSelected && !downVoteSelected) {
         // add upvote
         url += 'up'
     }
-    else{
+    else {
         console.log('You cannot upvote and downvote');
         return;
     }
 
-    fetch(new URL(url,  window.location.origin), {
+    fetch(new URL(url, window.location.origin), {
         method: method,
         headers: {
             'content-type': 'application/json',
@@ -301,30 +565,24 @@ function upVote(upButton){
         }
     }).then(res => {
         if (res.ok) {
-            if(upVoteSelected && !downVoteSelected){
+            if (upVoteSelected && !downVoteSelected) {
                 upButton.removeAttribute('selected');
                 upButton.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-up-circle" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
-                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
-                    </svg>
+                    <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon">
                 `;
                 commentVotes.textContent = votesBalance - 1;
             }
-            else if(!upVoteSelected && downVoteSelected){
+            else if (!upVoteSelected && downVoteSelected) {
                 downButton.removeAttribute('selected');
                 downButton.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-down-circle" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
-                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
-                    </svg>
+                    <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon">
                 `;
                 commentVotes.textContent = votesBalance + 1;
             }
-            else if(!upVoteSelected && !downVoteSelected){
+            else if (!upVoteSelected && !downVoteSelected) {
                 upButton.setAttribute('selected', '');
                 upButton.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
-                        <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
-                    </svg>
+                    <img src="${window.location.origin}/assets/icons/vote-up-selected.svg" class="vote-icon">
                 `;
                 commentVotes.textContent = votesBalance + 1;
             }
@@ -339,39 +597,37 @@ downvoteButtons.forEach(button => {
     });
 });
 
-function downVote(downButton){
+function downVote(downButton) {
     let commentRow = downButton.parentElement.parentElement.parentElement;
     let upButton = commentRow.querySelector('.up-btn');
     let commentVotes = commentRow.querySelector('.comment-votes');
     let votesBalance = parseInt(commentVotes.textContent);
-    
+
     let upVoteSelected = upButton.hasAttribute('selected');
     let downVoteSelected = downButton.hasAttribute('selected');
-    
+
     let commentId = commentRow.id.split('-')[1];
     let url = `${window.location.origin}/api/comentario/${commentId}/`;
     let method = 'POST';
 
-    if(upVoteSelected && !downVoteSelected){
-        // remove upvote
+    if (upVoteSelected && !downVoteSelected) {
         url += 'unvote'
         method = 'DELETE'
     }
-    else if(!upVoteSelected && downVoteSelected){
-        // remove downvote
+    else if (!upVoteSelected && downVoteSelected) {
         url += 'unvote'
         method = 'DELETE'
     }
-    else if(!upVoteSelected && !downVoteSelected){
-        // add downvote
+    else if (!upVoteSelected && !downVoteSelected) {
         url += 'down'
+        method = 'POST';
     }
-    else{
+    else {
         console.log('You cannot upvote and downvote');
         return;
     }
 
-    fetch(new URL(url,  window.location.origin), {
+    fetch(new URL(url, window.location.origin), {
         method: method,
         headers: {
             'content-type': 'application/json',
@@ -379,34 +635,70 @@ function downVote(downButton){
         }
     }).then(res => {
         if (res.ok) {
-            if(upVoteSelected && !downVoteSelected){
+            if (upVoteSelected && !downVoteSelected) {
                 upButton.removeAttribute('selected');
                 upButton.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-up-circle" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
-                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
-                    </svg>
+                    <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon">
                 `;
                 commentVotes.textContent = votesBalance - 1;
             }
-            else if(!upVoteSelected && downVoteSelected){
+            else if (!upVoteSelected && downVoteSelected) {
                 downButton.removeAttribute('selected');
                 downButton.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-down-circle" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
-                        <path fill-rule="evenodd" d="M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8m15 0A8 8 0 1 0 0 8a8 8 0 0 0 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
-                    </svg>
+                    <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon">
                 `;
                 commentVotes.textContent = votesBalance + 1;
 
             }
-            else if(!upVoteSelected && !downVoteSelected){
+            else if (!upVoteSelected && !downVoteSelected) {
                 downButton.setAttribute('selected', '');
                 downButton.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffffff" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16" style="cursor: pointer; margin-right:0.5em">
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
-                    </svg>
+                    <img src="${window.location.origin}/assets/icons/vote-down-selected.svg" class="vote-icon">
                 `;
                 commentVotes.textContent = votesBalance - 1;
             }
         }
     })
+}
+
+function deleteComment(commentId) {
+    if (!confirm('Tem a certeza?')) {
+        return;
+    }
+
+    let url = `${window.location.origin}/api/comentario/${commentId}/apagar`;
+    fetch(new URL(url, window.location.origin), {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    }).then(res => {
+        if (res.ok) {
+            let commentRow = document.getElementById(`comment-${commentId}`);
+            commentRow.remove();
+
+            let sectionTitle = document.querySelector('#comentarios #section-title');
+            let numberOfComments = sectionTitle.textContent.split('•')[1].trim();
+            numberOfComments--;
+            sectionTitle.textContent = `Comentários • ${numberOfComments}`;
+        }
+    })
+        .catch(err => console.log(err));
+}
+
+async function deleteEvent(eventId) {
+    const response = await fetch(`/api/evento/${eventId}/apagar`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+        }
+    });
+
+    if (response.ok) {
+        window.location.href = '/';
+    } else {
+        console.error(`Failed to delete event. Status: ${response.status}`);
+    }
 }

@@ -17,8 +17,8 @@ class DashboardController extends Controller{
 
         return view('pages.dashboardReports', [
             'user' => Auth::user(),
-            'reportEvents' => ReportEvent::where('resolved', false)->get(),
-            'reportComments' => ReportComment::where('resolved', false)->get(),
+            'reportEvents' => ReportEvent::where('resolved', false)->orderBy('id', 'desc')->get(),
+            'reportComments' => ReportComment::where('resolved', false)->orderBy('id', 'desc')->get(),        
         ]);
     }
 
