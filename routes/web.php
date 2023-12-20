@@ -31,6 +31,12 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
+// Static Pages
+
+Route::get('/sobre-nos', function () {
+    return view('pages.aboutUs');
+})->name('aboutUs');
+
 //Login
 Route::controller(LoginController::class)->group(function () {
     Route::get('/iniciar-sessao', 'showLoginForm')->name('login');
