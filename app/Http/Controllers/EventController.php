@@ -13,13 +13,32 @@ use App\Models\Notification;
 use App\Models\User;
 
 
-class EventController extends Controller
-{
+class EventController extends Controller{
     public function show($id): View
     {
+        if (!is_numeric($id)) {
+            abort(404, 'Evento não encontrado.');
+        }
+        $event = Event::find($id);
+        if(!$event){
+            abort(404, 'Evento não encontrado.');
+        }
+    
+        if (Auth::check()) {
+            $comments = $event->comments()
+                ->with('author')
+                ->orderByRaw('user_id = ? DESC', [Auth::user()->id])
+                ->orderBy('id', 'DESC')
+                ->get();        
+        } 
+        else {
+            $comments = $event->comments()->get();
+        }
+
         return view('pages.event', [
             'user' => Auth::user(),
-            'event' => Event::find($id)
+            'event' => $event,
+            'comments' => $comments,
         ]);
     }
 

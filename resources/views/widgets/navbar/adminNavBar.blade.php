@@ -27,7 +27,7 @@
                 @if(!request()->routeIs('search'))
                 <form id="search-form" class="form-inline my-2 my-lg-0 looged_in" action="{{ route('search') }}"method="get">
                     <input id="search_bar" class="mr-sm-2 looged_in" name="query" type="text" placeholder="Pesquisa por evento"
-                        style="background-image: url(http://127.0.0.1:8000/assets/search-icon.svg);">
+                        style="background-image: url({{ asset('assets/search-icon.svg') }})">
                 </form>
                 @endif
             </ul>
@@ -43,8 +43,7 @@
 
 
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Definições</a></li>
-                        <li><a class="dropdown-item" href="#">Perfil</a></li>
+                        <li><a class="dropdown-item" href="{{ route('user', $user->username)}}">Perfil</a></li>
                         <li><a class="dropdown-item" href="{{ route('logout') }}">Log Out</a></li>
                     </ul>
                 </li>

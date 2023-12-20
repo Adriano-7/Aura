@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 use Illuminate\Auth\Access\AuthorizationException;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
+use App\Helpers\ColorHelper;
+use Illuminate\Http\Request;
+
 
 class UserController extends Controller{
     public function destroy(int $id) {
@@ -25,5 +30,57 @@ class UserController extends Controller{
         return response()->json([
             'message' => 'User deleted'
         ], 200);
+    }
+
+    public function show(string $username) {
+        $userProfile = User::where('username', $username)->first();
+
+        if (!$userProfile) {
+            abort(404, 'Utilizador não encontrado.');
+        }
+    
+        $color1_increment = -122;
+        $color2_increment = 55;
+        return view('pages.profile', [
+            'userProfile' => $userProfile,
+            'user' => Auth::user(),
+            'color1' => ColorHelper::adjustBrightness($userProfile->background_color, $color1_increment),
+            'color2' => ColorHelper::adjustBrightness($userProfile->background_color, $color2_increment),
+            'organizations' =>  $userProfile->organizations,
+            'events' => $userProfile->eventsWhichParticipates(),
+        ]);
+    }
+
+    public function update(Request $request, int $id) {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'username' => ['required', 'string', 'max:20', 'unique:users,username,' . $user->id, 'regex:/^[a-z][a-z0-9_.-]*$/'],
+            'email' => 'required|email|max:250|unique:users,email,' . $user->id,
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+        
+        try {
+            $this->authorize('update', $user);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => $e->getMessage()], 403);
+        }
+        $user->update($request->all());
+
+        if($request->has('photo')) {
+            $fileRequest = $request->file('photo');
+            $filename = time() . "-" . $fileRequest->getClientOriginalName();
+            $fileRequest->move(public_path('assets/profile'), $filename);
+            $user->photo = $filename;
+            $user->save();
+        }
+
+        return redirect()->route('user', ['username' => $user->username]);
     }
 }

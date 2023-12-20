@@ -27,9 +27,11 @@ class User extends Authenticatable{
         'id',
         'is_admin',
         'name',
+        'username',
         'email',
         'password',
-        'photo'
+        'photo',
+        'background_color',
     ];
 
     /**
@@ -57,18 +59,23 @@ class User extends Authenticatable{
     }
 
     public function organizerEvent(Event $event) {
-        return $this->userOrganizations->contains($event->organization_id);
+        return $this->organizations->contains($event->organization_id);
     }   
 
-    public function userOrganizations(){
+    public function organizations(){
         return $this->belongsToMany('App\Models\Organization', 'organizers', 'user_id', 'organization_id');
     }
 
     public function isOrganizer(Organization $organization){
-        return $this->userOrganizations->contains($organization);
+        return $this->organizations->contains($organization);
     }
 
     public function notifications(): HasMany{
         return $this->hasMany(Notification::class, 'receiver_id');
+    }
+
+    public function eventsWhichParticipates(){
+        $partEvents = Event::whereHas('participants', function ($query) { $query->where('user_id', $this->id);})->get();
+        return $partEvents;
     }
 }

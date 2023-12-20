@@ -12,21 +12,28 @@ class ReportEvent extends Model
 
     protected $table = 'reports_event';
 
-
-    // check later (not all fields are fillable)
     protected $fillable = [
         'id',
         'event_id',
         'resolved',
         'date',
-        'reason_id'
+        'reason'
     ];
 
     public function event() {
-        return $this->belongsTo(Event::class, 'reason_id');
+        return $this->belongsTo(Event::class, 'event_id');
     }
 
-    public function reason() {
-        return $this->belongsTo(ReasonReportEvent::class, 'reason_id');
+    public function getReasonText() {
+        switch ($this->reason) {
+            case 'suspect_fraud':
+                return 'Suspeita de fraude ou golpe';
+            case 'inappropriate_content':
+                return 'Conteúdo inadequado ou ofensivo';
+            case 'incorrect_information':
+                return 'Informações incorretas sobre o evento';
+            default:
+                throw new \Exception("Invalid report reason: {$this->reason}");
+        }
     }
 }
