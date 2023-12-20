@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 use App\Helpers\ColorHelper;
+use Illuminate\Http\Request;
 
 
 class UserController extends Controller{
@@ -48,5 +49,28 @@ class UserController extends Controller{
             'organizations' =>  $userProfile->organizations,
             'events' => $userProfile->eventsWhichParticipates(),
         ]);
+    }
+
+    public function update(Request $request, int $id) {
+        $user = User::find($request->id);
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+        /*
+        try {
+            $this->authorize('update', $user);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'User not authorized to update this user'], 403);
+        }
+        */
+
+        $user->update($request->all());
+
+        return response()->json([
+            'message' => 'User updated',
+            'username' => $request->username,
+        ], 200);
     }
 }

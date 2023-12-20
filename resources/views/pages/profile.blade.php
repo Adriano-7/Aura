@@ -31,10 +31,33 @@
 
                     <ul class="dropdown-menu dropdown-menu-dark"
                         aria-labelledby="navbarDarkDropdownMenuLink">
-                        <li><a class="dropdown-item">Editar perfil</a></li>                        
+                        <li><a class="dropdown-item" data-toggle="modal" data-target="#editModal">Editar perfil</a></li>                        
                         <li><a class="dropdown-item" onclick="deleteAccount({{$user->id}})">Eliminar conta</a></li>
                     </ul>
                 </li>
+
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h5 class="modal-title" id="editModalLabel">Editar Perfil</h5>
+                                <form id="editProfileForm">
+                                    <input type="hidden" name="id" value="{{$user->id}}">
+                                    <input type="text" name="name" class="form-control" placeholder="Nome" value="{{$user->name}}">
+                                    <input type="text" name="username" class="form-control" placeholder="Nome de utilizador" value="{{$user->username}}">
+                                    <input type="email" name="email" class="form-control" placeholder="Email" value="{{$user->email}}">
+                                </form>
+                                <div class="modal-footer" style="border-top: none;">
+                                    <button type="button" data-dismiss="modal"
+                                        style="color: white; border-radius: 0.5em; padding: 0.5em;">Cancelar</button>
+                                    <button type="button" id="saveButton" onclick="submitForm()"
+                                        style="color: white; border-radius: 0.5em; padding: 0.5em;">Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             @endif
             @if($userProfile->is_admin)
                 <span class="badge" inert>Admin</span>

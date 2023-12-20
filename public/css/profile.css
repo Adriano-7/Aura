@@ -120,6 +120,50 @@ scrollbar-width: none;  /* Firefox */
     width: 45%;
 }
 
+.modal-title{
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: 400;
+
+    margin-bottom: 1rem;
+}
+
+.modal-body{
+    background-color: #11141A;
+    color: #FFFFFF;
+    border-radius: 1rem;
+    
+    color: #808080;
+    font-size: 0.9rem;
+}
+
+.modal-content{
+    background-color: transparent;
+}
+
+.modal-footer button{
+    background-color: transparent;
+    border: none;
+    color: #808080;
+    font-size: 0.8rem;
+}
+
+.form-control{
+    background-color: #11141A;
+    color: #fff;
+    border: none;
+    border-bottom: 1px solid #808080;
+    margin-top: 1em;
+}
+
+.form-control:focus{
+    background-color: #11141A;
+    color: #fff;
+    border: none;
+    border-bottom: 1px solid #808080;
+    box-shadow: none;
+}
+
 /*css to mobile phones*/
 @media (max-width: 700px) {
     #content {
