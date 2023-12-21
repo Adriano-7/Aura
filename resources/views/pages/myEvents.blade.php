@@ -33,6 +33,7 @@
                             <a href="{{ route('criar-evento') }}" class="btn btn-primary mb-3 me-4 ">Criar Evento</a>
                         @endif
 
+                        @if ($user->organizations->count() > 0)
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-expanded="false">
@@ -43,6 +44,7 @@
                                 <li><a class="dropdown-item" data-value="participo">Participo</a></li>
                             </ul>
                         </div>
+                        @endif
                     </div>
 
                     @if ($user->organizations->count() > 0)
