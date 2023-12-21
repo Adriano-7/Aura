@@ -79,7 +79,7 @@ class UserController extends Controller{
 
         $request->validate([
             'name' => 'required|string|max:50',
-            'username' => ['required', 'string', 'max:20', 'unique:users,username,' . $user->id, 'regex:/^[a-z][a-z0-9_.-]*$/'],
+            'username' => ['required', 'string', 'max:20', 'unique:users,username,' . $user->id, 'regex:/^[a-zA-Z][a-zA-Z0-9_.-]*$/'],
             'email' => 'required|email|max:250|unique:users,email,' . $user->id,
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
