@@ -30,6 +30,9 @@
                 @yield('content')
             </section>
         </main>
-        @include('widgets.footer')
+        
+        @if(!in_array(Route::currentRouteName(), ['login', 'register']))
+            @include('widgets.footer')
+        @endif
     </body>
 </html>
