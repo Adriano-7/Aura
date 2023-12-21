@@ -575,7 +575,10 @@ li {
     margin-bottom: 10px;
     cursor: pointer;
     border-radius: 1em;
+}
 
+.optResult{
+    min-width: fit-content;
 }
 
 .option-box.selected {

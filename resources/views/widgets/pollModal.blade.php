@@ -20,7 +20,7 @@
                         <input type="text" id="option2" name="option2" class="form-control" required>
 
 
-                        <div class="text-center">
+                        <div class="text-center " id="OptBtn">
                             <button type="button" id="addOption" class="pollBtn">Add Option</button>
                             <button type="button" id="removeOption" class="pollBtn">Remove Option</button>
                         </div>

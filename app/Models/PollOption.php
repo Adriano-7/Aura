@@ -31,4 +31,14 @@ class PollOption extends Model
         return $this->hasMany(PollVote::class);
     }
 
+    public function hasUserVoted(int $userId) {
+        return $this->votes()->where('user_id', $userId)->exists();
+    }
+
+    public function getPercentage() {
+        $voteCount = optional($this->votes())->count() ?? 0;
+        $totalVotes = $this->poll->votes()->count();
+        $percentage = $totalVotes > 0 ? ($voteCount / $totalVotes) * 100 : 0;
+        return round($percentage, 2);
+    }
 }
