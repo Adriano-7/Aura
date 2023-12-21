@@ -517,9 +517,6 @@ function updateComment(form) {
 
                 let commentContent = commentRow.querySelector('.comment-content');
                 commentContent.replaceChild(commentTextElement, form);
-
-                let editIcon = document.getElementById(`editButton-${commentId}`);
-                editIcon.style.visibility = 'visible';
             });
         }
     }
@@ -670,9 +667,17 @@ function downVote(downButton) {
 }
 
 function deleteComment(commentId) {
-    if (!confirm('Tem a certeza?')) {
-        return;
-    }
+    Swal.fire({
+        title: 'Tem a certeza?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não'
+    }).then((result) => {
+        if (!result.isConfirmed) {
+            return;
+        }
+    });
 
     let url = `${window.location.origin}/api/comentario/${commentId}/apagar`;
     fetch(new URL(url, window.location.origin), {

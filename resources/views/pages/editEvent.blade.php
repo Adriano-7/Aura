@@ -8,7 +8,6 @@
 @endsection
 
 @section('scripts')
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/criar-evento.js') }}" defer></script>
 @endsection
 
@@ -135,10 +134,9 @@
                         text: "Esta ação não poderá ser revertida!",
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
                         confirmButtonText: 'Sim, apagar!',
                         cancelButtonText: 'Cancelar'
+                        
                     }).then((result) => {
                         if (result.isConfirmed) {
                             var form = document.createElement('form');

@@ -1,27 +1,34 @@
 let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
-function deleteAccount(userId){
-    if (!confirm("Tem a certeza? A sua conta será apagada permanentemente.")) {
-        return;
-    }
-
-    fetch(new URL(`/api/utilizador/${userId}/apagar`, window.location.origin),{
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': csrf
+function deleteAccount(userId) {
+    Swal.fire({
+        title: 'Tem a certeza?',
+        text: 'A sua conta será apagada permanentemente.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, apagar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(new URL(`/api/utilizador/${userId}/apagar`, window.location.origin), {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': csrf
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/';
+                }
+            }).catch(error => {
+                console.log(error);
+            });
         }
-    }).then(response => {
-        if(response.ok){
-            window.location.href = '/';
-        }
-    }).catch(error => {
-        console.log(error);
     });
 }
 
 $('#editModal').on('hidden.bs.modal', function () { cancelEdit(); });
 
-function cancelEdit(){
+function cancelEdit() {
     let nameInput = document.querySelector('#nameInput');
     let usernameInput = document.querySelector('#usernameInput');
     let emailInput = document.querySelector('#emailInput');
@@ -40,14 +47,14 @@ function cancelEdit(){
     photoInput.value = '';
 }
 
-document.getElementById('photoInput').addEventListener('change', function(e) {
+document.getElementById('photoInput').addEventListener('change', function (e) {
     previewProfilePhoto(e);
 });
 
-function previewProfilePhoto(e){
+function previewProfilePhoto(e) {
     var preview = document.getElementById('profile-pic-preview');
     preview.src = URL.createObjectURL(e.target.files[0]);
-    preview.onload = function() {
+    preview.onload = function () {
         URL.revokeObjectURL(preview.src);
     }
 }
