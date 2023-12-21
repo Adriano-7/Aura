@@ -313,12 +313,12 @@ p {
 
 
 /*Event specific*/
-
-
 .profile-pic {
     margin-right: 0.5rem;
     width: 3.2em;
+    height:3.2em;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 input[type="text"] {
