@@ -477,13 +477,21 @@ function activateEditComment(commentId) {
 
 document.addEventListener('submit', function (e) {
     if (e.target.matches('.edit-comment-form')) {
-        updateComment(e);
+        e.preventDefault();
+
+        let form = e.target;
+        let formParams = new URLSearchParams(new FormData(form));
+        let text = formParams.get('text');
+
+        if (text.trim() === '') {
+            alert('O comentário não pode estar vazio!');
+        }
+
+        updateComment(form);
     }
 });
 
-function updateComment(e) {
-    e.preventDefault();
-    let form = e.target;
+function updateComment(form) {
     let url = form.action;
     let commentId = url.split('/')[5];
 
