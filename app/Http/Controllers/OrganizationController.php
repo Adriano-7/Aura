@@ -10,6 +10,8 @@ use Illuminate\Auth\Access\AuthorizationException;
  use App\Models\Organization; 
  use App\Models\Notification;
  use App\Models\User;
+ use App\Models\Event;
+    use Illuminate\Support\Facades\Gate;
 
 
 class OrganizationController extends Controller{
@@ -22,23 +24,46 @@ class OrganizationController extends Controller{
             abort(404, 'Organização não encontrada.');
         }
 
+        if(Auth::check()){
+            $user = Auth::user();
+            $events = Event::where('organization_id', $id)->get()->filter(function ($event) use ($user) {
+                return Gate::forUser($user)->allows('show', $event);
+            });
+        }
+        else{
+            $events = Event::where('organization_id', $id)->where('is_public', true)->get();
+        }
+
         return view('pages.organization', [
             'user' => Auth::user(),
             'organization' => $organization,
+            'events' => $events,
         ]);
     }
 
-    public function joinOrganization($id){
+    public function joinOrganization(int $id){
+        if(!is_numeric($id)){
+            return redirect()->back()->withErrors('Organization id must be an integer');
+        }
         $organization = Organization::find($id);
-        $this->authorize('wasInvited', $organization);
+        if(!$organization){
+            return redirect()->back()->withErrors('Organization not found');
+        }
+        try {
+            $this->authorize('wasInvited', $organization);
+        } 
+        catch (AuthorizationException $e) {
+            return redirect()->back()->withErrors('You are not authorized to join this organization.');
+        }
         $organization->organizers()->attach(Auth::user()->id);
-
         Auth::user()->notifications()->where('type', 'organization_invitation')->where('organization_id', $id)->delete();
-
         return redirect()->route('organization.show', ['id' => $id]);
     }
 
     public function deleteOrg(int $id) {
+        if (!is_numeric($id)) {
+            return response()->json(['error' => 'Organization id must be an integer'], 400);
+        }
         $org = Organization::find($id);
 
         if (!$org) {
@@ -61,8 +86,20 @@ class OrganizationController extends Controller{
     }
 
     public function inviteUser(Request $request){
-        $organization = Organization::findOrFail($request->organization_id);
-        $this->authorize('invite_user', $organization);
+        $request->validate([
+            'email' => 'required|email',
+            'organization_id' => 'required|integer',
+        ]);
+        $organization = Organization::find($request->organization_id);
+        if(!$organization){
+            return redirect()->back()->withErrors('Organization not found');
+        }
+
+        try{
+            $this->authorize('invite_user', $organization);
+        } catch (AuthorizationException $e) {
+            return redirect()->back()->withErrors('You are not authorized to invite users to this organization.');
+        }
 
         $user = User::where('email', $request->email)->first();
 
@@ -82,6 +119,10 @@ class OrganizationController extends Controller{
     }
 
     public function eliminateMember(Request $request){
+        $request->validate([
+            'organization_id' => 'required|integer',
+            'user_id' => 'required|integer',
+        ]);
         $organization = Organization::find($request->organization_id);
         if(!$organization){
             return response()->json(['error' => 'Organization not found'], 404);
@@ -103,12 +144,15 @@ class OrganizationController extends Controller{
         return response()->json(['message' => 'Member eliminated successfully']);
     }
 
-    public function approve(int $organizationId) {
+    public function approve(int $id) {
         if(!Auth::check()){
             return response()->json(['error' => 'User not logged in'], 403);
         }
 
-        $organization = Organization::find($organizationId);
+        if(!is_numeric($id)){
+            return response()->json(['error' => 'Organization id must be an integer'], 400);
+        }
+        $organization = Organization::find($id);
         if (!$organization) {
             return response()->json(['error' => 'Organization not found'], 404);
         }

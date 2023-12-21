@@ -29,7 +29,15 @@ class NotificationsController extends Controller{
         }
 
         $notification = Notification::find($request->id);
-        $this->authorize('markAsSeen', $notification);
+        if(!$notification){
+            return redirect()->back()->withErrors('Notification not found');
+        }
+        try{
+            $this->authorize('markAsSeen', $notification);
+        }
+        catch(AuthorizationException $e){
+            return redirect()->back()->withErrors('User not authorized to mark this notification as seen');
+        }
 
         $notification->seen = true;
         $notification->save();
@@ -38,6 +46,10 @@ class NotificationsController extends Controller{
     }
 
     public function delete(Request $request){
+        if(!Auth::check()){
+            abort(403, 'Utilizador não autenticado.');
+        }
+
         $notification = Notification::find($request->id);
         if(!$notification){
             return response()->json(['message' => 'Notification not found'], 404);

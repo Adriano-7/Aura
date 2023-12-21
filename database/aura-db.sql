@@ -170,6 +170,28 @@ CREATE TABLE recover_password (
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp
 );
 
+DROP TABLE IF EXISTS polls CASCADE;
+CREATE TABLE polls (
+    id SERIAL PRIMARY KEY,
+    event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
+    question TEXT NOT NULL,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp
+);
+
+DROP TABLE IF EXISTS poll_option CASCADE;
+CREATE TABLE poll_option (
+    id SERIAL PRIMARY KEY,
+    poll_id INTEGER NOT NULL REFERENCES polls (id) ON DELETE CASCADE,
+    text TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS poll_vote CASCADE;
+CREATE TABLE poll_vote (
+    id SERIAL PRIMARY KEY,
+    poll_option_id INTEGER NOT NULL REFERENCES poll_option (id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE
+);
+
 -- Performance Indexes
 -- Index 01
 CREATE INDEX notification_user_indx ON notifications USING hash (receiver_id);
@@ -572,10 +594,10 @@ INSERT INTO organizations (name, photo, approved, description) VALUES
 
 INSERT INTO events (is_public, name, photo, city, venue, address, organization_id, start_date, end_date, description) VALUES
     /*1*/(TRUE, 'NOS Alive', 'nos-alive.jpg', 'Oeiras', 'Passeio Marítimo de Algés', 'Passeio Marítimo de Algés - 1495-165 Algés', 1, '2024-07-17 17:00:00', ' 2024-07-20 06:00:00',    'NOS Alive é um festival de música anual que acontece em Algés, Portugal. É organizado pela Everything is New e patrocinado pela NOS. O festival é conhecido por ter um cartaz eclético, com uma variedade de géneros musicais, incluindo rock, indie, metal, hip hop, pop e eletrónica.'),
-    /*2*/(TRUE, 'Guns N Roses', 'guns-n-roses.jpg', 'Lisboa', 'Altice Arena', 'Rossio dos Olivais, 1990-231 Lisboa', 2, '2024-11-12 21:00:00', '2024-11-12 23:00:00',    'A tour Not In This Lifetime dos Guns N Roses, que começou em 2016, é a terceira maior tour de sempre, tendo já passado por 3 continentes e 14 países, com mais de 5 milhões de bilhetes vendidos. A banda é composta por Axl Rose, Slash e Duff McKagan, membros originais da banda, e ainda por Dizzy Reed, Richard Fortus, Frank Ferrer e Melissa Reese.'),
-    /*3*/(TRUE, 'Metallica', 'metallica.jpg', 'Lisboa', 'Estádio do Restelo', 'Estádio do Restelo - Av. do Restelo 1449-016 Lisboa', 3, '2024-12-20 21:00:00', '2024-12-20 23:00:00',    'Os Metallica são uma das bandas mais influentes e bem sucedidas de sempre, com mais de 110 milhões de álbuns vendidos em todo o mundo e inúmeros prémios e distinções. A banda foi formada em 1981 e é composta por James Hetfield, Lars Ulrich, Kirk Hammett e Robert Trujillo.'),
-    /*4*/(TRUE, 'Foo Fighters', 'foo-fighters.jpeg', 'Lisboa', 'Estádio Nacional', 'Estádio Nacional - Av. Pierre de Coubertin, 1495-751 Cruz Quebrada-Dafundo', 4, '2024-01-14 21:00:00', '2024-01-14 23:00:00',    'Os Foo Fighters são uma banda de rock alternativo formada em 1994 por Dave Grohl, ex-baterista dos Nirvana. A banda é composta por Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett, Pat Smear e Rami Jaffee.'),
-    /*5*/(TRUE, 'The Strokes', 'the-strokes.jpg', 'Lisboa', 'Altice Arena', 'Altice Arena - Rossio dos Olivais, 1990-231 Lisboa', 5, '2024-02-14 21:00:00', '2024-02-14 23:00:00',    'Os The Strokes são uma banda de rock alternativo formada em 1998 em Nova Iorque. A banda é composta por Julian Casablancas, Nick Valensi, Albert Hammond Jr., Nikolai Fraiture e Fabrizio Moretti.'),
+    /*2*/(FALSE, 'Guns N Roses', 'guns-n-roses.jpg', 'Lisboa', 'Altice Arena', 'Rossio dos Olivais, 1990-231 Lisboa', 2, '2024-11-12 21:00:00', '2024-11-12 23:00:00',    'A tour Not In This Lifetime dos Guns N Roses, que começou em 2016, é a terceira maior tour de sempre, tendo já passado por 3 continentes e 14 países, com mais de 5 milhões de bilhetes vendidos. A banda é composta por Axl Rose, Slash e Duff McKagan, membros originais da banda, e ainda por Dizzy Reed, Richard Fortus, Frank Ferrer e Melissa Reese.'),
+    /*3*/(FALSE, 'Metallica', 'metallica.jpg', 'Lisboa', 'Estádio do Restelo', 'Estádio do Restelo - Av. do Restelo 1449-016 Lisboa', 3, '2024-12-20 21:00:00', '2024-12-20 23:00:00',    'Os Metallica são uma das bandas mais influentes e bem sucedidas de sempre, com mais de 110 milhões de álbuns vendidos em todo o mundo e inúmeros prémios e distinções. A banda foi formada em 1981 e é composta por James Hetfield, Lars Ulrich, Kirk Hammett e Robert Trujillo.'),
+    /*4*/(FALSE, 'Foo Fighters', 'foo-fighters.jpeg', 'Lisboa', 'Estádio Nacional', 'Estádio Nacional - Av. Pierre de Coubertin, 1495-751 Cruz Quebrada-Dafundo', 4, '2024-01-14 21:00:00', '2024-01-14 23:00:00',    'Os Foo Fighters são uma banda de rock alternativo formada em 1994 por Dave Grohl, ex-baterista dos Nirvana. A banda é composta por Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett, Pat Smear e Rami Jaffee.'),
+    /*5*/(FALSE, 'The Strokes', 'the-strokes.jpg', 'Lisboa', 'Altice Arena', 'Altice Arena - Rossio dos Olivais, 1990-231 Lisboa', 5, '2024-02-14 21:00:00', '2024-02-14 23:00:00',    'Os The Strokes são uma banda de rock alternativo formada em 1998 em Nova Iorque. A banda é composta por Julian Casablancas, Nick Valensi, Albert Hammond Jr., Nikolai Fraiture e Fabrizio Moretti.'),
     /*6*/(TRUE, 'NOS Primavera Sound', 'nos-primavera-sound.jpg', 'Porto', 'Parque da Cidade', 'Parque da Cidade - 4100-099 Porto',  6, '2024-03-06 21:00:00', '2024-03-09 07:00:00',    'O NOS Primavera Sound é um festival de música anual que acontece no Parque da Cidade, no Porto. É organizado pela Everything is New e patrocinado pela NOS. O festival é conhecido por ter um cartaz eclético, com uma variedade de géneros musicais, incluindo rock, indie, metal, hip hop, pop e eletrónica.'),
     /*7*/(TRUE, 'Ornatos Violeta','ornatos-violeta.jpg', 'Porto', 'Estádio do Dragão', 'Estádio do Dragão - Via Futebol Clube do Porto, 4350-415 Porto', 8, '2024-05-14 21:00:00', '2024-05-14 23:00:00',    'Os Ornatos Violeta são uma banda de rock alternativo formada em 1991 em Coimbra. A banda é composta por Manel Cruz, Nuno Prata, Peixe, Kinörm e Elísio Donas.'),
     /*8*/(TRUE, 'Super Bock Super Rock', 'super-rock-super-bock.png', 'Lisboa', 'Parque das Nações',  'Parque das Nações - 1990-231 Lisboa', 9, '2024-08-02 21:00:00', '2024-08-06 06:00:00',    'O Super Bock Super Rock é um festival de música anual que acontece no Parque das Nações, em Lisboa. É organizado pela Música no Coração e patrocinado pela Super Bock. O festival é conhecido por ter um cartaz eclético, com uma variedade de géneros musicais, incluindo rock, indie, metal, hip hop, pop e eletrónica.'),
@@ -1046,3 +1068,32 @@ INSERT INTO notifications(receiver_id, type, organization_id, user_emitter_id) V
     /*68*/('2',  'organization_registration_request', '18', '18'),
     /*69*/('1',  'organization_registration_request', '19', '19'),
     /*70*/('2',  'organization_registration_request', '19', '19');
+
+-- Insert a poll
+INSERT INTO polls (event_id, question) VALUES
+    ('1', 'Qual o teu género de música favorito?'),
+    ('2', 'Qual o teu album favorito dos Guns N Roses?');
+
+-- Insert options for the poll
+INSERT INTO poll_option (poll_id, text) VALUES
+    /*1*/('1', 'Rock'),
+    /*2*/('1', 'Pop'),
+    /*3*/('1', 'Metal'),
+    /*4*/('1', 'Alternativo'),
+    /*5*/('1', 'Folk'),
+    /*6*/('2', 'Appetite for Destruction'),
+    /*7*/('2', 'Use Your Illusion I'),
+    /*8*/('2', 'Use Your Illusion II'),
+    /*9*/('2', 'The Spaghetti Incident?'),
+    /*10*/('2', 'Chinese Democracy');
+
+-- Insert votes for the poll
+INSERT INTO poll_vote (poll_option_id, user_id) VALUES
+    ('2', '8'),
+    ('1', '5'),
+    ('6', '6'),
+    ('7', '7'),
+    ('8', '8'),
+    ('7', '9'),
+    ('7', '10');
+

@@ -87,5 +87,3 @@
         @endif
     </section>
 @endsection
-
-

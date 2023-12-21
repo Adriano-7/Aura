@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 
 use App\Models\Event;
 use App\Models\Notification;
@@ -19,11 +20,24 @@ class EventController extends Controller{
         if (!is_numeric($id)) {
             abort(404, 'Evento não encontrado.');
         }
+
         $event = Event::find($id);
         if(!$event){
             abort(404, 'Evento não encontrado.');
         }
     
+        if(Auth::check()){
+            try {
+                $this->authorize('show', $event);
+            } catch (AuthorizationException $e) {
+                abort(403, 'Não tem permissões para ver este evento.');
+            }
+        }
+        elseif(!$event->is_public){
+            abort(403, 'Não tem permissões para ver este evento.');
+        }
+
+
         if (Auth::check()) {
             $comments = $event->comments()
                 ->with('author')
@@ -42,10 +56,20 @@ class EventController extends Controller{
         ]);
     }
 
-    public function joinEvent($id)
-    {
+    public function joinEvent(int $id){
+        if(!is_numeric($id)){
+            return redirect()->back()->withErrors('Event id must be an integer');
+        }
         $event = Event::find($id);
-        $this->authorize('join', $event);
+        if(!$event){
+            return redirect()->back()->withErrors('Event not found');
+        }
+        try {
+            $this->authorize('join', $event);
+        } 
+        catch (AuthorizationException $e) {
+            return redirect()->back()->withErrors('You are not authorized to join this event.');
+        }
         $user = Auth::user();
         $event->participants()->attach($user->id);
 
@@ -54,7 +78,10 @@ class EventController extends Controller{
         return redirect()->route('event', ['id' => $id]);
     }
 
-    public function apiJoinEvent($id){
+    public function apiJoinEvent(int $id){
+        if(!is_numeric($id)){
+            return response()->json(['message' => 'Event id must be an integer'], 400);
+        }
         $event = Event::find($id);
         if(!$event){
             return response()->json(['message' => 'Event not found.'], 404);
@@ -74,16 +101,28 @@ class EventController extends Controller{
         return response()->json(['message' => 'User joined event.'], 200);
     }
     
-    public function leaveEvent($id)
-    {
+    public function leaveEvent(int $id){
+        if(!is_numeric($id)){
+            return redirect()->back()->withErrors('Event id must be an integer');
+        }
         $event = Event::find($id);
-        $this->authorize('leave', $event);
+        if(!$event){
+            return redirect()->back()->withErrors('Event not found');
+        }
+        try{
+            $this->authorize('leave', $event);
+        } catch (AuthorizationException $e) {
+            return redirect()->back()->withErrors('You are not authorized to leave this event.');
+        }
         $user = Auth::user();
         $event->participants()->detach($user->id);
         return redirect()->route('event', ['id' => $id]);
     }
 
-    public function apiLeaveEvent($id){
+    public function apiLeaveEvent(int $id){
+        if(!is_numeric($id)){
+            return response()->json(['message' => 'Event id must be an integer'], 400);
+        }
         $event = Event::find($id);
         if(!$event){
             return response()->json(['message' => 'Event not found.'], 404);
@@ -102,17 +141,31 @@ class EventController extends Controller{
         return response()->json(['message' => 'User left event.'], 200);
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, int $id)
     {
-        $event = Event::findOrFail($id);
-        $this->authorize('delete', $event);
+        if (!is_numeric($id)) {
+            return redirect()->back()->withErrors('Event id must be an integer');
+        }
+        $event = Event::find($id);
+        if (!$event) {
+            return redirect()->back()->withErrors('Event not found.');
+        }
+
+        try {
+            $this->authorize('delete', $event);
+        } catch (AuthorizationException $e) {
+            return redirect()->back()->withErrors('You are not authorized to delete this event.');
+        }
         $event->delete();
 
         return redirect()->back()->with('status', "Evento {$event->name} removido com sucesso.");
     }
 
-    public function apiDestroy(Request $request, $id)
+    public function apiDestroy(Request $request, int $id)
     {
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'Event id must be an integer'], 400);
+        }
         $event = Event::find($id);
 
         if (!$event) {
@@ -132,8 +185,19 @@ class EventController extends Controller{
 
     public function inviteUser(Request $request)
     {
-        $event = Event::findOrFail($request->event_id);
-        $this->authorize('invite_user', $event);
+        $request->validate([
+            'email' => 'required|email',
+            'event_id' => 'required|integer',
+        ]);
+        $event = Event::find($request->event_id);
+        if (!$event) {
+            return redirect()->back()->with('status', 'Evento não encontrado!');
+        }
+        try{
+            $this->authorize('invite_user', $event);
+        } catch (AuthorizationException $e) {
+            return redirect()->back()->with('status', 'Não tem permissões para convidar utilizadores para este evento!');
+        }
 
         $user = User::where('email', $request->email)->first();
 
@@ -141,6 +205,8 @@ class EventController extends Controller{
             return redirect()->back()->with('status', 'Utilizador não encontrado!');
         } elseif ($user->id == Auth::user()->id || $user->isOrganizer($event->organization) || $user->is_admin) {
             return redirect()->back()->with('status', 'Utilizador não pode ser convidado!');
+        } elseif ($user->participatesInEvent($event)) {
+            return redirect()->back()->with('status', 'Utilizador já participa no evento!');
         }
 
         $notification = new Notification();
@@ -185,10 +251,35 @@ class EventController extends Controller{
                 $queryBuilder->where('end_date', '<=', $endDate);
             });
 
-        $results = $eventsQuery->get()->map(function ($event) {
-            $event->isParticipating = $event->participants()->get()->contains(Auth::user());
-            return $event;
-        });
 
-        return response()->json($results);
-    }}
+            if (Auth::check()) {
+                $results = $eventsQuery->get()->map(function ($event) {
+                    $event->isParticipating = $event->participants()->get()->contains(Auth::user());
+                    
+                    $event->canJoin = true;
+                    try {
+                        $this->authorize('join', $event);
+                    } 
+                    catch (AuthorizationException $e) {
+                        $event->canJoin = false;
+                    }
+
+                    $event->canSee = true;
+                    try{
+                        $this->authorize('show', $event);
+                    } catch (AuthorizationException $e) {
+                        $event->canSee = false;
+                    }
+
+                    return $event;
+                });
+            } else {
+                $results = $eventsQuery->where('is_public', true)->get()->map(function ($event) {
+                    $event->isParticipating = false;
+                    $event->canJoin = false;
+                    return $event;
+                });
+            }
+        
+            return response()->json($results);
+}}
