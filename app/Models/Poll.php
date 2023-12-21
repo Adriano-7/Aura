@@ -19,7 +19,7 @@ class Poll extends Model
 
     public $timestamps = false;
 
-    protected $table='polls';
+    protected $table = 'polls';
     protected $fillable = [
         'id',
         'event_id',
@@ -27,28 +27,33 @@ class Poll extends Model
         'date'
     ];
 
-    public function event() {
+    public function event()
+    {
         return $this->belongsTo(Event::class);
     }
 
-    public function options() {
+    public function options()
+    {
         return $this->hasMany(PollOption::class);
     }
 
-    public function votes() {
+    public function votes()
+    {
         return $this->hasManyThrough(PollVote::class, PollOption::class);
     }
 
-    public function hasUserVoted($userId) {
+    public function hasUserVoted($userId)
+    {
         return $this->votes()->where('user_id', $userId)->exists();
     }
 
-    public function optionUserVoted($userId) {
+    public function optionUserVoted($userId)
+    {
         error_log("Poll option user voted");
         $vote = $this->votes()->where('user_id', $userId)->first();
-        
-        return $vote;
-       
 
-}
+        return $vote;
+
+
+    }
 }

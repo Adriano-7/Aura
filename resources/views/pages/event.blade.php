@@ -147,10 +147,9 @@
         </div>
     </div>
 
-
-
-    @if(Auth::check() && (Auth::user()->participatesInEvent($event) ||
-    Auth::user()->organizations->contains($event->organization_id) || Auth::user()->is_admin))
+    @if(($event->polls->isNotEmpty() || Auth::check() && Auth::user()->organizations->contains($event->organization_id))  
+            && 
+        Auth::check() && (Auth::user()->participatesInEvent($event) || Auth::user()->organizations->contains($event->organization_id) || Auth::user()->is_admin))
     <div class="container navSect" id="polls">
         <div class="row">
             <div class="row">
@@ -165,7 +164,6 @@
                 </div>
             </div>
         </div>
-
         @include('widgets.poll')
     </div>
     @endif
