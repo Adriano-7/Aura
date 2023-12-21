@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Notifications')
+@section('title', 'Notificações' . ($user->notifications->count() > 0 ? ' (' . $user->notifications->count() . ')' : ''))
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/notifications.css') }}">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Create Event')
+@section('title', 'Criar Evento')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
