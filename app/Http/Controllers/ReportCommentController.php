@@ -28,6 +28,9 @@ class ReportCommentController extends Controller
             return response()->json(['error' => 'User not authorized to delete reports'], 403);
         }
 
+        if(!is_numeric($id)){
+            return response()->json(['error' => 'Report id must be an integer'], 400);
+        }
         $report = ReportComment::find($id);
 
         if (!$report) {
@@ -50,6 +53,9 @@ class ReportCommentController extends Controller
             return response()->json(['error' => 'User not authorized to mark reports as resolved'], 403);
         }
 
+        if(!is_numeric($id)){
+            return response()->json(['error' => 'Report id must be an integer'], 400);
+        }
         $report = ReportComment::find($id);
 
         if (!$report) {
@@ -66,7 +72,7 @@ class ReportCommentController extends Controller
         ]);
     }
 
-    public function report(Request $request, $commentId){
+    public function report(Request $request, int $commentId){
         $validReasons = ['inappropriate_content', 'violence_threats', 'incorrect_information', 'harassment_bullying', 'commercial_spam'];
         $reason = $request->input('reason');
 
@@ -76,6 +82,9 @@ class ReportCommentController extends Controller
             ], 400);
         }
 
+        if(!is_numeric($commentId)){
+            return response()->json(['error' => 'Comment id must be an integer'], 400);
+        }
         $comment = Comment::find($commentId);
         if (!$comment) {
             return response()->json([
