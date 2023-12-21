@@ -13,12 +13,12 @@ class StaticPageController extends Controller{
         ]);
     }
     public function showPrivacy() {
-        return view('pages.aboutUs', [
+        return view('pages.privacy', [
             'user' => Auth::user(),
         ]);
     }
     public function showContacts() {
-        return view('pages.aboutUs', [
+        return view('pages.contacts', [
             'user' => Auth::user(),
         ]);
     }
