@@ -36,7 +36,7 @@
         @include('widgets.org-eventos.pageNav', ['elements' => ['Eventos', 'Sobre']], ['href' => ['#eventos',  '#sobre']])
     @endif
 
-    @include('widgets.org-eventos.eventsTable', ['title' => 'Eventos • ' . $organization->events->count() . ' Resultados', 'events' => $organization->events, 'isOrg' => true])
+    @include('widgets.org-eventos.eventsTable', ['title' => 'Eventos • ' . $events->count() . ' Resultados', 'events' => $events, 'isOrg' => true])
     @include('widgets.org-eventos.textSection', ['id' => 'sobre', 'title' => 'Sobre', 'text' => $organization->description])
 
     </main>

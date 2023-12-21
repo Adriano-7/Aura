@@ -10,6 +10,8 @@ use Illuminate\Auth\Access\AuthorizationException;
  use App\Models\Organization; 
  use App\Models\Notification;
  use App\Models\User;
+ use App\Models\Event;
+    use Illuminate\Support\Facades\Gate;
 
 
 class OrganizationController extends Controller{
@@ -22,9 +24,20 @@ class OrganizationController extends Controller{
             abort(404, 'Organização não encontrada.');
         }
 
+        if(Auth::check()){
+            $user = Auth::user();
+            $events = Event::where('organization_id', $id)->get()->filter(function ($event) use ($user) {
+                return Gate::forUser($user)->allows('show', $event);
+            });
+        }
+        else{
+            $events = Event::where('organization_id', $id)->where('is_public', true)->get();
+        }
+
         return view('pages.organization', [
             'user' => Auth::user(),
             'organization' => $organization,
+            'events' => $events,
         ]);
     }
 

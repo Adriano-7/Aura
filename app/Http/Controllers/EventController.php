@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 
 use App\Models\Event;
 use App\Models\Notification;
@@ -19,11 +20,24 @@ class EventController extends Controller{
         if (!is_numeric($id)) {
             abort(404, 'Evento não encontrado.');
         }
+
         $event = Event::find($id);
         if(!$event){
             abort(404, 'Evento não encontrado.');
         }
     
+        if(Auth::check()){
+            try {
+                $this->authorize('show', $event);
+            } catch (AuthorizationException $e) {
+                abort(403, 'Não tem permissões para ver este evento.');
+            }
+        }
+        elseif(!$event->is_public){
+            abort(403, 'Não tem permissões para ver este evento.');
+        }
+
+
         if (Auth::check()) {
             $comments = $event->comments()
                 ->with('author')
@@ -237,19 +251,35 @@ class EventController extends Controller{
                 $queryBuilder->where('end_date', '<=', $endDate);
             });
 
-        $results = $eventsQuery->get()->map(function ($event) {
-            $event->isParticipating = $event->participants()->get()->contains(Auth::user());
-            
-            $event->canJoin = true;
-            try {
-                $this->authorize('join', $event);
-            } 
-            catch (AuthorizationException $e) {
-                $event->canJoin = false;
+
+            if (Auth::check()) {
+                $results = $eventsQuery->get()->map(function ($event) {
+                    $event->isParticipating = $event->participants()->get()->contains(Auth::user());
+                    
+                    $event->canJoin = true;
+                    try {
+                        $this->authorize('join', $event);
+                    } 
+                    catch (AuthorizationException $e) {
+                        $event->canJoin = false;
+                    }
+
+                    $event->canSee = true;
+                    try{
+                        $this->authorize('show', $event);
+                    } catch (AuthorizationException $e) {
+                        $event->canSee = false;
+                    }
+
+                    return $event;
+                });
+            } else {
+                $results = $eventsQuery->where('is_public', true)->get()->map(function ($event) {
+                    $event->isParticipating = false;
+                    $event->canJoin = false;
+                    return $event;
+                });
             }
-
-            return $event;
-        });
-
-        return response()->json($results);
-    }}
+        
+            return response()->json($results);
+}}

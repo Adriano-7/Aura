@@ -51,5 +51,9 @@ class Event extends Model{
     public function polls(){
         return $this->hasMany(Poll::class);
     }
+
+    public function invitations(){
+        return $this->hasMany(Notification::class)->where('type', 'event_invitation');
+    }
 }
 

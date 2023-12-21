@@ -22,18 +22,21 @@ async function search(firstTime = false) {
     const response = await fetch(url);
     const results = await response.json();
 
+    let visibleResults = results.filter(result => result.canSee);
+    let visibleResultsLength = visibleResults.length;
+
     let resultsHTML = `
         <div class="row">
             <div class="col-12">
-                <h1 id="results-title">Eventos • ${results.length} Resultados</h1>
+                <h1 id="results-title">Eventos • ${visibleResultsLength} Resultados</h1>
             </div>
         </div>
         <div class="card">
     `;
 
-    for (const result of results) {
-        const startDate = new Date(result.start_date);
-        const resultHTML = `
+    for (const result of visibleResults) {
+            const startDate = new Date(result.start_date);
+            const resultHTML = `
             <div class="row search-result">
                 <div class="col-md-2">
                     <h2>${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'long' })}</h2>
@@ -46,13 +49,13 @@ async function search(firstTime = false) {
                 </div>
                 <div class="col-md-2 ml-auto">
                 ${result.isParticipating ?
-                `<button type="button" id="button-${result.id}" class="result-button" onclick="leaveEvent(${result.id})">Sair do Evento</button>`
-                :
-                (result.canJoin ? `<button type="button" id="button-${result.id}" class="result-button" onclick="joinEvent(${result.id})">Aderir ao Evento</button>` : '')}
+                    `<button type="button" id="button-${result.id}" class="result-button" onclick="leaveEvent(${result.id})">Sair do Evento</button>`
+                    :
+                    (result.canJoin ? `<button type="button" id="button-${result.id}" class="result-button" onclick="joinEvent(${result.id})">Aderir ao Evento</button>` : '')}
                 </div>
             </div>`;
 
-        resultsHTML += resultHTML;
+            resultsHTML += resultHTML;
     }
 
     resultsHTML += '</div>';
