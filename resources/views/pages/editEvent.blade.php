@@ -7,6 +7,11 @@
 <link rel="stylesheet" href="{{ asset('css/criar-evento.css') }}">
 @endsection
 
+@section('scripts')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('js/criar-evento.js') }}" defer></script>
+@endsection
+
 @section('header')
 @include('widgets.navBar')
 @endsection
@@ -18,7 +23,7 @@
 <body>
 
     <div class="custom-container">
-        <h2 class="text-center">Criar um Evento</h2>
+        <h2 class="text-center">Editar Evento</h2>
         @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -46,10 +51,10 @@
                         value="{{ $event->start_date->format('Y-m-d') }}" min="{{ date('Y-m-d') }}" required>
                 </div>
                 <div class="form-group col-md-5">
-                    <label for="end_date">Data Fim</label>
+                    <label for="end_date">Data Fim *</label>
                     <input type="date" id="end_date" name="end_date"
-                        value="{{ $event->end_date ? $event->end_date->format('Y-m-d') : '' }}"
-                        min="{{ date('Y-m-d') }}">
+                        value="{{ $event->end_date ? $event->end_date->format('Y-m-d') : '' }} "
+                        min="{{ date('Y-m-d') }}" required>
                 </div>
             </div>
 
@@ -60,16 +65,16 @@
                         required>
                 </div>
                 <div class="form-group col-md-5">
-                    <label for="end_time">Hora Fim</label>
+                    <label for="end_time">Hora Fim *</label>
                     <input type="time" id="end_time" name="end_time"
-                        value="{{$event->end_date ? $event->end_date->format('H:i') : '' }}">
+                        value="{{$event->end_date ? $event->end_date->format('H:i') : '' }}" required>
                 </div>
             </div>
 
             <!-- Morada -->
             <div class="form-group">
                 <label for="event_address">Morada</label>
-                <input type="text" id="event_address" name="event_address" value="{{$event->address}}">
+                <input type="text" id="event_address" name="event_address" value="{{$event->address}}" required>
             </div>
 
             <!-- Local -->
@@ -145,7 +150,6 @@
                     })
                 }
         </script>
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </div>
 </body>
 

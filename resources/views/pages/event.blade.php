@@ -189,7 +189,7 @@
                                             <img class="icon" src="{{ asset('assets/clip-icon.svg') }}">
                                             <input id="file-upload" type="file" name="file" style="display:none;">
                                         </label>
-                                        <button type="submit" class="icon-button insert-comment">
+                                        <button tfype="submit" class="icon-button insert-comment">
                                             <img class="icon" src="{{ asset('assets/send-icon.svg') }}">
                                         </button>
                                     </form>

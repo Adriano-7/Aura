@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="{{ asset('css/criar-evento.css') }}">
 @endsection
 
+@section('scripts')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/criar-evento.js') }}" defer></script>
+
+@endsection
+
 @section('header')
     @include('widgets.navBar')
 @endsection
@@ -42,8 +48,8 @@
                 <input type="date" id="start_date" name="start_date" min="{{ date('Y-m-d') }}" required>
             </div>
             <div class="form-group col-md-5">
-                <label for="end_date">Data Fim</label>
-                <input type="date" id="end_date" name="end_date" min="{{ date('Y-m-d') }}">
+                <label for="end_date">Data Fim *</label>
+                <input type="date" id="end_date" name="end_date" min="{{ date('Y-m-d') }}" required>
             </div>
         </div>
 
@@ -53,8 +59,8 @@
                 <input type="time" id="start_time" name="start_time"  required>
             </div>
             <div class="form-group col-md-5">
-                <label for="end_time">Hora Fim</label>
-                <input type="time" id="end_time" name="end_time" >
+                <label for="end_time">Hora Fim *</label>
+                <input type="time" id="end_time" name="end_time" required>
             </div>
         </div>
 
