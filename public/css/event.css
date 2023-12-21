@@ -293,25 +293,6 @@ p {
     }
 }
 
-@media (max-width: 765px) {
-    /*
-    .event .col-md-2,
-    .event .col-md-2.ml-auto {
-        display: flex;
-        justify-content: flex-end;
-
-        margin-top: 0rem;
-    }
-
-    #bannerImg {
-        height: 12rem;
-    
-    }
-    */
-
-}
-
-
 /*Event specific*/
 .profile-pic {
     margin-right: 0.5rem;

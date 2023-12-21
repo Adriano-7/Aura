@@ -26,10 +26,6 @@ class Organization extends Model{
     public function organizers(){
         return $this->belongsToMany(User::class, 'organizers', 'organization_id', 'user_id');
     }
-
-    public function invitedUsers(){
-        return $this->belongsToMany(User::class, 'notifications', 'organization_id', 'receiver_id')->where('type', 'organization_invitation');
-    }
     
     public function events(){
         return $this->hasMany(Event::class);

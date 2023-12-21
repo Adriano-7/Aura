@@ -17,8 +17,8 @@ class StaticPageController extends Controller{
             'user' => Auth::user(),
         ]);
     }
-    public function showContacts() {
-        return view('pages.contacts', [
+    public function showHelp() {
+        return view('pages.help', [
             'user' => Auth::user(),
         ]);
     }

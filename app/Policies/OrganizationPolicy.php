@@ -7,12 +7,7 @@ use App\Models\Organization;
 
 class OrganizationPolicy{
     public function wasInvited(User $user, Organization $organization){
-        return !$user->is_admin;
-
-        /*
-        TODO: fix this
-        return $organization->invitedUsers->contains($user);
-        */
+        return $organization->organizationInvitations()->where('receiver_id', $user->id)->exists();
     }
 
     public function delete(User $user, Organization $organization){

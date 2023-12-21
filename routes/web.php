@@ -37,7 +37,7 @@ use App\Http\Controllers\Auth\RegisterController;
 Route::controller(StaticPageController::class)->group(function () {
     Route::get('/sobre-nos', 'showAboutUs')->name('aboutUs');
     Route::get('/politica-de-privacidade', 'showPrivacy')->name('privacy');
-    Route::get('/contactos', 'showContacts')->name('contacts');
+    Route::get('/ajuda', 'showHelp')->name('help');
 });
 
 //Login
