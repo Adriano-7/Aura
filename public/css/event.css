@@ -130,8 +130,8 @@ p {
     padding: 1rem;
 }
 
-#join-event,
-#leave-event {
+.join-event,
+.leave-event {
     white-space: nowrap;
 
     font-size: 0.85rem;
@@ -143,8 +143,8 @@ p {
     color: white;
 }
 
-#join-event:hover,
-#leave-event:hover {
+.join-event:hover,
+.leave-event:hover {
     background-color: #A08AFA;
     color: #11141A;
 

@@ -187,6 +187,15 @@ class EventController extends Controller{
 
         $results = $eventsQuery->get()->map(function ($event) {
             $event->isParticipating = $event->participants()->get()->contains(Auth::user());
+            
+            $event->canJoin = true;
+            try {
+                $this->authorize('join', $event);
+            } 
+            catch (AuthorizationException $e) {
+                $event->canJoin = false;
+            }
+
             return $event;
         });
 

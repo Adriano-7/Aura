@@ -121,7 +121,7 @@
                             <div class="col-12 text-center">
                                 <form method="POST" action="{{ route('event.join', $event->id) }}">
                                     @csrf
-                                    <button id="join-event" type="submit">Aderir ao evento</button>
+                                    <button class="join-event" type="submit">Aderir ao evento</button>
                                 </form>
                             </div>
                         @elseif (Auth::check() && Auth::user()->participatesInEvent($event))
@@ -129,7 +129,7 @@
                                 <form method="POST" action="{{ route('event.leave', $event->id) }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button id="leave-event" type="submit">Sair do evento</button>
+                                    <button class="leave-event" type="submit">Sair do evento</button>
                                 </form>
                             </div>
                         @endif
