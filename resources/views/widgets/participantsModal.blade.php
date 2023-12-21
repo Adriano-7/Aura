@@ -10,7 +10,7 @@
                         <div class="part-row"
                             onclick="window.location.href='{{ route('user', $participant->username) }}'">
                             <div class="">
-                                <img class="profile-pic" src="{{ asset('assets/profile/' . $participant->photo) }}">
+                                <img class="profile-pic" src="{{ asset('assets/profile/' . $participant->photo) }}" alt="foto de perfil">
                             </div>
                             <div class="">
                                 <h2>{{ $participant->name }}</h2>

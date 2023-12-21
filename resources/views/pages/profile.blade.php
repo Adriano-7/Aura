@@ -18,14 +18,14 @@
 @section('content')
     <section id="profile-header">
         <div id="background-banner" style="background-image: linear-gradient(to bottom right, {{$color1}}, {{$color2}})"></div>            
-        <img src="{{ asset('assets/profile/' . $userProfile->photo) }}" id="profile-pic">
+        <img src="{{ asset('assets/profile/' . $userProfile->photo) }}" id="profile-pic" alt="profile picture">
     </section>
     <section id="profile-fields">
         <div style="display: flex; flex-direction: row; align-items: center;">
             <span id="complete-name">{{$userProfile->name}}</span>
             @if(Auth::check() && $userProfile->id == $user->id)
                 <li class="nav-item dropdown options" style="list-style-type: none;">
-                    <img class="three-dots" src="{{asset('assets/Three-Dots-Icon.svg')}}" alt="OPTIONS"
+                    <img class="three-dots" src="{{asset('assets/Three-Dots-Icon.svg')}}" alt="opções"
                         data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false" style="margin-left: 0.5em">
 
@@ -51,7 +51,7 @@
                                         <label for="backgroundColorInput" class="form-label">Cor favorita</label>
                                     </div>
                                     <div id="photo-input">
-                                        <img src="{{ asset('assets/profile/' . $user->photo) }}" id="profile-pic-preview">
+                                        <img src="{{ asset('assets/profile/' . $user->photo) }}" id="profile-pic-preview" alt="Foto de perfil selecionada">
                                         <input type="file" name="photo" class="form-control" id="photoInput" accept="image/png, image/jpeg, image/jpg"> 
                                     </div>
                                     @method('PUT')

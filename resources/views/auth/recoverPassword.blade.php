@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="col-sm-6 text-black">
                         <div class="px-5 ms-xl-4">
-                            <a href="/"><img src="{{ asset('assets/AuraLogo.svg') }}" alt="Logo"
+                            <a href="/"><img src="{{ asset('assets/AuraLogo.svg') }}" alt="Aura Logo"
                                     style="width: 7rem;" class="pt-5 mt-xl-4"></a>
                         </div>
 

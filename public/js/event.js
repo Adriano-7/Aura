@@ -573,21 +573,21 @@ function upVote(upButton) {
             if (upVoteSelected && !downVoteSelected) {
                 upButton.removeAttribute('selected');
                 upButton.innerHTML = `
-                    <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon">
+                    <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon" alt="Upvote deselected">
                 `;
                 commentVotes.textContent = votesBalance - 1;
             }
             else if (!upVoteSelected && downVoteSelected) {
                 downButton.removeAttribute('selected');
                 downButton.innerHTML = `
-                    <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon">
+                    <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon" alt="Downvote deselected">
                 `;
                 commentVotes.textContent = votesBalance + 1;
             }
             else if (!upVoteSelected && !downVoteSelected) {
                 upButton.setAttribute('selected', '');
                 upButton.innerHTML = `
-                    <img src="${window.location.origin}/assets/icons/vote-up-selected.svg" class="vote-icon">
+                    <img src="${window.location.origin}/assets/icons/vote-up-selected.svg" class="vote-icon" alt="Upvote selected">
                 `;
                 commentVotes.textContent = votesBalance + 1;
             }
@@ -643,14 +643,14 @@ function downVote(downButton) {
             if (upVoteSelected && !downVoteSelected) {
                 upButton.removeAttribute('selected');
                 upButton.innerHTML = `
-                    <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon">
+                    <img src="${window.location.origin}/assets/icons/vote-up.svg" class="vote-icon" alt="Upvote deselected">
                 `;
                 commentVotes.textContent = votesBalance - 1;
             }
             else if (!upVoteSelected && downVoteSelected) {
                 downButton.removeAttribute('selected');
                 downButton.innerHTML = `
-                    <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon">
+                    <img src="${window.location.origin}/assets/icons/vote-down.svg" class="vote-icon" alt="Downvote deselected">
                 `;
                 commentVotes.textContent = votesBalance + 1;
 
@@ -658,7 +658,7 @@ function downVote(downButton) {
             else if (!upVoteSelected && !downVoteSelected) {
                 downButton.setAttribute('selected', '');
                 downButton.innerHTML = `
-                    <img src="${window.location.origin}/assets/icons/vote-down-selected.svg" class="vote-icon">
+                    <img src="${window.location.origin}/assets/icons/vote-down-selected.svg" class="vote-icon" alt="Downvote selected">
                 `;
                 commentVotes.textContent = votesBalance - 1;
             }

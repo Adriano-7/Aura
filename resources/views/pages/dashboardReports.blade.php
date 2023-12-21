@@ -61,7 +61,7 @@
             <div class="row report">
                 <div class="col-2 dashboard-profile d-flex align-items-center" onclick="window.location.href='{{ route('user', ['username' => $report->comment->author->username]) }}'" style="cursor:pointer">
                     <div class="pr-2">
-                        <img src="{{asset('assets/profile/' . $report->comment->author->photo)}}">
+                        <img src="{{asset('assets/profile/' . $report->comment->author->photo)}}" alt="profile picture">
                     </div>
                     <div>
                         <h1>{{$report->comment->author->name}}</h1>
@@ -110,7 +110,7 @@
                 <div class="col-2 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
                     onclick="window.location.href='{{ route('event', ['id' => $report->event->id]) }}'">
                     <div class="pr-2">
-                        <img src="{{ asset('assets/eventos/' . $report->event->photo) }}">
+                        <img src="{{ asset('assets/eventos/' . $report->event->photo) }}" alt="event picture">
                     </div>
                     <div>
                         <h1>{{ $report->event->name }}</h1>

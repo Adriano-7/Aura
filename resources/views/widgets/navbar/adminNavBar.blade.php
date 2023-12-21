@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="{{ route('home') }}"> <img src="{{ asset('assets/AuraLogo.svg') }}"> </a>
+        <a class="navbar-brand" href="{{ route('home') }}"> <img src="{{ asset('assets/AuraLogo.svg') }}" alt="logo"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
             aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -36,7 +36,7 @@
                 <li class="nav-item dropdown ">
                     <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        <img src="{{ asset('assets/profile/' . $user->photo) }}" id="navBarImg" class="rounded-circle">
+                        <img src="{{ asset('assets/profile/' . $user->photo) }}" id="navBarImg" class="rounded-circle" alt="foto de perfil">
                         <span class="navbar-text dropdown-toggle">{{ $user->name }}</span>
                         <span class="badge">Admin</span>
                     </a>

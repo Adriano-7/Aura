@@ -58,7 +58,7 @@
             <div class="row report" id="member-{{$member->id}}">
                 <div class="col-3 members-profile d-flex align-items-center">
                     <div class="pr-2">
-                        <img src="{{ asset('assets/profile/' . $member->photo) }}">
+                        <img src="{{ asset('assets/profile/' . $member->photo) }}" alt="foto de perfil">
                     </div>
                     <div>
                         <h1>{{ $member->name }}</h1>
@@ -70,7 +70,7 @@
                 <div class="col-2 members-actions d-flex justify-content-center">
                     <div class="dropdown">
                         <button class="btn" onclick="eliminateMember({{ $organization->id }}, {{ $member->id }})">
-                            <img src="{{ asset('assets/close-icon.svg') }}" alt="more">
+                            <img src="{{ asset('assets/close-icon.svg') }}" alt="eliminar membro">
                         </button>
                     </div>
                 </div>

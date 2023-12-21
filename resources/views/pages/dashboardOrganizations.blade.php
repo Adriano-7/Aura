@@ -47,7 +47,7 @@
                 <div class="row report" id="request-{{$request->organization->id}}">
                     <div class="col-3 dashboard-profile d-flex align-items-center" onclick="window.location.href='{{ route('user', ['username' => $request->userEmitter->username]) }}'" style="cursor:pointer">
                         <div class="pr-2">
-                            <img src="{{ asset('assets/profile/' . $request->userEmitter->photo) }}">
+                            <img src="{{ asset('assets/profile/' . $request->userEmitter->photo) }}" alt="profile picture">
                         </div>
                         <div>
                             <h1>{{ $request->userEmitter->name }}</h1>
@@ -102,7 +102,7 @@
                     <div class="col-3 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
                         onclick="window.location.href='{{ route('organization.show', ['id' => $organization->id]) }}'">
                         <div class="pr-2">
-                            <img src="{{ asset('assets/organizations/' . $organization->photo) }}">
+                            <img src="{{ asset('assets/organizations/' . $organization->photo) }}" alt="organization picture">
                         </div>
                         <div>
                             <h1>{{ $organization->name }}</h1>
@@ -132,7 +132,7 @@
                                             <div class="row">
                                                 <div class="col-2">
                                                     <img src="{{ asset('assets/profile/' . $organizer->photo) }}"
-                                                        style="width: 50px; height: 50px; border-radius: 50%;">
+                                                        style="width: 50px; height: 50px; border-radius: 50%;" alt="profile picture">
                                                 </div>
                                                 <div class="col-10">
                                                     <h1>{{ $organizer->name }}</h1>

@@ -25,17 +25,17 @@
 @endif
 
 <div class="container position-relative d-flex align-items-end w-100">
-    <img src="{{ asset('assets/eventos/' . $event->photo) }}" id="bannerImg">
+    <img src="{{ asset('assets/eventos/' . $event->photo) }}" id="bannerImg" alt="Banner do evento">
     <div id="bannerOverlay" class="position-absolute row">
         <div class="banner-content">
             <h1 id="bannerName" class="banner-title">{{ $event->name }}</h1>
             @if (!$event->is_public)
-            <img src="{{ asset('assets/icons/lock_close.svg') }}" class="banner-lock">
+            <img src="{{ asset('assets/icons/lock_close.svg') }}" class="banner-lock" alt="Evento privado">
             @endif
             @if (Auth::check())
             <li class="nav-item dropdown">
                 <img class="banner-dots" src="{{ asset('assets/icons/three-dots-vertical-white.svg') }}"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;" alt="Opções">
 
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                     @if (!Auth::user()->is_admin && !$event->organization->organizers->contains(Auth::user()))
@@ -200,7 +200,7 @@ Auth::user()->organizations->contains($event->organization_id) || Auth::user()->
                     @if (Auth::check() && !Auth::user()->is_admin && Auth::user()->participatesInEvent($event))
                     <div class="row" id="add-comment-row">
                         <div class="col-12 d-flex align-items-center comment-row">
-                            <img class="profile-pic" src="{{ asset('assets/profile/' . $user->photo) }}">
+                            <img class="profile-pic" src="{{ asset('assets/profile/' . $user->photo) }}" alt="profile picture">
 
                             <form id="add-comment-form" method="POST" action="{{ route('comment.add') }}"
                                 enctype="multipart/form-data">
@@ -209,11 +209,11 @@ Auth::user()->organizations->contains($event->organization_id) || Auth::user()->
                                     required>
                                 <input type="hidden" name="event_id" value="{{ $event->id }}">
                                 <label for="file-upload" class="icon-button">
-                                    <img class="icon" src="{{ asset('assets/clip-icon.svg') }}">
+                                    <img class="icon" src="{{ asset('assets/clip-icon.svg') }}" alt="Anexar ficheiro">
                                     <input id="file-upload" type="file" name="file" style="display:none;">
                                 </label>
                                 <button type="submit" class="icon-button insert-comment">
-                                    <img class="icon" src="{{ asset('assets/send-icon.svg') }}">
+                                    <img class="icon" src="{{ asset('assets/send-icon.svg') }}" alt="Enviar comentário">
                                 </button>
                             </form>
                         </div>
@@ -226,7 +226,7 @@ Auth::user()->organizations->contains($event->organization_id) || Auth::user()->
                                 <p id="file-name"></p>
                             </span>
                             <button type="button" class="icon-button remove-file" id="remove-file">
-                                <img class="icon" src="{{ asset('assets/close-icon.svg') }}">
+                                <img class="icon" src="{{ asset('assets/close-icon.svg') }}" alt="Remover ficheiro">
                             </button>
                         </div>
                     </div>
@@ -242,7 +242,7 @@ Auth::user()->organizations->contains($event->organization_id) || Auth::user()->
                     @foreach ($comments as $comment)
                     <div class="comment-row comment" id="{{ 'comment-' . $comment->id }}">
                         <a href="{{ route('user', $comment->author->username) }}">
-                            <img class="profile-pic" src="{{ asset('assets/profile/' . $comment->author->photo) }}">
+                            <img class="profile-pic" src="{{ asset('assets/profile/' . $comment->author->photo) }}" alt="profile picture">
                         </a>
                         <div class="comment-content">
                             <div class="username-and-date">
@@ -256,7 +256,7 @@ Auth::user()->organizations->contains($event->organization_id) || Auth::user()->
                                 <li class="nav-item dropdown">
                                     <img class="three-dots" src="{{ asset('assets/three-dots-horizontal.svg') }}"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        style="display: none; cursor: pointer;">
+                                        style="display: none; cursor: pointer;" alt="Opções">
 
                                     <ul class="dropdown-menu dropdown-menu-dark"
                                         aria-labelledby="navbarDarkDropdownMenuLink">
@@ -286,7 +286,7 @@ Auth::user()->organizations->contains($event->organization_id) || Auth::user()->
                             @if($comment->file_id)
                             <div class="comment-file">
                                 <a href="{{ asset('assets/comments/' . $comment->file->file_name) }}">
-                                    <img src="{{ asset('assets/comments/' . $comment->file->file_name) }}">
+                                    <img src="{{ asset('assets/comments/' . $comment->file->file_name) }}" alt="file">
                                 </a>
                             </div>
                             @endif
@@ -297,30 +297,30 @@ Auth::user()->organizations->contains($event->organization_id) || Auth::user()->
                                 Auth::user()->participatesInEvent($event))
                                 @if ($comment->userVote(Auth::user()->id) == 0)
                                 <div class="up-btn">
-                                    <img src="{{ asset('assets/icons/vote-up.svg') }}" class="vote-icon">
+                                    <img src="{{ asset('assets/icons/vote-up.svg') }}" class="vote-icon" alt="UpVote não selecionado">
                                 </div>
                                 <div class="down-btn">
-                                    <img src="{{ asset('assets/icons/vote-down.svg') }}" class="vote-icon">
+                                    <img src="{{ asset('assets/icons/vote-down.svg') }}" class="vote-icon" alt="DownVote não selecionado">
                                 </div>
                                 @endif
                                 @if ($comment->userVote(Auth::user()->id) == 1)
                                 <div class="up-btn" selected>
-                                    <img src="{{ asset('assets/icons/vote-up-selected.svg') }}" class="vote-icon">
+                                    <img src="{{ asset('assets/icons/vote-up-selected.svg') }}" class="vote-icon" alt="UpVote selecionado">
                                 </div>
                                 <div class="down-btn">
-                                    <img src="{{ asset('assets/icons/vote-down.svg') }}" class="vote-icon">
+                                    <img src="{{ asset('assets/icons/vote-down.svg') }}" class="vote-icon" alt="DownVote não selecionado">
                                 </div>
                                 @endif
                                 @if ($comment->userVote(Auth::user()->id) == -1)
                                 <div class="up-btn">
-                                    <img src="{{ asset('assets/icons/vote-up.svg') }}" class="vote-icon">
+                                    <img src="{{ asset('assets/icons/vote-up.svg') }}" class="vote-icon" alt="UpVote não selecionado">
                                 </div>
                                 <div class="down-btn" selected>
-                                    <img src="{{ asset('assets/icons/vote-down-selected.svg') }}" class="vote-icon">
+                                    <img src="{{ asset('assets/icons/vote-down-selected.svg') }}" class="vote-icon" alt="DownVote selectionado">
                                 </div>
                                 @endif
                                 @else
-                                <img src="{{ asset('assets/icons/vote-disallowed.svg') }}" class="vote-icon"
+                                <img src="{{ asset('assets/icons/vote-disallowed.svg') }}" class="vote-icon" alt="Votação não permitida"
                                     style="margin-right:0.5em">
                                 @endif
                                 <span class="comment-votes" inert>{{ $comment->vote_balance }}</span>

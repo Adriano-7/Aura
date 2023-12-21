@@ -5,7 +5,7 @@
             <p id="Banner-subtitle">Junte-se à nossa comunidade. </p>
         </div>
         <div class="col-md-6">
-            <img src="{{ asset('assets/WelcomeBanner.png') }}" alt="Descriptive text" class="img-fluid" id="home-banner-img">
+            <img src="{{ asset('assets/WelcomeBanner.png') }}" alt="Banner de boas vindas" class="img-fluid" id="home-banner-img">
         </div>
     </div>
 </div>
