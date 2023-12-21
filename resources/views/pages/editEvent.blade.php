@@ -117,17 +117,6 @@
                     required>{{$event->description}}</textarea>
             </div>
 
-            <div class="form-group">
-                <label for="event_picture" id="file-upload-button" class="btn btn-primary">Carregar Imagem do Evento</label>
-                <input type="file" id="event_picture" name="event_picture" accept="image/*" class="form-control-file" style="display: none;">
-                <span id="file-name">{{ basename($event->photo) }}</span>
-                @if($event->photo)
-                    <div>
-                        <img src="{{ asset('assets/eventos/' . basename($event->photo)) }}" alt="Event Image" width="200">
-                        <p>Current Image. If you want to change it, please select a new image.</p>
-                    </div>
-                @endif
-            </div>
 
 
             <!-- Submit Button -->

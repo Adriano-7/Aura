@@ -112,12 +112,6 @@
             <label for="event_description">Descrição *</label>
             <textarea id="event_description" name="event_description" rows="4" required></textarea>
         </div>
-
-        <div class="form-group">
-            <label for="event_picture" id="file-upload-button" class="btn btn-primary">Carregar Imagem do Evento</label>
-            <input type="file" id="event_picture" name="event_picture" accept="image/*" class="form-control-file" style="display: none;">
-            <span id="file-name">Nenhuma imagem carregada</span>
-        </div>
         
 
         <!-- Submit Button -->

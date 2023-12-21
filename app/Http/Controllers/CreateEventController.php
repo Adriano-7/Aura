@@ -43,7 +43,6 @@ class CreateEventController extends Controller{
             'organization' => 'required',
             'event_visibility' => 'required',
             'event_description' => 'required|string',
-            'event_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
     
         $event = new Event;
@@ -65,24 +64,6 @@ class CreateEventController extends Controller{
         } else {
             $event->end_date = null;
         }
-
-        if ($request->hasFile('event_picture')) {
-            // Delete the old file
-            $oldFilePath = public_path('assets/eventos/' . $event->photo);
-            if (file_exists($oldFilePath)) {
-                unlink($oldFilePath);
-            }
-
-            // Upload the new file
-            $file = $request->file('event_picture');
-            $filename = $file->getClientOriginalName();
-            $file->move(public_path('assets/eventos'), $filename);
-
-            // Update the photo field of the event
-            $event->photo = $filename;
-        } 
-
-        $event->save();
 
 
     

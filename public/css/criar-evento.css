@@ -128,18 +128,3 @@
 
 
 
-#file-upload-button {
-    display: inline-block;
-    padding: 0.5em 1em;
-    color: #A08AFA;
-    background-color: #11141A;
-    border: 2px solid #A08AFA;
-    cursor: pointer;
-    
-}
-
-#file-upload-button:hover {
-    color: #11141A;
-    background-color: #A08AFA;
-    border-color: #11141A;
-}
