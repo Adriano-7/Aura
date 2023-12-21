@@ -18,7 +18,7 @@
 <body>
 
     <div class="custom-container">
-        <h2 class="text-center">Criar um Evento</h2>
+        <h2 class="text-center">Editar Evento</h2>
         @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
