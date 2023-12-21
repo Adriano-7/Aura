@@ -481,5 +481,5 @@
             </div>
         </div>
         </section>
-    </div>
+    </div>        
 @endsection

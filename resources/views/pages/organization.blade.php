@@ -40,4 +40,5 @@
     @include('widgets.org-eventos.textSection', ['id' => 'sobre', 'title' => 'Sobre', 'text' => $organization->description])
 
     </main>
+
 @endsection
