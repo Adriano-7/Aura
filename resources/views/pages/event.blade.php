@@ -153,17 +153,18 @@
     Auth::user()->organizations->contains($event->organization_id) || Auth::user()->is_admin))
     <div class="container navSect" id="polls">
         <div class="row">
-            <div class="col-12">
-                <h1 id="section-title">Sondagens</h1>
+            <div class="row">
+                <div class="col-12" id="pollDiv">
+                    <h1 id="section-title">Sondagens</h1>
+                    @if(Auth::check() && Auth::user()->organizations->contains($event->organization_id))
+                    <button type="button" class="btn" data-toggle="modal" data-target="#createPollModal">
+                        <i class="bi bi-plus"
+                            style="color: white; font-weight: bold; font-size:1.5em; margin-left: 10px;"></i>
+                    </button>
+                    @endif
+                </div>
             </div>
         </div>
-        @if(Auth::check() && Auth::user()->organizations->contains($event->organization_id))
-
-        <div style="display: flex; align-items: center;">
-            <button type="button" class="btn" data-toggle="modal" data-target="#createPollModal"><i class="bi bi-plus"
-                    style="color: white; font-weight: bold; font-size:1.5em; margin-left: 10px;"></i></button>
-        </div>
-        @endif
 
         @include('widgets.poll')
     </div>
@@ -461,38 +462,37 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <h5 class="modal-title">Convidar</h5>
-                <div class="row">
-                    <div class="part-col">
-                        <div class="part-row align-items-center">
-                            <form id="inviteForm" action="{{ route('event.inviteUser') }}" method="POST">
-                                <input type="hidden" name="event_id" value="{{ $event->id }}">
-                                @csrf
-                                @method('POST')
-                                <div class="row align-items-center">
-                                    <div class="col-8">
-                                        <div class="form-group">
-                                            <input type="email" name="email" placeholder="Email" id="inviteInput"
-                                                required />
+    <div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="modal-title">Convidar</h5>
+                    <div class="row">
+                        <div class="part-col">
+                            <div class="part-row align-items-center">
+                                <form id="inviteForm" action="{{ route('event.inviteUser') }}" method="POST">
+                                    <input type="hidden" name="event_id" value="{{ $event->id }}">
+                                    @csrf
+                                    @method('POST')
+                                    <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <div class="form-group">
+                                                <input type="email" name="email" placeholder="Email" id="inviteInput"
+                                                    required />
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <button id="submit-button" type="submit">Convidar</button>
                                         </div>
                                     </div>
-                                    <div class="col-4">
-                                        <button id="submit-button" type="submit">Convidar</button>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
+    @endsection
