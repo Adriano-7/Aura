@@ -7,6 +7,11 @@
 <link rel="stylesheet" href="{{ asset('css/criar-evento.css') }}">
 @endsection
 
+@section('scripts')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('js/criar-evento.js') }}" defer></script>
+@endsection
+
 @section('header')
 @include('widgets.navBar')
 @endsection
@@ -29,7 +34,7 @@
         </div>
         @endif
 
-        <form action='{{route("update-event", $event->id)}}' method="POST">
+        <form action='{{route("update-event", $event->id)}}' method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <!-- Event Name -->
@@ -43,13 +48,13 @@
                 <div class="form-group col-md-5" style='margin-right:2em'>
                     <label for="start_date">Data Início *</label>
                     <input type="date" id="start_date" name="start_date"
-                        value="{{ $event->start_date->format('Y-m-d') }}" min="{{ date('Y-m-d') }}" required>
+                        value="{{ trim($event->start_date->format('Y-m-d')) }}" min="{{ date('Y-m-d') }}" required>
                 </div>
                 <div class="form-group col-md-5">
-                    <label for="end_date">Data Fim</label>
+                    <label for="end_date">Data Fim *</label>
                     <input type="date" id="end_date" name="end_date"
-                        value="{{ $event->end_date ? $event->end_date->format('Y-m-d') : '' }}"
-                        min="{{ date('Y-m-d') }}">
+                    value="{{ $event->end_date ? trim($event->end_date->format('Y-m-d')) : '' }}"
+                        min="{{ date('Y-m-d') }}" required>
                 </div>
             </div>
 
@@ -60,16 +65,16 @@
                         required>
                 </div>
                 <div class="form-group col-md-5">
-                    <label for="end_time">Hora Fim</label>
+                    <label for="end_time">Hora Fim *</label>
                     <input type="time" id="end_time" name="end_time"
-                        value="{{$event->end_date ? $event->end_date->format('H:i') : '' }}">
+                        value="{{$event->end_date ? $event->end_date->format('H:i') : '' }}" required>
                 </div>
             </div>
 
             <!-- Morada -->
             <div class="form-group">
                 <label for="event_address">Morada</label>
-                <input type="text" id="event_address" name="event_address" value="{{$event->address}}">
+                <input type="text" id="event_address" name="event_address" value="{{$event->address}}" required>
             </div>
 
             <!-- Local -->
@@ -111,6 +116,7 @@
                 <textarea id="event_description" name="event_description" rows="4"
                     required>{{$event->description}}</textarea>
             </div>
+
 
 
             <!-- Submit Button -->

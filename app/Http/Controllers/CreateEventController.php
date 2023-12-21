@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Organization;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\File;
 
 use DateTime;
 class CreateEventController extends Controller{
@@ -34,8 +35,8 @@ class CreateEventController extends Controller{
             'event_name' => 'required|max:255',
             'start_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i',
-            'end_date' => 'nullable|date',
-            'end_time' => 'nullable|date_format:H:i',
+            'end_date' => 'required|date',
+            'end_time' => 'required|date_format:H:i',
             'event_address' => 'nullable|string|max:255',
             'event_city' => 'required|string|max:255',
             'event_venue' => 'required|string|max:255',
@@ -58,10 +59,11 @@ class CreateEventController extends Controller{
             $event->end_date = $end_datetime;
     
             if ($end_datetime <= $start_datetime) {
-                return redirect()->back()->withInput()->withErrors(['end_date' => 'End date and time must be after start date and time']);
+                return redirect()->back()->withInput()->withErrors("A data de fim tem de ser posterior à data de início.");
             }
-        } else {
-            $event->end_date = null;
+        } 
+        else {
+            return redirect()->back()->withInput()->withErrors("Data de fim inválida.");
         }
     
         $event->address = $validatedData['event_address'];
@@ -70,10 +72,10 @@ class CreateEventController extends Controller{
         $event->organization_id = $validatedData['organization'];
         $event->is_public = $validatedData['event_visibility'] === 'public';
         $event->description = $validatedData['event_description'];
-    
+      
         $event->save();
     
-        return redirect()->route('my-events')->with('success', 'Event created successfully');
+        return redirect()->route('my-events')->with('success', 'Evento criado com sucesso');
     }
 }    
 
