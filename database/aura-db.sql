@@ -170,6 +170,28 @@ CREATE TABLE recover_password (
     created_at TIMESTAMP NOT NULL DEFAULT current_timestamp
 );
 
+DROP TABLE IF EXISTS polls CASCADE;
+CREATE TABLE polls (
+    id SERIAL PRIMARY KEY,
+    event_id INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
+    question TEXT NOT NULL,
+    date TIMESTAMP NOT NULL DEFAULT current_timestamp
+);
+
+DROP TABLE IF EXISTS poll_option CASCADE;
+CREATE TABLE poll_option (
+    id SERIAL PRIMARY KEY,
+    poll_id INTEGER NOT NULL REFERENCES polls (id) ON DELETE CASCADE,
+    text TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS poll_vote CASCADE;
+CREATE TABLE poll_vote (
+    id SERIAL PRIMARY KEY,
+    poll_option_id INTEGER NOT NULL REFERENCES poll_option (id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE
+);
+
 -- Performance Indexes
 -- Index 01
 CREATE INDEX notification_user_indx ON notifications USING hash (receiver_id);
@@ -1046,3 +1068,25 @@ INSERT INTO notifications(receiver_id, type, organization_id, user_emitter_id) V
     /*68*/('2',  'organization_registration_request', '18', '18'),
     /*69*/('1',  'organization_registration_request', '19', '19'),
     /*70*/('2',  'organization_registration_request', '19', '19');
+
+-- Insert a poll
+INSERT INTO polls (event_id, question) VALUES
+    ('1', 'What is your favorite programming language?'),
+    ('1', 'What is your favorite music genre?');
+
+-- Insert options for the poll
+INSERT INTO poll_option (poll_id, text) VALUES
+    ('1', 'Python'),
+    ('1', 'JavaScript'),
+    ('1', 'Java'),
+    ('1', 'C#'),
+    ('2', 'Rock'),
+    ('2', 'Pop'),
+    ('2', 'Metal'),
+    ('2', 'Alternativo'),
+    ('2', 'Folk');
+
+-- Insert votes for the poll
+INSERT INTO poll_vote (poll_option_id, user_id) VALUES
+    ('1', '3'); -- User 1 votes for Python
+

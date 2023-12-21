@@ -15,6 +15,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReportCommentController;
 use App\Http\Controllers\ReportEventController;
 use App\Http\Controllers\EditEventController;
+use App\Http\Controllers\PollController;
 use App\Http\Controllers\RecoverPasswordController;
 use App\Http\Controllers\StaticPageController;
 
@@ -131,6 +132,8 @@ Route::controller(EventController::class)->group(function () {
     Route::post('/api/evento/{id}/aderir', 'apiJoinEvent')->name('event.apiJoin');
     Route::delete('/api/evento/{id}/sair', 'apiLeaveEvent')->name('event.apiLeave');
     Route::get('/api/eventos/pesquisa', 'search')->name('events.search'); 
+
+    
 });
 
 // Comments
@@ -143,6 +146,15 @@ Route::controller(CommentController::class)->group(function () {
     Route::post('api/comentario/{id}/up', 'addLike');
     Route::post('api/comentario/{id}/down', 'addDislike');
     Route::delete('api/comentario/{id}/unvote', 'removeVote');
+});
+
+//Polls
+Route::controller(PollController::class)->group(function () {
+    Route::get('/api/poll/{id}/resultados', 'results')->name('poll.results');
+    Route::post('/api/poll/{id}/votar', 'vote')->name('poll.vote');
+    Route::get('/api/poll/{id}/hasVoted', 'hasVoted')->name('poll.hasVoted');
+    Route::post('/poll/criar', 'store')->name('poll.store');
+
 });
 
 // Organization
