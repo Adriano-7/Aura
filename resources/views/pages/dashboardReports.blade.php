@@ -59,7 +59,7 @@
 
             @foreach ($reportComments as $report)
             <div class="row report">
-                <div class="col-2 dashboard-profile d-flex align-items-center">
+                <div class="col-2 dashboard-profile d-flex align-items-center" onclick="window.location.href='{{ route('user', ['username' => $report->comment->author->username]) }}'" style="cursor:pointer">
                     <div class="pr-2">
                         <img src="{{asset('assets/profile/' . $report->comment->author->photo)}}">
                     </div>

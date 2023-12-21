@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,9 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller{
     public function destroy(int $id) {
+        if(!is_numeric($id)){
+            return response()->json(['error' => 'User id must be an integer'], 400);
+        }
         $user = User::find($id);
 
         if (!$user) {
@@ -38,25 +42,39 @@ class UserController extends Controller{
         if (!$userProfile) {
             abort(404, 'Utilizador não encontrado.');
         }
-    
+
         $color1_increment = -122;
         $color2_increment = 55;
+
+        $events = $userProfile->eventsWhichParticipates();
+
+        if(Auth::check()){
+            $user = Auth::user();
+            $events = $events->filter(function ($event) use ($user) {
+                return Gate::forUser($user)->allows('show', $event);
+            });
+        } else {
+            $events = $events->filter(function ($event) {
+                return $event->is_public;
+            });
+        }
+
         return view('pages.profile', [
             'userProfile' => $userProfile,
             'user' => Auth::user(),
             'color1' => ColorHelper::adjustBrightness($userProfile->background_color, $color1_increment),
             'color2' => ColorHelper::adjustBrightness($userProfile->background_color, $color2_increment),
             'organizations' =>  $userProfile->organizations,
-            'events' => $userProfile->eventsWhichParticipates(),
+            'events' => $events,
         ]);
     }
-
     public function update(Request $request, int $id) {
+        if(!is_numeric($id)){
+            return redirect()->back()->withErrors('User id must be an integer');
+        }
         $user = User::find($id);
         if (!$user) {
-            return response()->json([
-                'message' => 'User not found'
-            ], 404);
+            return redirect()->back()->withErrors('User not found');
         }
 
         $request->validate([
@@ -69,7 +87,7 @@ class UserController extends Controller{
         try {
             $this->authorize('update', $user);
         } catch (AuthorizationException $e) {
-            return response()->json(['error' => $e->getMessage()], 403);
+            return redirect()->back()->withErrors('You are not authorized to update this user.');
         }
         $user->update($request->all());
 

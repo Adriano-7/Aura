@@ -42,7 +42,6 @@
 }
 
 .result-button {
-    /*no wrap*/
     white-space: nowrap;
 
     font-size: 0.85rem;
@@ -94,6 +93,7 @@
     left: 50%;
     transform: translateX(-50%);
     margin-bottom: 2rem;
+    z-index: 2;
 
     background-color: #11141A;
     padding: 1rem;
@@ -175,4 +175,5 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     max-height: 26rem; 
     overflow-y: auto;
     margin: 0 auto;
+    margin-bottom: 6em;
 }

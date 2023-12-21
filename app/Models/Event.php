@@ -47,5 +47,13 @@ class Event extends Model{
     public function organization(){
         return $this->belongsTo(Organization::class);
     }
+
+    public function polls(){
+        return $this->hasMany(Poll::class);
+    }
+
+    public function invitations(){
+        return $this->hasMany(Notification::class)->where('type', 'event_invitation');
+    }
 }
 

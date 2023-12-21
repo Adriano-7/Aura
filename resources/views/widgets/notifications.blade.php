@@ -1,7 +1,7 @@
 <div class="container" id="notifications-container">
     @foreach ($notifications as $notification)
         <div class="row notification" id="notification-{{ $notification->id }}">
-            <div class="col-md-3 notification-profile d-flex align-items-center">
+            <div class="col-md-3 notification-profile d-flex align-items-center" onclick="window.location.href='{{ route('user', ['username' => $notification->userEmitter->username]) }}'" style="cursor:pointer">
                 <img class="rounded-circle notification-profile-img" src="{{ asset($notification->getImage()) }}"
                     alt="Profile Image">
                 <div class="notification-profile-info">

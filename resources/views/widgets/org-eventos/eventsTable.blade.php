@@ -45,9 +45,13 @@
                     <h2>{{ $event->name }}</h2>
                     <h3>{{ $event->city }} • {{ $event->venue }}</h3>
                 </div>
-                @if (Auth::check() && !Auth::user()->is_admin)
+                @if (Auth::check() && !Auth::user()->is_admin && !$event->participants()->get()->contains(Auth::user()) && $event->start_date > now())
                     <div class="col-md-2 ml-auto">
-                        <button type="button" id="join-event">Aderir ao Evento</button>
+                        <button type="button"  class="join-event" id="button-{{$event->id}}" onclick="joinEvent({{$event->id}})">Aderir ao Evento</button>
+                    </div>
+                @elseif (Auth::check() && !Auth::user()->is_admin && $event->participants()->get()->contains(Auth::user()) && $event->start_date > now())
+                    <div class="col-md-2 ml-auto">
+                        <button type="button"  class="leave-event" id="button-{{$event->id}}" onclick="leaveEvent({{$event->id}})">Sair do Evento</button>
                     </div>
                 @endif
             </div>

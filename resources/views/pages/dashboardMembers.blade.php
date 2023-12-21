@@ -60,7 +60,7 @@
 
             @foreach ($members as $member)
                 <div class="row report">
-                    <div class="col-3 dashboard-profile d-flex align-items-center">
+                    <div class="col-3 dashboard-profile d-flex align-items-center" onclick="window.location.href='{{ route('user', ['username' => $member->username]) }}'" style="cursor:pointer">
                         <div class="pr-2">
                             <img src="{{ asset('assets/profile/' . $member->photo) }}">
                         </div>
