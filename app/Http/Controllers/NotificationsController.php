@@ -27,9 +27,6 @@ class NotificationsController extends Controller{
         if(!Auth::check()){
             abort(403, 'Utilizador não autenticado.');
         }
-        $request->validate([
-            'id' => 'required|integer',
-        ]);
 
         $notification = Notification::find($request->id);
         if(!$notification){
