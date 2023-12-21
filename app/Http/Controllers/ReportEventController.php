@@ -29,6 +29,9 @@ class ReportEventController extends Controller
             return response()->json(['error' => 'User not authorized to mark reports as resolved'], 403);
         }
 
+        if(!is_numeric($id)){
+            return response()->json(['error' => 'Report id must be an integer'], 400);
+        }
         $report = ReportEvent::find($id);
 
         if (!$report) {
@@ -45,7 +48,7 @@ class ReportEventController extends Controller
         ]);
     }
 
-    public function report(Request $request, $eventId){
+    public function report(Request $request, int $eventId){
         $validReasons = ['suspect_fraud', 'inappropriate_content', 'incorrect_information'];
         $reason = $request->input('reason');
 
@@ -55,6 +58,9 @@ class ReportEventController extends Controller
             ], 400);
         }
 
+        if(!is_numeric($eventId)){
+            return response()->json(['error' => 'Event id must be an integer'], 400);
+        }
         $event = Event::find($eventId);
         if (!$event) {
             return response()->json([

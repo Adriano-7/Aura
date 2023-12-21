@@ -122,7 +122,7 @@
                     <div class="col-12 text-center">
                         <form method="POST" action="{{ route('event.join', $event->id) }}">
                             @csrf
-                            <button id="join-event" type="submit">Aderir ao evento</button>
+                            <button class="join-event" type="submit">Aderir ao evento</button>
                         </form>
                     </div>
                     @elseif (Auth::check() && Auth::user()->participatesInEvent($event))
@@ -130,7 +130,7 @@
                         <form method="POST" action="{{ route('event.leave', $event->id) }}">
                             @csrf
                             @method('DELETE')
-                            <button id="leave-event" type="submit">Sair do evento</button>
+                            <button class="leave-event" type="submit">Sair do evento</button>
                         </form>
                     </div>
                     @endif
@@ -146,197 +146,198 @@
             </div>
         </div>
     </div>
+</div>
 
-    @if(($event->polls->isNotEmpty() || Auth::check() && Auth::user()->organizations->contains($event->organization_id))  
-            && 
-        Auth::check() && (Auth::user()->participatesInEvent($event) || Auth::user()->organizations->contains($event->organization_id) || Auth::user()->is_admin))
-    <div class="container navSect" id="polls">
+@if(($event->polls->isNotEmpty() || Auth::check() && Auth::user()->organizations->contains($event->organization_id))
+&&
+Auth::check() && (Auth::user()->participatesInEvent($event) ||
+Auth::user()->organizations->contains($event->organization_id) || Auth::user()->is_admin))
+<div class="container navSect" id="polls">
+    <div class="row">
         <div class="row">
-            <div class="row">
-                <div class="col-12" id="pollDiv">
-                    <h1 id="section-title">Sondagens</h1>
-                    @if(Auth::check() && Auth::user()->organizations->contains($event->organization_id))
-                    <button type="button" class="btn" data-toggle="modal" data-target="#createPollModal">
-                        <i class="bi bi-plus"
-                            style="color: white; font-weight: bold; font-size:1.5em; margin-left: 10px;"></i>
-                    </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-        @include('widgets.poll')
-    </div>
-    @endif
-
-    <div class="container navSect" id="sobre">
-        <div class="row">
-            <div class="col-12">
-                <h1 id="section-title">Sobre</h1>
-            </div>
-        </div>
-
-        <div class="card mx-auto">
-            <div class="row">
-                <div class="col-md-12">
-                    <p>{{ $event->description }}</p>
-                </div>
+            <div class="col-12" id="pollDiv">
+                <h1 id="section-title">Sondagens</h1>
+                @if(Auth::check() && Auth::user()->organizations->contains($event->organization_id))
+                <button type="button" class="btn" data-toggle="modal" data-target="#createPollModal">
+                    <i class="bi bi-plus"
+                        style="color: white; font-weight: bold; font-size:1.5em; margin-left: 10px;"></i>
+                </button>
+                @endif
             </div>
         </div>
     </div>
+    @include('widgets.poll')
+</div>
+@endif
 
-    <div class="container navSect" id="comentarios">
+<div class="container navSect" id="sobre">
+    <div class="row">
+        <div class="col-12">
+            <h1 id="section-title">Sobre</h1>
+        </div>
+    </div>
+
+    <div class="card mx-auto">
         <div class="row">
-            <div class="col-12">
-                <h1 id="section-title">Comentários • {{ $comments->count() }}</h1>
+            <div class="col-md-12">
+                <p>{{ $event->description }}</p>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="card mx-auto" style="padding: 1em;">
-            <div class="row" id="comment-box">
-                <div class="comment-row">
-                    <div class="container">
-                        @if (Auth::check() && !Auth::user()->is_admin && Auth::user()->participatesInEvent($event))
-                        <div class="row" id="add-comment-row">
-                            <div class="col-12 d-flex align-items-center comment-row">
-                                <img class="profile-pic" src="{{ asset('assets/profile/' . $user->photo) }}">
+<div class="container navSect" id="comentarios">
+    <div class="row">
+        <div class="col-12">
+            <h1 id="section-title">Comentários • {{ $comments->count() }}</h1>
+        </div>
+    </div>
 
-                                <form id="add-comment-form" method="POST" action="{{ route('comment.add') }}"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="text" name="text" placeholder="Adicione um comentário"
-                                        autocomplete="off" required>
-                                    <input type="hidden" name="event_id" value="{{ $event->id }}">
-                                    <label for="file-upload" class="icon-button">
-                                        <img class="icon" src="{{ asset('assets/clip-icon.svg') }}">
-                                        <input id="file-upload" type="file" name="file" style="display:none;">
-                                    </label>
-                                    <button type="submit" class="icon-button insert-comment">
-                                        <img class="icon" src="{{ asset('assets/send-icon.svg') }}">
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                        @endif
+    <div class="card mx-auto" style="padding: 1em;">
+        <div class="row" id="comment-box">
+            <div class="comment-row">
+                <div class="container">
+                    @if (Auth::check() && !Auth::user()->is_admin && Auth::user()->participatesInEvent($event))
+                    <div class="row" id="add-comment-row">
+                        <div class="col-12 d-flex align-items-center comment-row">
+                            <img class="profile-pic" src="{{ asset('assets/profile/' . $user->photo) }}">
 
-                        <div class="row" style="display: none;" id="file-upload-section">
-                            <div class="col-12 d-flex align-items-center">
-                                <span class="file-info" id="file-info">
-                                    <p id="file-name"></p>
-                                </span>
-                                <button type="button" class="icon-button remove-file" id="remove-file">
-                                    <img class="icon" src="{{ asset('assets/close-icon.svg') }}">
+                            <form id="add-comment-form" method="POST" action="{{ route('comment.add') }}"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <input type="text" name="text" placeholder="Adicione um comentário" autocomplete="off"
+                                    required>
+                                <input type="hidden" name="event_id" value="{{ $event->id }}">
+                                <label for="file-upload" class="icon-button">
+                                    <img class="icon" src="{{ asset('assets/clip-icon.svg') }}">
+                                    <input id="file-upload" type="file" name="file" style="display:none;">
+                                </label>
+                                <button type="submit" class="icon-button insert-comment">
+                                    <img class="icon" src="{{ asset('assets/send-icon.svg') }}">
                                 </button>
-                            </div>
+                            </form>
                         </div>
+                    </div>
+                    @endif
 
-                        @if ($comments->count() == 0)
-                        <div class="row">
-                            <div class="col-12">
-                                <p>Este evento ainda não tem comentários.</p>
-                            </div>
+                    <div class="row" style="display: none;" id="file-upload-section">
+                        <div class="col-12 d-flex align-items-center">
+                            <span class="file-info" id="file-info">
+                                <p id="file-name"></p>
+                            </span>
+                            <button type="button" class="icon-button remove-file" id="remove-file">
+                                <img class="icon" src="{{ asset('assets/close-icon.svg') }}">
+                            </button>
                         </div>
-                        @endif
+                    </div>
 
-                        @foreach ($comments as $comment)
-                        <div class="comment-row comment" id="{{ 'comment-' . $comment->id }}">
-                            <a href="{{ route('user', $comment->author->username) }}">
-                                <img class="profile-pic" src="{{ asset('assets/profile/' . $comment->author->photo) }}">
-                            </a>
-                            <div class="comment-content">
-                                <div class="username-and-date">
-                                    <span class="comment-author"
-                                        onclick="window.location.href='{{ route('user', $comment->author->username) }}'"
-                                        style="cursor: pointer"> {{ $comment->author->name }}</span>
-                                    <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans()
-                                        }}</span>
+                    @if ($comments->count() == 0)
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Este evento ainda não tem comentários.</p>
+                        </div>
+                    </div>
+                    @endif
 
-                                    @if (Auth::check())
-                                    <li class="nav-item dropdown">
-                                        <img class="three-dots" src="{{ asset('assets/three-dots-horizontal.svg') }}"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            style="display: none; cursor: pointer;">
+                    @foreach ($comments as $comment)
+                    <div class="comment-row comment" id="{{ 'comment-' . $comment->id }}">
+                        <a href="{{ route('user', $comment->author->username) }}">
+                            <img class="profile-pic" src="{{ asset('assets/profile/' . $comment->author->photo) }}">
+                        </a>
+                        <div class="comment-content">
+                            <div class="username-and-date">
+                                <span class="comment-author"
+                                    onclick="window.location.href='{{ route('user', $comment->author->username) }}'"
+                                    style="cursor: pointer"> {{ $comment->author->name }}</span>
+                                <span class="comment-date">{{ \Carbon\Carbon::parse($comment->date)->diffForHumans()
+                                    }}</span>
 
-                                        <ul class="dropdown-menu dropdown-menu-dark"
-                                            aria-labelledby="navbarDarkDropdownMenuLink">
-                                            @if (!Auth::user()->is_admin && Auth::user()->id != $comment->author->id)
-                                            <li><a class="dropdown-item"
-                                                    onclick="openReportCommentModal({{ $comment->id }})"
-                                                    style="cursor: pointer;">Denunciar</a></li>
-                                            @endif
+                                @if (Auth::check())
+                                <li class="nav-item dropdown">
+                                    <img class="three-dots" src="{{ asset('assets/three-dots-horizontal.svg') }}"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        style="display: none; cursor: pointer;">
 
-                                            @if (Auth::user()->id == $comment->author->id)
-                                            <li><a class="dropdown-item"
-                                                    onclick="activateEditComment({{ $comment->id }})"
-                                                    style="cursor: pointer;">Editar</a></li>
-                                            @endif
+                                    <ul class="dropdown-menu dropdown-menu-dark"
+                                        aria-labelledby="navbarDarkDropdownMenuLink">
+                                        @if (!Auth::user()->is_admin && Auth::user()->id != $comment->author->id)
+                                        <li><a class="dropdown-item"
+                                                onclick="openReportCommentModal({{ $comment->id }})"
+                                                style="cursor: pointer;">Denunciar</a></li>
+                                        @endif
 
-                                            @if (Auth::user()->id == $comment->author->id ||
-                                            Auth::user()->is_admin ||
-                                            $event->organization->organizers->contains(Auth::user()))
-                                            <li><a class="dropdown-item" onclick="deleteComment({{ $comment->id }})"
-                                                    style="cursor: pointer;">Apagar</a></li>
-                                            @endif
-                                        </ul>
-                                    </li>
-                                    @endif
+                                        @if (Auth::user()->id == $comment->author->id)
+                                        <li><a class="dropdown-item" onclick="activateEditComment({{ $comment->id }})"
+                                                style="cursor: pointer;">Editar</a></li>
+                                        @endif
 
+                                        @if (Auth::user()->id == $comment->author->id ||
+                                        Auth::user()->is_admin ||
+                                        $event->organization->organizers->contains(Auth::user()))
+                                        <li><a class="dropdown-item" onclick="deleteComment({{ $comment->id }})"
+                                                style="cursor: pointer;">Apagar</a></li>
+                                        @endif
+                                    </ul>
+                                </li>
+                                @endif
+
+                            </div>
+                            <p class="comment-text">{{ $comment->text }}</p>
+                            @if($comment->file_id)
+                            <div class="comment-file">
+                                <a href="{{ asset('assets/comments/' . $comment->file->file_name) }}">
+                                    <img src="{{ asset('assets/comments/' . $comment->file->file_name) }}">
+                                </a>
+                            </div>
+                            @endif
+                            <div class="votes-row">
+                                @if (Auth::check() &&
+                                !Auth::user()->is_admin &&
+                                Auth::user()->id != $comment->author->id &&
+                                Auth::user()->participatesInEvent($event))
+                                @if ($comment->userVote(Auth::user()->id) == 0)
+                                <div class="up-btn">
+                                    <img src="{{ asset('assets/icons/vote-up.svg') }}" class="vote-icon">
                                 </div>
-                                <p class="comment-text">{{ $comment->text }}</p>
-                                @if($comment->file_id)
-                                <div class="comment-file">
-                                    <a href="{{ asset('assets/comments/' . $comment->file->file_name) }}">
-                                        <img src="{{ asset('assets/comments/' . $comment->file->file_name) }}">
-                                    </a>
+                                <div class="down-btn">
+                                    <img src="{{ asset('assets/icons/vote-down.svg') }}" class="vote-icon">
                                 </div>
                                 @endif
-                                <div class="votes-row">
-                                    @if (Auth::check() &&
-                                    !Auth::user()->is_admin &&
-                                    Auth::user()->id != $comment->author->id &&
-                                    Auth::user()->participatesInEvent($event))
-                                    @if ($comment->userVote(Auth::user()->id) == 0)
-                                    <div class="up-btn">
-                                        <img src="{{ asset('assets/icons/vote-up.svg') }}" class="vote-icon">
-                                    </div>
-                                    <div class="down-btn">
-                                        <img src="{{ asset('assets/icons/vote-down.svg') }}" class="vote-icon">
-                                    </div>
-                                    @endif
-                                    @if ($comment->userVote(Auth::user()->id) == 1)
-                                    <div class="up-btn" selected>
-                                        <img src="{{ asset('assets/icons/vote-up-selected.svg') }}" class="vote-icon">
-                                    </div>
-                                    <div class="down-btn">
-                                        <img src="{{ asset('assets/icons/vote-down.svg') }}" class="vote-icon">
-                                    </div>
-                                    @endif
-                                    @if ($comment->userVote(Auth::user()->id) == -1)
-                                    <div class="up-btn">
-                                        <img src="{{ asset('assets/icons/vote-up.svg') }}" class="vote-icon">
-                                    </div>
-                                    <div class="down-btn" selected>
-                                        <img src="{{ asset('assets/icons/vote-down-selected.svg') }}" class="vote-icon">
-                                    </div>
-                                    @endif
-                                    @else
-                                    <img src="{{ asset('assets/icons/vote-disallowed.svg') }}" class="vote-icon"
-                                        style="margin-right:0.5em">
-                                    @endif
-                                    <span class="comment-votes" inert>{{ $comment->vote_balance }}</span>
+                                @if ($comment->userVote(Auth::user()->id) == 1)
+                                <div class="up-btn" selected>
+                                    <img src="{{ asset('assets/icons/vote-up-selected.svg') }}" class="vote-icon">
                                 </div>
+                                <div class="down-btn">
+                                    <img src="{{ asset('assets/icons/vote-down.svg') }}" class="vote-icon">
+                                </div>
+                                @endif
+                                @if ($comment->userVote(Auth::user()->id) == -1)
+                                <div class="up-btn">
+                                    <img src="{{ asset('assets/icons/vote-up.svg') }}" class="vote-icon">
+                                </div>
+                                <div class="down-btn" selected>
+                                    <img src="{{ asset('assets/icons/vote-down-selected.svg') }}" class="vote-icon">
+                                </div>
+                                @endif
+                                @else
+                                <img src="{{ asset('assets/icons/vote-disallowed.svg') }}" class="vote-icon"
+                                    style="margin-right:0.5em">
+                                @endif
+                                <span class="comment-votes" inert>{{ $comment->vote_balance }}</span>
                             </div>
                         </div>
-                        @endforeach
                     </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    @include('widgets.reportCommentModal')
-    @include('widgets.reportEventModal')
-    @include('widgets.pollModal')
-    @include('widgets.participantsModal')
-    @include('widgets.inviteModal')
+@include('widgets.reportCommentModal')
+@include('widgets.reportEventModal')
+@include('widgets.pollModal')
+@include('widgets.participantsModal')
+@include('widgets.inviteModal')
 </div>
 @endsection

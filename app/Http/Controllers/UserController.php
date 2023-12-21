@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller{
     public function destroy(int $id) {
+        if(!is_numeric($id)){
+            return response()->json(['error' => 'User id must be an integer'], 400);
+        }
         $user = User::find($id);
 
         if (!$user) {
@@ -52,11 +55,12 @@ class UserController extends Controller{
     }
 
     public function update(Request $request, int $id) {
+        if(!is_numeric($id)){
+            return redirect()->back()->withErrors('User id must be an integer');
+        }
         $user = User::find($id);
         if (!$user) {
-            return response()->json([
-                'message' => 'User not found'
-            ], 404);
+            return redirect()->back()->withErrors('User not found');
         }
 
         $request->validate([
@@ -69,7 +73,7 @@ class UserController extends Controller{
         try {
             $this->authorize('update', $user);
         } catch (AuthorizationException $e) {
-            return response()->json(['error' => $e->getMessage()], 403);
+            return redirect()->back()->withErrors('You are not authorized to update this user.');
         }
         $user->update($request->all());
 

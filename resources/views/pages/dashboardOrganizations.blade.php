@@ -45,8 +45,7 @@
         <div class="dashboard-table limit-table">
             @foreach ($organizationRequests as $request)
                 <div class="row report" id="request-{{$request->organization->id}}">
-                    <div class="col-3 dashboard-profile d-flex align-items-center" style="cursor: pointer;"
-                    onclick="window.location.href='{{ route('organization.show', ['id' => $request->organization->id]) }}'">
+                    <div class="col-3 dashboard-profile d-flex align-items-center" onclick="window.location.href='{{ route('user', ['username' => $request->userEmitter->username]) }}'" style="cursor:pointer">
                         <div class="pr-2">
                             <img src="{{ asset('assets/profile/' . $request->userEmitter->photo) }}">
                         </div>

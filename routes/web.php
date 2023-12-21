@@ -17,6 +17,7 @@ use App\Http\Controllers\ReportEventController;
 use App\Http\Controllers\EditEventController;
 use App\Http\Controllers\PollController;
 use App\Http\Controllers\RecoverPasswordController;
+use App\Http\Controllers\StaticPageController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -31,6 +32,13 @@ use App\Http\Controllers\Auth\RegisterController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// Static Pages
+Route::controller(StaticPageController::class)->group(function () {
+    Route::get('/sobre-nos', 'showAboutUs')->name('aboutUs');
+    Route::get('/politica-de-privacidade', 'showPrivacy')->name('privacy');
+    Route::get('/contactos', 'showContacts')->name('contacts');
+});
 
 //Login
 Route::controller(LoginController::class)->group(function () {

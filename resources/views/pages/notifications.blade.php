@@ -21,4 +21,5 @@
     @if (session('status'))
         @include('widgets.popUpNotification', ['message' => session('status')])
     @endif
+    
 @endsection

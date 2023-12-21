@@ -30,5 +30,6 @@
                 @yield('content')
             </section>
         </main>
+        @include('widgets.footer')
     </body>
 </html>

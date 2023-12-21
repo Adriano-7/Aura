@@ -10,7 +10,7 @@
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('dashboard.reports') }}">
-                        <span class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"> DASHBOARD </span>
+                        <span class="{{ (request()->routeIs('dashboard.reports') || request()->routeIs('dashboard.members') || request()->routeIs('dashboard.organizations')) ? 'active' : '' }}"> DASHBOARD </span>
                     </a>
                 </li>
                 <li class="nav-item">
