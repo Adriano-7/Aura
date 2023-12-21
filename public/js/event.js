@@ -699,17 +699,28 @@ function deleteComment(commentId) {
 }
 
 async function deleteEvent(eventId) {
-    const response = await fetch(`/api/evento/${eventId}/apagar`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken,
+    Swal.fire({
+        title: 'Tem a certeza?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const response = await fetch(`/api/evento/${eventId}/apagar`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                }
+            });
+
+            if (response.ok) {
+                window.location.href = '/';
+            } else {
+                console.error(`Failed to delete event. Status: ${response.status}`);
+            }
         }
     });
-
-    if (response.ok) {
-        window.location.href = '/';
-    } else {
-        console.error(`Failed to delete event. Status: ${response.status}`);
-    }
 }
+    
