@@ -7,12 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/criar-evento.css') }}">
 @endsection
 
-@section('scripts')
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('js/criar-evento.js') }}" defer></script>
-
-@endsection
-
 @section('header')
     @include('widgets.navBar')
 @endsection
@@ -35,13 +29,11 @@
 
     <form action='{{route("submit-event")}}' method="POST" enctype="multipart/form-data">
     @csrf 
-        <!-- Event Name -->
         <div class="form-group">
             <label for="event_name">Nome *</label>
             <input type="text" id="event_name" name="event_name" required>
         </div>
 
-        <!-- Date and Time -->
         <div class="form-row">
                 <div class="form-group col-md-5" style='margin-right:2em'>
                     <label for="start_date">Data Início *</label>
@@ -54,7 +46,6 @@
                         min="{{ date('Y-m-d') }}" required>
                 </div>
             </div>
-
             <div class="form-row">
                 <div class="form-group col-md-5" style='margin-right:2em'>
                     <label for="start_time">Hora Início *</label>
@@ -67,15 +58,10 @@
                         required>
                 </div>
             </div>
-
-        <!-- Morada -->
         <div class="form-group">
             <label for="event_address">Morada</label>
             <input type="text" id="event_address" name="event_address">
         </div>
-
-        <!-- Local -->            
-
         <div class="form-row">
             <div class="form-group col-md-5" style = 'margin-right:2em'>
                 <label for="event_venue">Local *</label>
@@ -86,9 +72,6 @@
                 <input type="text" id="event_city" name="event_city" >
             </div>
         </div>
-
-
-        <!-- Organizacao -->
         <div class="form-group">
             <label for="organization">Organização *</label>
             <select id="organization" name="organization" required>
@@ -97,8 +80,6 @@
                 @endforeach
             </select>
         </div>
-
-        <!-- Visibility -->
         <div class="form-group">
             <label for="event_visibility">Visibilidade *</label>
             <select id="event_visibility" name="event_visibility" required>
@@ -106,16 +87,11 @@
                 <option value="private">Privado</option>
             </select>
         </div>
-
-        <!-- Description -->
         <div class="form-group">
             <label for="event_description">Descrição *</label>
             <textarea id="event_description" name="event_description" rows="4" required></textarea>
         </div>
-        
-
-        <!-- Submit Button -->
-        <div class="form-group text-center">
+                <div class="form-group text-center">
             <button type="submit" class="btn btn-primary me-4">Criar Evento</button>
             <button type="button" class="btn btn-secondary" onclick="window.location='{{ route('my-events') }}'">Cancelar</button>        </div>
     </form>

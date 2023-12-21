@@ -74,7 +74,7 @@ class EditEventController extends Controller{
             $event->end_date = $end_datetime;
     
             if ($end_datetime <= $start_datetime) {
-                return redirect()->back()->withInput()->withErrors(['end_date' => 'End date and time must be after start date and time']);
+                return redirect()->back()->withInput()->withErrors(['end_date' => 'A data de fim tem de ser posterior à data de início.']);
             }
         } else {
             $event->end_date = null;
