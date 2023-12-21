@@ -34,7 +34,7 @@
         </div>
         @endif
 
-        <form action='{{route("update-event", $event->id)}}' method="POST">
+        <form action='{{route("update-event", $event->id)}}' method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <!-- Event Name -->
@@ -48,12 +48,12 @@
                 <div class="form-group col-md-5" style='margin-right:2em'>
                     <label for="start_date">Data Início *</label>
                     <input type="date" id="start_date" name="start_date"
-                        value="{{ $event->start_date->format('Y-m-d') }}" min="{{ date('Y-m-d') }}" required>
+                        value="{{ trim($event->start_date->format('Y-m-d')) }}" min="{{ date('Y-m-d') }}" required>
                 </div>
                 <div class="form-group col-md-5">
                     <label for="end_date">Data Fim *</label>
                     <input type="date" id="end_date" name="end_date"
-                        value="{{ $event->end_date ? $event->end_date->format('Y-m-d') : '' }} "
+                    value="{{ $event->end_date ? trim($event->end_date->format('Y-m-d')) : '' }}"
                         min="{{ date('Y-m-d') }}" required>
                 </div>
             </div>
@@ -115,6 +115,18 @@
                 <label for="event_description">Descrição *</label>
                 <textarea id="event_description" name="event_description" rows="4"
                     required>{{$event->description}}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="event_picture" id="file-upload-button" class="btn btn-primary">Carregar Imagem do Evento</label>
+                <input type="file" id="event_picture" name="event_picture" accept="image/*" class="form-control-file" style="display: none;">
+                <span id="file-name">{{ basename($event->photo) }}</span>
+                @if($event->photo)
+                    <div>
+                        <img src="{{ asset('assets/eventos/' . basename($event->photo)) }}" alt="Event Image" width="200">
+                        <p>Current Image. If you want to change it, please select a new image.</p>
+                    </div>
+                @endif
             </div>
 
 

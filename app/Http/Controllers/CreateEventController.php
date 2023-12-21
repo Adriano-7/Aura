@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Organization;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\File;
 
 use DateTime;
 class CreateEventController extends Controller{
@@ -42,6 +43,7 @@ class CreateEventController extends Controller{
             'organization' => 'required',
             'event_visibility' => 'required',
             'event_description' => 'required|string',
+            'event_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
     
         $event = new Event;
@@ -63,6 +65,26 @@ class CreateEventController extends Controller{
         } else {
             $event->end_date = null;
         }
+
+        if ($request->hasFile('event_picture')) {
+            // Delete the old file
+            $oldFilePath = public_path('assets/eventos/' . $event->photo);
+            if (file_exists($oldFilePath)) {
+                unlink($oldFilePath);
+            }
+
+            // Upload the new file
+            $file = $request->file('event_picture');
+            $filename = $file->getClientOriginalName();
+            $file->move(public_path('assets/eventos'), $filename);
+
+            // Update the photo field of the event
+            $event->photo = $filename;
+        } 
+
+        $event->save();
+
+
     
         $event->address = $validatedData['event_address'];
         $event->city = $validatedData['event_city'];
@@ -70,7 +92,7 @@ class CreateEventController extends Controller{
         $event->organization_id = $validatedData['organization'];
         $event->is_public = $validatedData['event_visibility'] === 'public';
         $event->description = $validatedData['event_description'];
-    
+      
         $event->save();
     
         return redirect()->route('my-events')->with('success', 'Event created successfully');

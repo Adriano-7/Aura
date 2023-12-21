@@ -33,7 +33,7 @@
     </div>
     @endif
 
-    <form action='{{route("submit-event")}}' method="POST">
+    <form action='{{route("submit-event")}}' method="POST" enctype="multipart/form-data">
     @csrf 
         <!-- Event Name -->
         <div class="form-group">
@@ -43,26 +43,30 @@
 
         <!-- Date and Time -->
         <div class="form-row">
-            <div class="form-group col-md-5" style='margin-right:2em'>
-                <label for="start_date">Data Início *</label>
-                <input type="date" id="start_date" name="start_date" min="{{ date('Y-m-d') }}" required>
+                <div class="form-group col-md-5" style='margin-right:2em'>
+                    <label for="start_date">Data Início *</label>
+                    <input type="date" id="start_date" name="start_date"
+                        min="{{ date('Y-m-d') }}" required>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="end_date">Data Fim *</label>
+                    <input type="date" id="end_date" name="end_date"
+                        min="{{ date('Y-m-d') }}" required>
+                </div>
             </div>
-            <div class="form-group col-md-5">
-                <label for="end_date">Data Fim *</label>
-                <input type="date" id="end_date" name="end_date" min="{{ date('Y-m-d') }}" required>
-            </div>
-        </div>
 
-        <div class="form-row">
-            <div class="form-group col-md-5"style='margin-right:2em' >
-                <label for="start_time">Hora Início *</label>
-                <input type="time" id="start_time" name="start_time"  required>
+            <div class="form-row">
+                <div class="form-group col-md-5" style='margin-right:2em'>
+                    <label for="start_time">Hora Início *</label>
+                    <input type="time" id="start_time" name="start_time"
+                        required>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="end_time">Hora Fim *</label>
+                    <input type="time" id="end_time" name="end_time"
+                        required>
+                </div>
             </div>
-            <div class="form-group col-md-5">
-                <label for="end_time">Hora Fim *</label>
-                <input type="time" id="end_time" name="end_time" required>
-            </div>
-        </div>
 
         <!-- Morada -->
         <div class="form-group">
@@ -109,6 +113,11 @@
             <textarea id="event_description" name="event_description" rows="4" required></textarea>
         </div>
 
+        <div class="form-group">
+            <label for="event_picture" id="file-upload-button" class="btn btn-primary">Carregar Imagem do Evento</label>
+            <input type="file" id="event_picture" name="event_picture" accept="image/*" class="form-control-file" style="display: none;">
+            <span id="file-name">Nenhuma imagem carregada</span>
+        </div>
         
 
         <!-- Submit Button -->

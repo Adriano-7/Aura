@@ -64,3 +64,8 @@ document.getElementById('start_time').addEventListener('change', function() {
         }
     }
 });
+
+document.getElementById('event_picture').addEventListener('change', function() {
+    var fileName = this.files.length > 0 ? this.files[0].name : '{{ basename($event->photo) }}';
+    document.getElementById('file-name').textContent = fileName;
+});
