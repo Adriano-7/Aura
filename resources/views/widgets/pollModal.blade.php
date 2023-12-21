@@ -1,4 +1,4 @@
-<div class="modal fade" id="createPollModal" tabindex="-1" aria-labelledby="createPollModalLabel" aria-hidden="true">
+<div class="modal fade createPollModal" tabindex="-1" aria-labelledby="createPollModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body" id="inputContainer">

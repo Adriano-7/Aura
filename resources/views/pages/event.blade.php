@@ -158,7 +158,7 @@ Auth::user()->organizations->contains($event->organization_id) || Auth::user()->
             <div class="col-12" id="pollDiv">
                 <h1 id="section-title">Sondagens</h1>
                 @if(Auth::check() && Auth::user()->organizations->contains($event->organization_id))
-                <button type="button" class="btn" data-toggle="modal" data-target="#createPollModal">
+                <button type="button" class="btn" data-toggle="modal" data-target=".createPollModal">
                     <i class="bi bi-plus"
                         style="color: white; font-weight: bold; font-size:1.5em; margin-left: 10px;"></i>
                 </button>
