@@ -674,30 +674,28 @@ function deleteComment(commentId) {
         confirmButtonText: 'Sim',
         cancelButtonText: 'Não'
     }).then((result) => {
-        if (!result.isConfirmed) {
-            return;
+        if (result.isConfirmed) {
+            let url = `${window.location.origin}/api/comentario/${commentId}/apagar`;
+            fetch(new URL(url, window.location.origin), {
+                method: 'DELETE',
+                headers: {
+                    'content-type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            }).then(res => {
+                if (res.ok) {
+                    let commentRow = document.getElementById(`comment-${commentId}`);
+                    commentRow.remove();
+
+                    let sectionTitle = document.querySelector('#comentarios #section-title');
+                    let numberOfComments = sectionTitle.textContent.split('•')[1].trim();
+                    numberOfComments--;
+                    sectionTitle.textContent = `Comentários • ${numberOfComments}`;
+                }
+            })
+            .catch(err => console.log(err));
         }
     });
-
-    let url = `${window.location.origin}/api/comentario/${commentId}/apagar`;
-    fetch(new URL(url, window.location.origin), {
-        method: 'DELETE',
-        headers: {
-            'content-type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        }
-    }).then(res => {
-        if (res.ok) {
-            let commentRow = document.getElementById(`comment-${commentId}`);
-            commentRow.remove();
-
-            let sectionTitle = document.querySelector('#comentarios #section-title');
-            let numberOfComments = sectionTitle.textContent.split('•')[1].trim();
-            numberOfComments--;
-            sectionTitle.textContent = `Comentários • ${numberOfComments}`;
-        }
-    })
-        .catch(err => console.log(err));
 }
 
 async function deleteEvent(eventId) {
