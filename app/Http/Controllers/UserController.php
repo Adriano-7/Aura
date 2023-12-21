@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -41,19 +42,32 @@ class UserController extends Controller{
         if (!$userProfile) {
             abort(404, 'Utilizador não encontrado.');
         }
-    
+
         $color1_increment = -122;
         $color2_increment = 55;
+
+        $events = $userProfile->eventsWhichParticipates();
+
+        if(Auth::check()){
+            $user = Auth::user();
+            $events = $events->filter(function ($event) use ($user) {
+                return Gate::forUser($user)->allows('show', $event);
+            });
+        } else {
+            $events = $events->filter(function ($event) {
+                return $event->is_public;
+            });
+        }
+
         return view('pages.profile', [
             'userProfile' => $userProfile,
             'user' => Auth::user(),
             'color1' => ColorHelper::adjustBrightness($userProfile->background_color, $color1_increment),
             'color2' => ColorHelper::adjustBrightness($userProfile->background_color, $color2_increment),
             'organizations' =>  $userProfile->organizations,
-            'events' => $userProfile->eventsWhichParticipates(),
+            'events' => $events,
         ]);
     }
-
     public function update(Request $request, int $id) {
         if(!is_numeric($id)){
             return redirect()->back()->withErrors('User id must be an integer');
