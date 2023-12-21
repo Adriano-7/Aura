@@ -8,17 +8,22 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Organization;
 use App\Models\User;
 use App\Models\Event;
+use Illuminate\Auth\Access\AuthorizationException;
+
 
 use DateTime;
 class EditEventController extends Controller{
-    public function show($id) {
-    $event = Event::find($id);
-
-    // Check if the user is authorized
-    if (Auth::user()->cannot('viewEditForm', $event)) {
-        // Redirect to a different page or show an error message
-        return redirect()->route('my-events')->withErrors('You are not authorized to view this event.');
-    }
+    public function show(int $id) {
+        if(!is_numeric($id)){
+            return response()->json(['message' => 'Event id must be an integer'], 400);
+        }
+        $event = Event::find($id);
+        if(!$event){
+            return redirect()->route('my-events')->withErrors('Event not found.');
+        }
+        if (Auth::user()->cannot('viewEditForm', $event)) {
+            return redirect()->route('my-events')->withErrors('You are not authorized to view this event.');
+        }
         return view('pages.editEvent', [
             'user' => Auth::user(),
             'event' => $event,
@@ -27,9 +32,20 @@ class EditEventController extends Controller{
     }
 
 
-    public function update($id, Request $request){
+    public function update(int $id, Request $request){
+        if(!is_numeric($id)){
+            return response()->json(['message' => 'Event id must be an integer'], 400);
+        }
         $event = Event::find($id);
-        $this->authorize('update', $event);
+        if(!$event){
+            return redirect()->route('my-events')->withErrors('Event not found.');
+        }
+
+        try {
+            $this->authorize('update', $event);
+        } catch (AuthorizationException $e) {
+            return redirect()->route('my-events')->withErrors('You are not authorized to edit this event.');
+        }
     
         $validatedData = $request->validate([
             'event_name' => 'required|max:255',

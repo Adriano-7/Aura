@@ -32,14 +32,20 @@ class CommentController extends Controller{
     }
 
     public function show(int $id) {
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'Comment id must be an integer'], 400);
+        }
         $comment = Comment::find($id);
         if (!$comment) {
             return response()->json(['message' => 'Comment not found'], 404);
         }
-        return response()->json(['comment' => $comment]);
+        return response()->json(['comment' => $comment], 200);
     }
 
     public function destroy(int $id) {
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'Comment id must be an integer'], 400);
+        }
         $comment = Comment::find($id);
         if (!$comment) {
             return response()->json(['message' => 'Comment not found'], 404);
@@ -50,11 +56,13 @@ class CommentController extends Controller{
             return response()->json(['message' => 'User not authorized to delete this comment'], 403);
         }
         $comment->delete();
-        return response()->json(['message' => 'Comment deleted successfully']);
+        return response()->json(['message' => 'Comment deleted successfully'], 200);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
+        if (!$request->has('event_id')) {
+            return response()->json(['message' => 'Event id is required'], 400);
+        }
         $request->validate([
             'text' => 'required',
             'file' => 'file|mimes:jpg,jpeg,png,bmp,gif,svg,pdf|max:2048'
@@ -92,6 +100,9 @@ class CommentController extends Controller{
     }
 
     public function update(Request $request, int $id) {
+        if (!is_numeric($id)) {
+            return response()->json(['message' => 'Comment id must be an integer'], 400);
+        }
         $comment = Comment::find($id);
         if (!$comment) {
             return response()->json(['message' => 'Comment not found'], 404);
@@ -106,8 +117,11 @@ class CommentController extends Controller{
         return response()->json(['message' => 'Comment updated successfully', 'text' => $comment->text]);
     }
 
-    public function addLike(int $commentId){
-        $comment = Comment::find($commentId);
+    public function addLike(int $id){
+        if(!is_numeric($id)){
+            return response()->json(['error'=> 'Comment id must be an integer'],400);
+        }
+        $comment = Comment::find($id);
         if(!$comment){
             return response()->json(['error'=> 'Comment not found'],404);
         }
@@ -116,12 +130,15 @@ class CommentController extends Controller{
         } catch (AuthorizationException $e){
             return response()->json(['error'=> $e->getMessage()],403);
         }
-        VoteComment::addVote($commentId, Auth::user()->id, true);
+        VoteComment::addVote($id, Auth::user()->id, true);
         return response()->json(['success' => true]);
     }
 
-    public function addDislike(int $commentId){
-        $comment = Comment::find($commentId);
+    public function addDislike(int $id){
+        if(!is_numeric($id)){
+            return response()->json(['error'=> 'Comment id must be an integer'],400);
+        }
+        $comment = Comment::find($id);
         if(!$comment){
             return response()->json(['error'=> 'Comment not found'],404);
         }
@@ -130,12 +147,15 @@ class CommentController extends Controller{
         } catch (AuthorizationException $e){
             return response()->json(['error'=> $e->getMessage()],403);
         }
-        VoteComment::addVote($commentId, Auth::user()->id, false);
+        VoteComment::addVote($id, Auth::user()->id, false);
         return response()->json(['success' => true]);
     }
 
-    public function removeVote(int $commentId){
-        $comment = Comment::find($commentId);
+    public function removeVote(int $id){
+        if(!is_numeric($id)){
+            return response()->json(['error'=> 'Comment id must be an integer'],400);
+        }
+        $comment = Comment::find($id);
         if(!$comment){
             return response()->json(['error'=> 'Comment not found'],404);
         }
@@ -144,7 +164,7 @@ class CommentController extends Controller{
         } catch (AuthorizationException $e){
             return response()->json(['error'=> $e->getMessage()],403);
         }
-        VoteComment::deleteVote($commentId, Auth::user()->id);
+        VoteComment::deleteVote($id, Auth::user()->id);
         return response()->json(['success'=> true]);
     }
 }
