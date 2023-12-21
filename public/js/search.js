@@ -25,6 +25,12 @@ async function search(firstTime = false) {
     let visibleResults = results.filter(result => result.canSee);
     let visibleResultsLength = visibleResults.length;
 
+    if (visibleResultsLength == 0) {
+        const resultsContainer = document.getElementById('search-container');
+        resultsContainer.innerHTML = '<h1 id="results-title">Eventos • 0 Resultados</h1>';
+        return;
+    }
+    
     let resultsHTML = `
         <div class="row">
             <div class="col-12">
@@ -35,8 +41,8 @@ async function search(firstTime = false) {
     `;
 
     for (const result of visibleResults) {
-            const startDate = new Date(result.start_date);
-            const resultHTML = `
+        const startDate = new Date(result.start_date);
+        const resultHTML = `
             <div class="row search-result">
                 <div class="col-md-2">
                     <h2>${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'long' })}</h2>
@@ -49,13 +55,13 @@ async function search(firstTime = false) {
                 </div>
                 <div class="col-md-2 ml-auto">
                 ${result.isParticipating ?
-                    `<button type="button" id="button-${result.id}" class="result-button" onclick="leaveEvent(${result.id})">Sair do Evento</button>`
-                    :
-                    (result.canJoin ? `<button type="button" id="button-${result.id}" class="result-button" onclick="joinEvent(${result.id})">Aderir ao Evento</button>` : '')}
+                `<button type="button" id="button-${result.id}" class="result-button" onclick="leaveEvent(${result.id})">Sair do Evento</button>`
+                :
+                (result.canJoin ? `<button type="button" id="button-${result.id}" class="result-button" onclick="joinEvent(${result.id})">Aderir ao Evento</button>` : '')}
                 </div>
             </div>`;
 
-            resultsHTML += resultHTML;
+        resultsHTML += resultHTML;
     }
 
     resultsHTML += '</div>';

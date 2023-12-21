@@ -277,9 +277,10 @@ class EventController extends Controller{
                 $results = $eventsQuery->where('is_public', true)->get()->map(function ($event) {
                     $event->isParticipating = false;
                     $event->canJoin = false;
+                    $event->canSee = true;
                     return $event;
                 });
             }
         
-            return response()->json($results);
+            return response()->json($results, 200);
 }}

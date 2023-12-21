@@ -39,6 +39,4 @@
     @include('widgets.org-eventos.eventsTable', ['title' => 'Eventos • ' . $events->count() . ' Resultados', 'events' => $events, 'isOrg' => true])
     @include('widgets.org-eventos.textSection', ['id' => 'sobre', 'title' => 'Sobre', 'text' => $organization->description])
 
-    </main>
-
 @endsection
