@@ -1071,22 +1071,29 @@ INSERT INTO notifications(receiver_id, type, organization_id, user_emitter_id) V
 
 -- Insert a poll
 INSERT INTO polls (event_id, question) VALUES
-    ('1', 'What is your favorite programming language?'),
-    ('1', 'What is your favorite music genre?');
+    ('1', 'Qual o teu género de música favorito?'),
+    ('2', 'Qual o teu album favorito dos Guns N Roses?');
 
 -- Insert options for the poll
 INSERT INTO poll_option (poll_id, text) VALUES
-    ('1', 'Python'),
-    ('1', 'JavaScript'),
-    ('1', 'Java'),
-    ('1', 'C#'),
-    ('2', 'Rock'),
-    ('2', 'Pop'),
-    ('2', 'Metal'),
-    ('2', 'Alternativo'),
-    ('2', 'Folk');
+    /*1*/('1', 'Rock'),
+    /*2*/('1', 'Pop'),
+    /*3*/('1', 'Metal'),
+    /*4*/('1', 'Alternativo'),
+    /*5*/('1', 'Folk'),
+    /*6*/('2', 'Appetite for Destruction'),
+    /*7*/('2', 'Use Your Illusion I'),
+    /*8*/('2', 'Use Your Illusion II'),
+    /*9*/('2', 'The Spaghetti Incident?'),
+    /*10*/('2', 'Chinese Democracy');
 
 -- Insert votes for the poll
 INSERT INTO poll_vote (poll_option_id, user_id) VALUES
-    ('1', '3'); -- User 1 votes for Python
+    ('2', '8'),
+    ('1', '5'),
+    ('6', '6'),
+    ('7', '7'),
+    ('8', '8'),
+    ('7', '9'),
+    ('7', '10');
 

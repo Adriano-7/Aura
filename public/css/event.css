@@ -578,7 +578,9 @@ li {
 }
 
 .optResult{
-    min-width: fit-content;
+    min-width: 12%;
+    max-width: 100%;
+    white-space: ellipsis;
 }
 
 .option-box.selected {

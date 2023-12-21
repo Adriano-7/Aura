@@ -13,7 +13,8 @@
                 <div class="card-body">
                     @foreach($poll->options as $option)
                     <div class="option-box optResult disabled {{$option->hasUserVoted($user->id) ? 'highlighted' : ''}}"
-                        data-option-id="{{ $option->id }}" style="width: {{$option->getPercentage()}}%;">
+                    
+                        data-option-id="{{ $option->id }}" style="width: {{12 + $option->getPercentage()*0.88}}%;">
                         {{ $option->text }} ({{ $option->getPercentage() }}%)
                     </div>
                     @endforeach

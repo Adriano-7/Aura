@@ -12,7 +12,7 @@ function show_results(pollId, optionVoted, card) {
                 var result = results.find(result => result.option_id === optionId);
 
                 box.textContent = result.text + ' (' + result.percentage + '%)';
-                box.style.width = result.percentage + '%';
+                box.style.width = (12 + result.percentage * 0.88) + '%';
 
                 box.classList.add('disabled');
                 box.classList.add('optResult')
