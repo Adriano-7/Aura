@@ -25,9 +25,11 @@ body {
     font-size: small;
 }
 
-.nav-link img {
+#navBarImg{
     margin-right: 0.5rem;
     width: 3.2em;
+    height: 3.2em;
+    object-fit: cover;
 }
 
 .dropdown-item {
@@ -45,6 +47,8 @@ body {
     top: 50%;
     transform: translateY(-10%);
 }
+
+
 
 /***************** Search Bar *****************/
 

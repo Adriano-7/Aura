@@ -37,7 +37,7 @@
                 <li class="nav-item dropdown ">
                     <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        <img src="{{ asset('assets/profile/' . $user->photo) }}" class="rounded-circle">
+                        <img src="{{ asset('assets/profile/' . $user->photo) }}" id="navBarImg" class="rounded-circle">
                         <span class="navbar-text dropdown-toggle">{{ $user->name }}</span>
                     </a>
 
