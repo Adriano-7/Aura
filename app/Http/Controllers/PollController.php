@@ -89,9 +89,7 @@ class PollController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-        error_log('Form data: ' . json_encode($request->all()));
+    public function store(Request $request){
 
         $request->validate([
             'eventId' => 'required|string',
@@ -104,10 +102,9 @@ class PollController extends Controller
             'option6' => 'string',
         ]);
 
-
         $event = Event::find(intval($request->eventId));
         if (!$event) {
-            return response()->json(['message' => 'Event not found'], 404);
+            return redirect()->back()->with('error', 'Event not found');
         }
 
         $poll = Poll::create([
@@ -118,13 +115,11 @@ class PollController extends Controller
         try {
             $this->authorize('create', $poll);
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'User not authorized to create a poll'], 403);
+            return redirect()->back()->with('error', 'User not authorized to create a poll');
         }
 
         foreach ($request->all() as $key => $value) {
-            error_log('Key: ' . $key . ', Value: ' . $value);
             if (Str::startsWith($key, 'option') && !empty($value)) {
-                error_log('Creating option: ' . $value);
                 PollOption::create([
                     'poll_id' => $poll->id,
                     'text' => $value,
@@ -134,8 +129,7 @@ class PollController extends Controller
 
         $poll->save();
 
-
-        return response()->json(['success' => true]);
+        return redirect()->back()->with('success', 'Poll created successfully');
     }
 }
 ?>

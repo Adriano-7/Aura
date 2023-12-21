@@ -1,52 +1,52 @@
 function show_results(pollId, optionVoted, card) {
     // If the user has voted, get the vote percentages for each option
     fetch('/api/poll/' + pollId + '/resultados')
-    .then(response => {
-        return response.json();
-    })
-    .then(results => {
-        // Get the text node of the element containing the poll question
-        var questionTextNode = card.querySelector('.mb-0').firstChild;
-        // Append ' -Resultados' to the poll question
-        questionTextNode.nodeValue += ' (Resultados)';
+        .then(response => {
+            return response.json();
+        })
+        .then(results => {
+            // Get the text node of the element containing the poll question
+            var questionTextNode = card.querySelector('.mb-0').firstChild;
+            // Append ' -Resultados' to the poll question
+            questionTextNode.nodeValue += ' (Resultados)';
 
-        // Update the text and style of each option box
-        card.querySelectorAll('.option-box').forEach(function(box) {
-            var optionId = Number(box.getAttribute('data-option-id'));
-            var result = results.find(result => result.option_id === optionId);
+            // Update the text and style of each option box
+            card.querySelectorAll('.option-box').forEach(function (box) {
+                var optionId = Number(box.getAttribute('data-option-id'));
+                var result = results.find(result => result.option_id === optionId);
 
-            box.textContent = result.text + ' (' + result.percentage + '%)';
-            box.style.width = result.percentage + '%';
+                box.textContent = result.text + ' (' + result.percentage + '%)';
+                box.style.width = result.percentage + '%';
 
-            if (result.percentage === 0) {
-                box.style.width = 'min-content';
-                box.style.textAlign = 'left'; 
-            }
+                if (result.percentage === 0) {
+                    box.style.width = 'min-content';
+                    box.style.textAlign = 'left';
+                }
 
-            box.classList.add('disabled');
+                box.classList.add('disabled');
 
-            // If the user has voted for this option, add the 'selected' class
-            if (optionId === optionVoted) {
-                box.classList.add('highlighted');
+                // If the user has voted for this option, add the 'selected' class
+                if (optionId === optionVoted) {
+                    box.classList.add('highlighted');
+                }
+            });
+
+            // Disable the submit button
+            var submitButton = card.querySelector('.btn-primary');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.classList.add('hidden');
             }
         });
-
-        // Disable the submit button
-        var submitButton = card.querySelector('.btn-primary');
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.classList.add('hidden');
-        }
-    });
 }
 
 
 
-window.onload = function() {
+window.onload = function () {
     // Get all poll cards
     var pollCards = document.querySelectorAll('.poll-card');
 
-    pollCards.forEach(function(card) {
+    pollCards.forEach(function (card) {
         var pollId = Number(card.getAttribute('data-poll-id'));
         var isOrganizerOrAdmin = card.getAttribute('data-is-organizer-or-admin') === 'true';
 
@@ -65,7 +65,7 @@ window.onload = function() {
     });
 };
 
-document.querySelectorAll('.poll-card-header').forEach(function(header) {
+document.querySelectorAll('.poll-card-header').forEach(function (header) {
     var pollId = header.getAttribute('id').split('_')[1];
     var arrowIcon = document.getElementById('arrow_' + pollId);
 
@@ -82,8 +82,8 @@ document.querySelectorAll('.poll-card-header').forEach(function(header) {
 
 
 
-document.querySelectorAll('.option-box').forEach(function(box) {
-    box.addEventListener('click', function() {
+document.querySelectorAll('.option-box').forEach(function (box) {
+    box.addEventListener('click', function () {
         // If the clicked option box is already selected, deselect it
 
         if (this.classList.contains('disabled')) {
@@ -94,7 +94,7 @@ document.querySelectorAll('.option-box').forEach(function(box) {
             // TODO: Do something when an option is deselected
         } else {
             // Remove the 'selected' class from all option boxes
-            document.querySelectorAll('.option-box').forEach(function(box) {
+            document.querySelectorAll('.option-box').forEach(function (box) {
                 box.classList.remove('selected');
             });
 
@@ -108,12 +108,12 @@ document.querySelectorAll('.option-box').forEach(function(box) {
     });
 });
 
-document.querySelectorAll('.poll-card').forEach(function(card) {
+document.querySelectorAll('.poll-card').forEach(function (card) {
     var pollId = card.querySelector('.poll-card-header').getAttribute('id').split('_')[1];
     var submitButtons = card.querySelectorAll('.btn-primary');
 
-    submitButtons.forEach(function(button) {
-        button.addEventListener('click', function(event) {
+    submitButtons.forEach(function (button) {
+        button.addEventListener('click', function (event) {
             event.preventDefault();
 
             // Get the selected option
@@ -135,14 +135,14 @@ document.querySelectorAll('.poll-card').forEach(function(card) {
                     option_id: selectedOptionId
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error: ' + error);
-            });
+                .then(response => response.json())
+                .then(data => {
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error: ' + error);
+                });
 
             // Show the results
             show_results(pollId, selectedOptionId, card);
@@ -151,67 +151,48 @@ document.querySelectorAll('.poll-card').forEach(function(card) {
 });
 
 
-    document.addEventListener('DOMContentLoaded', function() {
-        var optionCount = 3;
-        var addOptionButton = document.getElementById('addOption');
-        var removeOptionButton = document.getElementById('removeOption');
-        var inputContainer = document.getElementById('pollForm');
+document.addEventListener('DOMContentLoaded', function () {
+    var optionCount = 3;
+    var addOptionButton = document.getElementById('addOption');
+    var removeOptionButton = document.getElementById('removeOption');
+    var inputContainer = document.getElementById('pollForm');
 
-        addOptionButton.addEventListener('click', function() {
-            if (optionCount > 6) {
-                swal("Erro", "Só podes adicionar até 6 opções.", "error");
-                return;
-            }
-            var newLabel = document.createElement('label');
-            newLabel.setAttribute('for', 'option' + optionCount);
-            newLabel.textContent = 'Opção ' + optionCount;
+    addOptionButton.addEventListener('click', function () {
+        if (optionCount > 6) {
+            swal("Erro", "Só podes adicionar até 6 opções.", "error");
+            return;
+        }
+        var newLabel = document.createElement('label');
+        newLabel.setAttribute('for', 'option' + optionCount);
+        newLabel.textContent = 'Opção ' + optionCount;
 
-            var newInput = document.createElement('input');
-            newInput.setAttribute('type', 'text');
-            newInput.setAttribute('id', 'option' + optionCount);
-            newInput.setAttribute('name', 'option' + optionCount);
-            
+        var newInput = document.createElement('input');
+        newInput.setAttribute('type', 'text');
+        newInput.setAttribute('id', 'option' + optionCount);
+        newInput.setAttribute('name', 'option' + optionCount);
 
-            
-            newInput.classList.add('form-control');
-            newInput.setAttribute('required', '');
 
-            inputContainer.appendChild(newLabel);
-            inputContainer.appendChild(newInput);
 
-            optionCount++;
-        });
+        newInput.classList.add('form-control');
+        newInput.setAttribute('required', '');
 
-        removeOptionButton.addEventListener('click', function() {
-            if (optionCount > 3) {
-                optionCount--;
-                var lastLabel = document.getElementById('option' + optionCount);
-                var lastInput = document.querySelector('label[for=option' + optionCount + ']');
+        inputContainer.appendChild(newLabel);
+        inputContainer.appendChild(newInput);
 
-                inputContainer.removeChild(lastLabel);
-                inputContainer.removeChild(lastInput);
-            }
-            else {
-                swal("Oops!", "O número mínimo de opções é 2", "error");
-            }
-        });
+        optionCount++;
     });
 
-    document.getElementById('pollForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-    
-        let formData = new FormData(this);
-    
-        fetch('/api/poll/criar', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken,
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-    });
+    removeOptionButton.addEventListener('click', function () {
+        if (optionCount > 3) {
+            optionCount--;
+            var lastLabel = document.getElementById('option' + optionCount);
+            var lastInput = document.querySelector('label[for=option' + optionCount + ']');
 
-    
+            inputContainer.removeChild(lastLabel);
+            inputContainer.removeChild(lastInput);
+        }
+        else {
+            swal("Oops!", "O número mínimo de opções é 2", "error");
+        }
+    });
+});

@@ -5,7 +5,7 @@
                 <h5 class="modal-title">Criar Nova Sondagem</h5>
                 <div class="row">
 
-                    <form id="pollForm" >
+                    <form id="pollForm" action="{{ route('poll.store') }}" method="POST">
                         @csrf
 
                         <input type="hidden" id="eventId" name="eventId" value="{{ $event->id }}">
@@ -28,7 +28,7 @@
                         <div class="modal-footer d-flex justify-content-center" style="border-top: none;">
                             <button type="submit" id="submit" class="btn">Submit</button>
                         </div>
-                </form>
+                    </form>
                 </div>
 
             </div>

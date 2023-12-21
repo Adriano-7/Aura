@@ -145,7 +145,7 @@ Route::controller(PollController::class)->group(function () {
     Route::get('/api/poll/{id}/resultados', 'results')->name('poll.results');
     Route::post('/api/poll/{id}/votar', 'vote')->name('poll.vote');
     Route::get('/api/poll/{id}/hasVoted', 'hasVoted')->name('poll.hasVoted');
-    Route::post('/api/poll/criar', 'store')->name('poll.store');
+    Route::post('/poll/criar', 'store')->name('poll.store');
 
 });
 
