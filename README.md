@@ -1,92 +1,105 @@
-# lbaw2384
+# Aura
+
+Aura is a platform that centralizes music events across Portugal, connecting event organizers, attendees, and music enthusiasts. The platform enables users to discover, organize, and participate in concerts and festivals, with features for event joining, comments, invitations, and organizational management. [Presentation Video.](https://drive.google.com/file/d/1fB9fRRngFSSqxQv-8uwALCREm_zis6SY/view)
 
 
+![Aura Homepage](docs/Aura_01.png)
+![Event Details](docs/Aura_02.png)
+![User Profile](docs/Aura_03.png)
 
-## Getting started
+## Features
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- **Event Creation and Management:** Organizers can easily create, edit, and manage events.
+- **User Engagement:** Users can join events, comment, and invite others to participate.
+- **Organization Support:** Users can join organizations to facilitate the creation of public or private events.
+- **Search Functionality:** Discover events by date, location, or genre.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Technologies Used
 
-## Add your files
+- **Backend:** Laravel
+- **Frontend:** Bootstrap
+- **Database:** PostgreSQL
+- **Other Libraries:** SweetAlert2 for notifications and alerts
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+## Setup
 
-```
-cd existing_repo
-git remote add origin https://git.fe.up.pt/lbaw/lbaw2324/lbaw2384.git
-git branch -M main
-git push -uf origin main
-```
+To set up your environment for development, follow these steps:
 
-## Integrate with your tools
+### Prerequisites
 
-- [ ] [Set up project integrations](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2384/-/settings/integrations)
+1. Ensure your system has **PHP >= 8.1** and **Composer >= 2.2**.  
+   We recommend using an **Ubuntu** distribution (e.g., Ubuntu 22.04 or newer). You can install the necessary packages by running:
 
-## Collaborate with your team
+   ```bash
+   sudo apt update
+   sudo apt install git composer php8.1 php8.1-mbstring php8.1-xml php8.1-pgsql php8.1-curl
+   ```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+2. Clone the repository and update dependencies:
 
-## Test and Deploy
+   ```bash
+   git clone https://github.com/Adriano-7/Aura
+   cd aura
+   composer update
+   ```
 
-Use the built-in continuous integration in GitLab.
+   If Composer installation fails, ensure you’re using version 2 or above. If errors related to missing PHP extensions arise, verify and uncomment the required extensions in your [php.ini file](https://www.php.net/manual/en/configuration.file.php).
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### Working with PostgreSQL
 
-***
+A Docker Compose file is included for running **PostgreSQL** and **pgAdmin4** in local Docker containers. From the project root, execute:
 
-# Editing this README
+   ```bash
+   docker compose up -d
+   ```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+To stop the containers:
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+   ```bash
+   docker compose down
+   ```
 
-## Name
-Choose a self-explaining name for your project.
+To access pgAdmin4, navigate to <http://localhost:4321> in your browser. For first-time setup, use these credentials:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+- **Email:** `postgres@lbaw.com`
+- **Password:** `pg!password`
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Then, add the database connection in pgAdmin4 with the following details:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+- **Hostname:** `postgres`
+- **Username:** `postgres`
+- **Password:** `pg!password`
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Database Setup
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+After setting up PostgreSQL, initialize the database and seed it with default data:
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+   ```bash
+   php artisan db:seed
+   ```
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+### Starting the Development Server
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Run the following command to start the development server:
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+   ```bash
+   php artisan serve
+   ```
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+Access the application at `http://localhost:8000`. 
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+#### Admin Credentials
 
-## License
-For open source projects, say how it is licensed.
+| Username | Password |
+|----------|----------|
+| admin@example.com | 1234 |
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+#### User Credentials
+
+| Tipo | Username | Password |
+|------|----------|----------|
+| Conta Básica | catarina@example.com | 1234 |
+| Organizador | antonio@example.com | 1234 |
+
+
+To stop the server, press `Ctrl-C`.

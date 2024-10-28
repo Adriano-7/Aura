@@ -36,10 +36,7 @@ CREATE TABLE events (
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP,
     is_public BOOLEAN NOT NULL DEFAULT FALSE,
-    organization_id INTEGER NOT NULL REFERENCES organizations (id) ON DELETE CASCADE,
-
-    CONSTRAINT end_date_check CHECK (end_date IS NULL OR start_date < end_date),
-    CONSTRAINT start_date_check CHECK (start_date > current_timestamp)
+    organization_id INTEGER NOT NULL REFERENCES organizations (id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS participants CASCADE;
